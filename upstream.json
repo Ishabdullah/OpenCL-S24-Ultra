@@ -1,0 +1,15 @@
+{
+  "project_version": "v0.1.0",
+  "patch_version": 1,
+  "repository": "https://github.com/ggml-org/llama.cpp.git",
+  "commit": "e358d59178377be4c58ba567925e05faadbccb57",
+  "tested_date": "2026-10-02",
+  "patch_sha256": "dc21507d755969fbfad95b6493a78ffdb30892a52a5d26cb1f10dc2a7af4a483",
+  "patched_files_sha256": {
+    "ggml/src/ggml-opencl/CMakeLists.txt": "0a6963f6f7d8c64efdbd0954f4756d94ad312a2d87a08401a129d2c0b61072cd",
+    "ggml/src/ggml-opencl/cl-program-cache.cpp": "df326b3d7ff61ce70caa4a5f320ac26e8c2114842b03d3a4fc3b97de5004300d",
+    "ggml/src/ggml-opencl/ggml-opencl.cpp": "1018afd84572aea02fc046d22d401a7b1992020a88cc884d9a6d070efe23cd25",
+    "ggml/src/ggml-opencl/opencl-sphal.cpp": "abb4af656041fdac9723c1d30a25c3866a937150a0a48f60d54a68bddb7211c8",
+    "ggml/src/ggml-opencl/opencl-sphal.h": "8f82c7ce5a89a21d0c0cd7f47067c283f807543fe2da7a1fab07ed8ab247a768"
+  }
+}

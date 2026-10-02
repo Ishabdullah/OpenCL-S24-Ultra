@@ -1,0 +1,262 @@
+diff --git a/ggml/src/ggml-opencl/CMakeLists.txt b/ggml/src/ggml-opencl/CMakeLists.txt
+index 97b862a..759f268 100644
+--- a/ggml/src/ggml-opencl/CMakeLists.txt
++++ b/ggml/src/ggml-opencl/CMakeLists.txt
+@@ -1,4 +1,10 @@
+-find_package(OpenCL REQUIRED)
++option(GGML_OPENCL_USE_SPHAL "Load Qualcomm OpenCL through the Android sphal namespace" OFF)
++
++if (GGML_OPENCL_USE_SPHAL)
++    find_path(OpenCL_INCLUDE_DIRS NAMES CL/cl.h REQUIRED)
++else ()
++    find_package(OpenCL REQUIRED)
++endif ()
+ find_package(Python3 REQUIRED)
+ 
+ set(TARGET_NAME ggml-opencl)
+@@ -8,7 +14,13 @@ ggml_add_backend_library(${TARGET_NAME}
+                          cl-program-cache.cpp
+                          cl-program-cache.h
+                          ../../include/ggml-opencl.h)
+-target_link_libraries(${TARGET_NAME} PRIVATE ${OpenCL_LIBRARIES})
++if (GGML_OPENCL_USE_SPHAL)
++    target_sources(${TARGET_NAME} PRIVATE opencl-sphal.cpp opencl-sphal.h)
++    target_compile_definitions(${TARGET_NAME} PRIVATE GGML_OPENCL_USE_SPHAL)
++    target_link_libraries(${TARGET_NAME} PRIVATE ${CMAKE_DL_LIBS})
++else ()
++    target_link_libraries(${TARGET_NAME} PRIVATE ${OpenCL_LIBRARIES})
++endif ()
+ target_include_directories(${TARGET_NAME} PRIVATE ${OpenCL_INCLUDE_DIRS})
+ 
+ if (GGML_OPENCL_PROFILING)
+diff --git a/ggml/src/ggml-opencl/cl-program-cache.cpp b/ggml/src/ggml-opencl/cl-program-cache.cpp
+index 1a4a281..3f67867 100644
+--- a/ggml/src/ggml-opencl/cl-program-cache.cpp
++++ b/ggml/src/ggml-opencl/cl-program-cache.cpp
+@@ -4,6 +4,9 @@
+ #define CL_USE_DEPRECATED_OPENCL_1_2_APIS
+ 
+ #include "cl-program-cache.h"
++#ifdef GGML_OPENCL_USE_SPHAL
++#include "opencl-sphal.h"
++#endif
+ 
+ #include "ggml-impl.h"  // GGML_LOG_INFO / WARN
+ 
+diff --git a/ggml/src/ggml-opencl/ggml-opencl.cpp b/ggml/src/ggml-opencl/ggml-opencl.cpp
+index acad7a6..ea54789 100644
+--- a/ggml/src/ggml-opencl/ggml-opencl.cpp
++++ b/ggml/src/ggml-opencl/ggml-opencl.cpp
+@@ -32,6 +32,9 @@ typedef const void * (*get_adreno_bin_kernel_func_t)(
+ );
+ 
+ #include <CL/cl.h>
++#ifdef GGML_OPENCL_USE_SPHAL
++#include "opencl-sphal.h"
++#endif
+ 
+ #include <inttypes.h>
+ #include <string.h>
+@@ -6306,9 +6309,16 @@ static std::vector<ggml_backend_device> ggml_opencl_probe_devices(ggml_backend_r
+     struct cl_device * default_device = NULL;
+     unsigned           default_platform_number = 0;
+ 
++#ifdef GGML_OPENCL_USE_SPHAL
++    if (!ggml_opencl_sphal_init()) {
++        return found_devices;
++    }
++#endif
++
+     cl_platform_id platform_ids[NPLAT];
+-    if (clGetPlatformIDs(NPLAT, platform_ids, &n_platforms) != CL_SUCCESS) {
+-        GGML_LOG_ERROR("ggml_opencl: platform IDs not available.\n");
++    cl_int platform_err = clGetPlatformIDs(NPLAT, platform_ids, &n_platforms);
++    if (platform_err != CL_SUCCESS) {
++        GGML_LOG_ERROR("ggml_opencl: clGetPlatformIDs failed: %d, platforms: %u\n", platform_err, n_platforms);
+         return found_devices;
+     }
+ 
+diff --git a/ggml/src/ggml-opencl/opencl-sphal.cpp b/ggml/src/ggml-opencl/opencl-sphal.cpp
+new file mode 100644
+index 0000000..a3dc94e
+--- /dev/null
++++ b/ggml/src/ggml-opencl/opencl-sphal.cpp
+@@ -0,0 +1,81 @@
++#define CL_TARGET_OPENCL_VERSION GGML_OPENCL_TARGET_VERSION
++#define CL_USE_DEPRECATED_OPENCL_1_2_APIS
++#define GGML_OPENCL_SPHAL_NO_REMAP
++
++#include "opencl-sphal.h"
++#include "ggml-impl.h"
++
++#include <android/dlext.h>
++#include <dlfcn.h>
++#include <mutex>
++
++ggml_opencl_sphal_dispatch ggml_opencl_sphal = {};
++
++static bool ggml_opencl_sphal_load() {
++    using get_namespace_fn = android_namespace_t * (*)(const char *);
++    using dlopen_ext_fn = void * (*)(const char *, int, const android_dlextinfo *);
++
++    auto get_ns = reinterpret_cast<get_namespace_fn>(dlsym(RTLD_DEFAULT, "__loader_android_get_exported_namespace"));
++    auto open_ext = reinterpret_cast<dlopen_ext_fn>(dlsym(RTLD_DEFAULT, "android_dlopen_ext"));
++    if (!get_ns || !open_ext) {
++        GGML_LOG_ERROR("ggml_opencl: Android namespace API unavailable\n");
++        return false;
++    }
++
++    android_namespace_t * sphal = get_ns("sphal");
++    if (!sphal) {
++        GGML_LOG_ERROR("ggml_opencl: Android sphal namespace unavailable\n");
++        return false;
++    }
++
++    android_dlextinfo ext = {};
++    ext.flags = ANDROID_DLEXT_USE_NAMESPACE;
++    ext.library_namespace = sphal;
++
++    // Keep both handles for process lifetime; dispatch pointers depend on them.
++    void * driver = open_ext("/vendor/lib64/libOpenCL_adreno.so", RTLD_NOW | RTLD_LOCAL, &ext);
++    if (!driver) {
++        GGML_LOG_ERROR("ggml_opencl: Adreno driver load failed: %s\n", dlerror());
++        return false;
++    }
++
++    using init_driver_fn = int (*)(void);
++    auto init_driver = reinterpret_cast<init_driver_fn>(dlsym(driver, "InitOpenCLDriver"));
++    if (!init_driver) {
++        GGML_LOG_ERROR("ggml_opencl: InitOpenCLDriver unavailable: %s\n", dlerror());
++        return false;
++    }
++
++    // Qualcomm initialization must precede loading its OpenCL ICD.
++    const int rc = init_driver();
++    GGML_LOG_INFO("ggml_opencl: sphal InitOpenCLDriver() = %d\n", rc);
++    if (rc != 0) {
++        GGML_LOG_ERROR("ggml_opencl: Adreno initialization failed: %d\n", rc);
++        return false;
++    }
++
++    void * loader = open_ext("/vendor/lib64/libOpenCL.so", RTLD_NOW | RTLD_LOCAL, &ext);
++    if (!loader) {
++        GGML_LOG_ERROR("ggml_opencl: Qualcomm OpenCL loader failed: %s\n", dlerror());
++        return false;
++    }
++
++    ggml_opencl_sphal_dispatch dispatch = {};
++#define GGML_OPENCL_SPHAL_RESOLVE(name) \
++    dispatch.name = reinterpret_cast<decltype(dispatch.name)>(dlsym(loader, #name)); \
++    if (!dispatch.name) { \
++        GGML_LOG_ERROR("ggml_opencl: Qualcomm OpenCL symbol %s unavailable: %s\n", #name, dlerror()); \
++        return false; \
++    }
++    GGML_OPENCL_SPHAL_FUNCTIONS(GGML_OPENCL_SPHAL_RESOLVE)
++#undef GGML_OPENCL_SPHAL_RESOLVE
++    ggml_opencl_sphal = dispatch;
++    return true;
++}
++
++bool ggml_opencl_sphal_init() {
++    static std::once_flag once;
++    static bool ready = false;
++    std::call_once(once, [] { ready = ggml_opencl_sphal_load(); });
++    return ready;
++}
+diff --git a/ggml/src/ggml-opencl/opencl-sphal.h b/ggml/src/ggml-opencl/opencl-sphal.h
+new file mode 100644
+index 0000000..9e82e7f
+--- /dev/null
++++ b/ggml/src/ggml-opencl/opencl-sphal.h
+@@ -0,0 +1,91 @@
++#pragma once
++
++#include <CL/cl.h>
++
++#define GGML_OPENCL_SPHAL_FUNCTIONS(X) \
++    X(clBuildProgram) \
++    X(clCreateBuffer) \
++    X(clCreateBufferWithProperties) \
++    X(clCreateCommandQueue) \
++    X(clCreateContext) \
++    X(clCreateImage) \
++    X(clCreateKernel) \
++    X(clCreateProgramWithBinary) \
++    X(clCreateProgramWithSource) \
++    X(clCreateSubBuffer) \
++    X(clEnqueueBarrierWithWaitList) \
++    X(clEnqueueCopyBuffer) \
++    X(clEnqueueFillBuffer) \
++    X(clEnqueueMapBuffer) \
++    X(clEnqueueMarkerWithWaitList) \
++    X(clEnqueueNDRangeKernel) \
++    X(clEnqueueReadBuffer) \
++    X(clEnqueueUnmapMemObject) \
++    X(clEnqueueWriteBuffer) \
++    X(clFinish) \
++    X(clFlush) \
++    X(clGetDeviceIDs) \
++    X(clGetDeviceInfo) \
++    X(clGetEventProfilingInfo) \
++    X(clGetKernelInfo) \
++    X(clGetKernelSubGroupInfo) \
++    X(clGetKernelWorkGroupInfo) \
++    X(clGetPlatformIDs) \
++    X(clGetPlatformInfo) \
++    X(clGetProgramBuildInfo) \
++    X(clGetProgramInfo) \
++    X(clReleaseEvent) \
++    X(clReleaseKernel) \
++    X(clReleaseMemObject) \
++    X(clReleaseProgram) \
++    X(clSetKernelArg) \
++    X(clWaitForEvents)
++
++struct ggml_opencl_sphal_dispatch {
++#define GGML_OPENCL_SPHAL_FIELD(name) decltype(&::name) name;
++    GGML_OPENCL_SPHAL_FUNCTIONS(GGML_OPENCL_SPHAL_FIELD)
++#undef GGML_OPENCL_SPHAL_FIELD
++};
++
++extern ggml_opencl_sphal_dispatch ggml_opencl_sphal;
++bool ggml_opencl_sphal_init();
++
++#ifndef GGML_OPENCL_SPHAL_NO_REMAP
++#define clBuildProgram ggml_opencl_sphal.clBuildProgram
++#define clCreateBuffer ggml_opencl_sphal.clCreateBuffer
++#define clCreateBufferWithProperties ggml_opencl_sphal.clCreateBufferWithProperties
++#define clCreateCommandQueue ggml_opencl_sphal.clCreateCommandQueue
++#define clCreateContext ggml_opencl_sphal.clCreateContext
++#define clCreateImage ggml_opencl_sphal.clCreateImage
++#define clCreateKernel ggml_opencl_sphal.clCreateKernel
++#define clCreateProgramWithBinary ggml_opencl_sphal.clCreateProgramWithBinary
++#define clCreateProgramWithSource ggml_opencl_sphal.clCreateProgramWithSource
++#define clCreateSubBuffer ggml_opencl_sphal.clCreateSubBuffer
++#define clEnqueueBarrierWithWaitList ggml_opencl_sphal.clEnqueueBarrierWithWaitList
++#define clEnqueueCopyBuffer ggml_opencl_sphal.clEnqueueCopyBuffer
++#define clEnqueueFillBuffer ggml_opencl_sphal.clEnqueueFillBuffer
++#define clEnqueueMapBuffer ggml_opencl_sphal.clEnqueueMapBuffer
++#define clEnqueueMarkerWithWaitList ggml_opencl_sphal.clEnqueueMarkerWithWaitList
++#define clEnqueueNDRangeKernel ggml_opencl_sphal.clEnqueueNDRangeKernel
++#define clEnqueueReadBuffer ggml_opencl_sphal.clEnqueueReadBuffer
++#define clEnqueueUnmapMemObject ggml_opencl_sphal.clEnqueueUnmapMemObject
++#define clEnqueueWriteBuffer ggml_opencl_sphal.clEnqueueWriteBuffer
++#define clFinish ggml_opencl_sphal.clFinish
++#define clFlush ggml_opencl_sphal.clFlush
++#define clGetDeviceIDs ggml_opencl_sphal.clGetDeviceIDs
++#define clGetDeviceInfo ggml_opencl_sphal.clGetDeviceInfo
++#define clGetEventProfilingInfo ggml_opencl_sphal.clGetEventProfilingInfo
++#define clGetKernelInfo ggml_opencl_sphal.clGetKernelInfo
++#define clGetKernelSubGroupInfo ggml_opencl_sphal.clGetKernelSubGroupInfo
++#define clGetKernelWorkGroupInfo ggml_opencl_sphal.clGetKernelWorkGroupInfo
++#define clGetPlatformIDs ggml_opencl_sphal.clGetPlatformIDs
++#define clGetPlatformInfo ggml_opencl_sphal.clGetPlatformInfo
++#define clGetProgramBuildInfo ggml_opencl_sphal.clGetProgramBuildInfo
++#define clGetProgramInfo ggml_opencl_sphal.clGetProgramInfo
++#define clReleaseEvent ggml_opencl_sphal.clReleaseEvent
++#define clReleaseKernel ggml_opencl_sphal.clReleaseKernel
++#define clReleaseMemObject ggml_opencl_sphal.clReleaseMemObject
++#define clReleaseProgram ggml_opencl_sphal.clReleaseProgram
++#define clSetKernelArg ggml_opencl_sphal.clSetKernelArg
++#define clWaitForEvents ggml_opencl_sphal.clWaitForEvents
++#endif

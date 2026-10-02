@@ -1,0 +1,11 @@
+.work/
+__pycache__/
+*.pyc
+*.gguf
+*.GGUF
+*.so
+*.a
+*.o
+*.log
+build*/
+.DS_Store

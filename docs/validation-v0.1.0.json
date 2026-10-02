@@ -1,0 +1,113 @@
+{
+  "project_version": "v0.1.0",
+  "tested_date": "2026-10-02",
+  "upstream_repository": "https://github.com/ggml-org/llama.cpp.git",
+  "upstream_commit": "e358d59178377be4c58ba567925e05faadbccb57",
+  "patch_version": 1,
+  "patch_sha256": "dc21507d755969fbfad95b6493a78ffdb30892a52a5d26cb1f10dc2a7af4a483",
+  "environment": {
+    "device": "Samsung Galaxy S24 Ultra SM-S928U",
+    "SoC": "QTI SM8650 / Snapdragon 8 Gen 3",
+    "GPU": "Adreno 750",
+    "Android": "16",
+    "Termux": "F-Droid 0.118.3",
+    "architecture": "aarch64",
+    "compiler": "Termux clang 21.1.8 (Android 24 target)"
+  },
+  "source": "Fresh direct upstream fetch, no Git alternates or experimental artifacts",
+  "packages": [
+    "git",
+    "clang",
+    "cmake",
+    "ninja",
+    "python",
+    "opencl-headers",
+    "openssl"
+  ],
+  "package_installation_note": "All required packages already present on validation device; missing-package invocation tested using fixtures. OS/package environment was not reset.",
+  "device": {
+    "driver_initialized": true,
+    "device": "QUALCOMM Adreno(TM) 750 (5542 MiB, 4518 MiB free)",
+    "tested_device_family": true,
+    "model_offload_tested": false
+  },
+  "inference_32": {
+    "model_offload_tested": true,
+    "offloaded_layers": 29,
+    "total_layers": 29,
+    "OpenCL_weights_MiB": 739.03,
+    "generation_evaluations": 31,
+    "process_exit_code": 0
+  },
+  "model": {
+    "name": "Qwen2.5-Coder-1.5B-Instruct Q4_K_M",
+    "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046"
+  },
+  "matrix_tests": {
+    "operation": "MUL_MAT Q4_K/Q6_K, m=16",
+    "passed": 46,
+    "total": 46
+  },
+  "launcher_comparison": {
+    "gpu": 0,
+    "cpu": 0,
+    "32_token_stdout_identical": true
+  },
+  "runtime_project_libraries": [
+    "libggml-base.so.0.25.3",
+    "libggml-cpu.so.0.25.3",
+    "libggml-opencl.so.0.25.3",
+    "libggml.so.0.25.3",
+    "libllama-common.so.0.5.0",
+    "libllama-completion-impl.so",
+    "libllama.so.0.5.0"
+  ],
+  "original_llama_regression": {
+    "metadata_entries": 109483,
+    "metadata_identical": true,
+    "git_status_identical": true,
+    "HEAD_identical": true
+  },
+  "benchmark_parameters": {
+    "threads": 4,
+    "prompt_tokens": 128,
+    "generation_tokens": 64,
+    "repetitions": 3,
+    "batch": 128,
+    "ubatch": 128,
+    "flash_attention": "off",
+    "KV": "f16",
+    "profiling": "off",
+    "cpu_gpu_sequential": true
+  },
+  "benchmark": [
+    {
+      "test": "pp128",
+      "cpu_tok_s": 119.754622,
+      "cpu_stddev": 7.704255,
+      "OpenCL_tok_s": 83.895664,
+      "OpenCL_stddev": 0.52108,
+      "OpenCL_vs_CPU_percent": -29.943694365299745
+    },
+    {
+      "test": "tg64",
+      "cpu_tok_s": 23.919027,
+      "cpu_stddev": 2.679041,
+      "OpenCL_tok_s": 8.624056,
+      "OpenCL_stddev": 0.70541,
+      "OpenCL_vs_CPU_percent": -63.94478755344019
+    }
+  ],
+  "installer_rerun_exit_code": 0,
+  "installer_rebuild_exit_code": 0,
+  "clean_room_install_exit_code": 0,
+  "inference_128": {
+    "model_offload_tested": true,
+    "offloaded_layers": 29,
+    "total_layers": 29,
+    "OpenCL_weights_MiB": 739.03,
+    "generation_evaluations": 127,
+    "process_exit_code": 0
+  },
+  "script_regression_tests_passed": 10
+}
