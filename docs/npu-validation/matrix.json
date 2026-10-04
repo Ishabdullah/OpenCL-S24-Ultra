@@ -1,0 +1,6 @@
+{
+  "native_NPU_matrix_execution_confirmed": true,
+  "passed": 8,
+  "supported": 8,
+  "model_offload_tested": false
+}

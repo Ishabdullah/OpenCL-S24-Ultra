@@ -1,0 +1,5 @@
+{
+  "NPU_detected": true,
+  "device": "Hexagon (0 MiB, 0 MiB free)",
+  "model_offload_tested": false
+}

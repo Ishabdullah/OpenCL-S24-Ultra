@@ -1,0 +1,18 @@
+{
+  "npu-launcher": {
+    "exit_code": 0,
+    "requested_tokens": 8,
+    "offload_positive": true,
+    "CPU_only_offload": false,
+    "output": "[OpenCL-S24-Ultra] Using the project-native CPU/Hexagon build. Requested default offload: HTP0, 99 layers.\n[OpenCL-S24-Ultra] Check HTP0 model/KV buffers and positive offloaded layers in llama logs; not every operation is NPU-executed.\ndef add(a, b):\n    return a + b\n\ndef\n\n",
+    "profiling_mode_log_available": false
+  },
+  "cpu-fallback": {
+    "exit_code": 0,
+    "requested_tokens": 8,
+    "offload_positive": false,
+    "CPU_only_offload": true,
+    "output": "[OpenCL-S24-Ultra] Using the project-native CPU/Hexagon build. Requested default offload: HTP0, 99 layers.\n[OpenCL-S24-Ultra] Check HTP0 model/KV buffers and positive offloaded layers in llama logs; not every operation is NPU-executed.\ndef add(a, b):\n    return a + b\n\ndef\n\n",
+    "profiling_mode_log_available": false
+  }
+}

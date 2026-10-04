@@ -9,3 +9,5 @@ __pycache__/
 *.log
 build*/
 .DS_Store
+
+.work-npu/

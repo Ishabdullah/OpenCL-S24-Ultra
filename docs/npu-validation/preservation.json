@@ -1,0 +1,29 @@
+{
+  "utc": "2026-10-04T02:52:29.708266+00:00",
+  "known_good_hash_checks": {
+    "generic-source/ggml/src/ggml-opencl/CMakeLists.txt": true,
+    "generic-source/ggml/src/ggml-opencl/cl-program-cache.cpp": true,
+    "generic-source/ggml/src/ggml-opencl/ggml-opencl.cpp": true,
+    "generic-source/ggml/src/ggml-opencl/opencl-sphal.cpp": true,
+    "generic-source/ggml/src/ggml-opencl/opencl-sphal.h": true,
+    "generic-bin/libggml-base.so.0.25.3": true,
+    "generic-bin/libggml-opencl.so.0.25.3": true,
+    "generic-bin/llama-completion": true,
+    "generic-bin/test-backend-ops": true,
+    "generic-bin/llama-bench": true,
+    "generic-bin/libggml-cpu.so.0.25.3": true,
+    "generic-bin/libllama-completion-impl.so": true,
+    "generic-bin/libllama.so.0.5.0": true,
+    "generic-bin/libggml.so.0.25.3": true,
+    "generic-bin/libllama-bench-impl.so": true,
+    "generic-bin/libllama-common.so.0.5.0": true,
+    "npu/libggml-hexagon.so": true,
+    "npu/libggml-htp-v75.so": true
+  },
+  "all_baseline_hashes_match": true,
+  "original_git_head": "91d2fc387529940230555abd297a8b5e99737d3f",
+  "original_head_unchanged": true,
+  "original_status_unchanged": true,
+  "original_status": " M ggml/src/ggml-vulkan/CMakeLists.txt\n",
+  "scope": "Read-only git state and all preserved OpenCL source/binary and NPU binary hashes; no new full metadata inventory."
+}

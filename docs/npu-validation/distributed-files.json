@@ -1,0 +1,66 @@
+{
+  "install-npu.sh": {
+    "sha256": "1b89a494ef8b2a553ace42ac3a68621ed4446e8457e45986bb9ab1abd14d9f5c",
+    "matches_independent_test": true
+  },
+  "uninstall-npu.sh": {
+    "sha256": "f805bdfa7e67ab6271a8ce9a7cf0000e38b07845a6f8fd19475bc14a849f60ac",
+    "matches_independent_test": true
+  },
+  "scripts/npu-common.sh": {
+    "sha256": "2eda865a3149a794892f9e1e7a4a9ff2c703960056671f02c9f5a81ec6049e04",
+    "matches_independent_test": true
+  },
+  "scripts/check-npu.sh": {
+    "sha256": "671ac2b5ccccb4150b20ebecfa8102ce05be4bf879b40ec50fc2f0c20953b69a",
+    "matches_independent_test": true
+  },
+  "scripts/build-npu.sh": {
+    "sha256": "9dc536799dc875afa8481705f5648e85a34457051fac0dd419490df8c07b35da",
+    "matches_independent_test": true
+  },
+  "scripts/verify-npu.sh": {
+    "sha256": "510faa8a025ed0f9e76042c002c8ad05fda4205056b43198cd386ef527855f95",
+    "matches_independent_test": true
+  },
+  "scripts/run-npu.sh": {
+    "sha256": "f721ea3275ef229d2b5debd864872516121b842d76f81519250cf22e97c1cfb7",
+    "matches_independent_test": true
+  },
+  "scripts/npu/sdk-tool.py": {
+    "sha256": "c787911de53a98d6e73f32d1c48c52cf9abdc865169aade723476ed7624e6fbf",
+    "matches_independent_test": true
+  },
+  "scripts/npu/prepare-toolchain.py": {
+    "sha256": "8de3685935463ddabb4494ef77b73a40a0f5d1f6105f0ae56e6dd966201c491c",
+    "matches_independent_test": true
+  },
+  "scripts/npu/guarded-build.py": {
+    "sha256": "a759131c15c556dcf67653d400f24f44a2e49eb276cc746e7c443ecbb17e48ec",
+    "matches_independent_test": true
+  },
+  "scripts/npu/validate.py": {
+    "sha256": "ee82b7ca1b1e349ca2164191d769d1af156a5a261873530652a3555120af78c3",
+    "matches_independent_test": true
+  },
+  "scripts/npu/download-test-model.py": {
+    "sha256": "18e2d2bc2b3b70b9d1082bb54aa8e50fbd466dd4835fb56e12c1a649ac3ac153",
+    "matches_independent_test": true
+  },
+  "examples/npu-capabilities.c": {
+    "sha256": "4748518e6275b6cc0316931bd147815dfdb3508369401c666a680f9468d098cb",
+    "matches_independent_test": true
+  },
+  "examples/npu-matrix-cases.txt": {
+    "sha256": "3b4406ab5744c23b465d23d5db70e4e77fa247458139b969d645871234ac77a4",
+    "matches_independent_test": true
+  },
+  "npu-upstream.json": {
+    "sha256": "c89257739903cedd2a38ee585fe123c00b7447cead78bc3d1db64516709b6059",
+    "matches_independent_test": true
+  },
+  "patches/llama.cpp-hexagon-sphal.patch": {
+    "sha256": "cf9deeeb944c116cf7395ae93033ee8a5e4d4cc504417c860c0681bc4103f229",
+    "matches_independent_test": true
+  }
+}

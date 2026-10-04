@@ -1,0 +1,8 @@
+ggml-hex: Loading driver libcdsprpc.so
+ggml-hex: FASTRPC_GET_DOMAINS query failed (0x6c), using static CDSP domains
+ggml-hex: Profiling mode 0 : pmu-evt [ 0x3,0x111,0x100,0x105,0x240,0x256,0x7d,0x8c ]
+ggml-hex: Hexagon backend (experimental) : allocating new registry : ndev 1
+ggml-hex: Hexagon Arch version v75, DMA64 disabled
+ggml-hex: device 0: HTP0 (phys=0, virt=0, domain=cdsp:3)
+Available devices:
+  HTP0: Hexagon (0 MiB, 0 MiB free)

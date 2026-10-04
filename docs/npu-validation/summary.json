@@ -1,0 +1,37 @@
+{
+  "utc": "2026-10-04T03:24:52.385278+00:00",
+  "installer_version": "npu-v0.1.0",
+  "upstream_commit": "e358d59178377be4c58ba567925e05faadbccb57",
+  "initial_install_exit_code": 0,
+  "DSP_translation_units": 30,
+  "native_artifacts_verified": 12,
+  "model": {
+    "path": "/data/data/com.termux/files/home/models/qwen2.5-coder-1.5b/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "repository": "Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF",
+    "revision": "f86cb2c1fa58255f8052cc32aeede1b7482d4361",
+    "filename": "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+    "sha256": "cc324af070c2ecbfd324a30884d2f951a7ff756aba85cb811a6ec436933bb046",
+    "size": 1117320768,
+    "license": "Apache-2.0",
+    "model_card": "https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF"
+  },
+  "inference": {
+    "model_offload_tested": true,
+    "backend": "HTP0",
+    "offloaded_layers": 29,
+    "total_layers": 29,
+    "HTP_weights_MiB": 1023.48,
+    "generation_evaluations": 31,
+    "process_exit_code": 0
+  },
+  "requested_generation_tokens": 32,
+  "log_reported_allocations_MiB": {
+    "HTP0_weights": 1023.48,
+    "CPU_weights": 125.19,
+    "HTP0_KV": 14.0,
+    "HTP0_compute": 74.94,
+    "CPU_compute": 2.0,
+    "CPU_output": 0.58
+  },
+  "scope": "Fresh source/SDK extraction/runtime/build on existing Termux; checksum-pinned SDK archive/GGUF and installed Termux packages reused. No research LLM artifacts reused. Correctness smoke test, not a performance benchmark."
+}

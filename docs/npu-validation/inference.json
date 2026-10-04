@@ -1,0 +1,9 @@
+{
+  "model_offload_tested": true,
+  "backend": "HTP0",
+  "offloaded_layers": 29,
+  "total_layers": 29,
+  "HTP_weights_MiB": 1023.48,
+  "generation_evaluations": 31,
+  "process_exit_code": 0
+}

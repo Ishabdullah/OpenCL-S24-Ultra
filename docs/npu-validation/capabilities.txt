@@ -1,0 +1,28 @@
+NAMESPACE: FOUND
+DRIVER: LOADED mode=sphal
+SYMBOL: rpcmem_alloc FOUND
+SYMBOL: rpcmem_free FOUND
+SYMBOL: rpcmem_to_fd FOUND
+SYMBOL: fastrpc_mmap FOUND
+SYMBOL: fastrpc_munmap FOUND
+SYMBOL: dspqueue_create FOUND
+SYMBOL: dspqueue_close FOUND
+SYMBOL: dspqueue_export FOUND
+SYMBOL: dspqueue_write FOUND
+SYMBOL: dspqueue_read FOUND
+SYMBOL: dspqueue_read_noblock FOUND
+SYMBOL: remote_handle64_open FOUND
+SYMBOL: remote_handle64_invoke FOUND
+SYMBOL: remote_handle_control FOUND
+SYMBOL: remote_handle64_control FOUND
+SYMBOL: remote_session_control FOUND
+SYMBOL: remote_handle64_close FOUND
+CAPABILITY: DOMAIN_SUPPORT rc=0 rc_hex=0x0 value=0 value_hex=0x0 errno=2
+CAPABILITY: UNSIGNED_PD_SUPPORT rc=0 rc_hex=0x0 value=1 value_hex=0x1 errno=0
+CAPABILITY: HVX_SUPPORT_64B rc=0 rc_hex=0x0 value=0 value_hex=0x0 errno=0
+CAPABILITY: HVX_SUPPORT_128B rc=0 rc_hex=0x0 value=4 value_hex=0x4 errno=0
+CAPABILITY: VTCM_PAGE rc=0 rc_hex=0x0 value=8388608 value_hex=0x800000 errno=0
+CAPABILITY: VTCM_COUNT rc=0 rc_hex=0x0 value=1 value_hex=0x1 errno=0
+CAPABILITY: ARCH_VER rc=0 rc_hex=0x0 value=35957 value_hex=0x8c75 errno=0
+CAPABILITY: HMX_SUPPORT_DEPTH rc=0 rc_hex=0x0 value=0 value_hex=0x0 errno=0
+CAPABILITY: HMX_SUPPORT_SPATIAL rc=0 rc_hex=0x0 value=0 value_hex=0x0 errno=0

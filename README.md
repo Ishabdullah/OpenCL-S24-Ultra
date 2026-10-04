@@ -1,8 +1,8 @@
 # OpenCL-S24-Ultra
 
-**v0.1.0: reproducible proof of real Qualcomm Adreno GPU inference in Termux.**
+**Source-built llama.cpp inference on the S24 Ultra: CPU, Adreno OpenCL GPU, and a separate Hexagon v75 NPU installer.**
 
-Builds a pinned llama.cpp revision with an internal Android `sphal` OpenCL loader. Tested on **Samsung Galaxy S24 Ultra, Snapdragon 8 Gen 3 / Adreno 750, Android 16, F-Droid Termux 0.118.3, aarch64**.
+Builds a pinned llama.cpp revision with Android `sphal` vendor-runtime loading. `install.sh` builds CPU + GPU; `install-npu.sh` separately builds CPU + NPU. Tested on **Samsung Galaxy S24 Ultra, Snapdragon 8 Gen 3 / Adreno 750, Android 16, F-Droid Termux 0.118.3, aarch64**.
 
 **The current generic OpenCL configuration is slower than CPU on the tested phone.** This project proves working GPU computation; it is not optimized production acceleration.
 
@@ -17,18 +17,36 @@ OpenCL was 32.8% slower for prompt processing and 66.9% slower for generation. M
 
 The [full CPU/OpenCL/NPU/hybrid report](OPENCL_PERFORMANCE_ANALYSIS.md) and [machine-readable evidence](reports/2026-10-03/) are now available. The investigation is **paused at the owner's request**; its final characterization is incomplete.
 
-Experimental native Hexagon NPU tests show repeated prompt-processing gains of 7.14x for the tested 1.5B model and 7.83x for Qwen3-4B against matched common-setting CPU tests. NPU generation averaged 32.97 and 12.94 tok/s respectively; the best practical CPU comparison remains unfinished. Long-prompt GPU/hybrid results are candidates, and no sustained thermal winner is established. The existing installer still builds the proven generic OpenCL baseline; experimental NPU, specialized-kernel and handoff patches are research snapshots, not installer features.
+Experimental native Hexagon NPU tests show repeated prompt-processing gains of 7.14x for the tested 1.5B model and 7.83x for Qwen3-4B against matched common-setting CPU tests. NPU generation averaged 32.97 and 12.94 tok/s respectively; the best practical CPU comparison remains unfinished. Long-prompt GPU/hybrid results are candidates, and no sustained thermal winner is established. The GPU installer preserves the proven generic OpenCL baseline. The separate NPU installer packages the working native Hexagon implementation; experimental specialized GPU and handoff patches remain research snapshots. The historical report predates NPU packaging; see the [current NPU guide](docs/NPU_INSTALL.md).
 
-## Requirements and compatibility
+## NPU installation: fresh Termux to model generation
+
+For the separate CPU + Hexagon v75 NPU build, use:
+
+```sh
+pkg update
+pkg install git
+git clone https://github.com/Ishabdullah/OpenCL-S24-Ultra.git
+cd OpenCL-S24-Ultra
+./install-npu.sh --download-test-model
+```
+
+This installs missing Termux dependencies, prepares checksum-pinned SDK/compiler tools in project storage, patches pinned llama.cpp, source-builds native ARM64/Hexagon binaries, executes numerical DSP tests, and generates 32 tokens from the pinned official Qwen 1.5B GGUF. QEMU emulates compiler tools only; inference is native. No root or system/vendor changes are required. Allow at least 8 GiB free plus model space and tens of minutes for the build.
+
+Use an existing model instead with `./install-npu.sh --model /path/to/model.gguf`, then launch it through `./scripts/run-npu.sh /path/to/model.gguf`. A model-free install verifies DSP matrices but does not test LLM generation. The optional model download is explicit; no model/SDK/compiler/vendor binary is hosted in this repository.
+
+**Start here: [NPU installation, operation, licensing and troubleshooting](docs/NPU_INSTALL.md).** A fresh source/build reproduction passed eight numerical DSP tests and generated text with all 29 Qwen 1.5B layers offloaded: [NPU validation](docs/NPU_VALIDATION.md). NPU inference is experimental: no universal performance/thermal benefit or arbitrary model/device compatibility is claimed. The GPU and NPU installers coexist in separate directories and do not yet provide one validated CPU/GPU/NPU executable.
+
+## GPU requirements and compatibility
 
 - Ordinary, non-root Termux installed from [F-Droid](https://f-droid.org/packages/com.termux/).
 - Android aarch64 with readable Qualcomm libraries: `libOpenCL.so`, `libOpenCL_adreno.so`, `libCB.so`, `libgsl.so` in `/vendor/lib64`.
 - Network access for Termux packages and pinned upstream source; allow several GB for source/build and additional space for your model. Keep the project in Termux private storage, not shared Android storage.
-- Your own GGUF model. No model or proprietary Qualcomm library is distributed or downloaded by this installer.
+- Your own GGUF model for the GPU installer. The separate NPU installer offers an explicit pinned test-model download. No GGUF or proprietary Qualcomm library is distributed in this repository.
 
 **Confirmed:** the S24 Ultra configuration above. **Detected but unverified:** other phones whose vendor stack initializes and exposes an Adreno device. **Potentially compatible:** other Snapdragon/Adreno devices with the required namespace APIs and stack; file presence alone is not proof of compatibility.
 
-## Install
+## GPU installation
 
 In a fresh F-Droid Termux terminal:
 
@@ -122,7 +140,9 @@ Shared Termux packages and models outside `.work/` are retained. Uninstall prote
 
 ## Technical documentation and credits
 
-- [How it works](docs/HOW_IT_WORKS.md)
+- [NPU installation and operation](docs/NPU_INSTALL.md)
+- [NPU installer clean-room validation](docs/NPU_VALIDATION.md)
+- [How GPU loading works](docs/HOW_IT_WORKS.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Benchmarks](docs/BENCHMARKS.md)
 - [Technical notes and build pin](docs/TECHNICAL_NOTES.md)

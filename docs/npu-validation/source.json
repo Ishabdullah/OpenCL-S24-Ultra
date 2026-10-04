@@ -1,0 +1,10 @@
+{
+  "pinned_source_verified": true,
+  "commit": "e358d59178377be4c58ba567925e05faadbccb57",
+  "patched_files": [
+    "ggml/src/ggml-hexagon/CMakeLists.txt",
+    "ggml/src/ggml-hexagon/htp-drv.cpp",
+    "ggml/src/ggml-hexagon/htp/CMakeLists.txt",
+    "ggml/src/ggml-hexagon/htp/cmake-toolchain.cmake"
+  ]
+}

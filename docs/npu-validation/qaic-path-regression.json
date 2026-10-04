@@ -1,0 +1,42 @@
+{
+  "relative_input_before_fix_timeout_seconds": [
+    15,
+    20
+  ],
+  "absolute_input_control_seconds": [
+    3.1,
+    3.0
+  ],
+  "fixed_wrapper_relative_input": [
+    {
+      "repetition": 1,
+      "exit_code": 0,
+      "seconds": 3.3943798940163106,
+      "generated": [
+        "htp_iface.h",
+        "htp_iface_skel.c",
+        "htp_iface_stub.c"
+      ]
+    },
+    {
+      "repetition": 2,
+      "exit_code": 0,
+      "seconds": 2.4706651029991917,
+      "generated": [
+        "htp_iface.h",
+        "htp_iface_skel.c",
+        "htp_iface_stub.c"
+      ]
+    },
+    {
+      "repetition": 3,
+      "exit_code": 0,
+      "seconds": 3.445826456998475,
+      "generated": [
+        "htp_iface.h",
+        "htp_iface_skel.c",
+        "htp_iface_stub.c"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "runtime_llama_paths": [
+    "/data/data/com.termux/files/home/npu-installer-cleanroom-20261004/.work-npu/build/bin/libggml-base.so.0.25.3",
+    "/data/data/com.termux/files/home/npu-installer-cleanroom-20261004/.work-npu/build/bin/libggml-cpu.so.0.25.3",
+    "/data/data/com.termux/files/home/npu-installer-cleanroom-20261004/.work-npu/build/bin/libggml-hexagon.so.0.25.3",
+    "/data/data/com.termux/files/home/npu-installer-cleanroom-20261004/.work-npu/build/bin/libggml.so.0.25.3",
+    "/data/data/com.termux/files/home/npu-installer-cleanroom-20261004/.work-npu/build/bin/libllama-common.so.0.5.0",
+    "/data/data/com.termux/files/home/npu-installer-cleanroom-20261004/.work-npu/build/bin/libllama-completion-impl.so",
+    "/data/data/com.termux/files/home/npu-installer-cleanroom-20261004/.work-npu/build/bin/libllama.so.0.5.0"
+  ],
+  "all_llama_libraries_from_new_build": true,
+  "runtime_LD_LIBRARY_PATH": "/data/data/com.termux/files/home/npu-installer-cleanroom-20261004/.work-npu/build/bin",
+  "runtime_ADSP_LIBRARY_PATH": "/data/data/com.termux/files/home/npu-installer-cleanroom-20261004/.work-npu/build/ggml/src/ggml-hexagon",
+  "profiling": "0",
+  "backend_override_cleared": true,
+  "preload_cleared": true,
+  "exit_code": 0
+}

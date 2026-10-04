@@ -1,0 +1,163 @@
+{
+  "ELF_verified": true,
+  "native_ARM64_host": true,
+  "native_Hexagon_v75_DSP": true,
+  "no_startup_vendor_or_OpenCL_dependency": true,
+  "artifacts": {
+    "libggml-base.so.0.25.3": {
+      "DT_NEEDED": [
+        "libm.so",
+        "libdl.so",
+        "libc++_shared.so",
+        "libc.so"
+      ],
+      "sha256": "c9a5b53cee851a412cb6c6fb078ddc04efdb570c52a781f54988ffc18738b45f"
+    },
+    "libggml-cpu.so.0.25.3": {
+      "DT_NEEDED": [
+        "libggml-base.so.0",
+        "libc++_shared.so",
+        "libdl.so",
+        "libm.so",
+        "libc.so"
+      ],
+      "sha256": "1b8f084450b6e1a2937303a4b9a0500b1b258d76748d1660091cdedf9028c355"
+    },
+    "libggml-hexagon.so.0.25.3": {
+      "DT_NEEDED": [
+        "liblog.so",
+        "libdl.so",
+        "libggml-base.so.0",
+        "libc++_shared.so",
+        "libm.so",
+        "libc.so"
+      ],
+      "sha256": "bfb83e02d6cc45e7f16d0f051210f650f013de8dfac95125ae205e463606e1fe"
+    },
+    "libggml.so.0.25.3": {
+      "DT_NEEDED": [
+        "libggml-cpu.so.0",
+        "libggml-hexagon.so.0",
+        "libggml-base.so.0",
+        "libc++_shared.so",
+        "libdl.so",
+        "libm.so",
+        "libc.so"
+      ],
+      "sha256": "74c6c4fd229b02a22b7038d27a03a5750b54cf449082c3f35def67b05be5e78a"
+    },
+    "libllama-bench-impl.so": {
+      "DT_NEEDED": [
+        "libllama-common.so.0",
+        "libllama.so.0",
+        "libc.so",
+        "libggml.so.0",
+        "libggml-cpu.so.0",
+        "libggml-hexagon.so.0",
+        "libggml-base.so.0",
+        "libc++_shared.so",
+        "libdl.so",
+        "libm.so"
+      ],
+      "sha256": "e2ae920edb6b291d0f3731cd587b24504f8801c3bbaf3af16c019e6061ef83d4"
+    },
+    "libllama-common.so.0.5.0": {
+      "DT_NEEDED": [
+        "libllama.so.0",
+        "libssl.so.3",
+        "libcrypto.so.3",
+        "libggml.so.0",
+        "libggml-cpu.so.0",
+        "libggml-hexagon.so.0",
+        "libggml-base.so.0",
+        "libc.so",
+        "libc++_shared.so",
+        "libdl.so",
+        "libm.so"
+      ],
+      "sha256": "29f1241789d161b4c0ec9fefef598073bc77d5f23ff892a8495c2b0e72d33c93"
+    },
+    "libllama-completion-impl.so": {
+      "DT_NEEDED": [
+        "libllama-common.so.0",
+        "libllama.so.0",
+        "libc.so",
+        "libggml.so.0",
+        "libggml-cpu.so.0",
+        "libggml-hexagon.so.0",
+        "libggml-base.so.0",
+        "libc++_shared.so",
+        "libdl.so",
+        "libm.so"
+      ],
+      "sha256": "37cf9153c1d86016a59d900e3f65b0070131883dee1a2132e50d4a62032ad9bb"
+    },
+    "libllama.so.0.5.0": {
+      "DT_NEEDED": [
+        "libggml.so.0",
+        "libggml-cpu.so.0",
+        "libggml-hexagon.so.0",
+        "libggml-base.so.0",
+        "libc++_shared.so",
+        "libdl.so",
+        "libm.so",
+        "libc.so"
+      ],
+      "sha256": "e3501a12d315bf109aefd731daee1236bb919d42fb3cce94ef35dae515a91c4e"
+    },
+    "llama-bench": {
+      "DT_NEEDED": [
+        "libllama-bench-impl.so",
+        "libllama-common.so.0",
+        "libllama.so.0",
+        "libggml.so.0",
+        "libggml-cpu.so.0",
+        "libggml-hexagon.so.0",
+        "libggml-base.so.0",
+        "libc.so",
+        "libc++_shared.so",
+        "libdl.so",
+        "libm.so"
+      ],
+      "sha256": "8eea512400fc27a6e2afd1438b4e9171954be1c87040752954cd575a1b20ef71"
+    },
+    "llama-completion": {
+      "DT_NEEDED": [
+        "libllama-completion-impl.so",
+        "libllama-common.so.0",
+        "libllama.so.0",
+        "libggml.so.0",
+        "libggml-cpu.so.0",
+        "libggml-hexagon.so.0",
+        "libggml-base.so.0",
+        "libc.so",
+        "libc++_shared.so",
+        "libdl.so",
+        "libm.so"
+      ],
+      "sha256": "f0756598b997589e4487537eeb28cac0de5c353982eab351aade7078273c36a0"
+    },
+    "test-backend-ops": {
+      "DT_NEEDED": [
+        "libllama-common.so.0",
+        "libllama.so.0",
+        "libggml.so.0",
+        "libggml-cpu.so.0",
+        "libggml-hexagon.so.0",
+        "libggml-base.so.0",
+        "libc.so",
+        "libc++_shared.so",
+        "libdl.so",
+        "libm.so"
+      ],
+      "sha256": "bf98717742875b8b38d808a769f52286f159bc8f88b6fa6b2fb8eb9adec4d0c5"
+    },
+    "libggml-htp-v75.so": {
+      "DT_NEEDED": [
+        "libc.so",
+        "libgcc.so"
+      ],
+      "sha256": "99870f203d43d400033d7bed3adac4324ae4e8bf025a0d7f2616c70b58971fb5"
+    }
+  }
+}

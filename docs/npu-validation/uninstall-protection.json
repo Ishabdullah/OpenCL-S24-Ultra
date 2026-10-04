@@ -1,0 +1,5 @@
+{
+  "user_GGUF_removal_refused": true,
+  "exit_code": 1,
+  "diagnostic": "Move user-added/modified GGUFs out of .work-npu first: /data/data/com.termux/files/home/npu-installer-cleanroom-20261004/.work-npu/uninstall-protection-check.gguf"
+}
