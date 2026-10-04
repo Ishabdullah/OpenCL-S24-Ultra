@@ -1,0 +1,5 @@
+{
+  "timestamp_utc": "2026-10-04T00:20:35.163219+00:00",
+  "reason": "User requested full report, commit/push, then wait for explicit resume",
+  "resume_requires_explicit_user_instruction": true
+}

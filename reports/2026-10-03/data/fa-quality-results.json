@@ -1,0 +1,28 @@
+[
+  {
+    "model": "qwen2.5-coder-1.5b",
+    "attention": "on",
+    "valid": true,
+    "validation": {
+      "steps": 32,
+      "top1_agreements": 32,
+      "logit_RMSE": 0.0685435,
+      "max_abs_logit_error": 0.45895237,
+      "mean_KL": 1.279e-05,
+      "all_logits_finite": true
+    }
+  },
+  {
+    "model": "qwen3-4b-instruct",
+    "attention": "on",
+    "valid": true,
+    "validation": {
+      "steps": 32,
+      "top1_agreements": 32,
+      "logit_RMSE": 0.45826948,
+      "max_abs_logit_error": 10.42526603,
+      "mean_KL": 1.168e-05,
+      "all_logits_finite": true
+    }
+  }
+]

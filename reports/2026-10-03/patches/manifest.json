@@ -1,0 +1,34 @@
+[
+  {
+    "patch": "hexagon-sphal-v75.patch",
+    "base": "7ba662d4cae38e0b2474e9bb0024bb4b6b1fc3ad",
+    "comparison_target": "53d539ccc327858498c055909d19468954b90531",
+    "sha256": "cf9deeeb944c116cf7395ae93033ee8a5e4d4cc504417c860c0681bc4103f229",
+    "bytes": 6592,
+    "apply_check_passed": true
+  },
+  {
+    "patch": "npu-prefill-cpu-decode.patch",
+    "base": "53d539ccc327858498c055909d19468954b90531",
+    "comparison_target": "checked experimental working tree",
+    "sha256": "b988e9ac8d2c6ded89e00cd83ec3bc7c19125a53fba7a2037af16c993ae6389f",
+    "bytes": 17334,
+    "apply_check_passed": true
+  },
+  {
+    "patch": "opencl-prefill-cpu-decode.patch",
+    "base": "7ba662d4cae38e0b2474e9bb0024bb4b6b1fc3ad",
+    "comparison_target": "checked experimental working tree",
+    "sha256": "b988e9ac8d2c6ded89e00cd83ec3bc7c19125a53fba7a2037af16c993ae6389f",
+    "bytes": 17334,
+    "apply_check_passed": true
+  },
+  {
+    "patch": "adreno-isolated-instrumentation-and-narrow-launch.patch",
+    "base": "7ba662d4cae38e0b2474e9bb0024bb4b6b1fc3ad",
+    "comparison_target": "checked experimental working tree",
+    "sha256": "8c89bb73b5c397de3f729e85797e78c530d394028ef1295626781ad2627edef3",
+    "bytes": 19482,
+    "apply_check_passed": true
+  }
+]

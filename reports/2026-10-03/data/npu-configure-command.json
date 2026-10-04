@@ -1,0 +1,28 @@
+{
+  "utc": "2026-10-03T21:13:45.821729+00:00",
+  "command": [
+    "cmake",
+    "-S",
+    "~/llama-opencl-build/performance-investigation/source-npu",
+    "-B",
+    "~/llama-opencl-build/performance-investigation/build-npu",
+    "-G",
+    "Ninja",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DCMAKE_C_COMPILER=$PREFIX/bin/cc",
+    "-DCMAKE_CXX_COMPILER=$PREFIX/bin/c++",
+    "-DGGML_HEXAGON=ON",
+    "-DGGML_HEXAGON_USE_SPHAL=ON",
+    "-DGGML_HEXAGON_ARCHITECTURES=v75",
+    "-DHEXAGON_SDK_ROOT=~/llama-opencl-build/performance-investigation/npu-investigation/sdk/6.6.0.0",
+    "-DHEXAGON_TOOLS_ROOT=~/llama-opencl-build/performance-investigation/npu-investigation/sdk/6.6.0.0/tools/HEXAGON_Tools/19.0.07",
+    "-DGGML_HEXAGON_QAIC_DIR=~/llama-opencl-build/performance-investigation/npu-investigation/emulation",
+    "-DGGML_HEXAGON_EMULATION_DIR=~/llama-opencl-build/performance-investigation/npu-investigation/emulation",
+    "-DGGML_OPENCL=OFF",
+    "-DGGML_BACKEND_DL=OFF",
+    "-DLLAMA_BUILD_APP=OFF",
+    "-DLLAMA_BUILD_SERVER=OFF",
+    "-DLLAMA_BUILD_TESTS=ON",
+    "-DPREBUILT_LIB_DIR=android_aarch64"
+  ]
+}

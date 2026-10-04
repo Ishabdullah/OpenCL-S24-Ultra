@@ -1,0 +1,30 @@
+{
+  "UTC": "2026-10-04T00:34:19.171660+00:00",
+  "source_and_artifact_hash_checks": {
+    "source/ggml/src/ggml-opencl/CMakeLists.txt": true,
+    "source/ggml/src/ggml-opencl/cl-program-cache.cpp": true,
+    "source/ggml/src/ggml-opencl/ggml-opencl.cpp": true,
+    "source/ggml/src/ggml-opencl/opencl-sphal.cpp": true,
+    "source/ggml/src/ggml-opencl/opencl-sphal.h": true,
+    "generic/libggml-base.so.0.25.3": true,
+    "generic/libggml-opencl.so.0.25.3": true,
+    "generic/llama-completion": true,
+    "generic/test-backend-ops": true,
+    "generic/llama-bench": true,
+    "generic/libggml-cpu.so.0.25.3": true,
+    "generic/libllama-completion-impl.so": true,
+    "generic/libllama.so.0.5.0": true,
+    "generic/libggml.so.0.25.3": true,
+    "generic/libllama-bench-impl.so": true,
+    "generic/libllama-common.so.0.5.0": true,
+    "npu/libggml-hexagon.so": true,
+    "npu/libggml-htp-v75.so": true
+  },
+  "all_hashes_match": true,
+  "original_read_only": true,
+  "original_head": "91d2fc387529940230555abd297a8b5e99737d3f",
+  "original_head_matches_prior_audit": true,
+  "original_status": " M ggml/src/ggml-vulkan/CMakeLists.txt\n",
+  "original_status_matches_prior_audit": true,
+  "note": "Full metadata audit is the earlier recorded audit; this final check verifies original git state and baseline source/binary hashes without running tests."
+}

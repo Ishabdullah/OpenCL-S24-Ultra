@@ -1,0 +1,70 @@
+[
+  {
+    "id": "roundtrip-generic-Q12-K1536-M512",
+    "UTC": "2026-10-03T07:01:56.932663+00:00",
+    "exit_code": 0,
+    "wall_seconds": 0.3674938540207222,
+    "measurement": "untimed byte-exact upload/readback correctness",
+    "variant": "generic",
+    "roundtrip": {
+      "type": "q4_K",
+      "K": 1536,
+      "M": 512,
+      "bytes": 442368,
+      "different_bytes": 0,
+      "first_different_byte": 442368,
+      "exact_roundtrip": true
+    }
+  },
+  {
+    "id": "roundtrip-generic-Q14-K1536-M512",
+    "UTC": "2026-10-03T07:01:57.101762+00:00",
+    "exit_code": 0,
+    "wall_seconds": 0.16672593704424798,
+    "measurement": "untimed byte-exact upload/readback correctness",
+    "variant": "generic",
+    "roundtrip": {
+      "type": "q6_K",
+      "K": 1536,
+      "M": 512,
+      "bytes": 645120,
+      "different_bytes": 0,
+      "first_different_byte": 645120,
+      "exact_roundtrip": true
+    }
+  },
+  {
+    "id": "roundtrip-adreno-Q12-K1536-M512",
+    "UTC": "2026-10-03T07:01:58.444673+00:00",
+    "exit_code": 0,
+    "wall_seconds": 0.46762281202245504,
+    "measurement": "untimed byte-exact upload/readback correctness",
+    "variant": "adreno",
+    "roundtrip": {
+      "type": "q4_K",
+      "K": 1536,
+      "M": 512,
+      "bytes": 442368,
+      "different_bytes": 0,
+      "first_different_byte": 442368,
+      "exact_roundtrip": true
+    }
+  },
+  {
+    "id": "roundtrip-adreno-Q14-K1536-M512",
+    "UTC": "2026-10-03T07:01:58.819726+00:00",
+    "exit_code": 0,
+    "wall_seconds": 0.3670248949783854,
+    "measurement": "untimed byte-exact upload/readback correctness",
+    "variant": "adreno",
+    "roundtrip": {
+      "type": "q6_K",
+      "K": 1536,
+      "M": 512,
+      "bytes": 645120,
+      "different_bytes": 0,
+      "first_different_byte": 645120,
+      "exact_roundtrip": true
+    }
+  }
+]

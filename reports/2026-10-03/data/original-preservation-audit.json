@@ -1,0 +1,12 @@
+{
+  "UTC": "2026-10-03T21:31:31.104994+00:00",
+  "files_checked": 109483,
+  "changes": [],
+  "missing": [],
+  "added": [],
+  "head": "91d2fc387529940230555abd297a8b5e99737d3f",
+  "head_matches": true,
+  "status": " M ggml/src/ggml-vulkan/CMakeLists.txt\n",
+  "status_matches": true,
+  "original_read_only": true
+}

@@ -1,0 +1,140 @@
+diff --git a/ggml/src/ggml-hexagon/CMakeLists.txt b/ggml/src/ggml-hexagon/CMakeLists.txt
+index 5cb178a..859d503 100644
+--- a/ggml/src/ggml-hexagon/CMakeLists.txt
++++ b/ggml/src/ggml-hexagon/CMakeLists.txt
+@@ -20,6 +20,9 @@ endif()
+ message(STATUS "hexagon: using ${HEXAGON_SDK_ROOT} and ${HEXAGON_TOOLS_ROOT} for building libggml-htp skels")
+ 
+ include(${HEXAGON_SDK_ROOT}/build/cmake/hexagon_fun.cmake)
++if (GGML_HEXAGON_QAIC_DIR)
++    set(proj-qaic_src "${GGML_HEXAGON_QAIC_DIR}")
++endif()
+ include(ExternalProject)
+ 
+ option(GGML_HEXAGON_HTP_DEBUG  "ggml-hexagon: enable HTP debug output" OFF)
+@@ -55,14 +58,21 @@ ggml_add_backend_library(${TARGET_NAME}
+     libdl.h
+     ../../include/ggml-hexagon.h)
+ 
++option(GGML_HEXAGON_USE_SPHAL "Load Qualcomm CDSP through the Android sphal namespace" OFF)
++if (GGML_HEXAGON_USE_SPHAL)
++    target_compile_definitions(${TARGET_NAME} PRIVATE GGML_HEXAGON_USE_SPHAL)
++endif()
+ target_link_libraries(${TARGET_NAME} PRIVATE htp_iface)
+ target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/htp ${CMAKE_CURRENT_BINARY_DIR})
+ 
+ # Build HTP skels
++set(GGML_HEXAGON_DSP_BUILD_JOBS "2" CACHE STRING "Maximum concurrent DSP build jobs")
+ set(HTP_SKELS)
+ function(build_htp_skel V)
+     ExternalProject_Add(htp-${V}
+         SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/htp BUILD_ALWAYS ON
++        BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --parallel ${GGML_HEXAGON_DSP_BUILD_JOBS}
++        INSTALL_COMMAND ${CMAKE_COMMAND} --install <BINARY_DIR>
+         BUILD_BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/libggml-htp-${V}.so
+         CMAKE_ARGS
+             -DCMAKE_BUILD_TYPE=${GGML_HEXAGON_HTP_BUILD_TYPE}
+@@ -72,15 +82,17 @@ function(build_htp_skel V)
+             -DHEXAGON_TOOLS_ROOT=${HEXAGON_TOOLS_ROOT}
+             -DHEXAGON_HTP_DEBUG=${GGML_HEXAGON_HTP_DEBUG}
+             -DDSP_VERSION=${V}
++            -DGGML_HEXAGON_QAIC_DIR=${GGML_HEXAGON_QAIC_DIR}
++            -DGGML_HEXAGON_EMULATION_DIR=${GGML_HEXAGON_EMULATION_DIR}
+             -DPREBUILT_LIB_DIR="toolv19_${V}")
+     list(APPEND HTP_SKELS ${CMAKE_CURRENT_BINARY_DIR}/libggml-htp-${V}.so)
+     set(HTP_SKELS ${HTP_SKELS} PARENT_SCOPE)
+ endfunction()
+ 
+-build_htp_skel(v73)
+-build_htp_skel(v75)
+-build_htp_skel(v79)
+-build_htp_skel(v81)
++set(GGML_HEXAGON_ARCHITECTURES "v73;v75;v79;v81" CACHE STRING "Hexagon architectures to build")
++foreach(ARCH IN LISTS GGML_HEXAGON_ARCHITECTURES)
++    build_htp_skel(${ARCH})
++endforeach()
+ 
+ # Install Hexagon skels required at runtime
+ install(FILES ${HTP_SKELS} TYPE LIB)
+diff --git a/ggml/src/ggml-hexagon/htp-drv.cpp b/ggml/src/ggml-hexagon/htp-drv.cpp
+index 437e367..8986acd 100644
+--- a/ggml/src/ggml-hexagon/htp-drv.cpp
++++ b/ggml/src/ggml-hexagon/htp-drv.cpp
+@@ -26,6 +26,10 @@
+ #include "htp-drv.h"
+ #include "libdl.h"
+ 
++#ifdef GGML_HEXAGON_USE_SPHAL
++#include <android/dlext.h>
++#endif
++
+ #include <domain.h>
+ 
+ //
+@@ -69,7 +73,7 @@ typedef int (*fastrpc_munmap_pfn_t)(int domain, int fd, void *addr, size_t lengt
+ 
+ typedef int (*remote_handle64_open_pfn_t)(const char* name, remote_handle64 *ph);
+ typedef int (*remote_handle64_invoke_pfn_t)(remote_handle64 h, uint32_t dwScalars, remote_arg *pra);
+-typedef int (*remote_handle64_close_pfn_t)(remote_handle h);
++typedef int (*remote_handle64_close_pfn_t)(remote_handle64 h);
+ typedef int (*remote_handle_control_pfn_t)(uint32_t req, void* data, uint32_t datalen);
+ typedef int (*remote_handle64_control_pfn_t)(remote_handle64 h, uint32_t req, void* data, uint32_t datalen);
+ typedef int (*remote_session_control_pfn_t)(uint32_t req, void *data, uint32_t datalen);
+@@ -343,7 +347,24 @@ int htpdrv_init() {
+     GGML_LOG_INFO("ggml-hex: Loading driver %s\n", drv_path.c_str());
+ 
+     fs::path path{ drv_path.c_str() };
++#ifdef GGML_HEXAGON_USE_SPHAL
++    using get_namespace_fn = android_namespace_t * (*)(const char *);
++    using open_ext_fn = void * (*)(const char *, int, const android_dlextinfo *);
++    auto get_namespace = reinterpret_cast<get_namespace_fn>(::dlsym(RTLD_DEFAULT, "__loader_android_get_exported_namespace"));
++    auto open_ext = reinterpret_cast<open_ext_fn>(::dlsym(RTLD_DEFAULT, "android_dlopen_ext"));
++    android_namespace_t * sphal = get_namespace ? get_namespace("sphal") : nullptr;
++    if (!sphal || !open_ext) {
++        GGML_LOG_ERROR("ggml-hex: Android sphal namespace API unavailable\n");
++        return AEE_EUNABLETOLOAD;
++    }
++    android_dlextinfo ext = {};
++    ext.flags = ANDROID_DLEXT_USE_NAMESPACE;
++    ext.library_namespace = sphal;
++    path = "/vendor/lib64/libcdsprpc.so";
++    dl_handle_ptr handle { open_ext(path.c_str(), RTLD_NOW | RTLD_LOCAL, &ext) };
++#else
+     dl_handle_ptr handle { dl_load_library(path) };
++#endif
+     if (!handle) {
+         GGML_LOG_ERROR("ggml-hex: failed to load %s: %s\n", path.u8string().c_str(), dl_error());
+         return AEE_EUNABLETOLOAD;
+diff --git a/ggml/src/ggml-hexagon/htp/CMakeLists.txt b/ggml/src/ggml-hexagon/htp/CMakeLists.txt
+index 821f08c..944ce2e 100644
+--- a/ggml/src/ggml-hexagon/htp/CMakeLists.txt
++++ b/ggml/src/ggml-hexagon/htp/CMakeLists.txt
+@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.22.2)
+ project(ggml-htp C CXX ASM)
+ 
+ include(${HEXAGON_SDK_ROOT}/build/cmake/hexagon_fun.cmake)
++if (GGML_HEXAGON_QAIC_DIR)
++    set(proj-qaic_src "${GGML_HEXAGON_QAIC_DIR}")
++endif()
+ 
+ include_directories(
+     ${HEXAGON_SDK_ROOT}/incs
+diff --git a/ggml/src/ggml-hexagon/htp/cmake-toolchain.cmake b/ggml/src/ggml-hexagon/htp/cmake-toolchain.cmake
+index 3eff2a3..b0d7b37 100644
+--- a/ggml/src/ggml-hexagon/htp/cmake-toolchain.cmake
++++ b/ggml/src/ggml-hexagon/htp/cmake-toolchain.cmake
+@@ -153,3 +153,14 @@ set(CMAKE_ASM_FLAGS_RELWITHDEBINFO "${COMMON_FLAGS} ${CMAKE_CXX_FLAGS_RELWITHDEB
+ #Linker Options
+ set(CMAKE_C_CREATE_SHARED_LIBRARY   "${HEXAGON_LINKER} ${HEXAGON_PIC_SHARED_LINK_OPTIONS}")
+ set(CMAKE_CXX_CREATE_SHARED_LIBRARY "${HEXAGON_LINKER} ${HEXAGON_PIC_SHARED_LINK_OPTIONS}")
++
++if (GGML_HEXAGON_EMULATION_DIR)
++    set(CMAKE_C_COMPILER "${GGML_HEXAGON_EMULATION_DIR}/bin/hexagon-clang")
++    set(CMAKE_CXX_COMPILER "${GGML_HEXAGON_EMULATION_DIR}/bin/hexagon-clang++")
++    set(CMAKE_ASM_COMPILER "${GGML_HEXAGON_EMULATION_DIR}/bin/hexagon-clang++")
++    set(CMAKE_AR "${GGML_HEXAGON_EMULATION_DIR}/bin/hexagon-ar")
++    set(HEXAGON_LINKER "${CMAKE_C_COMPILER}")
++    set(CMAKE_C_CREATE_SHARED_LIBRARY "${HEXAGON_LINKER} ${HEXAGON_PIC_SHARED_LINK_OPTIONS}")
++    set(CMAKE_CXX_CREATE_SHARED_LIBRARY "${HEXAGON_LINKER} ${HEXAGON_PIC_SHARED_LINK_OPTIONS}")
++    list(APPEND CMAKE_TRY_COMPILE_PLATFORM_VARIABLES GGML_HEXAGON_EMULATION_DIR)
++endif()

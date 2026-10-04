@@ -1,0 +1,22 @@
+{
+  "sources": {
+    "ggml/src/ggml-opencl/CMakeLists.txt": true,
+    "ggml/src/ggml-opencl/cl-program-cache.cpp": true,
+    "ggml/src/ggml-opencl/ggml-opencl.cpp": true,
+    "ggml/src/ggml-opencl/opencl-sphal.cpp": true,
+    "ggml/src/ggml-opencl/opencl-sphal.h": true
+  },
+  "binaries": {
+    "libggml-base.so.0.25.3": true,
+    "libggml-opencl.so.0.25.3": true,
+    "llama-completion": true,
+    "test-backend-ops": true,
+    "llama-bench": true,
+    "libggml-cpu.so.0.25.3": true,
+    "libllama-completion-impl.so": true,
+    "libllama.so.0.5.0": true,
+    "libggml.so.0.25.3": true,
+    "libllama-bench-impl.so": true,
+    "libllama-common.so.0.5.0": true
+  }
+}

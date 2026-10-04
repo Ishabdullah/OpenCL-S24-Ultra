@@ -1,0 +1,6 @@
+{
+  "UTC": "2026-10-03T23:32:00.483429+00:00",
+  "controller_pid": 3106,
+  "state": "cooling only, no child",
+  "reason": "NPU r0 started2.3C warmer than CPU; preserve both as pilot thermal-limit observations, tighten cold-start admission before backend thermal rankings"
+}

@@ -1,0 +1,349 @@
+diff --git a/ggml/src/ggml-backend.cpp b/ggml/src/ggml-backend.cpp
+index 273dc92..7bca85a 100644
+--- a/ggml/src/ggml-backend.cpp
++++ b/ggml/src/ggml-backend.cpp
+@@ -22,6 +22,11 @@
+ #include <algorithm>
+ #include <unordered_map>
+ #include <vector>
++#include <chrono>
++#include <map>
++#include <mutex>
++#include <string>
++#include "ggml-perf-investigation.h"
+ 
+ #ifdef __APPLE__
+ #include <sys/types.h>
+@@ -29,6 +34,34 @@
+ #endif
+ 
+ 
++
++struct perf_stat { uint64_t calls = 0, ns = 0, bytes = 0; };
++static std::map<std::pair<std::string, std::string>, perf_stat> perf_stats;
++static std::mutex perf_mutex;
++static std::string perf_phase_name = "setup";
++bool ggml_perf_enabled() { static bool enabled = getenv("GGML_PERF_LOG") != nullptr; return enabled; }
++const char * ggml_perf_current_phase() { return perf_phase_name.c_str(); }
++void ggml_perf_phase(const char * phase) { perf_phase_name = phase; }
++void ggml_perf_record(const char * category, uint64_t ns, uint64_t bytes) {
++    if (!ggml_perf_enabled()) { return; }
++    std::lock_guard<std::mutex> lock(perf_mutex);
++    auto & stat = perf_stats[{perf_phase_name, category}];
++    stat.calls++; stat.ns += ns; stat.bytes += bytes;
++}
++void ggml_perf_dump(const char * path) {
++    FILE * file = fopen(path, "w");
++    if (!file) { return; }
++    fprintf(file, "[\n");
++    bool first = true;
++    for (const auto & item : perf_stats) {
++        fprintf(file, "%s{\"phase\":\"%s\",\"category\":\"%s\",\"calls\":%llu,\"ns\":%llu,\"bytes\":%llu}",
++            first ? "" : ",\n", item.first.first.c_str(), item.first.second.c_str(),
++            (unsigned long long)item.second.calls, (unsigned long long)item.second.ns, (unsigned long long)item.second.bytes);
++        first = false;
++    }
++    fprintf(file, "\n]\n"); fclose(file);
++}
++
+ // backend buffer type
+ 
+ const char * ggml_backend_buft_name(ggml_backend_buffer_type_t buft) {
+@@ -460,7 +493,14 @@ enum ggml_status ggml_backend_graph_compute(ggml_backend_t backend, struct ggml_
+ 
+ enum ggml_status ggml_backend_graph_compute_async(ggml_backend_t backend, struct ggml_cgraph * cgraph) {
+     GGML_ASSERT(backend);
+-    return backend->iface.graph_compute(backend, cgraph);
++    if (!ggml_perf_enabled()) { return backend->iface.graph_compute(backend, cgraph); }
++    auto start = std::chrono::steady_clock::now();
++    auto result = backend->iface.graph_compute(backend, cgraph);
++    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count();
++    std::string category = std::string("graph_") + ggml_backend_name(backend);
++    if (ggml_graph_n_nodes(cgraph) > 0) { category += std::string(":") + ggml_graph_nodes(cgraph)[0]->name; }
++    ggml_perf_record(category.c_str(), ns, 0);
++    return result;
+ }
+ 
+ bool ggml_backend_supports_op(ggml_backend_t backend, const struct ggml_tensor * op) {
+diff --git a/ggml/src/ggml-opencl/ggml-opencl.cpp b/ggml/src/ggml-opencl/ggml-opencl.cpp
+index ea54789..2ecdff7 100644
+--- a/ggml/src/ggml-opencl/ggml-opencl.cpp
++++ b/ggml/src/ggml-opencl/ggml-opencl.cpp
+@@ -1,3 +1,4 @@
++#include "../ggml-perf-investigation.h"
+ #define CL_TARGET_OPENCL_VERSION GGML_OPENCL_TARGET_VERSION
+ #define CL_USE_DEPRECATED_OPENCL_1_2_APIS
+ 
+@@ -383,6 +384,7 @@ struct ggml_cl_buffer {
+ 
+ // Profiling
+ struct ProfilingInfo {
++    std::string perf_phase;
+     std::string op_name;
+     std::string kernel_name;
+ 
+@@ -1112,14 +1114,16 @@ struct ggml_backend_opencl_context {
+             return;
+         }
+ 
+-        fprintf(fperf, "op name, kernel name, exec duration (ms), global size, local size, output size\n");
++        fprintf(fperf, "op name, kernel name, exec duration (ms), global size, local size, output size, phase, queued ns, submit ns, start ns, end ns\n");
+         for (const ProfilingInfo & info : profiling_results) {
+-            fprintf(fperf, "%s,%s,%f,%zux%zux%zu,%zux%zux%zu,%zux%zux%zux%zu\n",
++            fprintf(fperf, "%s,%s,%f,%zux%zux%zu,%zux%zux%zu,%zux%zux%zux%zu,%s,%llu,%llu,%llu,%llu\n",
+                 info.op_name.c_str(), info.kernel_name.c_str(),
+                 info.cmd_duration_ns/1.e6f,
+                 info.global_size[0], info.global_size[1], info.global_size[2],
+                 info.local_size[0], info.local_size[1], info.local_size[2],
+-                info.output_size[0], info.output_size[1], info.output_size[2], info.output_size[3]);
++                info.output_size[0], info.output_size[1], info.output_size[2], info.output_size[3],
++                info.perf_phase.c_str(), (unsigned long long)info.cmd_queued,
++                (unsigned long long)info.cmd_submit, (unsigned long long)info.cmd_start, (unsigned long long)info.cmd_end);
+         }
+         fclose(fperf);
+ 
+@@ -1157,6 +1161,14 @@ struct ggml_backend_opencl_context {
+     }
+ 
+     void enqueue_ndrange_kernel(cl_kernel kernel, cl_uint work_dim, size_t *global_work_size, size_t *local_work_size, const ggml_tensor * tensor) {
++        if (getenv("GGML_PERF_KERNEL_TRACE") && tensor) {
++            fprintf(stderr, "KERNEL_TENSOR name=%s op=%s type=%s shape=[%lld,%lld,%lld,%lld]\n", tensor->name, ggml_op_name(tensor->op), ggml_type_name(tensor->type), (long long) tensor->ne[0], (long long) tensor->ne[1], (long long) tensor->ne[2], (long long) tensor->ne[3]);
++            for (int i = 0; i < 2; ++i) {
++                const ggml_tensor * src = tensor->src[i];
++                if (src) fprintf(stderr, "KERNEL_SOURCE index=%d name=%s type=%s shape=[%lld,%lld,%lld,%lld] view_offset=%zu\n", i, src->name, ggml_type_name(src->type), (long long) src->ne[0], (long long) src->ne[1], (long long) src->ne[2], (long long) src->ne[3], src->view_offs);
++            }
++            fflush(stderr);
++        }
+         // From the spec on clEnqueueNDRangeKernel:
+         // If the device associated with command_queue is an OpenCL 2.1 or newer device,
+         // and global_work_size is NULL or the value in any passed dimension is zero,
+@@ -1174,6 +1186,7 @@ struct ggml_backend_opencl_context {
+         CL_CHECK(clEnqueueNDRangeKernel(queue, kernel, work_dim, NULL, global_work_size, local_work_size, 0, NULL, &evt));
+ 
+         profiling_info.emplace_back();
++        profiling_info.back().perf_phase = ggml_perf_current_phase();
+         populateProfilingInfo(profiling_info.back(), evt, kernel, work_dim, global_work_size, local_work_size, tensor);
+         if (profiling_info.size() >= 2048) {
+             flush_profiling_batch();
+diff --git a/ggml/src/ggml-opencl/opencl-sphal.cpp b/ggml/src/ggml-opencl/opencl-sphal.cpp
+index a3dc94e..56bb8dd 100644
+--- a/ggml/src/ggml-opencl/opencl-sphal.cpp
++++ b/ggml/src/ggml-opencl/opencl-sphal.cpp
+@@ -79,3 +79,124 @@ bool ggml_opencl_sphal_init() {
+     std::call_once(once, [] { ready = ggml_opencl_sphal_load(); });
+     return ready;
+ }
++
++#include "../ggml-perf-investigation.h"
++#include <chrono>
++cl_int ggml_perf_clFinish(cl_command_queue queue) {
++    if (!ggml_perf_enabled()) { return ggml_opencl_sphal.clFinish(queue); }
++    auto start = std::chrono::steady_clock::now();
++    auto result = ggml_opencl_sphal.clFinish(queue);
++    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count();
++    ggml_perf_record("clFinish", ns, 0);
++    return result;
++}
++
++cl_int ggml_perf_clFlush(cl_command_queue queue) {
++    if (!ggml_perf_enabled()) { return ggml_opencl_sphal.clFlush(queue); }
++    auto start = std::chrono::steady_clock::now();
++    auto result = ggml_opencl_sphal.clFlush(queue);
++    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count();
++    ggml_perf_record("clFlush", ns, 0);
++    return result;
++}
++
++cl_int ggml_perf_clWaitForEvents(cl_uint n, const cl_event * events) {
++    if (!ggml_perf_enabled()) { return ggml_opencl_sphal.clWaitForEvents(n, events); }
++    auto start = std::chrono::steady_clock::now();
++    auto result = ggml_opencl_sphal.clWaitForEvents(n, events);
++    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count();
++    ggml_perf_record("clWaitForEvents", ns, 0);
++    return result;
++}
++
++cl_int ggml_perf_clSetKernelArg(cl_kernel kernel, cl_uint index, size_t size, const void * value) {
++    const bool trace = getenv("GGML_PERF_KERNEL_TRACE") != nullptr;
++    if (!ggml_perf_enabled() && !trace) { return ggml_opencl_sphal.clSetKernelArg(kernel, index, size, value); }
++    if (trace) {
++        char name[256] = {};
++        ggml_opencl_sphal.clGetKernelInfo(kernel, CL_KERNEL_FUNCTION_NAME, sizeof(name), name, nullptr);
++        unsigned long long scalar = 0;
++        if (value && size <= sizeof(scalar)) memcpy(&scalar, value, size);
++        fprintf(stderr, "KERNEL_ARG %s index=%u bytes=%zu value=%llx local=%d\n", name, index, size, scalar, value == nullptr);
++        fflush(stderr);
++    }
++    auto start = std::chrono::steady_clock::now();
++    auto result = ggml_opencl_sphal.clSetKernelArg(kernel, index, size, value);
++    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count();
++    ggml_perf_record("clSetKernelArg", ns, 0);
++    return result;
++}
++
++cl_int ggml_perf_clEnqueueNDRangeKernel(cl_command_queue queue, cl_kernel kernel, cl_uint dimensions, const size_t * offset, const size_t * global, const size_t * local, cl_uint n, const cl_event * wait, cl_event * event) {
++    const bool trace = getenv("GGML_PERF_KERNEL_TRACE") != nullptr;
++    if (!ggml_perf_enabled() && !trace) { return ggml_opencl_sphal.clEnqueueNDRangeKernel(queue, kernel, dimensions, offset, global, local, n, wait, event); }
++    char name[256] = {};
++    if (trace) {
++        ggml_opencl_sphal.clGetKernelInfo(kernel, CL_KERNEL_FUNCTION_NAME, sizeof(name), name, nullptr);
++        fprintf(stderr, "KERNEL_BEGIN %s dim=%u", name, dimensions);
++        for (cl_uint i = 0; i < dimensions; ++i) fprintf(stderr, " g%u=%zu l%u=%zu", i, global[i], i, local ? local[i] : 0);
++        fprintf(stderr, "\n");
++        fflush(stderr);
++    }
++    auto start = std::chrono::steady_clock::now();
++    auto result = ggml_opencl_sphal.clEnqueueNDRangeKernel(queue, kernel, dimensions, offset, global, local, n, wait, event);
++    if (trace) {
++        cl_int finish = result == CL_SUCCESS ? ggml_opencl_sphal.clFinish(queue) : result;
++        fprintf(stderr, "KERNEL_END %s enqueue=%d finish=%d\n", name, result, finish);
++        if (finish != CL_SUCCESS) result = finish;
++        fflush(stderr);
++    }
++    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count();
++    ggml_perf_record("clEnqueueNDRangeKernel", ns, 0);
++    return result;
++}
++
++cl_int ggml_perf_clEnqueueReadBuffer(cl_command_queue queue, cl_mem buffer, cl_bool blocking, size_t offset, size_t size, void * data, cl_uint n, const cl_event * wait, cl_event * event) {
++    if (!ggml_perf_enabled()) { return ggml_opencl_sphal.clEnqueueReadBuffer(queue, buffer, blocking, offset, size, data, n, wait, event); }
++    auto start = std::chrono::steady_clock::now();
++    auto result = ggml_opencl_sphal.clEnqueueReadBuffer(queue, buffer, blocking, offset, size, data, n, wait, event);
++    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count();
++    ggml_perf_record("clEnqueueReadBuffer", ns, size);
++    return result;
++}
++
++cl_int ggml_perf_clEnqueueWriteBuffer(cl_command_queue queue, cl_mem buffer, cl_bool blocking, size_t offset, size_t size, const void * data, cl_uint n, const cl_event * wait, cl_event * event) {
++    if (!ggml_perf_enabled()) { return ggml_opencl_sphal.clEnqueueWriteBuffer(queue, buffer, blocking, offset, size, data, n, wait, event); }
++    auto start = std::chrono::steady_clock::now();
++    auto result = ggml_opencl_sphal.clEnqueueWriteBuffer(queue, buffer, blocking, offset, size, data, n, wait, event);
++    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count();
++    ggml_perf_record("clEnqueueWriteBuffer", ns, size);
++    return result;
++}
++
++cl_int ggml_perf_clEnqueueCopyBuffer(cl_command_queue queue, cl_mem src, cl_mem dst, size_t src_offset, size_t dst_offset, size_t size, cl_uint n, const cl_event * wait, cl_event * event) {
++    if (!ggml_perf_enabled()) { return ggml_opencl_sphal.clEnqueueCopyBuffer(queue, src, dst, src_offset, dst_offset, size, n, wait, event); }
++    auto start = std::chrono::steady_clock::now();
++    auto result = ggml_opencl_sphal.clEnqueueCopyBuffer(queue, src, dst, src_offset, dst_offset, size, n, wait, event);
++    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count();
++    ggml_perf_record("clEnqueueCopyBuffer", ns, size);
++    return result;
++}
++
++cl_mem ggml_perf_clCreateBuffer(cl_context context, cl_mem_flags flags, size_t size, void * data, cl_int * error) {
++    const bool trace = getenv("GGML_PERF_KERNEL_TRACE") != nullptr;
++    if (!ggml_perf_enabled() && !trace) { return ggml_opencl_sphal.clCreateBuffer(context, flags, size, data, error); }
++    auto start = std::chrono::steady_clock::now();
++    auto result = ggml_opencl_sphal.clCreateBuffer(context, flags, size, data, error);
++    if (trace) {
++        fprintf(stderr, "BUFFER_CREATE handle=%p bytes=%zu flags=%llu error=%d\n", (void *) result, size, (unsigned long long) flags, error ? *error : 0);
++        fflush(stderr);
++    }
++    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count();
++    ggml_perf_record("clCreateBuffer", ns, size);
++    return result;
++}
++
++cl_int ggml_perf_clReleaseMemObject(cl_mem buffer) {
++    if (!ggml_perf_enabled()) { return ggml_opencl_sphal.clReleaseMemObject(buffer); }
++    auto start = std::chrono::steady_clock::now();
++    auto result = ggml_opencl_sphal.clReleaseMemObject(buffer);
++    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count();
++    ggml_perf_record("clReleaseMemObject", ns, 0);
++    return result;
++}
+diff --git a/ggml/src/ggml-opencl/opencl-sphal.h b/ggml/src/ggml-opencl/opencl-sphal.h
+index 9e82e7f..5f698ba 100644
+--- a/ggml/src/ggml-opencl/opencl-sphal.h
++++ b/ggml/src/ggml-opencl/opencl-sphal.h
+@@ -50,9 +50,20 @@ struct ggml_opencl_sphal_dispatch {
+ extern ggml_opencl_sphal_dispatch ggml_opencl_sphal;
+ bool ggml_opencl_sphal_init();
+ 
++cl_int ggml_perf_clFinish(cl_command_queue queue);
++cl_int ggml_perf_clFlush(cl_command_queue queue);
++cl_int ggml_perf_clWaitForEvents(cl_uint n, const cl_event * events);
++cl_int ggml_perf_clSetKernelArg(cl_kernel kernel, cl_uint index, size_t size, const void * value);
++cl_int ggml_perf_clEnqueueNDRangeKernel(cl_command_queue queue, cl_kernel kernel, cl_uint dimensions, const size_t * offset, const size_t * global, const size_t * local, cl_uint n, const cl_event * wait, cl_event * event);
++cl_int ggml_perf_clEnqueueReadBuffer(cl_command_queue queue, cl_mem buffer, cl_bool blocking, size_t offset, size_t size, void * data, cl_uint n, const cl_event * wait, cl_event * event);
++cl_int ggml_perf_clEnqueueWriteBuffer(cl_command_queue queue, cl_mem buffer, cl_bool blocking, size_t offset, size_t size, const void * data, cl_uint n, const cl_event * wait, cl_event * event);
++cl_int ggml_perf_clEnqueueCopyBuffer(cl_command_queue queue, cl_mem src, cl_mem dst, size_t src_offset, size_t dst_offset, size_t size, cl_uint n, const cl_event * wait, cl_event * event);
++cl_mem ggml_perf_clCreateBuffer(cl_context context, cl_mem_flags flags, size_t size, void * data, cl_int * error);
++cl_int ggml_perf_clReleaseMemObject(cl_mem buffer);
++
+ #ifndef GGML_OPENCL_SPHAL_NO_REMAP
+ #define clBuildProgram ggml_opencl_sphal.clBuildProgram
+-#define clCreateBuffer ggml_opencl_sphal.clCreateBuffer
++#define clCreateBuffer ggml_perf_clCreateBuffer
+ #define clCreateBufferWithProperties ggml_opencl_sphal.clCreateBufferWithProperties
+ #define clCreateCommandQueue ggml_opencl_sphal.clCreateCommandQueue
+ #define clCreateContext ggml_opencl_sphal.clCreateContext
+@@ -62,16 +73,16 @@ bool ggml_opencl_sphal_init();
+ #define clCreateProgramWithSource ggml_opencl_sphal.clCreateProgramWithSource
+ #define clCreateSubBuffer ggml_opencl_sphal.clCreateSubBuffer
+ #define clEnqueueBarrierWithWaitList ggml_opencl_sphal.clEnqueueBarrierWithWaitList
+-#define clEnqueueCopyBuffer ggml_opencl_sphal.clEnqueueCopyBuffer
++#define clEnqueueCopyBuffer ggml_perf_clEnqueueCopyBuffer
+ #define clEnqueueFillBuffer ggml_opencl_sphal.clEnqueueFillBuffer
+ #define clEnqueueMapBuffer ggml_opencl_sphal.clEnqueueMapBuffer
+ #define clEnqueueMarkerWithWaitList ggml_opencl_sphal.clEnqueueMarkerWithWaitList
+-#define clEnqueueNDRangeKernel ggml_opencl_sphal.clEnqueueNDRangeKernel
+-#define clEnqueueReadBuffer ggml_opencl_sphal.clEnqueueReadBuffer
++#define clEnqueueNDRangeKernel ggml_perf_clEnqueueNDRangeKernel
++#define clEnqueueReadBuffer ggml_perf_clEnqueueReadBuffer
+ #define clEnqueueUnmapMemObject ggml_opencl_sphal.clEnqueueUnmapMemObject
+-#define clEnqueueWriteBuffer ggml_opencl_sphal.clEnqueueWriteBuffer
+-#define clFinish ggml_opencl_sphal.clFinish
+-#define clFlush ggml_opencl_sphal.clFlush
++#define clEnqueueWriteBuffer ggml_perf_clEnqueueWriteBuffer
++#define clFinish ggml_perf_clFinish
++#define clFlush ggml_perf_clFlush
+ #define clGetDeviceIDs ggml_opencl_sphal.clGetDeviceIDs
+ #define clGetDeviceInfo ggml_opencl_sphal.clGetDeviceInfo
+ #define clGetEventProfilingInfo ggml_opencl_sphal.clGetEventProfilingInfo
+@@ -84,8 +95,8 @@ bool ggml_opencl_sphal_init();
+ #define clGetProgramInfo ggml_opencl_sphal.clGetProgramInfo
+ #define clReleaseEvent ggml_opencl_sphal.clReleaseEvent
+ #define clReleaseKernel ggml_opencl_sphal.clReleaseKernel
+-#define clReleaseMemObject ggml_opencl_sphal.clReleaseMemObject
++#define clReleaseMemObject ggml_perf_clReleaseMemObject
+ #define clReleaseProgram ggml_opencl_sphal.clReleaseProgram
+-#define clSetKernelArg ggml_opencl_sphal.clSetKernelArg
+-#define clWaitForEvents ggml_opencl_sphal.clWaitForEvents
++#define clSetKernelArg ggml_perf_clSetKernelArg
++#define clWaitForEvents ggml_perf_clWaitForEvents
+ #endif
+diff --git a/tools/llama-bench/llama-bench.cpp b/tools/llama-bench/llama-bench.cpp
+index 8361e6a..0b814af 100644
+--- a/tools/llama-bench/llama-bench.cpp
++++ b/tools/llama-bench/llama-bench.cpp
+@@ -1,3 +1,5 @@
++#include "../../ggml/src/ggml-perf-investigation.h"
++#include <ctime>
+ #include <algorithm>
+ #include <array>
+ #include <cassert>
+@@ -2480,6 +2482,10 @@ int llama_bench(int argc, char ** argv) {
+                 }
+             }
+ 
++            char perf_phase[128];
++            snprintf(perf_phase, sizeof(perf_phase), "pp%d_tg%d_d%d_rep%d", t.n_prompt, t.n_gen, t.n_depth, i);
++            ggml_perf_phase(perf_phase);
++            uint64_t cpu_start = clock();
+             uint64_t t_start = get_time_ns();
+ 
+             if (t.n_prompt > 0) {
+@@ -2510,6 +2516,10 @@ int llama_bench(int argc, char ** argv) {
+             }
+ 
+             uint64_t t_ns = get_time_ns() - t_start;
++            ggml_perf_record("process_cpu_time", (clock() - cpu_start)*1000000000ULL/CLOCKS_PER_SEC, 0);
++            ggml_perf_record("benchmark_wall", t_ns, 0);
++            if (ggml_perf_enabled()) { ggml_perf_dump("host_metrics.json"); }
++            ggml_perf_phase("outside_timing");
+             t.samples_ns.push_back(t_ns);
+         }
+ 

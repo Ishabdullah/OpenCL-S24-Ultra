@@ -1,0 +1,601 @@
+{
+  "summaries": [
+    {
+      "id": "sustained-fixed-context-15min-cold-r1-v1-npu",
+      "model": "qwen2.5-coder-1.5b",
+      "source_variant": "npu",
+      "device": "HTP0",
+      "power_epoch": "api-20261003T210139Z-UNPLUGGED",
+      "controlled_valid": false,
+      "issues": [
+        "Run failed, was aborted, or did not parse"
+      ],
+      "thermal_safety_censored": true,
+      "thermal_observation_controlled": true,
+      "first_severe_since_first_request_s": 142.410205674998,
+      "completed_requests": 27,
+      "observed_duration_s": 139.31801666499814,
+      "requested_duration_s": 900,
+      "actual_context": 1024,
+      "prompt_hashes": [
+        "15035156075086816172"
+      ],
+      "output_hashes": [
+        "15020329768554464592"
+      ],
+      "window_seconds": 46.43933888833271,
+      "all": {
+        "requests": 27,
+        "prefill_tok_s": 815.1653242767563,
+        "decode_tok_s": 28.036799308089588,
+        "mean_response_s": 5.15853055937037,
+        "response_stdev_s": 0.10300812080219153,
+        "p95_response_s": 5.27609281,
+        "mean_ttft_s": 0.6287693651481482
+      },
+      "first": {
+        "requests": 9,
+        "prefill_tok_s": 815.9774257550229,
+        "decode_tok_s": 28.85702285211339,
+        "mean_response_s": 5.029077469,
+        "response_stdev_s": 0.04450846012923067,
+        "p95_response_s": 5.11263104,
+        "mean_ttft_s": 0.6280688655555555
+      },
+      "last": {
+        "requests": 8,
+        "prefill_tok_s": 815.7421200553936,
+        "decode_tok_s": 27.449804200785742,
+        "mean_response_s": 5.25494451,
+        "response_stdev_s": 0.020734247919308054,
+        "p95_response_s": 5.290870936,
+        "mean_ttft_s": 0.628317512875
+      },
+      "process_CPU_percent": 6.300411253303992,
+      "process_CPU_percent_first_window": 6.007924865447823,
+      "process_CPU_percent_last_window": 6.523709799317778,
+      "last_first_decode_ratio": 0.9512347944367177,
+      "last_first_prefill_ratio": 0.9997116271943288,
+      "max_RSS_MiB": 240.91015625,
+      "max_PSS_MiB": 202.1591796875,
+      "min_MemAvailable_MiB": 4885.24609375,
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU",
+            "kind": "model",
+            "MiB": 125.19,
+            "line": "load_tensors:          CPU model buffer size =   125.19 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "model",
+            "MiB": 1023.48,
+            "line": "load_tensors:         HTP0 model buffer size =  1023.48 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.58,
+            "line": "llama_context:        CPU  output buffer size =     0.58 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "KV",
+            "MiB": 28.0,
+            "line": "llama_kv_cache:       HTP0 KV buffer size =    28.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "compute",
+            "MiB": 74.94,
+            "line": "sched_reserve:       HTP0 compute buffer size =    74.94 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 2.25,
+            "line": "sched_reserve:        CPU compute buffer size =     2.25 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            29,
+            29
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 1.78 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:       HTP0 KV buffer size =    28.00 MiB"
+        ]
+      },
+      "thermal_statuses": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "headroom_min": 0.600464404,
+      "headroom_max": 1.015491843,
+      "temperatures_C_ranges": {
+        "battery": [
+          35.3,
+          38.5
+        ],
+        "cpu-0-0-0": [
+          42.8,
+          63.9
+        ],
+        "cpu-0-1-0": [
+          44.4,
+          64.2
+        ],
+        "cpu-1-0-0": [
+          41.3,
+          65.8
+        ],
+        "cpu-1-0-1": [
+          40.1,
+          66.2
+        ],
+        "cpu-1-1-0": [
+          42.4,
+          64.2
+        ],
+        "cpu-1-1-1": [
+          39.7,
+          65.4
+        ],
+        "cpu-1-2-0": [
+          41.3,
+          67.0
+        ],
+        "cpu-1-2-1": [
+          41.6,
+          70.9
+        ],
+        "cpu-1-2-2": [
+          42.0,
+          69.7
+        ],
+        "cpu-2-0-0": [
+          44.4,
+          66.2
+        ],
+        "cpu-2-0-1": [
+          43.2,
+          66.2
+        ],
+        "cpu-2-1-0": [
+          43.6,
+          65.0
+        ],
+        "cpu-2-1-1": [
+          44.0,
+          66.2
+        ],
+        "cpu-2-2-0": [
+          43.6,
+          63.9
+        ],
+        "cpu-2-2-1": [
+          44.4,
+          65.8
+        ],
+        "gpuss-0": [
+          40.0,
+          64.6
+        ],
+        "gpuss-1": [
+          40.8,
+          67.0
+        ],
+        "gpuss-2": [
+          40.0,
+          61.8
+        ],
+        "gpuss-3": [
+          39.6,
+          60.6
+        ],
+        "gpuss-4": [
+          40.0,
+          63.4
+        ],
+        "gpuss-5": [
+          40.8,
+          61.8
+        ],
+        "gpuss-6": [
+          40.0,
+          65.4
+        ],
+        "gpuss-7": [
+          41.2,
+          63.8
+        ],
+        "nsphmx-0": [
+          40.5,
+          85.7
+        ],
+        "nsphmx-1": [
+          40.1,
+          85.7
+        ],
+        "nsphmx-2": [
+          40.1,
+          82.9
+        ],
+        "nsphmx-3": [
+          39.7,
+          83.7
+        ],
+        "nsphvx-0": [
+          41.3,
+          95.4
+        ],
+        "nsphvx-1": [
+          40.9,
+          96.2
+        ]
+      },
+      "CPU_max_kHz_values": {
+        "2": [
+          "1286400",
+          "1497600",
+          "1824000",
+          "2035200",
+          "2438400",
+          "2707200"
+        ],
+        "3": [
+          "1286400",
+          "1497600",
+          "1824000",
+          "2035200",
+          "2438400",
+          "2707200"
+        ],
+        "4": [
+          "1286400",
+          "1497600",
+          "1824000",
+          "2035200",
+          "2438400",
+          "2707200"
+        ],
+        "5": [
+          "1401600",
+          "1612800",
+          "1824000",
+          "1920000",
+          "2380800",
+          "2707200"
+        ],
+        "6": [
+          "1401600",
+          "1612800",
+          "1824000",
+          "1920000",
+          "2380800",
+          "2707200"
+        ],
+        "7": [
+          "1363200",
+          "1593600",
+          "1824000",
+          "2035200",
+          "2496000",
+          "2745600"
+        ]
+      },
+      "GPU_max_clock_values": [
+        "231000000",
+        "366000000",
+        "680000000"
+      ],
+      "interpretation": "RSS excludes driver/RPC shared allocations; time correlation alone does not prove a thermal cause."
+    },
+    {
+      "id": "sustained-fixed-context-15min-cold-r1-v1-cpu",
+      "model": "qwen2.5-coder-1.5b",
+      "source_variant": "npu",
+      "device": "none",
+      "power_epoch": "api-20261003T210139Z-UNPLUGGED",
+      "controlled_valid": false,
+      "issues": [
+        "CPU availability or Android cgroup changed during measurement",
+        "Benchmark process Android cgroup changed during measurement",
+        "Benchmark process lost required cores despite process-level affinity",
+        "Run failed, was aborted, or did not parse"
+      ],
+      "thermal_safety_censored": false,
+      "thermal_observation_controlled": false,
+      "first_severe_since_first_request_s": null,
+      "completed_requests": 36,
+      "observed_duration_s": 481.78087997302646,
+      "requested_duration_s": 900,
+      "actual_context": 1024,
+      "prompt_hashes": [
+        "15035156075086816172"
+      ],
+      "output_hashes": [
+        "15020329768554464592"
+      ],
+      "window_seconds": 160.5936266576755,
+      "all": {
+        "requests": 36,
+        "prefill_tok_s": 75.28931824089189,
+        "decode_tok_s": 19.298860199917474,
+        "mean_response_s": 13.381741667388889,
+        "response_stdev_s": 1.5374800125856227,
+        "p95_response_s": 15.590193849,
+        "mean_ttft_s": 6.801041991
+      },
+      "first": {
+        "requests": 13,
+        "prefill_tok_s": 85.07678215890631,
+        "decode_tok_s": 21.438453513955494,
+        "mean_response_s": 11.942583096461538,
+        "response_stdev_s": 1.5943180325688187,
+        "p95_response_s": 14.291791088,
+        "mean_ttft_s": 6.018648170692307
+      },
+      "last": {
+        "requests": 11,
+        "prefill_tok_s": 70.41004643107125,
+        "decode_tok_s": 17.78288501873437,
+        "mean_response_s": 14.414022603545455,
+        "response_stdev_s": 0.9367283345332366,
+        "p95_response_s": 16.623579316,
+        "mean_ttft_s": 7.272324135545454
+      },
+      "process_CPU_percent": 487.6153734679376,
+      "process_CPU_percent_first_window": 489.9488725974307,
+      "process_CPU_percent_last_window": 484.07702136302015,
+      "last_first_decode_ratio": 0.8294854387308529,
+      "last_first_prefill_ratio": 0.8276058948675262,
+      "max_RSS_MiB": 2056.68359375,
+      "max_PSS_MiB": 1910.3671875,
+      "min_MemAvailable_MiB": 4661.02734375,
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 877.31,
+            "line": "load_tensors:   CPU_Mapped model buffer size =   877.31 MiB"
+          },
+          {
+            "backend": "CPU_REPACK",
+            "kind": "model",
+            "MiB": 934.14,
+            "line": "load_tensors:   CPU_REPACK model buffer size =   934.14 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.58,
+            "line": "llama_context:        CPU  output buffer size =     0.58 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 28.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =    28.00 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 75.69,
+            "line": "sched_reserve:        CPU compute buffer size =    75.69 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            0,
+            29
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 1.78 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =    28.00 MiB"
+        ]
+      },
+      "thermal_statuses": [
+        0,
+        1,
+        2
+      ],
+      "headroom_min": 0.669999957,
+      "headroom_max": 1.012182117,
+      "temperatures_C_ranges": {
+        "battery": [
+          34.6,
+          41.1
+        ],
+        "cpu-0-0-0": [
+          42.0,
+          72.4
+        ],
+        "cpu-0-1-0": [
+          43.2,
+          75.2
+        ],
+        "cpu-1-0-0": [
+          38.9,
+          79.8
+        ],
+        "cpu-1-0-1": [
+          38.5,
+          84.1
+        ],
+        "cpu-1-1-0": [
+          39.7,
+          70.5
+        ],
+        "cpu-1-1-1": [
+          38.1,
+          73.6
+        ],
+        "cpu-1-2-0": [
+          39.7,
+          86.5
+        ],
+        "cpu-1-2-1": [
+          40.1,
+          93.5
+        ],
+        "cpu-1-2-2": [
+          42.0,
+          93.1
+        ],
+        "cpu-2-0-0": [
+          46.3,
+          85.3
+        ],
+        "cpu-2-0-1": [
+          43.6,
+          81.8
+        ],
+        "cpu-2-1-0": [
+          46.3,
+          89.2
+        ],
+        "cpu-2-1-1": [
+          45.1,
+          88.4
+        ],
+        "cpu-2-2-0": [
+          44.8,
+          82.9
+        ],
+        "cpu-2-2-1": [
+          47.1,
+          85.7
+        ],
+        "gpuss-0": [
+          38.4,
+          60.6
+        ],
+        "gpuss-1": [
+          39.2,
+          60.2
+        ],
+        "gpuss-2": [
+          38.4,
+          59.4
+        ],
+        "gpuss-3": [
+          38.0,
+          57.8
+        ],
+        "gpuss-4": [
+          39.2,
+          63.0
+        ],
+        "gpuss-5": [
+          38.8,
+          61.8
+        ],
+        "gpuss-6": [
+          38.4,
+          61.4
+        ],
+        "gpuss-7": [
+          39.2,
+          61.4
+        ],
+        "nsphmx-0": [
+          38.9,
+          60.3
+        ],
+        "nsphmx-1": [
+          38.5,
+          58.8
+        ],
+        "nsphmx-2": [
+          38.9,
+          58.4
+        ],
+        "nsphmx-3": [
+          38.1,
+          58.4
+        ],
+        "nsphvx-0": [
+          39.7,
+          63.1
+        ],
+        "nsphvx-1": [
+          38.9,
+          63.1
+        ]
+      },
+      "CPU_max_kHz_values": {
+        "2": [
+          "1286400",
+          "1401600",
+          "1497600",
+          "1824000",
+          "2035200",
+          "2246400",
+          "2707200"
+        ],
+        "3": [
+          "1286400",
+          "1401600",
+          "1497600",
+          "1824000",
+          "2035200",
+          "2246400",
+          "2707200"
+        ],
+        "4": [
+          "1286400",
+          "1401600",
+          "1497600",
+          "1824000",
+          "2035200",
+          "2246400",
+          "2707200"
+        ],
+        "5": [
+          "1401600",
+          "1497600",
+          "1612800",
+          "1824000",
+          "1920000",
+          "2246400",
+          "2707200"
+        ],
+        "6": [
+          "1401600",
+          "1497600",
+          "1612800",
+          "1824000",
+          "1920000",
+          "2246400",
+          "2707200"
+        ],
+        "7": [
+          "1363200",
+          "1478400",
+          "1593600",
+          "1824000",
+          "2035200",
+          "2304000",
+          "2745600"
+        ]
+      },
+      "GPU_max_clock_values": [
+        "231000000",
+        "310000000",
+        "366000000",
+        "680000000"
+      ],
+      "interpretation": "RSS excludes driver/RPC shared allocations; time correlation alone does not prove a thermal cause."
+    }
+  ]
+}

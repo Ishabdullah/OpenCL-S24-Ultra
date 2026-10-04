@@ -1,0 +1,19 @@
+{
+  "points": [
+    {
+      "model": "1.5B",
+      "generation_tok_s": 32.96593933333333,
+      "actual_HTP_model_MiB": 1023.48,
+      "weights_times_generation_GiB_s": 32.949198817265625,
+      "source_result": "llama-opencl-build/performance-investigation/runs/npu-first-unplugged-v1-1.5b-r0-ngl99/result.json"
+    },
+    {
+      "model": "4B",
+      "generation_tok_s": 12.93683,
+      "actual_HTP_model_MiB": 2609.07,
+      "weights_times_generation_GiB_s": 32.96200688291016,
+      "source_result": "llama-opencl-build/performance-investigation/runs/npu-fourb-matched-unplugged-v1-r0-ngl99/result.json"
+    }
+  ],
+  "interpretation": "Weight-size throughput proxy, not measured memory traffic/bus bandwidth. Close agreement supports memory-bound HVX decode hypothesis; architecture/packing/attention and unused metadata/padding remain possible confounders. Confirm with controlled clock/power/profiling controls."
+}

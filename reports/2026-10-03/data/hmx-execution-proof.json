@@ -1,0 +1,47 @@
+{
+  "numerical_gate": "8/8 passed",
+  "matrix_operations": [
+    {
+      "line": "ggml-hex: HTP0 profile-op MUL_MAT|leaf_0 x leaf_1 -> out|1536:512 x 1536:1 -> 512:1|q4_K x f32 -> f32|144:864 x 4:6144 -> 4:2048|hvx-tiled vtcm 2029568|usec 45 cycles 89266 start 2755167949 mhz 1983.7",
+      "engine": "HVX",
+      "op_usec": 45
+    },
+    {
+      "line": "ggml-hex: HTP0 profile-op MUL_MAT|leaf_0 x leaf_1 -> out|1536:512 x 1536:128 -> 512:128|q4_K x f32 -> f32|144:864 x 4:6144 -> 4:2048|hmx-tiled vtcm 4786176|usec 85 cycles 166065 start 2758515769 mhz 1953.7",
+      "engine": "HMX",
+      "op_usec": 85
+    },
+    {
+      "line": "ggml-hex: HTP0 profile-op MUL_MAT|leaf_0 x leaf_1 -> out|3584:512 x 3584:1 -> 512:1|q4_K x f32 -> f32|144:2016 x 4:14336 -> 4:2048|hvx-tiled vtcm 4732928|usec 61 cycles 118976 start 2762124447 mhz 1950.4",
+      "engine": "HVX",
+      "op_usec": 61
+    },
+    {
+      "line": "ggml-hex: HTP0 profile-op MUL_MAT|leaf_0 x leaf_1 -> out|3584:512 x 3584:128 -> 512:128|q4_K x f32 -> f32|144:2016 x 4:14336 -> 4:2048|hmx-tiled vtcm 8341504|usec 144 cycles 281035 start 2765841164 mhz 1951.6",
+      "engine": "HMX",
+      "op_usec": 144
+    },
+    {
+      "line": "ggml-hex: HTP0 profile-op MUL_MAT|leaf_0 x leaf_1 -> out|1536:512 x 1536:1 -> 512:1|q6_K x f32 -> f32|210:1260 x 4:6144 -> 4:2048|hvx-tiled vtcm 2809856|usec 42 cycles 82319 start 2769127743 mhz 1960.0",
+      "engine": "HVX",
+      "op_usec": 42
+    },
+    {
+      "line": "ggml-hex: HTP0 profile-op MUL_MAT|leaf_0 x leaf_1 -> out|1536:512 x 1536:128 -> 512:128|q6_K x f32 -> f32|210:1260 x 4:6144 -> 4:2048|hmx-tiled vtcm 5179392|usec 108 cycles 211613 start 2772076870 mhz 1959.4",
+      "engine": "HMX",
+      "op_usec": 108
+    },
+    {
+      "line": "ggml-hex: HTP0 profile-op MUL_MAT|leaf_0 x leaf_1 -> out|3584:512 x 3584:1 -> 512:1|q6_K x f32 -> f32|210:2940 x 4:14336 -> 4:2048|hvx-tiled vtcm 6553600|usec 62 cycles 122336 start 2775567968 mhz 1973.2",
+      "engine": "HVX",
+      "op_usec": 62
+    },
+    {
+      "line": "ggml-hex: HTP0 profile-op MUL_MAT|leaf_0 x leaf_1 -> out|3584:512 x 3584:128 -> 512:128|q6_K x f32 -> f32|210:2940 x 4:14336 -> 4:2048|hmx-tiled vtcm 8353792|usec 173 cycles 337560 start 2779092015 mhz 1951.2",
+      "engine": "HMX",
+      "op_usec": 173
+    }
+  ],
+  "HMX_COMP_trace_event_lines": 12,
+  "timing": "profile diagnostic only; not benchmark"
+}

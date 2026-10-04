@@ -1,0 +1,32 @@
+{
+  "created_UTC": "2026-10-04T00:25:36.183880+00:00",
+  "completed_result_records": 467,
+  "mode_counts": {
+    "bench": 243,
+    "ops": 23,
+    "logits": 17,
+    "hybrid": 132,
+    "ops-perf": 4,
+    "memory": 40,
+    "sustained": 8
+  },
+  "passes_current_run_checks_by_mode": {
+    "bench": 228,
+    "ops": 17,
+    "logits": 17,
+    "hybrid": 123,
+    "ops-perf": 4,
+    "memory": 36,
+    "sustained": 4
+  },
+  "benchmark_rows": 443,
+  "whole_response_rows": 125,
+  "meaning_of_passes_current_run_checks": "No detected exclusion; not proof of a matched pair, final confirmation, thermal equality or non-diagnostic timing.",
+  "raw_storage": "~/llama-opencl-build/performance-investigation/runs",
+  "omissions": [
+    "large raw per-thread traces",
+    "stdout/stderr text (hashes retained)",
+    "binary/model/SDK/vendor artifacts"
+  ],
+  "paused_by_user": true
+}

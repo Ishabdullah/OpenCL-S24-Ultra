@@ -13,6 +13,12 @@ Builds a pinned llama.cpp revision with an internal Android `sphal` OpenCL loade
 
 OpenCL was 32.8% slower for prompt processing and 66.9% slower for generation. Measurements and reproduction details: [Benchmarks](docs/BENCHMARKS.md).
 
+## Performance investigation snapshot: October 3, 2026
+
+The [full CPU/OpenCL/NPU/hybrid report](OPENCL_PERFORMANCE_ANALYSIS.md) and [machine-readable evidence](reports/2026-10-03/) are now available. The investigation is **paused at the owner's request**; its final characterization is incomplete.
+
+Experimental native Hexagon NPU tests show repeated prompt-processing gains of 7.14x for the tested 1.5B model and 7.83x for Qwen3-4B against matched common-setting CPU tests. NPU generation averaged 32.97 and 12.94 tok/s respectively; the best practical CPU comparison remains unfinished. Long-prompt GPU/hybrid results are candidates, and no sustained thermal winner is established. The existing installer still builds the proven generic OpenCL baseline; experimental NPU, specialized-kernel and handoff patches are research snapshots, not installer features.
+
 ## Requirements and compatibility
 
 - Ordinary, non-root Termux installed from [F-Droid](https://f-droid.org/packages/com.termux/).
@@ -98,7 +104,7 @@ CPU and OpenCL run sequentially against the same model, with matching thread cou
 
 ## Limitations
 
-- Specialized Adreno kernels and binary kernels remain **OFF**: the earlier specialized path caused a Qualcomm driver submission failure. Its precise defect is unresolved.
+- Specialized Adreno kernels and binary kernels remain **OFF** in this release. An isolated narrow Q4_K launch passed later numerical gates, but larger performance/stability confirmation and the original submission-failure explanation remain incomplete; see the [investigation report](OPENCL_PERFORMANCE_ANALYSIS.md).
 - Generic OpenCL inference currently loses to the tested CPU baseline.
 - CPU fallbacks remain; layer assignment is not proof of exclusive GPU execution.
 - Short deterministic CPU/GPU output matched exactly, but bit-identical inference is not promised. Identical-prefix logit validation agreed on 127/128 top tokens, all logits were finite, and mean KL divergence was about 0.000242.

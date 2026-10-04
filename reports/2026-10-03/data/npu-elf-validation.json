@@ -1,0 +1,22 @@
+{
+  "~/llama-opencl-build/performance-investigation/build-npu/bin/libggml-hexagon.so": {
+    "sha256": "4c1d4579e0b5452c9fc80fa776bd28fe617cb844a929254ecf6ea5bb27a5ee92",
+    "DT_NEEDED": [
+      "liblog.so",
+      "libdl.so",
+      "libggml-base.so.0",
+      "libc++_shared.so",
+      "libm.so",
+      "libc.so"
+    ],
+    "unwanted_OPENCL_versions": false
+  },
+  "~/llama-opencl-build/performance-investigation/build-npu/ggml/src/ggml-hexagon/libggml-htp-v75.so": {
+    "sha256": "143dc04a13c3ca56549cc5f644857b6e23976a14d4a4062a28024b17e2c1843c",
+    "DT_NEEDED": [
+      "libc.so",
+      "libgcc.so"
+    ],
+    "unwanted_OPENCL_versions": false
+  }
+}

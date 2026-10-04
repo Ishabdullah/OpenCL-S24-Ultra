@@ -1,5 +1,7 @@
 # Benchmarks and interpretation
 
+This page records the released generic OpenCL baseline. The broader CPU/OpenCL/Hexagon/hybrid investigation is documented in [OPENCL_PERFORMANCE_ANALYSIS.md](../OPENCL_PERFORMANCE_ANALYSIS.md), with [CSV/JSON measurements](../reports/2026-10-03/). That investigation is paused and includes preliminary and excluded results; it does not replace this release's conservative build defaults.
+
 Original on-device validation date: 2026-10-02. S24 Ultra SM-S928U, QTI SM8650 / Adreno 750, Android 16, F-Droid Termux 0.118.3. Upstream e358d59178377be4c58ba567925e05faadbccb57 plus patch version 1.
 
 Model: Qwen2.5-Coder-1.5B-Instruct Q4_K_M. GGUF SHA-256:

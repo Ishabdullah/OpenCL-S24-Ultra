@@ -1,0 +1,9 @@
+id,path,tensor_parameter_count,architecture,quantization,file_type,file_bytes,weight_data_bytes,blocks,attention_heads,KV_heads,full_attention_blocks,key_dimension_effective,value_dimension_effective,trained_context,theoretical_f16_KV_MiB_per_token
+mistral-7b-uncensored,~/models/mistral-7b-uncensored/mistral-7b-uncensored.Q4_K_M.gguf,7241732096,llama,Q4_K_M,15,4368440640,4367704064,32,32,8,32,128,128,32768,0.125
+nomic-embed,~/models/nomic-embed/nomic-embed-text-v1.5.Q4_K_M.gguf,136727040,nomic-bert,Q4_K_M,15,84106624,83349984,12,12,,12,64,64,2048,
+qwen2.5-0.5b,~/models/qwen2.5-0.5b/planner-codey.gguf,494032768,qwen2,Q4_K_M,15,397807424,391859712,24,14,2,24,64,64,32768,0.01171875
+qwen2.5-coder-1.5b,~/models/qwen2.5-coder-1.5b/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf,1777088000,qwen2,Q4_K_M,15,1117320768,1111370240,28,12,2,28,128,128,32768,0.02734375
+qwen2.5-coder-14b,~/models/qwen2.5-coder-14b/qwen2.5-coder-14b-instruct-q4_k_m.gguf,14770033664,qwen2,Q4_K_M,15,8988110272,8982142976,48,40,8,48,128,128,131072,0.1875
+qwen2.5-coder-7b,~/models/qwen2.5-coder-7b/qwen2.5-coder-7b-instruct-q4_k_m.gguf,7615616512,qwen2,Q4_K_M,15,4683073536,4677120000,28,28,4,28,128,128,131072,0.0546875
+qwen3-4b-instruct,~/models/qwen3-4b-instruct/Qwen3-4B-Instruct-2507-Q4_K_M.gguf,4022468096,qwen3,Q4_K_M,15,2497279136,2491323904,36,32,8,36,128,128,262144,0.140625
+qwen3.5-4b-instruct,~/models/qwen3.5-4b-instruct/Qwen3.5-4B-Q4_K_M.gguf,4205751296,qwen35,Q4_K_M,15,2740937888,2729969664,32,16,4,8,256,256,262144,0.03125

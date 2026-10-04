@@ -1,0 +1,300 @@
+[
+  {
+    "id": "actual-q4k-kernel-subgroup-query",
+    "files": [
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "batch-qwen2.5-coder-7b-b256-ub128-ngl99-r0",
+    "files": [
+      "command.json",
+      "cooldown.jsonl"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "cpu-large-current-api-20261003T084838Z-PLUGGED_AC-large-cpu-screen-v1-qwen2.5-coder-7b-p2048-g128-faon-t5-retry1",
+    "files": [
+      "command.json",
+      "cooldown.jsonl"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "cpu-large-current-api-20261003T193303Z-PLUGGED_AC-large-cpu-screen-v1-qwen2.5-coder-7b-p2048-g128-faoff-t4",
+    "files": [
+      "command.json",
+      "cooldown.jsonl",
+      "external-interruption.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "handoff-latency-unplugged-04-qwen2.5-coder-7b-p8192-g128-cpu-FA-practical-r1",
+    "files": [
+      "command.json",
+      "cooldown.jsonl"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "handoff-latency-unplugged-04-qwen3-4b-instruct-p512-g64-cpu-FA-practical-r1",
+    "files": [
+      "command.json",
+      "cooldown.jsonl"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "q4k-alias-separate-sg16",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "q4k-alias-separate-sg4",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "q4k-alias-shared-sg16",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "q4k-alias-shared-sg4",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "q4k-constant-original-sg1",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "q4k-constant-original-sg16",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "q4k-constant-original-sg4",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "q4k-constant-zero-init-sg1",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "q4k-constant-zero-init-sg16",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "q4k-constant-zero-init-sg4",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "quant-values-original-adreno-Q12-K1536-M512-N1",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "quant-values-original-adreno-Q12-K1536-M512-N128",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "quant-values-original-adreno-Q14-K1536-M512-N1",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "quant-values-original-adreno-Q14-K1536-M512-N128",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "quant-values-original-generic-Q12-K1536-M512-N1",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "quant-values-original-generic-Q12-K1536-M512-N128",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "quant-values-original-generic-Q14-K1536-M512-N1",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "quant-values-original-generic-Q14-K1536-M512-N128",
+    "files": [
+      "cooldown.jsonl",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "roundtrip-adreno-Q12-K1536-M512",
+    "files": [
+      "command.json",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "roundtrip-adreno-Q14-K1536-M512",
+    "files": [
+      "command.json",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "roundtrip-generic-Q12-K1536-M512",
+    "files": [
+      "command.json",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "roundtrip-generic-Q14-K1536-M512",
+    "files": [
+      "command.json",
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "subgroup-lane-map-CL2.0",
+    "files": [
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "subgroup-lane-map-CL3.0",
+    "files": [
+      "diagnostic-status.json",
+      "stderr.txt",
+      "stdout.txt"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  },
+  {
+    "id": "sustained-fixed-context-15min-cold-r1-v1-gpu-adreno",
+    "files": [
+      "command.json",
+      "cooldown.jsonl"
+    ],
+    "status": "No standard result record; may be standalone diagnostic or queued/interrupted run; not counted as completed benchmark."
+  }
+]
