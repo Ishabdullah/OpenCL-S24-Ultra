@@ -1,0 +1,6 @@
+{
+  "UTC": "2026-10-05T08:35:12.779484+00:00",
+  "source_fact": "Registration eviction sorts eligible buffers by ascending fd, not LRU. It protects needed/current, pinned, nonweight and cloned buffers, and synchronizes before checked DSP/host unmap.",
+  "hypothesis": "Larger safe window may retain more buffers and reduce map calls/flushes, but frequency/reuse policy and cyclic access must be measured. Do not model existing policy as LRU or claim a speed improvement from window size alone.",
+  "scope": "Source inspection only; no new backend edit, preserved baseline unaffected."
+}

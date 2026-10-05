@@ -1,0 +1,867 @@
+{
+  "result_without_full_telemetry": {
+    "id": "mistral7-partial24-registration-quality-20261005T095725Z",
+    "config": {
+      "group": "mistral7-canonical-highpartial-quality",
+      "mode": "logits",
+      "binary": "~/llama-opencl-build/performance-investigation/sustained-tools-v2/compare-logits-npu-configurable",
+      "library_directory": "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin",
+      "environment": {
+        "ADSP_LIBRARY_PATH": "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/ggml/src/ggml-hexagon",
+        "GGML_HEXAGON_PROFILE": "0",
+        "GGML_HEXAGON_MBUF": "512",
+        "GGML_HEXAGON_VMEM": "3200",
+        "GGML_HEXAGON_VERBOSE": "0",
+        "GGML_HEXAGON_REGISTRATION_WINDOW": "3072"
+      },
+      "additional_artifacts": [
+        "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/ggml/src/ggml-hexagon/libggml-htp-v75.so"
+      ],
+      "source_variant": "registration-hybrid:partial24-quality",
+      "steps": 32,
+      "prefill_validation_tokens": 128,
+      "cooldown": 30,
+      "timeout": 1200,
+      "validation_timing_not_comparable": true,
+      "id": "mistral7-partial24-registration-quality-20261005T095725Z",
+      "model": "mistral-7b-uncensored",
+      "attention": "on",
+      "device": "HTP0",
+      "ngl": 24,
+      "repack": 0,
+      "validation_arguments": [
+        "24",
+        "0",
+        "on"
+      ],
+      "public_thermal": true,
+      "stop_schedule_if_failure": true,
+      "context": 1024,
+      "process_mask": "fc",
+      "max_battery": 36,
+      "max_cpu": 50,
+      "max_gpu": 43,
+      "max_npu": 43,
+      "max_public_thermal_status": 0,
+      "max_public_thermal_headroom": 0.9,
+      "cooling_timeout": 1200,
+      "stop_on_failure": false,
+      "execution_policy": "nice10-ui-headroom01",
+      "cpu_nice_increment": 10,
+      "harness_nice": 0,
+      "expected_worker_nice": 10,
+      "minimum_MemAvailable_MiB": 1536
+    },
+    "power_conditions": {
+      "user_reported": "User explicitly resumes; phone unplugged",
+      "reported_at_UTC": "2026-10-05T08:11:15.432595+00:00",
+      "Android_thermalservice_dump": "permission denied",
+      "battery_status_sysfs": "permission denied",
+      "temperature_and_frequency_sysfs": "readable",
+      "thermal_configuration": "unmodified",
+      "background_activity": "not independently controlled or eliminated",
+      "history": [
+        {
+          "user_reported": "Phone idle and unplugged",
+          "reported_at_UTC": "2026-10-02T20:58:31.460055+00:00",
+          "ended_at_UTC": "2026-10-02T23:21:52.081908+00:00"
+        },
+        {
+          "UTC": "2026-10-03T02:18:06.678534+00:00",
+          "event": "User reports phone use during some prior runs; exact intervals unknown. Affinity rejections may coincide with foreground/background changes."
+        },
+        {
+          "UTC": "2026-10-03T03:16:25.774494+00:00",
+          "event": "User reports unplugging charger; new unplugged power epoch. Unknown current benchmark overlap must be excluded."
+        },
+        {
+          "UTC": "2026-10-03T05:28:06.982116+00:00",
+          "event": "Session recovery after user-reported system crash; cause unknown. User reports charger reconnected; new charging epoch."
+        },
+        {
+          "UTC": "2026-10-03T06:02:30.347019+00:00",
+          "event": "User reports unplugging charger; new unplugged power epoch."
+        },
+        {
+          "UTC": "2026-10-03T06:40:27.860959+00:00",
+          "event": "Observed transient Android transition top-app -> moderate/background restricting CPUs to0,1,5,6; affected CPU7B PP1024 case automatically aborted/excluded. Top-app/all eight cores subsequently restored. Cause not established."
+        },
+        {
+          "UTC": "2026-10-03T06:43:21.591000+00:00",
+          "event": "User reports screen turned off / phone entered sleep mode near the observed Android CPU restriction. Consistent with top-app -> moderate/background trace; exact screen-off interval not independently timestamped."
+        },
+        {
+          "UTC": "2026-10-03T06:47:08.273062+00:00",
+          "event": "User reports screen freezes/input lag during some tests. Stop active heavy work; recovery window and lower-priority execution policy, not evidence of specific GPU/driver fault."
+        },
+        {
+          "UTC": "2026-10-03T07:25:11.572075+00:00",
+          "event": "User reports checking volume and expects conditions to remain stable. Interrupted runs remain excluded; do not infer all future intervals are idle without measured cgroup/core stability."
+        },
+        {
+          "UTC": "2026-10-03T08:48:38.438762+00:00",
+          "uncertain_since_UTC": "2026-10-03T08:46:36.865629+00:00",
+          "event": "Battery API observed power transition UNPLUGGED -> PLUGGED_AC; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-03T08:57:04.717897+00:00",
+          "event": "User reports connecting charger, corroborating existing battery API charging detection; keep the API-bracketed transition and settling epoch."
+        },
+        {
+          "UTC": "2026-10-03T14:50:21.854163+00:00",
+          "uncertain_since_UTC": "2026-10-03T14:39:38.469915+00:00",
+          "event": "Battery API observed power transition PLUGGED_AC -> UNPLUGGED; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-03T15:47:26.694624+00:00",
+          "event": "User reports prior phone use is finished and requests continuation; measured CPU/cgroup stability still required. Temporary Termux wake lock command returned0 but did not by itself restore restricted cores."
+        },
+        {
+          "UTC": "2026-10-03T15:52:30.780991+00:00",
+          "event": "User requests phone-use interval; hold demanding tests and exclude overlapping measurements until user reports finished."
+        },
+        {
+          "UTC": "2026-10-03T19:32:47.201196+00:00",
+          "event": "User reports finished using phone and requests continuation while charging. Fresh charging epoch and five-minute settling; retain all earlier power epochs and interrupted runs."
+        },
+        {
+          "UTC": "2026-10-03T19:33:03.038894+00:00",
+          "uncertain_since_UTC": "2026-10-03T15:58:15.449131+00:00",
+          "event": "Battery API observed power transition UNPLUGGED -> PLUGGED_AC; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-03T21:01:39.687410+00:00",
+          "uncertain_since_UTC": "2026-10-03T20:59:38.732485+00:00",
+          "event": "Battery API observed power transition PLUGGED_AC -> UNPLUGGED; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-03T21:25:23.461918+00:00",
+          "event": "User confirms phone unplugged; corroborates API-detected 21:01:39 UTC transition. Retain existing unplugged epoch and transition uncertainty bracket."
+        },
+        {
+          "UTC": "2026-10-04T00:34:19.171660+00:00",
+          "event": "User explicitly requested report publication then investigation pause until told to resume. All experiment controllers stopped."
+        },
+        {
+          "UTC": "2026-10-04T03:35:34.169928+00:00",
+          "event": "User explicitly resumes regular performance investigation and reports unplugged battery operation. API corroborates UNPLUGGED,81%,32.1C. Prior report and installer results remain immutable; new independent measurement epoch."
+        },
+        {
+          "UTC": "2026-10-04T04:33:02.981725+00:00",
+          "event": "Detected transient top-app -> foreground-boost at04:30:55UTC with all8available but benchmark affinity reset3-7 ->0-7. Benchmark aborted duringmodel loading, excluded. Currenttop-app/all8restored. Cause not established; freshID retry after stability/cooling, no user blame or power epoch change."
+        },
+        {
+          "UTC": "2026-10-04T08:07:20.476526+00:00",
+          "event": "Battery API reports20%; hold demanding tests at20% to preserve phone charge."
+        },
+        {
+          "UTC": "2026-10-04T09:15:50.298813+00:00",
+          "uncertain_since_UTC": "2026-10-04T09:13:49.742869+00:00",
+          "event": "Battery API observed power transition UNPLUGGED -> PLUGGED_AC; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-04T09:21:51.933283+00:00",
+          "event": "Battery recovered to25%; fresh settling before demanding tests."
+        },
+        {
+          "UTC": "2026-10-04T14:19:23.098298+00:00",
+          "uncertain_since_UTC": "2026-10-04T14:17:22.539493+00:00",
+          "event": "Battery API observed power transition PLUGGED_AC -> UNPLUGGED; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-04T14:29:54.866090+00:00",
+          "event": "User explicitly resumes unplugged tests, asks scheduled pause in about1-1.5hours. API94%/unplugged corroborates; retain existing settled API power epoch. Choose75-minute session."
+        },
+        {
+          "UTC": "2026-10-04T15:43:18.857769+00:00",
+          "event": "User-requested60-90minute pause honored at natural completion of600s pair, just before75minute deadline. No active measurement workers; wait for explicit resume."
+        },
+        {
+          "UTC": "2026-10-04T15:44:32.140890+00:00",
+          "event": "User explicitly resumes, revokes scheduled stopping, and authorizes recommended routine decisions. Remain in independently monitored unplugged epoch; battery/thermal/foreground guards retained."
+        },
+        {
+          "UTC": "2026-10-04T19:35:41.085953+00:00",
+          "event": "Mapping-budget timed comparison first two points excluded by Android top-app/background changes. Cancel remaining point after recording evidence; proceed untimed handoff numerical gates and allocation characterization. No user phone-use cause inferred, no power epoch change, no safety guards relaxed."
+        },
+        {
+          "UTC": "2026-10-04T21:00:01.682935+00:00",
+          "event": "Battery API reports20%; hold demanding tests at20% to preserve phone charge."
+        },
+        {
+          "UTC": "2026-10-04T21:28:19.971838+00:00",
+          "uncertain_since_UTC": "2026-10-04T21:26:19.476241+00:00",
+          "event": "Battery API observed power transition UNPLUGGED -> PLUGGED_AC; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-04T21:36:22.129351+00:00",
+          "event": "Battery recovered to26%; fresh settling before demanding tests."
+        },
+        {
+          "UTC": "2026-10-05T00:56:08.295621+00:00",
+          "event": "User requests finish/report/commit/push, then pause all investigation until next explicit resume."
+        },
+        {
+          "UTC": "2026-10-05T08:11:15.432595+00:00",
+          "event": "User explicitly resumes next session unplugged. Battery API corroborates93%; fresh independent power epoch/five-minute settling, guards retained."
+        }
+      ],
+      "power_epoch": "resume-20261005T081115Z-UNPLUGGED",
+      "charging_status": "Android battery API reports UNPLUGGED",
+      "measurement_not_before_UTC": "2026-10-05T08:16:15.432595+00:00",
+      "activity_condition": "User requested resume; other activity not independently eliminated. Stable sampled affinity/cgroups/power/thermal admission still required.",
+      "execution_policy": "nice10-ui-headroom01",
+      "cpu_nice_increment": 10,
+      "minimum_MemAvailable_MiB": 1536,
+      "minimum_cooldown_seconds": 30,
+      "power_epoch_before_phone_hold": "api-20261003T145021Z-UNPLUGGED",
+      "phone_use_hold": false,
+      "investigation_paused_by_user": false,
+      "pause_recorded_utc": "2026-10-05T00:56:08.295621+00:00",
+      "battery_low_hold": false
+    },
+    "exit_code": 0,
+    "abort_reason": null,
+    "parse_error": null,
+    "wall_seconds": 33.0618754040006,
+    "cooldown_seconds": 30.013682331999917,
+    "llama_library_paths": [
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/libggml-base.so.0.25.3",
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/libggml-cpu.so.0.25.3",
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/libggml-hexagon.so.0.25.3",
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/libggml.so.0.25.3",
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/libllama.so.0.5.0"
+    ],
+    "before": {
+      "UTC": "2026-10-05T09:58:07.107888+00:00",
+      "monotonic": 7275.441165556,
+      "temperatures_C": {
+        "gpuss-4": 36.0,
+        "nsphmx-3": 35.4,
+        "cpuss-1": 37.4,
+        "pm8550vs_d_tz": 33.893,
+        "cpu-1-2-0": 38.1,
+        "pm8550-bcl-lvl0": 0.0,
+        "gpuss-2": 35.6,
+        "nsphmx-1": 35.4,
+        "aoss-0": 35.4,
+        "pm8550ve_tz": 33.057,
+        "cpu-1-1-1": 35.8,
+        "mdmss-2": 34.8,
+        "gpuss-0": 35.2,
+        "cpu-2-2-0": 36.6,
+        "nsphvx-1": 36.6,
+        "battery": 28.6,
+        "cpu-1-0-1": 35.8,
+        "mdmss-0": 36.0,
+        "camera-1": 36.2,
+        "cpu-2-1-0": 36.6,
+        "sdr_mmw_therm": 27.0,
+        "cpu-0-1-0": 38.5,
+        "ac": 30.9,
+        "mmw_ific0": 30.0,
+        "cpu-2-2-1": 37.4,
+        "gpuss-7": 36.8,
+        "camera-0": 36.2,
+        "cpu-2-0-0": 37.7,
+        "pa-therm2-sys3": 33.744,
+        "cpu-0-0-0": 38.5,
+        "pmr735d_tz": 37.0,
+        "gpuss-5": 36.4,
+        "video": 38.9,
+        "cpuss-2": 36.6,
+        "pm8550vs_e_tz": 34.361,
+        "cpu-1-2-1": 37.7,
+        "pm8550-bcl-lvl1": 0.0,
+        "gpuss-3": 35.2,
+        "nsphmx-2": 35.4,
+        "cpuss-0": 37.0,
+        "pm8550vs_c_tz": 32.823,
+        "aoss-1": 37.0,
+        "mdmss-3": 36.0,
+        "gpuss-1": 36.0,
+        "nsphmx-0": 36.2,
+        "pm8550_tz": 36.703,
+        "cpu-1-1-0": 36.2,
+        "mdmss-1": 34.4,
+        "aoss-2": 36.8,
+        "cpu-2-1-1": 38.9,
+        "nsphvx-0": 37.4,
+        "cpu-1-0-0": 35.4,
+        "cpu-2-0-1": 38.1,
+        "mmw_pa3": 27.0,
+        "xo-therm": 32.75,
+        "sdr0": 30.0,
+        "gpuss-6": 36.0,
+        "ddr": 37.7,
+        "cpuss-3": 36.2,
+        "pm8550vs_g_tz": 32.99,
+        "cpu-1-2-2": 37.4,
+        "pm8550-bcl-lvl2": 0.0
+      },
+      "cooling_device_states": {
+        "gpu": "0",
+        "cpufreq-cpu2": "0",
+        "cpu-cluster3": "0",
+        "cdsp_sw_hmx": "0",
+        "cpu-cluster1": "0",
+        "cdsp": "0",
+        "gpu-dump-skip-cdev": "0",
+        "cdsp_hw": "0",
+        "cpufreq-cpu5": "0",
+        "cpufreq-cpu0": "0",
+        "cpu-cluster2": "0",
+        "cdsp_sw_hvx": "0",
+        "cpu-cluster0": "0",
+        "cdsp_ss": "0",
+        "cpufreq-cpu7": "0"
+      },
+      "meminfo_kB": {
+        "MemTotal": 11350708,
+        "MemFree": 491232,
+        "MemAvailable": 8087588,
+        "Buffers": 3376,
+        "Cached": 3606832,
+        "SwapCached": 16884,
+        "Active": 2658968,
+        "Inactive": 1227328,
+        "Unevictable": 228348,
+        "Mlocked": 136856,
+        "SwapTotal": 16777212,
+        "SwapFree": 14607868,
+        "Dirty": 0,
+        "Writeback": 132,
+        "AnonPages": 921668,
+        "Mapped": 578764,
+        "Shmem": 13380,
+        "KReclaimable": 4329420,
+        "Slab": 764392,
+        "SReclaimable": 241856,
+        "SUnreclaim": 522536,
+        "KernelStack": 81640,
+        "ShadowCallStack": 0,
+        "PageTables": 157628,
+        "SecPageTables": 0,
+        "NFS_Unstable": 0,
+        "Bounce": 0,
+        "WritebackTmp": 0,
+        "CommitLimit": 22196564,
+        "Committed_AS": 247509668,
+        "VmallocTotal": 259653632,
+        "VmallocUsed": 279280,
+        "VmallocChunk": 0,
+        "Percpu": 11776,
+        "AnonHugePages": 94208,
+        "ShmemHugePages": 0,
+        "ShmemPmdMapped": 0,
+        "FileHugePages": 0,
+        "FilePmdMapped": 0,
+        "HugepagePool": 12288,
+        "CmaTotal": 540672,
+        "CmaFree": 3632,
+        "DmaHeapPool": 4081812,
+        "system": 90028,
+        "RbinTotal": 512000,
+        "RbinAlloced": 1284,
+        "RbinFree": 0,
+        "RbinCached": 510716,
+        "zram0": 576400,
+        "GpuTotal": 104656,
+        "GpuSwap": 0,
+        "KgslShmemUsage": 89404
+      },
+      "cpu_kHz": {
+        "0": "787200",
+        "1": "787200",
+        "2": "1497600",
+        "3": "1497600",
+        "4": "1497600",
+        "5": "499200",
+        "6": "499200",
+        "7": "902400"
+      },
+      "cpu_max_kHz": {
+        "0": "1689600",
+        "1": "1689600",
+        "2": "2707200",
+        "3": "2707200",
+        "4": "2707200",
+        "5": "2707200",
+        "6": "2707200",
+        "7": "2745600"
+      },
+      "cpu_online": "0-7",
+      "harness_allowed_CPUs": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "harness_cgroup": "5:freezer:/\n4:cpuset:/top-app\n3:cpuacct:/top-app\n2:cpu:/top-app\n1:blkio:/top\n0::/apps/uid_10247/pid_29688",
+      "cpusets": {
+        "top-app": null,
+        "foreground": null,
+        "background": null
+      },
+      "gpu": {
+        "clock_mhz": "231",
+        "max_gpuclk": "680000000",
+        "thermal_pwrlevel": "6",
+        "gpu_busy_percentage": "1 %",
+        "gpubusy": "17261 1016892",
+        "temp": "36800",
+        "reset_count": "4343"
+      },
+      "loadavg": null,
+      "public_thermal_admission": {
+        "monotonic_s": 7267.243654257,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.566666663
+      }
+    },
+    "after": {
+      "UTC": "2026-10-05T09:58:40.204130+00:00",
+      "monotonic": 7308.537402158,
+      "temperatures_C": {
+        "gpuss-4": 57.0,
+        "nsphmx-3": 54.1,
+        "cpuss-1": 64.6,
+        "pm8550vs_d_tz": 47.544,
+        "cpu-1-2-0": 64.2,
+        "pm8550-bcl-lvl0": 0.0,
+        "gpuss-2": 51.9,
+        "nsphmx-1": 55.3,
+        "aoss-0": 58.8,
+        "pm8550ve_tz": 47.308,
+        "cpu-1-1-1": 58.8,
+        "mdmss-2": 53.5,
+        "gpuss-0": 54.3,
+        "cpu-2-2-0": 64.2,
+        "nsphvx-1": 59.6,
+        "battery": 29.2,
+        "cpu-1-0-1": 60.3,
+        "mdmss-0": 57.4,
+        "camera-1": 53.3,
+        "cpu-2-1-0": 64.6,
+        "sdr_mmw_therm": 27.0,
+        "cpu-0-1-0": 63.1,
+        "ac": 39.5,
+        "mmw_ific0": 40.0,
+        "cpu-2-2-1": 67.4,
+        "gpuss-7": 55.5,
+        "camera-0": 54.9,
+        "cpu-2-0-0": 65.4,
+        "pa-therm2-sys3": 42.636,
+        "cpu-0-0-0": 60.7,
+        "pmr735d_tz": 37.0,
+        "gpuss-5": 55.1,
+        "video": 64.2,
+        "cpuss-2": 62.3,
+        "pm8550vs_e_tz": 51.006,
+        "cpu-1-2-1": 62.7,
+        "pm8550-bcl-lvl1": 0.0,
+        "gpuss-3": 50.7,
+        "nsphmx-2": 54.1,
+        "cpuss-0": 64.6,
+        "pm8550vs_c_tz": 42.971,
+        "aoss-1": 59.6,
+        "mdmss-3": 56.3,
+        "gpuss-1": 54.7,
+        "nsphmx-0": 56.1,
+        "pm8550_tz": 48.283,
+        "cpu-1-1-0": 58.4,
+        "mdmss-1": 52.7,
+        "aoss-2": 59.8,
+        "cpu-2-1-1": 66.6,
+        "nsphvx-0": 59.6,
+        "cpu-1-0-0": 59.6,
+        "cpu-2-0-1": 65.4,
+        "mmw_pa3": 27.0,
+        "xo-therm": 36.369,
+        "sdr0": 40.0,
+        "gpuss-6": 55.9,
+        "ddr": 60.7,
+        "cpuss-3": 60.3,
+        "pm8550vs_g_tz": 47.846,
+        "cpu-1-2-2": 62.3,
+        "pm8550-bcl-lvl2": 0.0
+      },
+      "cooling_device_states": {
+        "gpu": "0",
+        "cpufreq-cpu2": "0",
+        "cpu-cluster3": "0",
+        "cdsp_sw_hmx": "0",
+        "cpu-cluster1": "0",
+        "cdsp": "0",
+        "gpu-dump-skip-cdev": "0",
+        "cdsp_hw": "0",
+        "cpufreq-cpu5": "0",
+        "cpufreq-cpu0": "0",
+        "cpu-cluster2": "0",
+        "cdsp_sw_hvx": "0",
+        "cpu-cluster0": "0",
+        "cdsp_ss": "0",
+        "cpufreq-cpu7": "0"
+      },
+      "meminfo_kB": {
+        "MemTotal": 11350708,
+        "MemFree": 1520576,
+        "MemAvailable": 7730148,
+        "Buffers": 1780,
+        "Cached": 3478432,
+        "SwapCached": 14664,
+        "Active": 902520,
+        "Inactive": 2587340,
+        "Unevictable": 228728,
+        "Mlocked": 136856,
+        "SwapTotal": 16777212,
+        "SwapFree": 14481660,
+        "Dirty": 220,
+        "Writeback": 0,
+        "AnonPages": 657056,
+        "Mapped": 380632,
+        "Shmem": 11892,
+        "KReclaimable": 3071652,
+        "Slab": 760820,
+        "SReclaimable": 238860,
+        "SUnreclaim": 521960,
+        "KernelStack": 77628,
+        "ShadowCallStack": 0,
+        "PageTables": 145784,
+        "SecPageTables": 0,
+        "NFS_Unstable": 0,
+        "Bounce": 0,
+        "WritebackTmp": 0,
+        "CommitLimit": 22196564,
+        "Committed_AS": 222188044,
+        "VmallocTotal": 259653632,
+        "VmallocUsed": 275128,
+        "VmallocChunk": 0,
+        "Percpu": 11776,
+        "AnonHugePages": 26624,
+        "ShmemHugePages": 0,
+        "ShmemPmdMapped": 0,
+        "FileHugePages": 0,
+        "FilePmdMapped": 0,
+        "HugepagePool": 96256,
+        "CmaTotal": 540672,
+        "CmaFree": 36280,
+        "DmaHeapPool": 2826972,
+        "system": 697396,
+        "RbinTotal": 512000,
+        "RbinAlloced": 1284,
+        "RbinFree": 0,
+        "RbinCached": 510716,
+        "zram0": 612528,
+        "GpuTotal": 104812,
+        "GpuSwap": 0,
+        "KgslShmemUsage": 89560
+      },
+      "cpu_kHz": {
+        "0": "787200",
+        "1": "787200",
+        "2": "2246400",
+        "3": "2246400",
+        "4": "2246400",
+        "5": "499200",
+        "6": "499200",
+        "7": "902400"
+      },
+      "cpu_max_kHz": {
+        "0": "1689600",
+        "1": "1689600",
+        "2": "2246400",
+        "3": "2246400",
+        "4": "2246400",
+        "5": "2131200",
+        "6": "2131200",
+        "7": "2246400"
+      },
+      "cpu_online": "0-7",
+      "harness_allowed_CPUs": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "harness_cgroup": "5:freezer:/\n4:cpuset:/top-app\n3:cpuacct:/top-app\n2:cpu:/top-app\n1:blkio:/top\n0::/apps/uid_10247/pid_29688",
+      "cpusets": {
+        "top-app": null,
+        "foreground": null,
+        "background": null
+      },
+      "gpu": {
+        "clock_mhz": "231",
+        "max_gpuclk": "680000000",
+        "thermal_pwrlevel": "6",
+        "gpu_busy_percentage": "1 %",
+        "gpubusy": "15126 1005488",
+        "temp": "56600",
+        "reset_count": "4356"
+      },
+      "loadavg": null
+    },
+    "max_process_RSS_kB": 4449544,
+    "max_process_PSS_kB": 4446995,
+    "max_process_swap_kB": 7652,
+    "min_system_MemAvailable_kB": 3464576,
+    "allocations": {
+      "buffers": [
+        {
+          "backend": "CPU_Mapped",
+          "kind": "model",
+          "MiB": 4165.37,
+          "line": "load_tensors:   CPU_Mapped model buffer size =  4165.37 MiB"
+        },
+        {
+          "backend": "CPU",
+          "kind": "output",
+          "MiB": 0.12,
+          "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+        },
+        {
+          "backend": "CPU",
+          "kind": "KV",
+          "MiB": 128.0,
+          "line": "llama_kv_cache:        CPU KV buffer size =   128.00 MiB"
+        },
+        {
+          "backend": "CPU",
+          "kind": "compute",
+          "MiB": 29.25,
+          "line": "sched_reserve:        CPU compute buffer size =    29.25 MiB"
+        },
+        {
+          "backend": "CPU",
+          "kind": "model",
+          "MiB": 1200.94,
+          "line": "load_tensors:          CPU model buffer size =  1200.94 MiB"
+        },
+        {
+          "backend": "HTP0",
+          "kind": "model",
+          "MiB": 3265.11,
+          "line": "load_tensors:         HTP0 model buffer size =  3265.11 MiB"
+        },
+        {
+          "backend": "CPU",
+          "kind": "output",
+          "MiB": 0.12,
+          "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+        },
+        {
+          "backend": "CPU",
+          "kind": "KV",
+          "MiB": 36.0,
+          "line": "llama_kv_cache:        CPU KV buffer size =    36.00 MiB"
+        },
+        {
+          "backend": "HTP0",
+          "kind": "KV",
+          "MiB": 92.0,
+          "line": "llama_kv_cache:       HTP0 KV buffer size =    92.00 MiB"
+        },
+        {
+          "backend": "HTP0",
+          "kind": "compute",
+          "MiB": 27.25,
+          "line": "sched_reserve:       HTP0 compute buffer size =    27.25 MiB"
+        },
+        {
+          "backend": "CPU",
+          "kind": "compute",
+          "MiB": 29.25,
+          "line": "sched_reserve:        CPU compute buffer size =    29.25 MiB"
+        }
+      ],
+      "layers_offloaded": [
+        [
+          0,
+          33
+        ],
+        [
+          24,
+          33
+        ]
+      ],
+      "context_and_memory_lines": [
+        "print_info: model params          = 7.24 B",
+        "llama_context: n_ctx                 = 1024",
+        "llama_kv_cache:        CPU KV buffer size =   128.00 MiB",
+        "print_info: model params          = 7.24 B",
+        "llama_context: n_ctx                 = 1024",
+        "llama_kv_cache:        CPU KV buffer size =    36.00 MiB",
+        "llama_kv_cache:       HTP0 KV buffer size =    92.00 MiB"
+      ]
+    },
+    "benchmark_rows": null,
+    "public_thermal_samples": [
+      {
+        "monotonic_s": 7275.842576076,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.546729863
+      },
+      {
+        "monotonic_s": 7285.843722947,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.633714139
+      },
+      {
+        "monotonic_s": 7295.844576225,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.748083472
+      },
+      {
+        "monotonic_s": 7305.846220127,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.782475531
+      }
+    ],
+    "public_thermal_monitor_available": true,
+    "numerical_validation": {
+      "steps": 32,
+      "top1_agreements": 32,
+      "logit_RMSE": 0.04467419,
+      "max_abs_logit_error": 0.27859926,
+      "mean_KL": 1.169e-05,
+      "all_logits_finite": true
+    },
+    "affinity_error_count": 0,
+    "controlled_comparison_issues": [],
+    "controlled_comparison_valid": true
+  },
+  "command_provenance": {
+    "harness_source_sha256": "6b45dfa3b08d7a4b6ca3cfd549598ec547c033232db19cb89ab7930a7fb06e7b",
+    "harness_telemetry_revision": "public-thermal-admission-light-v1",
+    "config": {
+      "group": "mistral7-canonical-highpartial-quality",
+      "mode": "logits",
+      "binary": "~/llama-opencl-build/performance-investigation/sustained-tools-v2/compare-logits-npu-configurable",
+      "library_directory": "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin",
+      "environment": {
+        "ADSP_LIBRARY_PATH": "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/ggml/src/ggml-hexagon",
+        "GGML_HEXAGON_PROFILE": "0",
+        "GGML_HEXAGON_MBUF": "512",
+        "GGML_HEXAGON_VMEM": "3200",
+        "GGML_HEXAGON_VERBOSE": "0",
+        "GGML_HEXAGON_REGISTRATION_WINDOW": "3072"
+      },
+      "additional_artifacts": [
+        "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/ggml/src/ggml-hexagon/libggml-htp-v75.so"
+      ],
+      "source_variant": "registration-hybrid:partial24-quality",
+      "steps": 32,
+      "prefill_validation_tokens": 128,
+      "cooldown": 30,
+      "timeout": 1200,
+      "validation_timing_not_comparable": true,
+      "id": "mistral7-partial24-registration-quality-20261005T095725Z",
+      "model": "mistral-7b-uncensored",
+      "attention": "on",
+      "device": "HTP0",
+      "ngl": 24,
+      "repack": 0,
+      "validation_arguments": [
+        "24",
+        "0",
+        "on"
+      ],
+      "public_thermal": true,
+      "stop_schedule_if_failure": true,
+      "context": 1024,
+      "process_mask": "fc",
+      "max_battery": 36,
+      "max_cpu": 50,
+      "max_gpu": 43,
+      "max_npu": 43,
+      "max_public_thermal_status": 0,
+      "max_public_thermal_headroom": 0.9,
+      "cooling_timeout": 1200,
+      "stop_on_failure": false,
+      "execution_policy": "nice10-ui-headroom01",
+      "cpu_nice_increment": 10,
+      "harness_nice": 0,
+      "expected_worker_nice": 10,
+      "minimum_MemAvailable_MiB": 1536
+    },
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "taskset",
+      "fc",
+      "~/llama-opencl-build/performance-investigation/sustained-tools-v2/compare-logits-npu-configurable",
+      "~/models/mistral-7b-uncensored/mistral-7b-uncensored.Q4_K_M.gguf",
+      "32",
+      "128",
+      "24",
+      "0",
+      "on"
+    ],
+    "artifact_sha256": {
+      "~/llama-opencl-build/performance-investigation/sustained-tools-v2/compare-logits-npu-configurable": "6165bf2aa34c23ad9187b1ad6528d3f2ea08866143637bde2aabdb8afddbb712",
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/libllama.so.0.5.0": "ee8c3f6212c088fce05b8eb31de12bdeffe71391187ac5343970f875ae0d168f",
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/libggml.so.0.25.3": "825646f17c88a4d72a1558694b6d4f8e92d1cfc491ede1fc6550f13815fe1922",
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/libggml-base.so.0.25.3": "26a6584a0f947685091834ecc2dd2570115ad35b2d63f82233fc63807ebb689d",
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/libggml-cpu.so.0.25.3": "4d4fc5a240c7542d4409c4deac6efdde9a8302342b26fce90f4989040a5243e9",
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/libggml-hexagon.so.0.25.3": "5990eb898f92dbcd4dc90a0a3bccc9ac7bbbd9dfda31773a0cabb05fee7fc788",
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/ggml/src/ggml-hexagon/libggml-htp-v75.so": "143dc04a13c3ca56549cc5f644857b6e23976a14d4a4062a28024b17e2c1843c"
+    },
+    "environment": {
+      "LD_LIBRARY_PATH": "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin",
+      "GGML_OPENCL_KERNEL_CACHE_DIR": "~/llama-opencl-build/performance-investigation/kernel-cache",
+      "KMP_BLOCKTIME": null,
+      "OMP_WAIT_POLICY": null,
+      "OMP_NUM_THREADS": null,
+      "OMP_PROC_BIND": null,
+      "OMP_PLACES": null,
+      "ADSP_LIBRARY_PATH": "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/ggml/src/ggml-hexagon",
+      "GGML_HEXAGON_PROFILE": "0",
+      "GGML_HEXAGON_NHVX": null,
+      "GGML_HEXAGON_NHMX": null,
+      "GGML_HEXAGON_MM_SELECT": null,
+      "GGML_HEXAGON_OPBATCH": null,
+      "GGML_HEXAGON_OPQUEUE": null
+    },
+    "model_metadata": {
+      "id": "mistral-7b-uncensored",
+      "path": "~/models/mistral-7b-uncensored/mistral-7b-uncensored.Q4_K_M.gguf",
+      "file_bytes": 4368440640,
+      "weight_data_bytes": 4367704064,
+      "tensor_parameter_count": 7241732096,
+      "architecture": "llama",
+      "file_type": 15,
+      "quantization": "Q4_K_M",
+      "blocks": 32,
+      "attention_heads": 32,
+      "KV_heads": 8,
+      "key_dimension": null,
+      "value_dimension": null,
+      "embedding_dimension": 4096,
+      "trained_context": 32768,
+      "tensor_parameters_by_type": {
+        "12": 6103760896,
+        "0": 266240,
+        "14": 1137704960
+      },
+      "key_dimension_effective": 128,
+      "value_dimension_effective": 128,
+      "full_attention_blocks": 32,
+      "theoretical_f16_KV_MiB_per_token": 0.125
+    }
+  },
+  "raw_result_sha256": "cbb1ef4f8ad0784af51380e3476adc3d34423543931609299c416104a817780b"
+}

@@ -1,0 +1,16 @@
+{
+  "records": [
+    {
+      "id": "mistral7-registration-foreground-20261005T095232Z-window2048",
+      "issues": [],
+      "status": null,
+      "exit_code": 0
+    },
+    {
+      "id": "mistral7-registration-foreground-20261005T095232Z-window3072",
+      "issues": [],
+      "status": null,
+      "exit_code": 0
+    }
+  ]
+}

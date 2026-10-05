@@ -1,0 +1,65 @@
+{
+  "UTC": "2026-10-05T15:31:37.535087+00:00",
+  "scope": "Incomplete charging thread screen, no NPU/hybrid speed result. No thermal/power pooling. CPU4/5/6 points screening only. NPU warm-response evaluation withheld by fixed cold-admission timeout after600s, not actual inference/driver failure. Remaining hybrid/CPU bracket did not run.",
+  "plan": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-schedule.json",
+  "records": [
+    {
+      "id": "qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case0-cpu-t6",
+      "completed": true,
+      "exit": 0,
+      "issues": [],
+      "metrics": {
+        "prefill_tok_s": 59.226884569,
+        "decode_tok_s": 8.311855646,
+        "total_response_s": 24.176815252,
+        "postload_admission_s": 96.109717932
+      }
+    },
+    {
+      "id": "qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case1-cpu-t4",
+      "completed": true,
+      "exit": 0,
+      "issues": [],
+      "metrics": {
+        "prefill_tok_s": 57.89537181,
+        "decode_tok_s": 10.804773657,
+        "total_response_s": 20.850516086,
+        "postload_admission_s": 110.110371624
+      }
+    },
+    {
+      "id": "qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case2-cpu-t5",
+      "completed": true,
+      "exit": 0,
+      "issues": [],
+      "metrics": {
+        "prefill_tok_s": 55.681203248,
+        "decode_tok_s": 11.312882627,
+        "total_response_s": 20.705766763,
+        "postload_admission_s": 20.02968218
+      }
+    },
+    {
+      "id": "qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case3-gpu-t6",
+      "completed": true,
+      "exit": 3,
+      "issues": [
+        "Run failed, was aborted, or did not parse"
+      ],
+      "metrics": {
+        "prefill_tok_s": null,
+        "decode_tok_s": null,
+        "total_response_s": null,
+        "postload_admission_s": null
+      }
+    },
+    {
+      "id": "qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case4-hybrid-t6",
+      "completed": false
+    },
+    {
+      "id": "qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case5-cpu-t6",
+      "completed": false
+    }
+  ]
+}

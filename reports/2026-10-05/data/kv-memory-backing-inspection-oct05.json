@@ -1,0 +1,8 @@
+{
+  "UTC": "20261005T104247Z",
+  "NPU_KV_source": "source-npu-registration-hybrid/ggml/src/ggml-hexagon/ggml-hexagon.cpp:2055: nonrepacked F16 get uses memcpy fromtensor.data; allocation rpcmem_alloc2(RPCMEM_HEAP_ID_SYSTEM,RPCMEM_DEFAULT_FLAGS,size). SDK incs/rpcmem.h describes defaultflags cached.",
+  "OpenCL_KV_source": "source-hybrid/ggml/src/ggml-opencl/ggml-opencl.cpp:12750: clEnqueueReadBuffer CL_TRUE; allocation primary CL_MEM_READ_WRITE, HOST_PTR only last-resort fallback. No zero-copy assumption.",
+  "handoff": "llama-kv-cache.cpp:perf_migrate_cpu allocates CPU buft, copies all base tensors, then releases old driverbuffer. Actual duplicate backing duringcopy; preserves metadata/positions. CPU-resident existingbuffer skipped.",
+  "opportunity": "NPU F16 host pointer alias could avoid duplicate KV/copy, but needs lifetime ownership/coherency/performance qualification. Notimplemented. Converted NPU quant weights differ from canonical CPU layout, cannot infer weight alias from KV.",
+  "known_good_preserved": true
+}

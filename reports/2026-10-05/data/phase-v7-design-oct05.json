@@ -1,0 +1,7 @@
+{
+  "UTC": "2026-10-05T10:38:57.955495+00:00",
+  "template_sha256": "9cb8f3fa79261604e2efcbc8cc56fb1481d0df65806ae9e8f4ef40a4f4c448a7",
+  "source_sha256": "efd88208451440682649cdcaf13e256f6e12448b7e346f0a14ba21e539ae50a0",
+  "change": "Optional GGML_PERF_PHASE_THREADS_BATCH, default same as decode threads. Context n_threads_batch independent of n_threads; attached threadpool capacity max; both counts recorded. No model/backend/handoff changes.",
+  "hypothesis": "Best CPU prefill and decode may use different thread counts. Six prefill workers plus four decode workers on explicit ordered places7/4/5/6/2/3 should be compared honestly with NPU/hybrid. No performance outcome yet."
+}

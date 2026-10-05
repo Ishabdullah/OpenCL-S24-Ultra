@@ -1,0 +1,29 @@
+{
+  "UTC": "2026-10-05T16:16:16.807453+00:00",
+  "hypothesis": "Determine whether CPU-only mode in the same compiled helper actually executes OpenCL work or only eagerly probes/initializes vendor context.",
+  "source": "llama-opencl-build/performance-investigation/source-hybrid/ggml/src/ggml-opencl/ggml-opencl.cpp",
+  "facts": [
+    {
+      "line": 6466,
+      "fact": "Backend registration/probe creates a shared cl_context during eager device enumeration."
+    },
+    {
+      "line": 6659,
+      "fact": "ggml_cl_init initializes the per-device compute backend separately."
+    },
+    {
+      "line": 12954,
+      "fact": "Backend init calls ggml_cl_init and increments backend refcount."
+    },
+    {
+      "line": 12994,
+      "fact": "OpenCL supports_op may lazily initialize compute state if queried."
+    },
+    {
+      "helper": "hybrid-latency-phase-v7-batch-threads.cpp",
+      "fact": "CPU mode selects no accelerator devices, n_gpu_layers0, op_offloadfalse and offload_kqvfalse."
+    }
+  ],
+  "log_control": "generic-Qwen4-8K-bestcpu-retry-20261005T160932Z-case0-cpu/stderr.txt",
+  "conclusion": "CPU-only in the OpenCL-enabled helper includes vendor driver/context discovery; CPU model/graphs are explicitly CPU resident. Device-detected log is not proof of GPU computation. No idle GPU power/energy effect measured; pure CPU-only build sensitivity can be a later control if any marginal OpenCL win emerges."
+}

@@ -1,0 +1,22 @@
+{
+  "UTC": "2026-10-05T10:40:08.037707+00:00",
+  "command": [
+    "$PREFIX/bin/c++",
+    "-O2",
+    "-std=c++17",
+    "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v7-batch-threads.cpp",
+    "-I~/llama-opencl-build/performance-investigation/source-npu-registration-hybrid/include",
+    "-I~/llama-opencl-build/performance-investigation/source-npu-registration-hybrid/ggml/include",
+    "-L~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin",
+    "-Wl,-rpath,$ORIGIN",
+    "-lllama",
+    "-lggml",
+    "-lggml-cpu",
+    "-lggml-base",
+    "-o",
+    "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/phase-npu-batch-threads"
+  ],
+  "exit_code": 0,
+  "source_sha256": "efd88208451440682649cdcaf13e256f6e12448b7e346f0a14ba21e539ae50a0",
+  "binary_sha256": "7e04885df237219aa07f32efec06089f081928addced31a43591a47e3f4bdf2c"
+}

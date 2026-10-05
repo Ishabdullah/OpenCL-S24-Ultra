@@ -1,0 +1,1229 @@
+{
+  "result_without_full_telemetry": {
+    "id": "generic-Qwen1p5-8K-three-20261005T185136Z-case1-hybrid",
+    "config": {
+      "mode": "hybrid",
+      "group": "generic-Qwen1p5-8K-three",
+      "model": "qwen2.5-coder-1.5b",
+      "binary": "~/llama-opencl-build/performance-investigation/phase-tools-v7/phase-opencl-batch-threads",
+      "library_directory": "~/llama-opencl-build/performance-investigation/build-hybrid/bin",
+      "source_variant": "generic-opencl-handoff:phase-v7",
+      "threads": 6,
+      "process_mask": "fc",
+      "prompt": 8192,
+      "generation": 128,
+      "context": 8704,
+      "batch": 512,
+      "ubatch": 256,
+      "attention": "on",
+      "shadow": "mmap",
+      "drop_gpu": true,
+      "cooldown": 60,
+      "timeout": 1800,
+      "max_battery": 36,
+      "max_cpu": 50,
+      "max_gpu": 43,
+      "max_npu": 43,
+      "public_thermal": true,
+      "max_public_thermal_status": 0,
+      "max_public_thermal_headroom": 0.9,
+      "minimum_MemAvailable_MiB": 1536,
+      "repack": 1,
+      "validation_timing_not_comparable": false,
+      "environment": {
+        "GGML_PERF_PHASE_DEVICE": "GPUOpenCL",
+        "GGML_PERF_PHASE_FA": "on",
+        "GGML_PERF_PHASE_THREADS_BATCH": "6"
+      },
+      "additional_artifacts": [
+        "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v7-batch-threads.cpp"
+      ],
+      "id": "generic-Qwen1p5-8K-three-20261005T185136Z-case1-hybrid",
+      "strategy": "hybrid",
+      "ngl": 99,
+      "additional_memory_reserve_MiB": 0,
+      "confirmation_round": 1,
+      "claim_limit": "User-bounded three-case screen, existing1.5B selected for safe presentRAM rather than relax1536MiBreserve. p8192/g128/c8704, CPU6FC/FAon/b512ub256/F16KV, samegenericbuild/helper. ProfilingOFF/specializedkernelsOFF. Warmresponse excludes separately recordedload/admission. No repeatedwinner or final4B8Kcrossover implied.",
+      "device": "GPUOpenCL",
+      "explicit_openmp_placement": false,
+      "threads_batch": 6,
+      "planned_power_epoch": "api-20261005T180328Z-UNPLUGGED",
+      "cooling_timeout": 1200,
+      "retry_of_plan": "generic-Qwen4-8K-bestcpu-retry-20261005T160932Z-schedule.json",
+      "placement_extension_sha256": "2fdd861b1fd1d5b93f6523be4dcd310fa13daa63d8109d3360684da698143a95",
+      "execution_policy": "nice10-ui-headroom01",
+      "cpu_nice_increment": 10,
+      "harness_nice": 0,
+      "expected_worker_nice": 10,
+      "delay": 10
+    },
+    "power_conditions": {
+      "user_reported": "User explicitly resumes; phone unplugged",
+      "reported_at_UTC": "2026-10-05T08:11:15.432595+00:00",
+      "Android_thermalservice_dump": "permission denied",
+      "battery_status_sysfs": "permission denied",
+      "temperature_and_frequency_sysfs": "readable",
+      "thermal_configuration": "unmodified",
+      "background_activity": "not independently controlled or eliminated",
+      "history": [
+        {
+          "user_reported": "Phone idle and unplugged",
+          "reported_at_UTC": "2026-10-02T20:58:31.460055+00:00",
+          "ended_at_UTC": "2026-10-02T23:21:52.081908+00:00"
+        },
+        {
+          "UTC": "2026-10-03T02:18:06.678534+00:00",
+          "event": "User reports phone use during some prior runs; exact intervals unknown. Affinity rejections may coincide with foreground/background changes."
+        },
+        {
+          "UTC": "2026-10-03T03:16:25.774494+00:00",
+          "event": "User reports unplugging charger; new unplugged power epoch. Unknown current benchmark overlap must be excluded."
+        },
+        {
+          "UTC": "2026-10-03T05:28:06.982116+00:00",
+          "event": "Session recovery after user-reported system crash; cause unknown. User reports charger reconnected; new charging epoch."
+        },
+        {
+          "UTC": "2026-10-03T06:02:30.347019+00:00",
+          "event": "User reports unplugging charger; new unplugged power epoch."
+        },
+        {
+          "UTC": "2026-10-03T06:40:27.860959+00:00",
+          "event": "Observed transient Android transition top-app -> moderate/background restricting CPUs to0,1,5,6; affected CPU7B PP1024 case automatically aborted/excluded. Top-app/all eight cores subsequently restored. Cause not established."
+        },
+        {
+          "UTC": "2026-10-03T06:43:21.591000+00:00",
+          "event": "User reports screen turned off / phone entered sleep mode near the observed Android CPU restriction. Consistent with top-app -> moderate/background trace; exact screen-off interval not independently timestamped."
+        },
+        {
+          "UTC": "2026-10-03T06:47:08.273062+00:00",
+          "event": "User reports screen freezes/input lag during some tests. Stop active heavy work; recovery window and lower-priority execution policy, not evidence of specific GPU/driver fault."
+        },
+        {
+          "UTC": "2026-10-03T07:25:11.572075+00:00",
+          "event": "User reports checking volume and expects conditions to remain stable. Interrupted runs remain excluded; do not infer all future intervals are idle without measured cgroup/core stability."
+        },
+        {
+          "UTC": "2026-10-03T08:48:38.438762+00:00",
+          "uncertain_since_UTC": "2026-10-03T08:46:36.865629+00:00",
+          "event": "Battery API observed power transition UNPLUGGED -> PLUGGED_AC; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-03T08:57:04.717897+00:00",
+          "event": "User reports connecting charger, corroborating existing battery API charging detection; keep the API-bracketed transition and settling epoch."
+        },
+        {
+          "UTC": "2026-10-03T14:50:21.854163+00:00",
+          "uncertain_since_UTC": "2026-10-03T14:39:38.469915+00:00",
+          "event": "Battery API observed power transition PLUGGED_AC -> UNPLUGGED; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-03T15:47:26.694624+00:00",
+          "event": "User reports prior phone use is finished and requests continuation; measured CPU/cgroup stability still required. Temporary Termux wake lock command returned0 but did not by itself restore restricted cores."
+        },
+        {
+          "UTC": "2026-10-03T15:52:30.780991+00:00",
+          "event": "User requests phone-use interval; hold demanding tests and exclude overlapping measurements until user reports finished."
+        },
+        {
+          "UTC": "2026-10-03T19:32:47.201196+00:00",
+          "event": "User reports finished using phone and requests continuation while charging. Fresh charging epoch and five-minute settling; retain all earlier power epochs and interrupted runs."
+        },
+        {
+          "UTC": "2026-10-03T19:33:03.038894+00:00",
+          "uncertain_since_UTC": "2026-10-03T15:58:15.449131+00:00",
+          "event": "Battery API observed power transition UNPLUGGED -> PLUGGED_AC; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-03T21:01:39.687410+00:00",
+          "uncertain_since_UTC": "2026-10-03T20:59:38.732485+00:00",
+          "event": "Battery API observed power transition PLUGGED_AC -> UNPLUGGED; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-03T21:25:23.461918+00:00",
+          "event": "User confirms phone unplugged; corroborates API-detected 21:01:39 UTC transition. Retain existing unplugged epoch and transition uncertainty bracket."
+        },
+        {
+          "UTC": "2026-10-04T00:34:19.171660+00:00",
+          "event": "User explicitly requested report publication then investigation pause until told to resume. All experiment controllers stopped."
+        },
+        {
+          "UTC": "2026-10-04T03:35:34.169928+00:00",
+          "event": "User explicitly resumes regular performance investigation and reports unplugged battery operation. API corroborates UNPLUGGED,81%,32.1C. Prior report and installer results remain immutable; new independent measurement epoch."
+        },
+        {
+          "UTC": "2026-10-04T04:33:02.981725+00:00",
+          "event": "Detected transient top-app -> foreground-boost at04:30:55UTC with all8available but benchmark affinity reset3-7 ->0-7. Benchmark aborted duringmodel loading, excluded. Currenttop-app/all8restored. Cause not established; freshID retry after stability/cooling, no user blame or power epoch change."
+        },
+        {
+          "UTC": "2026-10-04T08:07:20.476526+00:00",
+          "event": "Battery API reports20%; hold demanding tests at20% to preserve phone charge."
+        },
+        {
+          "UTC": "2026-10-04T09:15:50.298813+00:00",
+          "uncertain_since_UTC": "2026-10-04T09:13:49.742869+00:00",
+          "event": "Battery API observed power transition UNPLUGGED -> PLUGGED_AC; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-04T09:21:51.933283+00:00",
+          "event": "Battery recovered to25%; fresh settling before demanding tests."
+        },
+        {
+          "UTC": "2026-10-04T14:19:23.098298+00:00",
+          "uncertain_since_UTC": "2026-10-04T14:17:22.539493+00:00",
+          "event": "Battery API observed power transition PLUGGED_AC -> UNPLUGGED; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-04T14:29:54.866090+00:00",
+          "event": "User explicitly resumes unplugged tests, asks scheduled pause in about1-1.5hours. API94%/unplugged corroborates; retain existing settled API power epoch. Choose75-minute session."
+        },
+        {
+          "UTC": "2026-10-04T15:43:18.857769+00:00",
+          "event": "User-requested60-90minute pause honored at natural completion of600s pair, just before75minute deadline. No active measurement workers; wait for explicit resume."
+        },
+        {
+          "UTC": "2026-10-04T15:44:32.140890+00:00",
+          "event": "User explicitly resumes, revokes scheduled stopping, and authorizes recommended routine decisions. Remain in independently monitored unplugged epoch; battery/thermal/foreground guards retained."
+        },
+        {
+          "UTC": "2026-10-04T19:35:41.085953+00:00",
+          "event": "Mapping-budget timed comparison first two points excluded by Android top-app/background changes. Cancel remaining point after recording evidence; proceed untimed handoff numerical gates and allocation characterization. No user phone-use cause inferred, no power epoch change, no safety guards relaxed."
+        },
+        {
+          "UTC": "2026-10-04T21:00:01.682935+00:00",
+          "event": "Battery API reports20%; hold demanding tests at20% to preserve phone charge."
+        },
+        {
+          "UTC": "2026-10-04T21:28:19.971838+00:00",
+          "uncertain_since_UTC": "2026-10-04T21:26:19.476241+00:00",
+          "event": "Battery API observed power transition UNPLUGGED -> PLUGGED_AC; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-04T21:36:22.129351+00:00",
+          "event": "Battery recovered to26%; fresh settling before demanding tests."
+        },
+        {
+          "UTC": "2026-10-05T00:56:08.295621+00:00",
+          "event": "User requests finish/report/commit/push, then pause all investigation until next explicit resume."
+        },
+        {
+          "UTC": "2026-10-05T08:11:15.432595+00:00",
+          "event": "User explicitly resumes next session unplugged. Battery API corroborates93%; fresh independent power epoch/five-minute settling, guards retained."
+        },
+        {
+          "UTC": "2026-10-05T14:59:45.414852+00:00",
+          "uncertain_since_UTC": "2026-10-05T14:57:44.903946+00:00",
+          "event": "Battery API observed power transition UNPLUGGED -> PLUGGED_AC; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-05T15:44:05.135378+00:00",
+          "uncertain_since_UTC": "2026-10-05T15:42:03.342190+00:00",
+          "event": "Battery API observed power transition PLUGGED_AC -> UNPLUGGED; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-05T16:28:59.571468+00:00",
+          "event": "User requests time before stable Termux foreground access and will explicitly notify when ready. Hold demanding tests; stop admission controllers without changing guards."
+        },
+        {
+          "UTC": "2026-10-05T16:52:44.512039+00:00",
+          "uncertain_since_UTC": "2026-10-05T16:50:43.935611+00:00",
+          "event": "Battery API observed power transition UNPLUGGED -> PLUGGED_AC; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-05T18:03:28.972585+00:00",
+          "uncertain_since_UTC": "2026-10-05T18:01:27.371472+00:00",
+          "event": "Battery API observed power transition PLUGGED_AC -> UNPLUGGED; exclude the interval since the previous successful sample and start fresh five-minute settling."
+        },
+        {
+          "UTC": "2026-10-05T18:51:36.588197+00:00",
+          "event": "User explicitly resumes for three more tests. Fresh bounded set uses current settled API unplugged epoch,60second activity settling and all existing safety/timing guards. 4B8K currently below conservative memory budget; choose existing1.5B8K with same mode/workload controls."
+        }
+      ],
+      "power_epoch": "api-20261005T180328Z-UNPLUGGED",
+      "charging_status": "Android battery API reports UNPLUGGED",
+      "measurement_not_before_UTC": "2026-10-05T18:52:36.588197+00:00",
+      "activity_condition": "User authorizes exactly three more tests. Termux foreground/core access checked. Pause after bounded three-case set; no extra inference, automatic retries or diagnostics.",
+      "execution_policy": "nice10-ui-headroom01",
+      "cpu_nice_increment": 10,
+      "minimum_MemAvailable_MiB": 1536,
+      "minimum_cooldown_seconds": 30,
+      "power_epoch_before_phone_hold": "api-20261005T180328Z-UNPLUGGED",
+      "phone_use_hold": false,
+      "investigation_paused_by_user": false,
+      "pause_recorded_utc": "2026-10-05T00:56:08.295621+00:00",
+      "battery_low_hold": false,
+      "phone_hold_recorded_UTC": "2026-10-05T16:28:59.571468+00:00"
+    },
+    "exit_code": 0,
+    "abort_reason": null,
+    "parse_error": null,
+    "wall_seconds": 320.8159847729985,
+    "cooldown_seconds": 61.78962148699793,
+    "llama_library_paths": [
+      "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-base.so.0.25.3",
+      "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-cpu.so.0.25.3",
+      "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-opencl.so.0.25.3",
+      "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml.so.0.25.3",
+      "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libllama.so.0.5.0"
+    ],
+    "before": {
+      "UTC": "2026-10-05T18:58:39.348588+00:00",
+      "monotonic": 39707.681876361,
+      "temperatures_C": {
+        "gpuss-4": 41.6,
+        "nsphmx-3": 40.9,
+        "cpuss-1": 42.4,
+        "pm8550vs_d_tz": 40.45,
+        "cpu-1-2-0": 42.8,
+        "pm8550-bcl-lvl0": 0.0,
+        "gpuss-2": 40.8,
+        "nsphmx-1": 40.5,
+        "aoss-0": 40.9,
+        "pm8550ve_tz": 39.177,
+        "cpu-1-1-1": 40.9,
+        "mdmss-2": 40.4,
+        "gpuss-0": 40.4,
+        "cpu-2-2-0": 41.6,
+        "nsphvx-1": 41.6,
+        "battery": 33.4,
+        "cpu-1-0-1": 40.5,
+        "mdmss-0": 41.6,
+        "camera-1": 41.6,
+        "cpu-2-1-0": 42.4,
+        "sdr_mmw_therm": 27.0,
+        "cpu-0-1-0": 43.6,
+        "ac": 40.8,
+        "mmw_ific0": 40.0,
+        "cpu-2-2-1": 42.8,
+        "gpuss-7": 41.6,
+        "camera-0": 41.3,
+        "cpu-2-0-0": 42.4,
+        "pa-therm2-sys3": 40.638,
+        "cpu-0-0-0": 43.2,
+        "pmr735d_tz": 37.0,
+        "gpuss-5": 41.6,
+        "video": 43.6,
+        "cpuss-2": 41.6,
+        "pm8550vs_e_tz": 40.787,
+        "cpu-1-2-1": 42.0,
+        "pm8550-bcl-lvl1": 0.0,
+        "gpuss-3": 40.4,
+        "nsphmx-2": 40.9,
+        "cpuss-0": 41.6,
+        "pm8550vs_c_tz": 39.411,
+        "aoss-1": 41.3,
+        "mdmss-3": 41.2,
+        "gpuss-1": 41.2,
+        "nsphmx-0": 41.3,
+        "pm8550_tz": 43.543,
+        "cpu-1-1-0": 41.3,
+        "mdmss-1": 40.4,
+        "aoss-2": 42.0,
+        "cpu-2-1-1": 42.4,
+        "nsphvx-0": 42.0,
+        "cpu-1-0-0": 40.1,
+        "cpu-2-0-1": 42.8,
+        "mmw_pa3": 27.0,
+        "xo-therm": 39.366,
+        "sdr0": 40.0,
+        "gpuss-6": 41.2,
+        "ddr": 42.0,
+        "cpuss-3": 40.5,
+        "pm8550vs_g_tz": 39.645,
+        "cpu-1-2-2": 42.0,
+        "pm8550-bcl-lvl2": 0.0
+      },
+      "cooling_device_states": {
+        "gpu": "0",
+        "cpufreq-cpu2": "0",
+        "cpu-cluster3": "0",
+        "cdsp_sw_hmx": "0",
+        "cpu-cluster1": "0",
+        "cdsp": "0",
+        "gpu-dump-skip-cdev": "0",
+        "cdsp_hw": "0",
+        "cpufreq-cpu5": "0",
+        "cpufreq-cpu0": "0",
+        "cpu-cluster2": "0",
+        "cdsp_sw_hvx": "0",
+        "cpu-cluster0": "0",
+        "cdsp_ss": "0",
+        "cpufreq-cpu7": "0"
+      },
+      "meminfo_kB": {
+        "MemTotal": 11350708,
+        "MemFree": 1019444,
+        "MemAvailable": 5901076,
+        "Buffers": 3216,
+        "Cached": 4846264,
+        "SwapCached": 29792,
+        "Active": 5623272,
+        "Inactive": 1658428,
+        "Unevictable": 257088,
+        "Mlocked": 136928,
+        "SwapTotal": 16777212,
+        "SwapFree": 15160572,
+        "Dirty": 280,
+        "Writeback": 0,
+        "AnonPages": 3062228,
+        "Mapped": 1283944,
+        "Shmem": 40684,
+        "KReclaimable": 394888,
+        "Slab": 926892,
+        "SReclaimable": 302072,
+        "SUnreclaim": 624820,
+        "KernelStack": 106704,
+        "ShadowCallStack": 0,
+        "PageTables": 215704,
+        "SecPageTables": 0,
+        "NFS_Unstable": 0,
+        "Bounce": 0,
+        "WritebackTmp": 0,
+        "CommitLimit": 22196564,
+        "Committed_AS": 364849956,
+        "VmallocTotal": 259653632,
+        "VmallocUsed": 304796,
+        "VmallocChunk": 0,
+        "Percpu": 12480,
+        "AnonHugePages": 26624,
+        "ShmemHugePages": 0,
+        "ShmemPmdMapped": 0,
+        "FileHugePages": 0,
+        "FilePmdMapped": 0,
+        "HugepagePool": 0,
+        "CmaTotal": 540672,
+        "CmaFree": 472,
+        "DmaHeapPool": 90800,
+        "system": 94488,
+        "RbinTotal": 512000,
+        "RbinAlloced": 1284,
+        "RbinFree": 12988,
+        "RbinCached": 497728,
+        "zram0": 378172,
+        "GpuTotal": 133128,
+        "GpuSwap": 0,
+        "KgslShmemUsage": 117848
+      },
+      "cpu_kHz": {
+        "0": "787200",
+        "1": "787200",
+        "2": "1612800",
+        "3": "1612800",
+        "4": "1612800",
+        "5": "499200",
+        "6": "499200",
+        "7": "902400"
+      },
+      "cpu_max_kHz": {
+        "0": "1689600",
+        "1": "1689600",
+        "2": "2707200",
+        "3": "2707200",
+        "4": "2707200",
+        "5": "2707200",
+        "6": "2707200",
+        "7": "2745600"
+      },
+      "cpu_online": "0-7",
+      "harness_allowed_CPUs": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "harness_cgroup": "5:freezer:/\n4:cpuset:/top-app\n3:cpuacct:/top-app\n2:cpu:/top-app\n1:blkio:/top\n0::/apps/uid_10247/pid_29688",
+      "cpusets": {
+        "top-app": null,
+        "foreground": null,
+        "background": null
+      },
+      "gpu": {
+        "clock_mhz": "231",
+        "max_gpuclk": "680000000",
+        "thermal_pwrlevel": "6",
+        "gpu_busy_percentage": "1 %",
+        "gpubusy": "19249 1003799",
+        "temp": "42000",
+        "reset_count": "27500"
+      },
+      "loadavg": null,
+      "public_thermal_admission": {
+        "monotonic_s": 39699.489761885,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.730000079
+      }
+    },
+    "after": {
+      "UTC": "2026-10-05T19:04:00.207082+00:00",
+      "monotonic": 40028.540357697,
+      "temperatures_C": {
+        "gpuss-4": 50.7,
+        "nsphmx-3": 48.7,
+        "cpuss-1": 52.9,
+        "pm8550vs_d_tz": 47.544,
+        "cpu-1-2-0": 52.9,
+        "pm8550-bcl-lvl0": 0.0,
+        "gpuss-2": 49.1,
+        "nsphmx-1": 48.3,
+        "aoss-0": 50.6,
+        "pm8550ve_tz": 45.392,
+        "cpu-1-1-1": 50.6,
+        "mdmss-2": 47.5,
+        "gpuss-0": 49.1,
+        "cpu-2-2-0": 52.9,
+        "nsphvx-1": 50.6,
+        "battery": 36.2,
+        "cpu-1-0-1": 51.0,
+        "mdmss-0": 50.3,
+        "camera-1": 49.4,
+        "cpu-2-1-0": 52.6,
+        "sdr_mmw_therm": 27.0,
+        "cpu-0-1-0": 53.7,
+        "ac": 43.5,
+        "mmw_ific0": 45.0,
+        "cpu-2-2-1": 53.7,
+        "gpuss-7": 50.7,
+        "camera-0": 49.4,
+        "cpu-2-0-0": 53.7,
+        "pa-therm2-sys3": 46.493,
+        "cpu-0-0-0": 53.3,
+        "pmr735d_tz": 37.0,
+        "gpuss-5": 49.9,
+        "video": 53.7,
+        "cpuss-2": 52.6,
+        "pm8550vs_e_tz": 49.392,
+        "cpu-1-2-1": 52.2,
+        "pm8550-bcl-lvl1": 0.0,
+        "gpuss-3": 48.3,
+        "nsphmx-2": 48.7,
+        "cpuss-0": 52.9,
+        "pm8550vs_c_tz": 45.123,
+        "aoss-1": 51.0,
+        "mdmss-3": 49.1,
+        "gpuss-1": 49.1,
+        "nsphmx-0": 49.0,
+        "pm8550_tz": 50.266,
+        "cpu-1-1-0": 51.0,
+        "mdmss-1": 47.5,
+        "aoss-2": 51.5,
+        "cpu-2-1-1": 57.2,
+        "nsphvx-0": 51.0,
+        "cpu-1-0-0": 51.0,
+        "cpu-2-0-1": 55.7,
+        "mmw_pa3": 27.0,
+        "xo-therm": 42.864,
+        "sdr0": 45.0,
+        "gpuss-6": 49.5,
+        "ddr": 52.2,
+        "cpuss-3": 51.4,
+        "pm8550vs_g_tz": 46.299,
+        "cpu-1-2-2": 52.2,
+        "pm8550-bcl-lvl2": 0.0
+      },
+      "cooling_device_states": {
+        "gpu": "0",
+        "cpufreq-cpu2": "0",
+        "cpu-cluster3": "0",
+        "cdsp_sw_hmx": "0",
+        "cpu-cluster1": "0",
+        "cdsp": "0",
+        "gpu-dump-skip-cdev": "0",
+        "cdsp_hw": "0",
+        "cpufreq-cpu5": "0",
+        "cpufreq-cpu0": "0",
+        "cpu-cluster2": "0",
+        "cdsp_sw_hvx": "0",
+        "cpu-cluster0": "0",
+        "cdsp_ss": "0",
+        "cpufreq-cpu7": "0"
+      },
+      "meminfo_kB": {
+        "MemTotal": 11350708,
+        "MemFree": 1578632,
+        "MemAvailable": 5753140,
+        "Buffers": 6280,
+        "Cached": 4201632,
+        "SwapCached": 28668,
+        "Active": 4721368,
+        "Inactive": 2047688,
+        "Unevictable": 240180,
+        "Mlocked": 136924,
+        "SwapTotal": 16777212,
+        "SwapFree": 15082236,
+        "Dirty": 208,
+        "Writeback": 0,
+        "AnonPages": 3183908,
+        "Mapped": 1267116,
+        "Shmem": 43992,
+        "KReclaimable": 335872,
+        "Slab": 923168,
+        "SReclaimable": 297084,
+        "SUnreclaim": 626084,
+        "KernelStack": 111296,
+        "ShadowCallStack": 0,
+        "PageTables": 227976,
+        "SecPageTables": 0,
+        "NFS_Unstable": 0,
+        "Bounce": 0,
+        "WritebackTmp": 0,
+        "CommitLimit": 22196564,
+        "Committed_AS": 393686588,
+        "VmallocTotal": 259653632,
+        "VmallocUsed": 309452,
+        "VmallocChunk": 0,
+        "Percpu": 12480,
+        "AnonHugePages": 28672,
+        "ShmemHugePages": 0,
+        "ShmemPmdMapped": 0,
+        "FileHugePages": 0,
+        "FilePmdMapped": 0,
+        "HugepagePool": 0,
+        "CmaTotal": 540672,
+        "CmaFree": 8252,
+        "DmaHeapPool": 36608,
+        "system": 94664,
+        "RbinTotal": 512000,
+        "RbinAlloced": 1284,
+        "RbinFree": 21296,
+        "RbinCached": 489420,
+        "zram0": 410088,
+        "GpuTotal": 115976,
+        "GpuSwap": 0,
+        "KgslShmemUsage": 100704
+      },
+      "cpu_kHz": {
+        "0": "787200",
+        "1": "787200",
+        "2": "1920000",
+        "3": "1920000",
+        "4": "1920000",
+        "5": "499200",
+        "6": "499200",
+        "7": "902400"
+      },
+      "cpu_max_kHz": {
+        "0": "1689600",
+        "1": "1689600",
+        "2": "1920000",
+        "3": "1920000",
+        "4": "1920000",
+        "5": "1920000",
+        "6": "1920000",
+        "7": "1939200"
+      },
+      "cpu_online": "0-7",
+      "harness_allowed_CPUs": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "harness_cgroup": "5:freezer:/\n4:cpuset:/top-app\n3:cpuacct:/top-app\n2:cpu:/top-app\n1:blkio:/top\n0::/apps/uid_10247/pid_29688",
+      "cpusets": {
+        "top-app": null,
+        "foreground": null,
+        "background": null
+      },
+      "gpu": {
+        "clock_mhz": "231",
+        "max_gpuclk": "500000000",
+        "thermal_pwrlevel": "9",
+        "gpu_busy_percentage": "1 %",
+        "gpubusy": "15598 1014341",
+        "temp": "50700",
+        "reset_count": "27504"
+      },
+      "loadavg": null
+    },
+    "max_process_RSS_kB": 1863880,
+    "max_process_PSS_kB": 1624518,
+    "max_process_swap_kB": 0,
+    "min_system_MemAvailable_kB": 4358704,
+    "allocations": {
+      "buffers": [
+        {
+          "backend": "CPU_Mapped",
+          "kind": "model",
+          "MiB": 125.19,
+          "line": "load_tensors:   CPU_Mapped model buffer size =   125.19 MiB"
+        },
+        {
+          "backend": "CPU_REPACK",
+          "kind": "model",
+          "MiB": 195.74,
+          "line": "load_tensors:   CPU_REPACK model buffer size =   195.74 MiB"
+        },
+        {
+          "backend": "OpenCL",
+          "kind": "model",
+          "MiB": 739.03,
+          "line": "load_tensors:       OpenCL model buffer size =   739.03 MiB"
+        },
+        {
+          "backend": "CPU",
+          "kind": "output",
+          "MiB": 0.58,
+          "line": "llama_context:        CPU  output buffer size =     0.58 MiB"
+        },
+        {
+          "backend": "OpenCL",
+          "kind": "KV",
+          "MiB": 238.0,
+          "line": "llama_kv_cache:     OpenCL KV buffer size =   238.00 MiB"
+        },
+        {
+          "backend": "OpenCL",
+          "kind": "compute",
+          "MiB": 31.25,
+          "line": "sched_reserve:     OpenCL compute buffer size =    31.25 MiB"
+        },
+        {
+          "backend": "CPU",
+          "kind": "compute",
+          "MiB": 151.38,
+          "line": "sched_reserve:        CPU compute buffer size =   151.38 MiB"
+        },
+        {
+          "backend": "CPU",
+          "kind": "compute",
+          "MiB": 151.38,
+          "line": "sched_reserve:        CPU compute buffer size =   151.38 MiB"
+        }
+      ],
+      "layers_offloaded": [
+        [
+          29,
+          29
+        ]
+      ],
+      "context_and_memory_lines": [
+        "print_info: model params          = 1.78 B",
+        "llama_context: n_ctx                 = 8704",
+        "llama_kv_cache:     OpenCL KV buffer size =   238.00 MiB"
+      ]
+    },
+    "benchmark_rows": null,
+    "public_thermal_samples": [
+      {
+        "monotonic_s": 39708.061259277,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.730000079
+      },
+      {
+        "monotonic_s": 39718.06330068,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.685222089
+      },
+      {
+        "monotonic_s": 39728.06582453,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.690270841
+      },
+      {
+        "monotonic_s": 39738.067038433,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.676039279
+      },
+      {
+        "monotonic_s": 39748.071365877,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.658263624
+      },
+      {
+        "monotonic_s": 39758.073352748,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.816437304
+      },
+      {
+        "monotonic_s": 39768.076076181,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.892019272
+      },
+      {
+        "monotonic_s": 39778.076988782,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.851401746
+      },
+      {
+        "monotonic_s": 39788.082976799,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.858170092
+      },
+      {
+        "monotonic_s": 39798.085467993,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.847903311
+      },
+      {
+        "monotonic_s": 39808.086402312,
+        "thermal_status": 0,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.859442294
+      },
+      {
+        "monotonic_s": 39818.088805798,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.861317813
+      },
+      {
+        "monotonic_s": 39828.089962617,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.841178656
+      },
+      {
+        "monotonic_s": 39838.092137196,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.841499209
+      },
+      {
+        "monotonic_s": 39848.094443703,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.848823667
+      },
+      {
+        "monotonic_s": 39858.095812814,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.837754309
+      },
+      {
+        "monotonic_s": 39868.098017393,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.833117902
+      },
+      {
+        "monotonic_s": 39878.101385202,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.828189194
+      },
+      {
+        "monotonic_s": 39888.103975719,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.828545868
+      },
+      {
+        "monotonic_s": 39898.106104413,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.839326084
+      },
+      {
+        "monotonic_s": 39908.108352847,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.841453016
+      },
+      {
+        "monotonic_s": 39918.112129926,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.83790791
+      },
+      {
+        "monotonic_s": 39928.136168673,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.836666644
+      },
+      {
+        "monotonic_s": 39938.137592783,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.836666644
+      },
+      {
+        "monotonic_s": 39948.139768665,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.836666644
+      },
+      {
+        "monotonic_s": 39958.141282776,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.836666644
+      },
+      {
+        "monotonic_s": 39968.145176522,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.843898892
+      },
+      {
+        "monotonic_s": 39978.147120216,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.844785929
+      },
+      {
+        "monotonic_s": 39988.148788025,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.841240704
+      },
+      {
+        "monotonic_s": 39998.150021823,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.832765937
+      },
+      {
+        "monotonic_s": 40008.151934579,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.817405164
+      },
+      {
+        "monotonic_s": 40018.154666972,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.804714859
+      },
+      {
+        "monotonic_s": 40028.155845093,
+        "thermal_status": 1,
+        "forecast_seconds": 30,
+        "thermal_headroom": 0.818508923
+      }
+    ],
+    "public_thermal_monitor_available": true,
+    "latency_metrics": {
+      "threads_batch": 6,
+      "postload_admission_s": 20.021226034,
+      "request_start_CPU_max_C": 44.4,
+      "request_start_NPU_max_C": 40.5,
+      "request_start_GPU_max_C": 40.8,
+      "request_start_battery_C": 33.3,
+      "device": "GPUOpenCL",
+      "attention": "on",
+      "request_start_monotonic_s": 39740.811078692,
+      "switch_start_monotonic_s": 39977.289932195,
+      "mode": "hybrid",
+      "shadow": "mmap",
+      "prompt": 8192,
+      "generation": 128,
+      "decode_steps": 127,
+      "context": 8704,
+      "actual_context": 8704,
+      "threads": 6,
+      "batch": 512,
+      "ubatch": 256,
+      "prefill_ngl": 99,
+      "prompt_token_hash": "17564863177223858684",
+      "initialization_s": 2.385722499,
+      "prefill_s": 236.401312253,
+      "prefill_tok_s": 34.65293793,
+      "ttft_s": 236.402398764,
+      "handoff_ms": 342.984,
+      "handoff_weights_ms": 138.6,
+      "handoff_kv_ms": 190.454,
+      "handoff_scheduler_ms": 4.832,
+      "first_decode_s": 0.15613901,
+      "decode_s": 49.956495241,
+      "decode_tok_s": 2.542211966,
+      "total_response_s": 286.834867807,
+      "weight_copy_bytes": 0,
+      "cpu_shadow_weight_bytes": 774852608,
+      "kv_copy_bytes": 249561088,
+      "gpu_weight_bytes_released": 774924288,
+      "same_model_and_cache": true,
+      "positions_preserved": true,
+      "all_logits_finite": true,
+      "validation_run": false,
+      "top1_agreements": 0,
+      "logit_RMSE": 0.0,
+      "max_abs_logit_error": 0.0,
+      "mean_KL": 0.0,
+      "output_tokens": [
+        198,
+        2,
+        81917,
+        279,
+        1102,
+        15516,
+        624,
+        750,
+        912,
+        2877,
+        11,
+        293,
+        982,
+        262,
+        470,
+        264,
+        488,
+        293,
+        198,
+        2,
+        81917,
+        279,
+        1102,
+        15516,
+        624,
+        750,
+        912,
+        2877,
+        11,
+        293,
+        982,
+        262,
+        470,
+        264,
+        488,
+        293,
+        198,
+        2,
+        81917,
+        279,
+        1102,
+        15516,
+        624,
+        750,
+        912,
+        2877,
+        11,
+        293,
+        982,
+        262,
+        470,
+        264,
+        488,
+        293,
+        198,
+        2,
+        81917,
+        279,
+        1102,
+        15516,
+        624,
+        750,
+        912,
+        2877,
+        11,
+        293,
+        982,
+        262,
+        470,
+        264,
+        488,
+        293,
+        198,
+        2,
+        81917,
+        279,
+        1102,
+        15516,
+        624,
+        750,
+        912,
+        2877,
+        11,
+        293,
+        982,
+        262,
+        470,
+        264,
+        488,
+        293,
+        198,
+        2,
+        81917,
+        279,
+        1102,
+        15516,
+        624,
+        750,
+        912,
+        2877,
+        11,
+        293,
+        982,
+        262,
+        470,
+        264,
+        488,
+        293,
+        198,
+        2,
+        81917,
+        279,
+        1102,
+        15516,
+        624,
+        750,
+        912,
+        2877,
+        11,
+        293,
+        982,
+        262,
+        470,
+        264,
+        488,
+        293,
+        198,
+        2
+      ]
+    },
+    "affinity_error_count": 0,
+    "controlled_comparison_issues": [],
+    "controlled_comparison_valid": true
+  },
+  "command_provenance": {
+    "harness_source_sha256": "6b45dfa3b08d7a4b6ca3cfd549598ec547c033232db19cb89ab7930a7fb06e7b",
+    "harness_telemetry_revision": "public-thermal-admission-light-v1",
+    "config": {
+      "mode": "hybrid",
+      "group": "generic-Qwen1p5-8K-three",
+      "model": "qwen2.5-coder-1.5b",
+      "binary": "~/llama-opencl-build/performance-investigation/phase-tools-v7/phase-opencl-batch-threads",
+      "library_directory": "~/llama-opencl-build/performance-investigation/build-hybrid/bin",
+      "source_variant": "generic-opencl-handoff:phase-v7",
+      "threads": 6,
+      "process_mask": "fc",
+      "prompt": 8192,
+      "generation": 128,
+      "context": 8704,
+      "batch": 512,
+      "ubatch": 256,
+      "attention": "on",
+      "shadow": "mmap",
+      "drop_gpu": true,
+      "cooldown": 60,
+      "timeout": 1800,
+      "max_battery": 36,
+      "max_cpu": 50,
+      "max_gpu": 43,
+      "max_npu": 43,
+      "public_thermal": true,
+      "max_public_thermal_status": 0,
+      "max_public_thermal_headroom": 0.9,
+      "minimum_MemAvailable_MiB": 1536,
+      "repack": 1,
+      "validation_timing_not_comparable": false,
+      "environment": {
+        "GGML_PERF_PHASE_DEVICE": "GPUOpenCL",
+        "GGML_PERF_PHASE_FA": "on",
+        "GGML_PERF_PHASE_THREADS_BATCH": "6"
+      },
+      "additional_artifacts": [
+        "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v7-batch-threads.cpp"
+      ],
+      "id": "generic-Qwen1p5-8K-three-20261005T185136Z-case1-hybrid",
+      "strategy": "hybrid",
+      "ngl": 99,
+      "additional_memory_reserve_MiB": 0,
+      "confirmation_round": 1,
+      "claim_limit": "User-bounded three-case screen, existing1.5B selected for safe presentRAM rather than relax1536MiBreserve. p8192/g128/c8704, CPU6FC/FAon/b512ub256/F16KV, samegenericbuild/helper. ProfilingOFF/specializedkernelsOFF. Warmresponse excludes separately recordedload/admission. No repeatedwinner or final4B8Kcrossover implied.",
+      "device": "GPUOpenCL",
+      "explicit_openmp_placement": false,
+      "threads_batch": 6,
+      "planned_power_epoch": "api-20261005T180328Z-UNPLUGGED",
+      "cooling_timeout": 1200,
+      "retry_of_plan": "generic-Qwen4-8K-bestcpu-retry-20261005T160932Z-schedule.json",
+      "placement_extension_sha256": "2fdd861b1fd1d5b93f6523be4dcd310fa13daa63d8109d3360684da698143a95",
+      "execution_policy": "nice10-ui-headroom01",
+      "cpu_nice_increment": 10,
+      "harness_nice": 0,
+      "expected_worker_nice": 10,
+      "delay": 10
+    },
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "taskset",
+      "fc",
+      "~/llama-opencl-build/performance-investigation/phase-tools-v7/phase-opencl-batch-threads",
+      "~/models/qwen2.5-coder-1.5b/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "hybrid",
+      "8192",
+      "128",
+      "8704",
+      "6",
+      "512",
+      "256",
+      "99",
+      "mmap",
+      "1"
+    ],
+    "artifact_sha256": {
+      "~/llama-opencl-build/performance-investigation/phase-tools-v7/phase-opencl-batch-threads": "1bad8ec6940c7ff3e22cdc660417918c49d3e8d5df8c191abed1b93dc7d39825",
+      "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libllama.so.0.5.0": "121c5985ad9ca208c8d9074666fa562fadc621fdbfe1c3627ffd525bf3e11926",
+      "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml.so.0.25.3": "9af929e7ec4def10996c17d997d5d4e9b311311868dfe6b78782530b9d4651a6",
+      "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-base.so.0.25.3": "6967e3d28f8773605d6e7f39aa9c48293871f594162662be31bb4a30e39a492c",
+      "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-cpu.so.0.25.3": "e162519f86a4f6cd78a3cc6b352496230d3fba3f0e07d8c50d0efef0cfa71baf",
+      "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-opencl.so.0.25.3": "36c2bab0444d7fcb92c04e0aac46e8213791ab5195d12818b819c8a804fe1d08",
+      "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v7-batch-threads.cpp": "efd88208451440682649cdcaf13e256f6e12448b7e346f0a14ba21e539ae50a0"
+    },
+    "environment": {
+      "LD_LIBRARY_PATH": "~/llama-opencl-build/performance-investigation/build-hybrid/bin",
+      "GGML_OPENCL_KERNEL_CACHE_DIR": "~/llama-opencl-build/performance-investigation/kernel-cache",
+      "KMP_BLOCKTIME": null,
+      "OMP_WAIT_POLICY": null,
+      "OMP_NUM_THREADS": null,
+      "OMP_PROC_BIND": null,
+      "OMP_PLACES": null,
+      "ADSP_LIBRARY_PATH": null,
+      "GGML_HEXAGON_PROFILE": null,
+      "GGML_HEXAGON_NHVX": null,
+      "GGML_HEXAGON_NHMX": null,
+      "GGML_HEXAGON_MM_SELECT": null,
+      "GGML_HEXAGON_OPBATCH": null,
+      "GGML_HEXAGON_OPQUEUE": null
+    },
+    "model_metadata": {
+      "id": "qwen2.5-coder-1.5b",
+      "path": "~/models/qwen2.5-coder-1.5b/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf",
+      "file_bytes": 1117320768,
+      "weight_data_bytes": 1111370240,
+      "tensor_parameter_count": 1777088000,
+      "architecture": "qwen2",
+      "file_type": 15,
+      "quantization": "Q4_K_M",
+      "blocks": 28,
+      "attention_heads": 12,
+      "KV_heads": 2,
+      "key_dimension": null,
+      "value_dimension": null,
+      "embedding_dimension": 1536,
+      "trained_context": 32768,
+      "tensor_parameters_by_type": {
+        "14": 431554560,
+        "12": 1345388544,
+        "0": 144896
+      },
+      "key_dimension_effective": 128,
+      "value_dimension_effective": 128,
+      "full_attention_blocks": 28,
+      "theoretical_f16_KV_MiB_per_token": 0.02734375
+    }
+  },
+  "raw_result_sha256": "6cc53a17a1fe788d281f8ccfd52931899baa4cc8e3607442ab43958857d6d511"
+}

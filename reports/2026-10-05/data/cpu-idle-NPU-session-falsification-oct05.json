@@ -1,0 +1,33 @@
+{
+  "UTC": "2026-10-05T15:23:04.460209+00:00",
+  "hypothesis": "NPU driver lookup in CPU mode might create an idle DSP session/performance vote and bias baseline",
+  "source_findings": {
+    "lazy_session": "~/llama-opencl-build/performance-investigation/source-npu-registration-hybrid/ggml/src/ggml-hexagon/ggml-hexagon.cpp:578",
+    "device_constructor_without_session": "~/llama-opencl-build/performance-investigation/source-npu-registration-hybrid/ggml/src/ggml-hexagon/ggml-hexagon.cpp:2408",
+    "name_lookup_without_session": "~/llama-opencl-build/performance-investigation/source-npu-registration-hybrid/ggml/src/ggml-hexagon/ggml-hexagon.cpp:7544",
+    "registry_initialization_loads_driver": "~/llama-opencl-build/performance-investigation/source-npu-registration-hybrid/ggml/src/ggml-hexagon/ggml-hexagon.cpp:8611",
+    "DSP_power_requests": "~/llama-opencl-build/performance-investigation/source-npu-registration-hybrid/ggml/src/ggml-hexagon/htp/main.c:497"
+  },
+  "log_controls": {
+    "CPU": {
+      "path": "~/llama-opencl-build/performance-investigation/runs/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case2-cpu-t5/stderr.txt",
+      "new_session_log_markers": [],
+      "driver_registry_markers": [
+        "ggml-hex: Loading driver libcdsprpc.so",
+        "ggml-hex: Hexagon backend (experimental) : allocating new registry : ndev 1"
+      ]
+    },
+    "NPU": {
+      "path": "~/llama-opencl-build/performance-investigation/runs/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case3-gpu-t6/stderr.txt",
+      "new_session_log_markers": [
+        "ggml-hex: HTP0 allocating new session : domain 3 phys-idx 0 virt-idx 0",
+        "ggml-hex: HTP0 new session : session-id 0 domain-id 3 uri file:///libggml-htp-v75.so?htp_iface_skel_handle_invoke&_modver=1.0&_dom=cdsp&_session=0 handle 0xb400007ce309b4d0"
+      ],
+      "driver_registry_markers": [
+        "ggml-hex: Loading driver libcdsprpc.so",
+        "ggml-hex: Hexagon backend (experimental) : allocating new registry : ndev 1"
+      ]
+    }
+  },
+  "conclusion": "Device discovery loads FastRPC driver/registry, but CPU logs have no allocating-new-session or new-session markers while NPU control has both. The hypothesized CPU idle DSP session is not supported. Actual DSP MAX/DCVS-off/sleep-disabled requests occur in initialized NPU sessions, retained after one-way hybrid; no energy attribution follows. CPU/OpenCL-build CPU-mode control still useful for baseline validation."
+}

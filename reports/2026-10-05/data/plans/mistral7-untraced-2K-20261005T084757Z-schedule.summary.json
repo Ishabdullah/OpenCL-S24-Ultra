@@ -1,0 +1,45 @@
+[
+  {
+    "model": "mistral-7b-uncensored",
+    "total_response_s": {
+      "cpu": {
+        "values": [
+          119.593622506,
+          109.093809125,
+          119.690138184
+        ],
+        "mean": 116.12585660500001,
+        "between_process_SD": 6.090122957687775
+      },
+      "gpu": {
+        "values": [
+          38.540879464,
+          39.020783579,
+          41.47774014
+        ],
+        "mean": 39.679801061,
+        "between_process_SD": 1.575441426630965
+      },
+      "hybrid": {
+        "values": [
+          24.191520407,
+          36.133065247,
+          27.192199677
+        ],
+        "mean": 29.172261777,
+        "between_process_SD": 6.212133911251829
+      }
+    },
+    "roundwise_CPU_over_NPU": [
+      3.1030330435948974,
+      2.795787247688986,
+      2.8856475251546816
+    ],
+    "roundwise_CPU_over_hybrid": [
+      4.94361745330379,
+      3.0192237602664416,
+      4.401635013192316
+    ],
+    "scope": "Selected t6 maskFC FAon, synthetic2048-token prompt/128outputs/c2560/b512/ub256, warm model;3 rotated independent processes per mode. NPU mode labeled gpu by prototype. No per-step profiling. Does not establish sustained heat/energy, cold start or universal superiority."
+  }
+]

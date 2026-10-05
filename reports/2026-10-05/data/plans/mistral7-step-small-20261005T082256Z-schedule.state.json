@@ -1,0 +1,231 @@
+{
+  "utc": "2026-10-05T08:28:01.427799+00:00",
+  "stage": "complete",
+  "power_epoch": "resume-20261005T081115Z-UNPLUGGED",
+  "records": [
+    {
+      "id": "mistral7-step-small-20261005T082256Z-r0-cpu-canonical",
+      "valid": true,
+      "guarded_skip": false,
+      "issues": [],
+      "graceful_cancel_passed": false,
+      "benchmark_rows": null,
+      "request_rows": [],
+      "numerical_validation": null,
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 4165.37,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  4165.37 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 320.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   320.00 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 59.26,
+            "line": "sched_reserve:        CPU compute buffer size =    59.26 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            0,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 2560",
+          "llama_kv_cache:        CPU KV buffer size =   320.00 MiB"
+        ]
+      },
+      "minimum_MemAvailable_MiB": 6942.94921875
+    },
+    {
+      "id": "mistral7-step-small-20261005T082256Z-r1-hybrid",
+      "valid": true,
+      "guarded_skip": false,
+      "issues": [],
+      "graceful_cancel_passed": false,
+      "benchmark_rows": null,
+      "request_rows": [],
+      "numerical_validation": null,
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 70.31,
+            "line": "load_tensors:   CPU_Mapped model buffer size =    70.31 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "model",
+            "MiB": 4510.39,
+            "line": "load_tensors:         HTP0 model buffer size =  4510.39 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "KV",
+            "MiB": 320.0,
+            "line": "llama_kv_cache:       HTP0 KV buffer size =   320.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "compute",
+            "MiB": 55.26,
+            "line": "sched_reserve:       HTP0 compute buffer size =    55.26 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 9.26,
+            "line": "sched_reserve:        CPU compute buffer size =     9.26 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 59.26,
+            "line": "sched_reserve:        CPU compute buffer size =    59.26 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            33,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 2560",
+          "llama_kv_cache:       HTP0 KV buffer size =   320.00 MiB"
+        ]
+      },
+      "minimum_MemAvailable_MiB": 3224.62890625
+    },
+    {
+      "id": "mistral7-step-small-20261005T082256Z-r2-cpu-repack",
+      "valid": true,
+      "guarded_skip": false,
+      "issues": [],
+      "graceful_cancel_passed": false,
+      "benchmark_rows": null,
+      "request_rows": [],
+      "numerical_validation": null,
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 4165.37,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  4165.37 MiB"
+          },
+          {
+            "backend": "CPU_REPACK",
+            "kind": "model",
+            "MiB": 4094.04,
+            "line": "load_tensors:   CPU_REPACK model buffer size =  4094.04 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 320.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   320.00 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 59.26,
+            "line": "sched_reserve:        CPU compute buffer size =    59.26 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            0,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 2560",
+          "llama_kv_cache:        CPU KV buffer size =   320.00 MiB"
+        ]
+      },
+      "minimum_MemAvailable_MiB": 3456.1015625
+    },
+    {
+      "id": "mistral7-step-small-20261005T082256Z-r3-cpu-canonical",
+      "valid": true,
+      "guarded_skip": false,
+      "issues": [],
+      "graceful_cancel_passed": false,
+      "benchmark_rows": null,
+      "request_rows": [],
+      "numerical_validation": null,
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 4165.37,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  4165.37 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 320.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   320.00 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 59.26,
+            "line": "sched_reserve:        CPU compute buffer size =    59.26 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            0,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 2560",
+          "llama_kv_cache:        CPU KV buffer size =   320.00 MiB"
+        ]
+      },
+      "minimum_MemAvailable_MiB": 7442.48046875
+    }
+  ]
+}

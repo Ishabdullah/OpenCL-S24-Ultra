@@ -1,0 +1,32 @@
+{
+  "UTC": "2026-10-05T19:24:34.245777+00:00",
+  "method": "Read-only inspection of actual tested source; no new compile or inference",
+  "sources": [
+    {
+      "path": "~/llama-opencl-build/performance-investigation/source-hybrid/ggml/src/ggml-opencl/ggml-opencl.cpp",
+      "sha256": "1018afd84572aea02fc046d22d401a7b1992020a88cc884d9a6d070efe23cd25",
+      "device_classification_lines": {
+        "start": 295,
+        "end": 298,
+        "text": "    if (strstr(device_name, \"730\") ||\n        strstr(device_name, \"740\") ||\n        strstr(device_name, \"750\")) {\n        return ADRENO_GPU_GEN::A7X;"
+      },
+      "decline_lines": {
+        "start": 9244,
+        "end": 9258,
+        "text": "            // A7X (Adreno 740, compiler E031.41) SIGSEGVs inside clBuildProgram\n            // building the flash_attn programs whose KV path is mixed-type or\n            // dequantized \u2014 f32_f16, q8_0, q4_0 (reproduced at DK=40 and DK=64; it\n            // is DK-independent). It is a driver crash, not codegen-wrong-output, so\n            // it cannot be caught in-process (fatal=false only handles clean compile\n            // errors). The uniform f16_f16 / f32_f32 programs compile fine on this\n            // compiler, so decline only the KV-convert variants; ggml then runs\n            // those (f16-KV / quant-KV) attention layers on the CPU backend.\n            // Negative compiler carve-out, same idiom as the Intel DK=512 decline\n            // below and the X1E driver-quirk guards.\n            if (backend_ctx && backend_ctx->adreno_gen == ADRENO_GPU_GEN::A7X &&\n                (is_f32_f16 || is_f32_q8_0 || is_f32_q4_0)) {\n                return false;\n            }\n"
+      }
+    },
+    {
+      "path": "~/llama-opencl-build/performance-investigation/source-hybrid/src/llama-graph.cpp",
+      "sha256": "3e63a4c8e6a76c34a9b36a6c219cd523099eb3c90e4f9cedc0ae11339eaac598",
+      "graph_construction_lines": [
+        2624,
+        2674
+      ]
+    }
+  ],
+  "driver": "OpenCL 3.0 QUALCOMM build: 0762.41 Compiler E031.45.02.26",
+  "source_finding": "Adreno750 classified A7X; supports_op returnsfalse for mixed F32 query/F16 KV FLASH_ATTN_EXT on A7X. Comment records740 E031.41 compiler crash. Tested Qwen graph uses F32 queries/F16 KV. GPU layer assignment does not imply GPU attention.",
+  "measurement_limit": "Unprofiled screen does not quantify per-operation fallback timing or bytes transferred; observed CPU buffers alone are not attribution. Driver750 mixed FA safety unproven.",
+  "next_experiment_if_authorized": "Preserve guard in baseline. Isolated generic mixed FA compilation/numerical gate on current driver before profiling or large workloads. Specialized Adreno kernels remain OFF."
+}

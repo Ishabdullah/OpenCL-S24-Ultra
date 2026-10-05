@@ -1,0 +1,8 @@
+{
+  "UTC": "20261005T103221Z",
+  "old_extension_sha256": "3630fc75c0a8f47ce6626a8d90ef249b5d3e78999ca695b824b8d6c375ae60d2",
+  "new_extension_sha256": "c82eb928e43a2a2def111ed78de5abb93881eeb330988af46b29fd3c66365f93",
+  "rejected_run": "mistral7-placement-20261005T100858Z-case2-hybrid-pin1",
+  "observation": "NPU prefill host/task affinity2-7 throughout; after first CPU evaluation main7 and newly created CPU workers singleton2,3,4,5,6; cgroup stable. No Android restriction inferred.",
+  "correction": "Initial validator incorrectly expected OpenMP binding before any CPU parallel region. New phase-scoped validator requires main7/unique active singleton CPU team after CPU evaluation, all workers withinFC in every measured phase, host NPU affinityFC or7. Base cgroup/power/memory/thermal/library guards unchanged. Rejected raw results immutable, fresh IDs for timing."
+}

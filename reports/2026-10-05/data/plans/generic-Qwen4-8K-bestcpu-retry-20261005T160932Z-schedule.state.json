@@ -1,0 +1,15 @@
+{
+  "UTC": "2026-10-05T16:24:25.459865+00:00",
+  "records": [
+    {
+      "id": "generic-Qwen4-8K-bestcpu-retry-20261005T160932Z-case0-cpu",
+      "errors": [
+        "CPU availability or Android cgroup changed during measurement",
+        "Benchmark process Android cgroup changed during measurement",
+        "Run failed, was aborted, or did not parse"
+      ],
+      "metrics": null,
+      "status": null
+    }
+  ]
+}

@@ -13,11 +13,21 @@ Builds a pinned llama.cpp revision with Android `sphal` vendor-runtime loading. 
 
 OpenCL was 32.8% slower for prompt processing and 66.9% slower for generation. Measurements and reproduction details: [Benchmarks](docs/BENCHMARKS.md).
 
-## Performance investigation checkpoint: October 4, 2026
+## Performance investigation checkpoint: October 5, 2026
 
-The [CPU/OpenCL/NPU/hybrid report](OPENCL_PERFORMANCE_ANALYSIS.md), [latest results and experimental source](reports/2026-10-04/), and [earlier machine-readable evidence](reports/2026-10-03/) are available. The investigation is paused at the owner's request; final characterization is incomplete. [Next-session work](reports/2026-10-04/NEXT_SESSION.md) is recorded. Power epochs, Android scheduling exclusions and cold-start versus resident-model latency are kept distinct.
+The [CPU/OpenCL/NPU/hybrid report](OPENCL_PERFORMANCE_ANALYSIS.md), [October 5 measurements and helper source](reports/2026-10-05/), and [remaining work](reports/2026-10-05/NEXT_WORK.md) are available. **The requested three tests are complete; testing is paused.** Broader characterization remains incomplete. The [October 4 checkpoint](reports/2026-10-04/) is preserved. Power epochs, scheduling exclusions, profiling and warm versus cold-start latency remain separate.
 
-Repeated native Hexagon tests against improved CPU settings show strong prefill gains and shorter tested 1.5B/4B warm responses. Two reversed-order equal-work 1.5B blocks also favored full NPU response time; they do not establish thermal immunity or energy savings. An isolated registration-window prototype now completes full Mistral 7B inference and a numerically checked NPU-prefill/CPU-decode handoff. The first long-prompt 7B screen favors full NPU, but best-CPU tuning and independent confirmation remain necessary; hybrid decode is unexpectedly slow. Measured architecture/context memory differences are included. These experimental 7B changes are **not installer defaults or a new clean-room installer validation**. Generic GPU performance remains below the proven original CPU baseline, and no final GPU crossover or general sustained thermal winner is established. See the [current NPU guide](docs/NPU_INSTALL.md) for the separately validated installer.
+The latest generic OpenCL screen used **Qwen2.5-Coder-1.5B Q4_K_M, an 8192-token prompt and 128 outputs**, six CPU threads, batch 512 / microbatch 256, F16 KV and Flash Attention requested ON:
+
+| Mode | Prefill tok/s | Decode tok/s | Warm response seconds |
+|---|---:|---:|---:|
+| CPU | 66.14 | 11.72 | 134.81 |
+| OpenCL | 42.01 | 3.53 | 231.07 |
+| OpenCL-prefill / CPU-decode | 34.65 | 2.54 | 286.83 |
+
+All three completed, and all 128 generated tokens matched in this repetitive test. **CPU was fastest in this screen.** It is one run per mode in GPU/hybrid/CPU order, with different admitted starting temperatures; no repeated or universal winner is claimed. Source inspection shows that the current backend declines mixed F32/F16 Flash Attention on Adreno 750, causing CPU attention fallback even with 29/29 layers offloaded. Its share of the slowdown is not yet measured. The 4B 8K candidate was deferred by the conservative memory budget, not an observed allocation failure. Installer and kernel defaults are unchanged.
+
+A separate NPU-prefill/CPU-decode prototype beat CPU and full NPU in **three repeated Mistral 7B tests with a 2048-token prompt and 128 outputs**: mean warm response **116.13 seconds CPU, 39.68 full NPU, 29.17 hybrid**. This is a bounded resident-model benefit, distinct from the negative OpenCL screen. It does not establish generation-only, energy or sustained thermal superiority. These experimental 7B changes are **not installer defaults or a new clean-room installer validation**. No final generic OpenCL crossover, extra accelerator RAM or general thermal winner is established. The [NPU guide](docs/NPU_INSTALL.md) covers the separately validated source-build installer.
 
 ## NPU installation: fresh Termux to model generation
 

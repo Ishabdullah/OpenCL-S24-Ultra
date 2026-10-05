@@ -1,0 +1,7 @@
+{
+  "UTC": "2026-10-05T15:01:58.241272+00:00",
+  "old_plan": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen3-4B-cpu-thread-screen-20261005T145923Z-schedule.json",
+  "new_plan": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen3-4B-CPU-threads-charging-20261005T150158Z-schedule.json",
+  "epoch": "api-20261005T145945Z-PLUGGED_AC",
+  "reason": "Battery API observed charging before model load. Previous admission controller interrupted without inference; fresh IDs and complete separated charging set. No unplugged/charging pooling."
+}

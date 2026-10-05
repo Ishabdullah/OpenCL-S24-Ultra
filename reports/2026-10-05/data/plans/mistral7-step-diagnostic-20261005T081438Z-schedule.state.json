@@ -1,0 +1,68 @@
+{
+  "utc": "2026-10-05T08:18:18.541524+00:00",
+  "stage": "stopped-with-evidence",
+  "power_epoch": "resume-20261005T081115Z-UNPLUGGED",
+  "records": [
+    {
+      "id": "mistral7-step-diagnostic-20261005T081438Z-r0-cpu-repack",
+      "valid": false,
+      "guarded_skip": false,
+      "issues": [
+        "CPU availability or Android cgroup changed during measurement",
+        "Benchmark process Android cgroup changed during measurement",
+        "Run failed, was aborted, or did not parse"
+      ],
+      "graceful_cancel_passed": false,
+      "benchmark_rows": null,
+      "request_rows": [],
+      "numerical_validation": null,
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 4165.37,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  4165.37 MiB"
+          },
+          {
+            "backend": "CPU_REPACK",
+            "kind": "model",
+            "MiB": 4094.04,
+            "line": "load_tensors:   CPU_REPACK model buffer size =  4094.04 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 320.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   320.00 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 59.26,
+            "line": "sched_reserve:        CPU compute buffer size =    59.26 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            0,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 2560",
+          "llama_kv_cache:        CPU KV buffer size =   320.00 MiB"
+        ]
+      },
+      "minimum_MemAvailable_MiB": 2720.23046875
+    }
+  ],
+  "reason": "Failed/excluded: CPU availability or Android cgroup changed during measurement; Benchmark process Android cgroup changed during measurement; Run failed, was aborted, or did not parse"
+}

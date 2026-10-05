@@ -1,0 +1,996 @@
+{
+  "UTC": "2026-10-05T19:24:46.637550+00:00",
+  "records": [
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-2K-confirmed-oct05.json",
+      "source_sha256": "149be235c5f2fb9aaefb9ebc4b9b03d328dff6dd0371ded14a0d67379a9ed518",
+      "export": "data/mistral7-2K-confirmed-oct05.json",
+      "export_sha256": "5c4f1ab33de168d383b3f555019939e959c079a27b9aaaa3e028fc83521d1f01"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-2K-confirmed-oct05.csv",
+      "source_sha256": "b7e699cd8603d2ef123842f6e2a64cf8428887dbcd1ea05c35aefcbc78a4004f",
+      "export": "data/mistral7-2K-confirmed-oct05.csv",
+      "export_sha256": "8de57c61b9c7b7e6acc13a48ab613a67897d581d9b38c85b1533654a50b5482d"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-long-step-conclusion-oct05.json",
+      "source_sha256": "0094f35d9820d821912edf8f64d5dcc2bf39d41f9ab266af42c962b67a27d951",
+      "export": "data/mistral7-long-step-conclusion-oct05.json",
+      "export_sha256": "0094f35d9820d821912edf8f64d5dcc2bf39d41f9ab266af42c962b67a27d951"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-long-step-screen-oct05.csv",
+      "source_sha256": "0e6124b8d8f35afd7bb3057215685f4c8ec56245ddfcf46211a9b6f8b9868c6b",
+      "export": "data/mistral7-long-step-screen-oct05.csv",
+      "export_sha256": "70f8f33329a7d539331620cd28cf9e944d8e6edb6379837a2214b00586fb9ad0"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-short-step-conclusion.json",
+      "source_sha256": "423e0221ecb557afe685337b41ecfa7dd4febd4dc7190ddea496abd09aa65370",
+      "export": "data/mistral7-short-step-conclusion.json",
+      "export_sha256": "423e0221ecb557afe685337b41ecfa7dd4febd4dc7190ddea496abd09aa65370"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-partial-screen-oct05.json",
+      "source_sha256": "3750ab92df32ee4da6e125e82cbb8352d8cc55ba4a84d0ef1bb691a4168cda07",
+      "export": "data/mistral7-partial-screen-oct05.json",
+      "export_sha256": "3750ab92df32ee4da6e125e82cbb8352d8cc55ba4a84d0ef1bb691a4168cda07"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-partial-screen-oct05.csv",
+      "source_sha256": "f232f61c728e51c2673ec4d483d456a8f5eee36b2a2a097cf67b16c0f58f6a52",
+      "export": "data/mistral7-partial-screen-oct05.csv",
+      "export_sha256": "b77026c6a63a3ebb6e24aca8cafb12a72e5cb18a7d09c0147a312e3147d45d56"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-placement-screen-oct05.json",
+      "source_sha256": "cfdc4314c74cce91f1b98fc5234131f462abfd9d5914eea0e22dd08c5629ad73",
+      "export": "data/mistral7-placement-screen-oct05.json",
+      "export_sha256": "cfdc4314c74cce91f1b98fc5234131f462abfd9d5914eea0e22dd08c5629ad73"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-placement-screen-oct05.csv",
+      "source_sha256": "6798366cac9587d1d59254f544803f7fa563645ef9efb34bb5673a4d45cd9b98",
+      "export": "data/mistral7-placement-screen-oct05.csv",
+      "export_sha256": "35dfbb5549ac727374d43431bdf6e46d1764a38bb055c8ae60e76279d149b915"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-eviction-policy-inspection-oct05.json",
+      "source_sha256": "d35d78f019080bc9fdf07111251c2edb894ee8a8dfe603fd6cf050f675a20542",
+      "export": "data/registration-eviction-policy-inspection-oct05.json",
+      "export_sha256": "d35d78f019080bc9fdf07111251c2edb894ee8a8dfe603fd6cf050f675a20542"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/kv-memory-backing-inspection-oct05.json",
+      "source_sha256": "a3b040facb27577258ef423c1463b6cfbba0cc6a3e6234958544d0f12c78bc1e",
+      "export": "data/kv-memory-backing-inspection-oct05.json",
+      "export_sha256": "a3b040facb27577258ef423c1463b6cfbba0cc6a3e6234958544d0f12c78bc1e"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/openmp-placement-probe-oct05.json",
+      "source_sha256": "09f5e636f113b7e94e07549a91b13d53ff00242124ed8afe7ca4ae475909a56d",
+      "export": "data/openmp-placement-probe-oct05.json",
+      "export_sha256": "3669577e462d1c9a4344f0960e84f8e48035c1911b49dfe630e8600b36f6172d"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/placement-protocol-correction-oct05.json",
+      "source_sha256": "2ebaa9313ccbd356fa02722ea9916645a84ecdf3e6fd2edde42ad7550b4cd213",
+      "export": "data/placement-protocol-correction-oct05.json",
+      "export_sha256": "2ebaa9313ccbd356fa02722ea9916645a84ecdf3e6fd2edde42ad7550b4cd213"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/phase-v7-design-oct05.json",
+      "source_sha256": "ef127145fd9f9644cc21611e637469855206bc5a127584cbc4b5c625e02aa302",
+      "export": "data/phase-v7-design-oct05.json",
+      "export_sha256": "ef127145fd9f9644cc21611e637469855206bc5a127584cbc4b5c625e02aa302"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/phase-v7-opencl-build.json",
+      "source_sha256": "674bd2fdd404a708bf42762a531ec5b2e53db8b336e65e712eb4525c1297f84b",
+      "export": "data/phase-v7-opencl-build.json",
+      "export_sha256": "a5a9db5a8592c82976319a05afc7a1998ab4f184fad9eac849476e444b2794f2"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/cpu-idle-NPU-session-falsification-oct05.json",
+      "source_sha256": "3d74f27de83df6db29273ed39639a0e25aabeffdaccb4eafb98bebb2be18f737",
+      "export": "data/cpu-idle-NPU-session-falsification-oct05.json",
+      "export_sha256": "ff9bb0293bea6bbf8da203e5bae6afc776115a84e50bcd9ebcdfbfe4728df84a"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen4-CPU-thread-screen-incomplete-oct05.json",
+      "source_sha256": "37102dd5f2fd814bdce6ebd877fbcf4c0edafcb59ad2222667ac43a93c019bae",
+      "export": "data/qwen4-CPU-thread-screen-incomplete-oct05.json",
+      "export_sha256": "63f5b149cd74fbd12904a85839feea2d53707329123fdab68709875c1fd2bde6"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/phase-v7-build.json",
+      "source_sha256": "b5fa0205fbd7d94198a8924e4368bcf2e2bf5cfa0f0195fc65f63555f92a6739",
+      "export": "data/phase-v7-build.json",
+      "export_sha256": "7d479839ef2539f21295f00c350d2a4eda33a2d66c8f28bbd0e08a2c20e50d0a"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/resume-oct05-preservation-check.json",
+      "source_sha256": "7fb4a03c953da9c855fa340cd67f08ed8733122c3f2a986fec7ad864932394c5",
+      "export": "data/resume-oct05-preservation-check.json",
+      "export_sha256": "5ef6739921966269019b589097f60402421cd7749de327e10039b4d07d6b76d8"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/step-profile-scheduling-censor-correction.json",
+      "source_sha256": "3754b9fe4ae64ab400be3900e81bd0123fc9f8eb41f4bbf4c5f5d99f89fe3486",
+      "export": "data/step-profile-scheduling-censor-correction.json",
+      "export_sha256": "3754b9fe4ae64ab400be3900e81bd0123fc9f8eb41f4bbf4c5f5d99f89fe3486"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen4-power-transition-oct05.json",
+      "source_sha256": "91fb31cee08ad775e24d84d18a2d03e180aed99fcc829ed7826b80b01dc89a1d",
+      "export": "data/qwen4-power-transition-oct05.json",
+      "export_sha256": "5031a72a0f42c560cbdbf2fe216ea1907a3ed6398a9b27fb353cfe6e215a6a67"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/phase-v8-build.json",
+      "source_sha256": "281e9727fc7245455c3bc2713ef29eaff878ada3b61d64d6d8c45d09061b9732",
+      "export": "data/phase-v8-build.json",
+      "export_sha256": "0726c5c2c7f8df2f2cf49c230f624b190eaff719efde2085bb35c943ae7452c6"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/virtual-session-design-oct05.json",
+      "source_sha256": "b5a66f5f128c85f73f29366f3cdb3695151fb691645d595026829ea6423ad0cc",
+      "export": "data/virtual-session-design-oct05.json",
+      "export_sha256": "94a0cf066a209916f5d2074f875fb0272c5221c9d6b791a55617172976fd8b7b"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/virtual-session-order-conclusion-oct05.json",
+      "source_sha256": "fb766e56dfa58304de1bfb108bb9d72b161a4558eb4f49a37f37fbafd1c7a8f6",
+      "export": "data/virtual-session-order-conclusion-oct05.json",
+      "export_sha256": "817fecd9fbaeb3ebd57e303c3438c9f9b41f9641e0f4b8bdad4d0dc0b1129b4c"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-8K-initial-scheduling-exclusion-oct05.json",
+      "source_sha256": "31a333432625b00d15079b24e9c5e98055755c20e5ee861b311aa814fd8a0a9f",
+      "export": "data/generic-8K-initial-scheduling-exclusion-oct05.json",
+      "export_sha256": "31a333432625b00d15079b24e9c5e98055755c20e5ee861b311aa814fd8a0a9f"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/cpu-opencl-registry-inspection-oct05.json",
+      "source_sha256": "0e953b1cc45e596a234e5ba9ce87bb4fb680dc7cf8fd0669d1a1797409466161",
+      "export": "data/cpu-opencl-registry-inspection-oct05.json",
+      "export_sha256": "0e953b1cc45e596a234e5ba9ce87bb4fb680dc7cf8fd0669d1a1797409466161"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/preservation-checkpoint-oct05.json",
+      "source_sha256": "29dd0a89efb918a4f8a26d8a9e51ef4651a637bc389110f0cf86ea836cb81922",
+      "export": "data/preservation-checkpoint-oct05.json",
+      "export_sha256": "849df5f9b571aaff035b3c6ab1adeb88f7eba5cdd5aa7e8cbafd1251302ba2ed"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/one-way-scheduler-limits-oct05.json",
+      "source_sha256": "e25db5d59e65a2d9af510ca461eb13ffb5bee7789b2853f27b984a1fd0c24a06",
+      "export": "data/one-way-scheduler-limits-oct05.json",
+      "export_sha256": "e25db5d59e65a2d9af510ca461eb13ffb5bee7789b2853f27b984a1fd0c24a06"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-8K-retry-scheduling-exclusion-oct05.json",
+      "source_sha256": "cb8c284ac2923f59cee7550a7c4e73ff217f1a1aaf14efa23a698cf48df4a273",
+      "export": "data/generic-8K-retry-scheduling-exclusion-oct05.json",
+      "export_sha256": "cb8c284ac2923f59cee7550a7c4e73ff217f1a1aaf14efa23a698cf48df4a273"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/three-test-memory-selection-oct05.json",
+      "source_sha256": "aadc9f570a40568d761512f64d16de0b73b5c8728643b6b27cdbc1dbcad5b9e2",
+      "export": "data/three-test-memory-selection-oct05.json",
+      "export_sha256": "dc4412cde0cbe362a74c11a2479116993270ebaee61cea45f41693736ee2c6a6"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/three-test-outcome-oct05.json",
+      "source_sha256": "ef3d21e519f9df4b4754914fb0af4b9e2d76430bec62372bad8c349e77aa04cc",
+      "export": "data/three-test-outcome-oct05.json",
+      "export_sha256": "ae66d35649c31c93d49fd75e716fbbcce002e956cf9b2013c6d7b3b4d605565b"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/opencl-flash-attention-fallback-inspection-oct05.json",
+      "source_sha256": "5ea8c89ea6079128155decf4f1804aecb643e26e6d0183059c0ff70178cf235b",
+      "export": "data/opencl-flash-attention-fallback-inspection-oct05.json",
+      "export_sha256": "e989cabdbdb813ab94bdbf8954449e08a005482afeaa3a618233cae70e06fe91"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.json",
+      "source_sha256": "ff90c3355e871437c3df4a9f125c15a96034da698607b53f8a96f009e9588107",
+      "export": "data/plans/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.json",
+      "export_sha256": "5e8f574698ff2edefcb8ae64d3560d25ffebbb44bb550f750d4546896bd3b966"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.phase-summary.json",
+      "source_sha256": "e721342ff792acce6cecd05753d141f3c3fbd03b862a5080feebef7215961e10",
+      "export": "data/plans/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.phase-summary.json",
+      "export_sha256": "637c33aa8bb418fedfccaa95c22fb3a8deb9ea5d4aa86ddcecc101fb73b167dc"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.telemetry-summary.json",
+      "source_sha256": "5bf3612d657ecd686a170345b334f4d0bcb335037490f74dd62f19cd0cb64295",
+      "export": "data/plans/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.telemetry-summary.json",
+      "export_sha256": "5bf3612d657ecd686a170345b334f4d0bcb335037490f74dd62f19cd0cb64295"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.phase-summary.csv",
+      "source_sha256": "aa7437345ad0ec64e29d3e561841abc4519390ef5516a233f2e3a9cbf0b0bc5d",
+      "export": "data/plans/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.phase-summary.csv",
+      "export_sha256": "fc75afd4eb6cd9b019d9f1efd9d5bbeba03447e14ca1c831260a1915064e9a41"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.state.json",
+      "source_sha256": "fccaf81000b991b7a1460a9c7e11ea5b1da80bb83f0316cfc4bf21f784fba8e3",
+      "export": "data/plans/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.state.json",
+      "export_sha256": "fccaf81000b991b7a1460a9c7e11ea5b1da80bb83f0316cfc4bf21f784fba8e3"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/generic-Qwen1p5-8K-three-20261005T185136Z-case0-gpu/result.json",
+      "source_sha256": "7c5f8680a00b8ddf55d62b76d139c89861f88f03a0ab18dc1b4ddd3ba7f7f40f",
+      "export": "data/records/generic-Qwen1p5-8K-three-20261005T185136Z-case0-gpu.json",
+      "export_sha256": "befec26aac699d2c703de7062f2bb157e37a537418e7488459a7fb9e5faa9cec"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/generic-Qwen1p5-8K-three-20261005T185136Z-case1-hybrid/result.json",
+      "source_sha256": "6cc53a17a1fe788d281f8ccfd52931899baa4cc8e3607442ab43958857d6d511",
+      "export": "data/records/generic-Qwen1p5-8K-three-20261005T185136Z-case1-hybrid.json",
+      "export_sha256": "c1f4baad6562154148fb2d1e4cbe2e447e7e8155cd903a59010f4c537b3c550c"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/generic-Qwen1p5-8K-three-20261005T185136Z-case2-cpu/result.json",
+      "source_sha256": "9921d2161633b739c2b363974e648a088a8028fae75bcc9023ebde72aa834fe5",
+      "export": "data/records/generic-Qwen1p5-8K-three-20261005T185136Z-case2-cpu.json",
+      "export_sha256": "30c760e54a0da579bf6e35a9d9430b4ffc2ef9c57172ffa15fdff7c439b7efef"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen4-8K-GPUfirst-20261005T162614Z-schedule.json",
+      "source_sha256": "7209efd394db61d75d0a0ee99960967e3188ea3fbc6fee67721070501db941ba",
+      "export": "data/plans/generic-Qwen4-8K-GPUfirst-20261005T162614Z-schedule.json",
+      "export_sha256": "6336648133fe2379628802faa3fc7b4d138a8e4ad5a9d504e797bb92f6eaf1ce"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen4-8K-bestcpu-retry-20261005T160932Z-schedule.json",
+      "source_sha256": "ed8e0d23f66f3a2de038727adc48a0a47e959b43f05deb22c97ee3967e737416",
+      "export": "data/plans/generic-Qwen4-8K-bestcpu-retry-20261005T160932Z-schedule.json",
+      "export_sha256": "44499bd5e5550ad5319319c8855bb74575256d052258b3c320bbfc99d8a1f2fe"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen4-8K-bestcpu-retry-20261005T160932Z-schedule.state.json",
+      "source_sha256": "13a59c6ca18183c1258e6407e93709825c0280c58ecd6ec659c85ae3f6678bdb",
+      "export": "data/plans/generic-Qwen4-8K-bestcpu-retry-20261005T160932Z-schedule.state.json",
+      "export_sha256": "13a59c6ca18183c1258e6407e93709825c0280c58ecd6ec659c85ae3f6678bdb"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/generic-Qwen4-8K-bestcpu-retry-20261005T160932Z-case0-cpu/result.json",
+      "source_sha256": "61e2805d15df66c48f9a8d11d7469248fedca4232c6ab392ffe73aab00ea20ae",
+      "export": "data/records/generic-Qwen4-8K-bestcpu-retry-20261005T160932Z-case0-cpu.json",
+      "export_sha256": "b13edec6460a4eca984c43634d305297b93aabc2d8aa3b97bb13fd1059fccae7"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen4-8K-bestcpu-screen-20261005T152405Z-schedule.json",
+      "source_sha256": "a682c9fdb5356b2ee99cb0890a853eb25be7a28a04f0101ab8baff00d08a1ad3",
+      "export": "data/plans/generic-Qwen4-8K-bestcpu-screen-20261005T152405Z-schedule.json",
+      "export_sha256": "64a3083d635020532167a8a7ea5e18f31f972af4879dc0925d72ab31813332b7"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen4-8K-bestcpu-unplugged-20261005T155438Z-schedule.json",
+      "source_sha256": "c9bfbf8240a73a543ed97af637129a2aa2cc4e94ee4e00bb6b3e14d887b349d7",
+      "export": "data/plans/generic-Qwen4-8K-bestcpu-unplugged-20261005T155438Z-schedule.json",
+      "export_sha256": "933138a6658ad2a99dd19e195a41bd573a2d9277d9f47e4202f9372d241c68fb"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen4-8K-bestcpu-unplugged-20261005T155438Z-schedule.state.json",
+      "source_sha256": "84011ff5f7ceaa95919b8603bbe5504f48d313d07bdfe161ec48e275d5b00bb9",
+      "export": "data/plans/generic-Qwen4-8K-bestcpu-unplugged-20261005T155438Z-schedule.state.json",
+      "export_sha256": "84011ff5f7ceaa95919b8603bbe5504f48d313d07bdfe161ec48e275d5b00bb9"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/generic-Qwen4-8K-bestcpu-unplugged-20261005T155438Z-case0-cpu/result.json",
+      "source_sha256": "4f2bc91f79f8386b86993b578566182336de75c29f22364cc52954ef1d65ac0c",
+      "export": "data/records/generic-Qwen4-8K-bestcpu-unplugged-20261005T155438Z-case0-cpu.json",
+      "export_sha256": "d7c8a13c26cc75a39e4be6a7e51502bedeafc03a30610094a30c8fcbd41916fa"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen4-faon-quality-20261005T152405Z-schedule.json",
+      "source_sha256": "3a7f25d2da0f3a489828e973361e0b9f60ecc721cda159bcc486462104963f65",
+      "export": "data/plans/generic-Qwen4-faon-quality-20261005T152405Z-schedule.json",
+      "export_sha256": "df95f140c17d88c2d1a793876fe742f4e4e0f3fc05a7e3cf9a5b40f3ea0719b1"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen4-faon-quality-20261005T152405Z-schedule.state.json",
+      "source_sha256": "aa10517ff4bd0a9b1f7f9ccc0c5d431a68d0ac1fe0be243589dbf26ec6133fb0",
+      "export": "data/plans/generic-Qwen4-faon-quality-20261005T152405Z-schedule.state.json",
+      "export_sha256": "aa10517ff4bd0a9b1f7f9ccc0c5d431a68d0ac1fe0be243589dbf26ec6133fb0"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen4-faon-quality-20261005T152405Z-schedule.numerical-summary.json",
+      "source_sha256": "b6e0128f6df93a847b9fe3ec27055d51ae02fbba35622e5929c70a2dbef88761",
+      "export": "data/plans/generic-Qwen4-faon-quality-20261005T152405Z-schedule.numerical-summary.json",
+      "export_sha256": "b6e0128f6df93a847b9fe3ec27055d51ae02fbba35622e5929c70a2dbef88761"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/generic-Qwen4-faon-quality-20261005T152405Z-case0-cpu/result.json",
+      "source_sha256": "73b90e175cb946aa5e20a30db45d270837334b35efcba8ea3d5c26cfeb94a67d",
+      "export": "data/records/generic-Qwen4-faon-quality-20261005T152405Z-case0-cpu.json",
+      "export_sha256": "aaf1bcea63922757c8e035a0388d1057b12490791619fa092c10a4ed2edaad18"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/generic-Qwen4-faon-quality-20261005T152405Z-case1-gpu/result.json",
+      "source_sha256": "e24192425b54bebf3f20091cb69511a4a0f647276c4c4dee39c4e9287b2294da",
+      "export": "data/records/generic-Qwen4-faon-quality-20261005T152405Z-case1-gpu.json",
+      "export_sha256": "dc2383567b09c470a47620f3243f338e8ef5212f8c4536023e81fa25311eb4cf"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/generic-Qwen4-faon-quality-20261005T152405Z-case2-hybrid/result.json",
+      "source_sha256": "054462f6cd1eaae7d6a0146eb5f00ac87d21b1a3ae5b2859331483f94e620c9d",
+      "export": "data/records/generic-Qwen4-faon-quality-20261005T152405Z-case2-hybrid.json",
+      "export_sha256": "69b90e098fc2b607e46b18e6f46dc7572a3af00c53b79dd17b5d75ad568c4a11"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-dual-threads-20261005T104247Z-schedule.json",
+      "source_sha256": "6f1a1b582bf9e39e2df65233ae108d9873342b86c0f59c6725832a9487d801f8",
+      "export": "data/plans/mistral7-dual-threads-20261005T104247Z-schedule.json",
+      "export_sha256": "a1a9917dac6561e259072c5574c0c776d7c1230429e0485492bbbcb905bd7438"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-dual-threads-20261005T104247Z-schedule.state.json",
+      "source_sha256": "89ce91fbecd8acf510535c1f5fa889aee6d167d13280a021e674975c6d876e13",
+      "export": "data/plans/mistral7-dual-threads-20261005T104247Z-schedule.state.json",
+      "export_sha256": "89ce91fbecd8acf510535c1f5fa889aee6d167d13280a021e674975c6d876e13"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-dual-threads-20261005T104247Z-schedule.phase-summary.json",
+      "source_sha256": "b36748ac6dc5b72d28bd695c3a6b89ab7f632d0635b14e118dee668c053975a7",
+      "export": "data/plans/mistral7-dual-threads-20261005T104247Z-schedule.phase-summary.json",
+      "export_sha256": "6e6592f5693aa791a936c57364ae1b2c4c1260c870f5b9a369589a9d35353555"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-dual-threads-20261005T104247Z-schedule.phase-summary.csv",
+      "source_sha256": "26eaba4c3b8064518489ea1022e4b8ae714023a84eddf42aa8fc223c521cd0d2",
+      "export": "data/plans/mistral7-dual-threads-20261005T104247Z-schedule.phase-summary.csv",
+      "export_sha256": "8952a0a1896e01f65e2e802edb08c740bfe5b3b91b20ef6020831c45516bc9a9"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-dual-threads-20261005T104247Z-case0-cpu-decode6/result.json",
+      "source_sha256": "09c68c8b6155f93febef0867b2706379112521cd1c7435a376406e898c614e85",
+      "export": "data/records/mistral7-dual-threads-20261005T104247Z-case0-cpu-decode6.json",
+      "export_sha256": "66a6a9acd029ef6fcb572d1b4e6b9e8c06c799cc3c2f9702181d0b315de45539"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-dual-threads-20261005T104247Z-case1-cpu-decode4/result.json",
+      "source_sha256": "146655d20b64b75dcd8447b13353bdddd4cfedfc6c540db79b4db565c7e96317",
+      "export": "data/records/mistral7-dual-threads-20261005T104247Z-case1-cpu-decode4.json",
+      "export_sha256": "0a91fa48387b9e325746a37d89a204467f6562a02b66a3b7eebbfabdd965aa43"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-dual-threads-20261005T104247Z-case2-hybrid-decode4/result.json",
+      "source_sha256": "97ab70aa433c5c82939cac5930948323f5445dce4ba94adc96be87c1b8924666",
+      "export": "data/records/mistral7-dual-threads-20261005T104247Z-case2-hybrid-decode4.json",
+      "export_sha256": "eb0bff3217fb87b99a8af48ebd02a63382762a58c9d68bb2378fd620a4a6442e"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-dual-threads-20261005T104247Z-case3-gpu-decode4/result.json",
+      "source_sha256": "f403fb8d6e2a7e743d4a636d29dc3e174902fbf747ff3fb597015d2d34e5b13f",
+      "export": "data/records/mistral7-dual-threads-20261005T104247Z-case3-gpu-decode4.json",
+      "export_sha256": "1cd20264a8b1066afca9eb34a6bb9f5286d31f368c77a858993c81c678dfe7cc"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-dual-threads-20261005T104247Z-case4-cpu-decode4/result.json",
+      "source_sha256": "4d6aa2f465a2378fda695ed8596a371757c5db1ed2f95b8aa74f486313191e92",
+      "export": "data/records/mistral7-dual-threads-20261005T104247Z-case4-cpu-decode4.json",
+      "export_sha256": "5b6d57f1c09bbf86883e07c6f4938a55822d3d2210924bb315295fdd86f1f2f2"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-partial-NPU-20261005T095725Z-schedule.json",
+      "source_sha256": "e77482a9a1ee0af4115b0b7bb333a4dd7282f5d3ad059592839932b5e251f05f",
+      "export": "data/plans/mistral7-partial-NPU-20261005T095725Z-schedule.json",
+      "export_sha256": "6057e8b6465466b0256e349a5e5919a8bbaf06b03afd587399b6bd63235f73c5"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-partial-NPU-20261005T095725Z-schedule.state.json",
+      "source_sha256": "54b2dfaa4cab378a6ea54e9ebfc7f9a936620bea04910b659f5255897aa77d37",
+      "export": "data/plans/mistral7-partial-NPU-20261005T095725Z-schedule.state.json",
+      "export_sha256": "54b2dfaa4cab378a6ea54e9ebfc7f9a936620bea04910b659f5255897aa77d37"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-partial-NPU-20261005T095725Z-case0-ngl0/result.json",
+      "source_sha256": "11d9675ed1fcb5918fe54a5973f31eb98d0691ce487f4b9375bba8b042ba9b9d",
+      "export": "data/records/mistral7-partial-NPU-20261005T095725Z-case0-ngl0.json",
+      "export_sha256": "c6272c5106a46d87142ab5dc4422ac902d86e45e2c90e0ecb0bb323d33528826"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-partial-NPU-20261005T095725Z-case1-ngl3/result.json",
+      "source_sha256": "c466be9a5263fed3b77b96925a5aeaa651d044b533ebde1709c466f1b48bc95b",
+      "export": "data/records/mistral7-partial-NPU-20261005T095725Z-case1-ngl3.json",
+      "export_sha256": "b3755dee484072b72b69d958f28ce59efd301f39c59cca95904cc456a8093283"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-partial-NPU-20261005T095725Z-case2-ngl6/result.json",
+      "source_sha256": "2e3d48e4a2a949598f18d2ea55c2899e6f8d91b91ec243740c0121c55c259afc",
+      "export": "data/records/mistral7-partial-NPU-20261005T095725Z-case2-ngl6.json",
+      "export_sha256": "5338b36fe8eccee25ce4906b2514ade4b75d77d72cf872b427d698386e91f2e8"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-partial-NPU-20261005T095725Z-case3-ngl16/result.json",
+      "source_sha256": "eb3064822fb5b9406b1771f49f45b1e496415c87c51eaeab00bbf1c8569c7f30",
+      "export": "data/records/mistral7-partial-NPU-20261005T095725Z-case3-ngl16.json",
+      "export_sha256": "a24fab9262c80165f91a126ffa9e00f84178f2a0b51592e476cbf2d06b341589"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-partial-NPU-20261005T095725Z-case4-ngl24/result.json",
+      "source_sha256": "b1d36faa44076194979898f1ae4deae889ec17ef7abeaee9035bba3900edf36e",
+      "export": "data/records/mistral7-partial-NPU-20261005T095725Z-case4-ngl24.json",
+      "export_sha256": "171ded0c72c7cd3262d039ef0f067534bf9198c81489eec163b2639584ed02de"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-partial-NPU-20261005T095725Z-case5-ngl99/result.json",
+      "source_sha256": "c72941ebda25339677d8b336670f718f3d5bbcc0cb5be737a594ca2d7d62a6b8",
+      "export": "data/records/mistral7-partial-NPU-20261005T095725Z-case5-ngl99.json",
+      "export_sha256": "dca72daa7aa97eb6e2b657ac247cc511fb78fd6c7ed072f20788e51c4d9ef142"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-partial-NPU-20261005T095725Z-case6-ngl0/result.json",
+      "source_sha256": "1232d3545d25ecb2cae446691f3ed712ac4f31fd66fc45f2bd0a74508199dd6e",
+      "export": "data/records/mistral7-partial-NPU-20261005T095725Z-case6-ngl0.json",
+      "export_sha256": "7c053de15a10c30236466ef89fbd7c63e108685047344072f81d8a105b725576"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-partial24-registration-quality-20261005T095725Z-schedule.json",
+      "source_sha256": "ed1824dbee46aee8bfaccc50c1b7af5f88eeb3c39d597345740af7b5db5569c0",
+      "export": "data/plans/mistral7-partial24-registration-quality-20261005T095725Z-schedule.json",
+      "export_sha256": "3730010ef7a410d4bca6b3895d0d74c3ad5037f4291b46e52a76ae4845aade3b"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-partial24-registration-quality-20261005T095725Z/result.json",
+      "source_sha256": "cbb1ef4f8ad0784af51380e3476adc3d34423543931609299c416104a817780b",
+      "export": "data/records/mistral7-partial24-registration-quality-20261005T095725Z.json",
+      "export_sha256": "66851bcb619ed54086b26cce2e7978a6885cbf95faa4c1eda54af46c5d24f4bd"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-placement-20261005T100858Z-schedule.json",
+      "source_sha256": "4f1cc1a5749c5ec0207fa0452bc5b5a4b18d503cdae3bbd015ce89e78f4837ed",
+      "export": "data/plans/mistral7-placement-20261005T100858Z-schedule.json",
+      "export_sha256": "7f16711b95298505fc90b8d11182f9214420cf3578d095004a37a1f6a6e3ebca"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-placement-20261005T100858Z-schedule.state.json",
+      "source_sha256": "f262b90a62de546286ef0296b04f880e045c5d1a266d86792674861fa6d3bc1f",
+      "export": "data/plans/mistral7-placement-20261005T100858Z-schedule.state.json",
+      "export_sha256": "f262b90a62de546286ef0296b04f880e045c5d1a266d86792674861fa6d3bc1f"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-placement-20261005T100858Z-case0-cpu-pin0/result.json",
+      "source_sha256": "d083fcfeb376f1ff885307db6ef136c34447994fe45f9ed02d91458cde9ed0f9",
+      "export": "data/records/mistral7-placement-20261005T100858Z-case0-cpu-pin0.json",
+      "export_sha256": "ca3922c50418d428a2613204be73d314465ef4e069c10e1b39084ae0cf03ed88"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-placement-20261005T100858Z-case1-cpu-pin1/result.json",
+      "source_sha256": "a214b36713da4e604777406f5a693c732fb809efd543b347383b8fef57915828",
+      "export": "data/records/mistral7-placement-20261005T100858Z-case1-cpu-pin1.json",
+      "export_sha256": "04813cb89c8212af94528330df907989eb6cd14d344dcc7567dc83b440b5ecd0"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-placement-20261005T100858Z-case2-hybrid-pin1/result.json",
+      "source_sha256": "e83f1bab709eb8ce6d25ee824423f178319099a6b89a09d6b00dd1093ccadbfb",
+      "export": "data/records/mistral7-placement-20261005T100858Z-case2-hybrid-pin1.json",
+      "export_sha256": "5633c3db9a16c44c08716565125253c844ab24bfc479be060289881a9537c8df"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-placement-phasecorrect-20261005T103221Z-schedule.json",
+      "source_sha256": "c80523ef9c68c176e80ebd5fffc2359e074166bca34c7554a39c7c5fa0ebe986",
+      "export": "data/plans/mistral7-placement-phasecorrect-20261005T103221Z-schedule.json",
+      "export_sha256": "4f053674596b86d7f99f1142c2495081997da5476797bbf0fdb2d2bf6f6282e8"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-placement-phasecorrect-20261005T103221Z-schedule.state.json",
+      "source_sha256": "fe1608ac6bdd2087522857e2d520ac9f6dc5a3d42277069fa1061f8240d0e4f1",
+      "export": "data/plans/mistral7-placement-phasecorrect-20261005T103221Z-schedule.state.json",
+      "export_sha256": "fe1608ac6bdd2087522857e2d520ac9f6dc5a3d42277069fa1061f8240d0e4f1"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-placement-phasecorrect-20261005T103221Z-case0-cpu-pin0/result.json",
+      "source_sha256": "3f51c3aa41ba318d7937f5f1ddcfad1c04ad10c0a58fc27345e8dd9dc457ceb9",
+      "export": "data/records/mistral7-placement-phasecorrect-20261005T103221Z-case0-cpu-pin0.json",
+      "export_sha256": "aca0ae2bbeecb5169c134e9cceb0d4fa693e310ecb130b4187513e5bca97bce0"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-placement-phasecorrect-20261005T103221Z-case1-cpu-pin1/result.json",
+      "source_sha256": "b9868a83fa8fdcbbe226663f7c39a95d5d3ac5bf63c0827eeb4b3e7c9a3e04f6",
+      "export": "data/records/mistral7-placement-phasecorrect-20261005T103221Z-case1-cpu-pin1.json",
+      "export_sha256": "fe212ee9ce915aced8a489778d748face0f1f7092d8005265cd111f8f25dfda5"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-placement-phasecorrect-20261005T103221Z-case2-hybrid-pin1/result.json",
+      "source_sha256": "d9b955ae92f17223ac84ba38884725013e83d1b50ee6d8db1f475d66077f86b2",
+      "export": "data/records/mistral7-placement-phasecorrect-20261005T103221Z-case2-hybrid-pin1.json",
+      "export_sha256": "48dd2c87634041dfa68cfb65f856376354ca4d0ddbbee6289e1c2a82263ceda5"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-placement-phasecorrect-20261005T103221Z-case3-gpu-pin1/result.json",
+      "source_sha256": "0afdde0cd6b11cc4537c1f2589f6bbfdf62df60c3d90e99dc10e928deaf54df5",
+      "export": "data/records/mistral7-placement-phasecorrect-20261005T103221Z-case3-gpu-pin1.json",
+      "export_sha256": "ce3486b966725de88cad1d625f9fdf0fc75a178b4f2605f5380e2fe5b05bdc24"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-placement-phasecorrect-20261005T103221Z-case4-cpu-pin0/result.json",
+      "source_sha256": "4aaf013ff5646d0e6ed994569cbd98d11d1b656564304454ef4d9a1ebb1a5146",
+      "export": "data/records/mistral7-placement-phasecorrect-20261005T103221Z-case4-cpu-pin0.json",
+      "export_sha256": "4b1148757ec243e08c2ca0a9a08fea25e9cc2925a4d3b83329fd1550a5436d78"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-registration-foreground-20261005T095232Z-schedule.json",
+      "source_sha256": "b742b9c06969ed9b3c51255dedecde2c4c23ee05e71df13c32fedf1d70c41c93",
+      "export": "data/plans/mistral7-registration-foreground-20261005T095232Z-schedule.json",
+      "export_sha256": "f5fe4516d9091e84facab8c0270f2f1ebde87225eab97b294725f26102a5a832"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-registration-foreground-20261005T095232Z-schedule.state.json",
+      "source_sha256": "3fcccb8fb43154c4ba9c337d7fb61ee6bf3a49d72c951d19680c2bc7a3252d9b",
+      "export": "data/plans/mistral7-registration-foreground-20261005T095232Z-schedule.state.json",
+      "export_sha256": "3fcccb8fb43154c4ba9c337d7fb61ee6bf3a49d72c951d19680c2bc7a3252d9b"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-registration-foreground-20261005T095232Z-schedule.profile-summary.json",
+      "source_sha256": "ff3d4924bd7f41515db6cf2c81c932cea88964c81d37bf756af039b9baf76e00",
+      "export": "data/plans/mistral7-registration-foreground-20261005T095232Z-schedule.profile-summary.json",
+      "export_sha256": "2279a6f6140431104ef2cce49938fc355849b3dd352aebfaed32cd38cd7d4c1f"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-registration-foreground-20261005T095232Z-window2048/result.json",
+      "source_sha256": "c7226e123deaf6e45e071134f2e3ee2d2e90a12dcb8e329cf0c0cdc95044fd4e",
+      "export": "data/records/mistral7-registration-foreground-20261005T095232Z-window2048.json",
+      "export_sha256": "37f4c530561b5c7eb426feecaeb0b0b988a208d64e38ea633925ccc913ecc4c2"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-registration-foreground-20261005T095232Z-window3072/result.json",
+      "source_sha256": "d2d53c787ee2ff898518c33f499820bc0f6708737cc68c6ec4807b24819b10ff",
+      "export": "data/records/mistral7-registration-foreground-20261005T095232Z-window3072.json",
+      "export_sha256": "2d55ff7a639885377f42bd5fc8dd80d99f773cf9d7d8b9a7a3a10e7a48d357df"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-step-diagnostic-20261005T081438Z-schedule.json",
+      "source_sha256": "d4e3ab00687c3a232b64ebff6ad11a00a4d1fc36e647abacfc40bb2f3a791081",
+      "export": "data/plans/mistral7-step-diagnostic-20261005T081438Z-schedule.json",
+      "export_sha256": "1c659813c7dbf8ee714a49387c0a8e8710b3cfcc72133f72b059476391113ff9"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-step-diagnostic-20261005T081438Z-schedule.state.json",
+      "source_sha256": "9d11182744e68460ffa50bcc3b9cee868e83f4ae9c6da38fca00fed1e97fcc20",
+      "export": "data/plans/mistral7-step-diagnostic-20261005T081438Z-schedule.state.json",
+      "export_sha256": "9d11182744e68460ffa50bcc3b9cee868e83f4ae9c6da38fca00fed1e97fcc20"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-step-diagnostic-20261005T081438Z-r0-cpu-repack/result.json",
+      "source_sha256": "266485eb4598605b45243f368f39f05eb87ea0ccccd102711b140c1f67845bac",
+      "export": "data/records/mistral7-step-diagnostic-20261005T081438Z-r0-cpu-repack.json",
+      "export_sha256": "f007933d7d332b2a109050a35139a37fd5b587ba879702c8ff4ed5aa35ae1192"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-step-long-20261005T082827Z-schedule.json",
+      "source_sha256": "f9b9e991baf14b7c80b8d77dca5dcfd73a91b225b6525ed651f4477513bb6049",
+      "export": "data/plans/mistral7-step-long-20261005T082827Z-schedule.json",
+      "export_sha256": "e69282da7f4309cd823dae6a4723abfded1ac48c8c1ed4b1b9388657839d800a"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-step-long-20261005T082827Z-schedule.state.json",
+      "source_sha256": "c4879fe10139b150b62ec1bd8ac9149701d15c430862e324cd0b1da639d1e8bb",
+      "export": "data/plans/mistral7-step-long-20261005T082827Z-schedule.state.json",
+      "export_sha256": "c4879fe10139b150b62ec1bd8ac9149701d15c430862e324cd0b1da639d1e8bb"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-step-long-20261005T082827Z-schedule.summary.json",
+      "source_sha256": "71776972b0a21a7fa2ead539647ea1e15fa6c0a28ca30d210a1a7f43de69022c",
+      "export": "data/plans/mistral7-step-long-20261005T082827Z-schedule.summary.json",
+      "export_sha256": "5d2fcca3dfc5f46b2af780a1aaaa6b0ebd618b5f475a2b4ac2f793d02c80bcf7"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-step-long-20261005T082827Z-schedule.telemetry-summary.json",
+      "source_sha256": "531a4ff0148b920b1fea59976d440af0ff1cba4b3acb26704c85e8ee829a9215",
+      "export": "data/plans/mistral7-step-long-20261005T082827Z-schedule.telemetry-summary.json",
+      "export_sha256": "531a4ff0148b920b1fea59976d440af0ff1cba4b3acb26704c85e8ee829a9215"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-step-long-20261005T082827Z-r0-cpu-canonical/result.json",
+      "source_sha256": "1e29c893dfd6f5282fec40e5681de93902df296b38c4aaa61f4855e63346dfef",
+      "export": "data/records/mistral7-step-long-20261005T082827Z-r0-cpu-canonical.json",
+      "export_sha256": "e9e560ec86301ecbe42c6ecb5249da5e8068972e0f413e4183774d743951fa49"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-step-long-20261005T082827Z-r1-hybrid/result.json",
+      "source_sha256": "186c128ac1df982052f923a65b71da6a9c217397b02910e631e115ec806aebde",
+      "export": "data/records/mistral7-step-long-20261005T082827Z-r1-hybrid.json",
+      "export_sha256": "4380422842db57d64b31c6606e041752dd70e7cace29280a59cad6dc3b4a74e4"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-step-long-20261005T082827Z-r2-npu-full/result.json",
+      "source_sha256": "e79093d45d0dabfe7ba2ae4ef9d5d9810d6d328fff2b2dd9f36208b638e046e5",
+      "export": "data/records/mistral7-step-long-20261005T082827Z-r2-npu-full.json",
+      "export_sha256": "ae0c1ce416ecc03d0596bf44a56c7261fb5bed2d2dee4e08c0f7c7a5b60af7fe"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-step-long-20261005T082827Z-r3-cpu-repack/result.json",
+      "source_sha256": "0ccfa000d3d968ffd5ff8b14036604a0753a23bb0c9e2e67178b5bb2df1360dc",
+      "export": "data/records/mistral7-step-long-20261005T082827Z-r3-cpu-repack.json",
+      "export_sha256": "ec377bf4c99a30c136cf83a228994afe3cd22ce67f2c07a4f46919d05ef60cee"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-step-small-20261005T082256Z-schedule.json",
+      "source_sha256": "285a88d24a8759cd8925ce157f2966177c9623aeefab97c3a4d75d83b45e338f",
+      "export": "data/plans/mistral7-step-small-20261005T082256Z-schedule.json",
+      "export_sha256": "4816cfe445a8dc7c1c6a093612c9fe7dba169300030fe0bbe16743f9ff941241"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-step-small-20261005T082256Z-schedule.summary.json",
+      "source_sha256": "6225b0a9f4766f4057de0fec0e8e09406d884de05e41f736a716dd366a3328f6",
+      "export": "data/plans/mistral7-step-small-20261005T082256Z-schedule.summary.json",
+      "export_sha256": "da032f682bf3c550ee42aa282972b81c5e19d6f010e9aaf20a217b822d16b901"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-step-small-20261005T082256Z-schedule.state.json",
+      "source_sha256": "ee6491e0d59382b090db8a6ab509b93788fcf7e7df9a0849dcd51f0470256775",
+      "export": "data/plans/mistral7-step-small-20261005T082256Z-schedule.state.json",
+      "export_sha256": "ee6491e0d59382b090db8a6ab509b93788fcf7e7df9a0849dcd51f0470256775"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-step-small-20261005T082256Z-r0-cpu-canonical/result.json",
+      "source_sha256": "cd4fc72b19b5bf685fa30dc200840a125f0e6eea4d0c5e42fb46524e4b2008b6",
+      "export": "data/records/mistral7-step-small-20261005T082256Z-r0-cpu-canonical.json",
+      "export_sha256": "876c71c9c3de930d96a37ba75b98bf1160174d7835c8dc03ac36ae1d8654335d"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-step-small-20261005T082256Z-r1-hybrid/result.json",
+      "source_sha256": "dbf064d1dec5824022ae0cf02b4a06660384eb8bc094d27a4dbfb2b29a9d1b48",
+      "export": "data/records/mistral7-step-small-20261005T082256Z-r1-hybrid.json",
+      "export_sha256": "8f804aac0cfbf97032b4dcb090f674cb798b648336349a3f504df9f9cc06f60c"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-step-small-20261005T082256Z-r2-cpu-repack/result.json",
+      "source_sha256": "b7b9ab38831bc27f98464448f2428f16564be7939fa859e48edf7c705063d715",
+      "export": "data/records/mistral7-step-small-20261005T082256Z-r2-cpu-repack.json",
+      "export_sha256": "bfd6583d22c578dfce83fb4226826b9bef21713de64af957a91a350ffefddef2"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-step-small-20261005T082256Z-r3-cpu-canonical/result.json",
+      "source_sha256": "f7bad45ac18b98d2629c18541aa347e6ee9c066b7f752f7942f684dbd8aa8705",
+      "export": "data/records/mistral7-step-small-20261005T082256Z-r3-cpu-canonical.json",
+      "export_sha256": "ff6f3b673ee242c61a86b408a14811a58cc45b20f118671f68c433a95529ba82"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-untraced-2K-20261005T084757Z-schedule.json",
+      "source_sha256": "14fd6ac70feeaaf75ff54458cfd521eb81bc03e292fccac4f7bb9117d68a7038",
+      "export": "data/plans/mistral7-untraced-2K-20261005T084757Z-schedule.json",
+      "export_sha256": "5cd53f36c619f885ec3a566660041374cf64db7240777a01cf75199091ec1f11"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-untraced-2K-20261005T084757Z-schedule.state.json",
+      "source_sha256": "dee988f3fc2f701a6081816b950499f2474b3f6d1267da8d2b4d4797e050dc55",
+      "export": "data/plans/mistral7-untraced-2K-20261005T084757Z-schedule.state.json",
+      "export_sha256": "dee988f3fc2f701a6081816b950499f2474b3f6d1267da8d2b4d4797e050dc55"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-untraced-2K-20261005T084757Z-schedule.summary.json",
+      "source_sha256": "8959b56a62c523722a3df13a73449fc3713ebb1980862bf12aa42cc2629ecac6",
+      "export": "data/plans/mistral7-untraced-2K-20261005T084757Z-schedule.summary.json",
+      "export_sha256": "8959b56a62c523722a3df13a73449fc3713ebb1980862bf12aa42cc2629ecac6"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-untraced-2K-20261005T084757Z-schedule.telemetry-summary.json",
+      "source_sha256": "01ef679e47f20980cba075fbeb3e468ce78aaedfee49107bb01ce1134cad4e65",
+      "export": "data/plans/mistral7-untraced-2K-20261005T084757Z-schedule.telemetry-summary.json",
+      "export_sha256": "01ef679e47f20980cba075fbeb3e468ce78aaedfee49107bb01ce1134cad4e65"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-untraced-2K-20261005T084757Z-round0-cpu/result.json",
+      "source_sha256": "c68cfa3327fd30003a809cecfae0d23460075a69c3e5acb07b29e6c6f79ce020",
+      "export": "data/records/mistral7-untraced-2K-20261005T084757Z-round0-cpu.json",
+      "export_sha256": "d9de294afce3e92130ea9922c72612fe6015713e1d5b89cdff1a3f133f0b0c1d"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-untraced-2K-20261005T084757Z-round0-gpu/result.json",
+      "source_sha256": "21d4e665ea6fbb3950e395a1483a5dc05ed8060e41a40016709969c18c08df42",
+      "export": "data/records/mistral7-untraced-2K-20261005T084757Z-round0-gpu.json",
+      "export_sha256": "36ff4e36bbc7bfa32dbd8db6a1412986cd1d1d21dcba5d048d3dedea0d5dfeda"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-untraced-2K-20261005T084757Z-round0-hybrid/result.json",
+      "source_sha256": "340d9cf955ea8ff618ffea6ccc730324fd03a5765b71a48b16894e9b88cb7e82",
+      "export": "data/records/mistral7-untraced-2K-20261005T084757Z-round0-hybrid.json",
+      "export_sha256": "5fb5fa5ed53ea5088ea077eb80a741975e31965a5c693bef219c8c3f03970db2"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-untraced-2K-20261005T084757Z-round1-hybrid/result.json",
+      "source_sha256": "67169d6dded467954f0fb826674cb60736c73463fbec0f2c0f4c211642964749",
+      "export": "data/records/mistral7-untraced-2K-20261005T084757Z-round1-hybrid.json",
+      "export_sha256": "27ef04e700cb2f3657718bf25f0680160bb7df0e5f6dd80126c5364e53c32a0a"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-untraced-2K-20261005T084757Z-round1-cpu/result.json",
+      "source_sha256": "a7a17962d276b2bab7c104464fba481be3e6ee80ccabb458477a52b746defede",
+      "export": "data/records/mistral7-untraced-2K-20261005T084757Z-round1-cpu.json",
+      "export_sha256": "28f73e794d758aba9862c8890687476a820e0ed88a13efec9ec8f68a360d22ad"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-untraced-2K-20261005T084757Z-round1-gpu/result.json",
+      "source_sha256": "1218adb12f16572ae1cecb7058d98832ce1127abac9c3a9b014570f1e3210d73",
+      "export": "data/records/mistral7-untraced-2K-20261005T084757Z-round1-gpu.json",
+      "export_sha256": "9038c34667ab67c02442406ffed5d3e3bf0d11689e82f43e2fbf7bccdcb101be"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-untraced-2K-20261005T084757Z-round2-gpu/result.json",
+      "source_sha256": "b7f15eb7ca63138afb90f6dca3c10c7d277104b8be5bd1eefe8930602c9d2a52",
+      "export": "data/records/mistral7-untraced-2K-20261005T084757Z-round2-gpu.json",
+      "export_sha256": "62e8d34fc699831c2a1e8ffb317cb32f075f7b9c60010d623bd8224fda568816"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-untraced-2K-20261005T084757Z-round2-hybrid/result.json",
+      "source_sha256": "5060ffa5cbf567295138e0334f0d008048145617b5b65a69c9a5700dafbb88f0",
+      "export": "data/records/mistral7-untraced-2K-20261005T084757Z-round2-hybrid.json",
+      "export_sha256": "31d85bd83071f2203d0d9244e74f1c137ea4fb425a75b5ff89a88fc1ca051557"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-untraced-2K-20261005T084757Z-round2-cpu/result.json",
+      "source_sha256": "4f71552219d349e0fedaec92211cd4f5c7a0c9f63993ea00495964a44a6161ac",
+      "export": "data/records/mistral7-untraced-2K-20261005T084757Z-round2-cpu.json",
+      "export_sha256": "5c39b21d52f5e296f834c52f3492268ef5d8572754963cc6ff5dcd6eeecc05c3"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-window3072-quality-20261005T094840Z-schedule.json",
+      "source_sha256": "488fd5edbd31499ceb5c4c44fdd3dfff9109c2fa2a296021ae47fdea8f67339f",
+      "export": "data/plans/mistral7-window3072-quality-20261005T094840Z-schedule.json",
+      "export_sha256": "ac183f15616384b3a07adc03dc869867528c748896377242bbf1933f24e508f5"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-window3072-quality-20261005T094840Z/result.json",
+      "source_sha256": "439f1a037e263e80774b7e5e4110a3a86286e21ae925ac95cbe970ba14444a15",
+      "export": "data/records/mistral7-window3072-quality-20261005T094840Z.json",
+      "export_sha256": "98eec771972a6afd8607b75935fe98f30745e2dd64b6144361dc3601faca3303"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-window3072-quality-retry-20261005T095115Z-schedule.json",
+      "source_sha256": "7d6ed4ecea56317f74ce2163c54d07012f87d62ae2a830d58698202b98384073",
+      "export": "data/plans/mistral7-window3072-quality-retry-20261005T095115Z-schedule.json",
+      "export_sha256": "836331a2ffea8d36a0cb60f62f30313ce7f592cfaae68773bafc8315405f9342"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/mistral7-window3072-quality-retry-20261005T095115Z/result.json",
+      "source_sha256": "517de6a9aa8d6e8f1668d9eb377b3a304c027b80c351a28efefd0cbbe1f26c4c",
+      "export": "data/records/mistral7-window3072-quality-retry-20261005T095115Z.json",
+      "export_sha256": "af4ed46c736e09bc692dde469cdfca49300cfc92dcde07dc7bca106104c579ca"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen3-4B-CPU-threads-charging-20261005T150158Z-schedule.json",
+      "source_sha256": "e2aefb1e9e80f057836732786760a992753be371e6a9f3f32d3a8ec56edef21e",
+      "export": "data/plans/qwen3-4B-CPU-threads-charging-20261005T150158Z-schedule.json",
+      "export_sha256": "dced4ad3df98920b212a767659bbc8067778f49924b8929b96075ad49168db94"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen3-4B-CPU-threads-charging-20261005T150158Z-schedule.state.json",
+      "source_sha256": "6485bf66f33089871c340baa799f1f7a6b14bed5a1b8f387bf521f3c789437d6",
+      "export": "data/plans/qwen3-4B-CPU-threads-charging-20261005T150158Z-schedule.state.json",
+      "export_sha256": "6485bf66f33089871c340baa799f1f7a6b14bed5a1b8f387bf521f3c789437d6"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/qwen3-4B-CPU-threads-charging-20261005T150158Z-case0-cpu-t6/result.json",
+      "source_sha256": "f1f0a40ab65af271b250bd4dafd49bc9a5f62590f7a06f6677b258ac64f8bfe3",
+      "export": "data/records/qwen3-4B-CPU-threads-charging-20261005T150158Z-case0-cpu-t6.json",
+      "export_sha256": "8e32afc48c6edc1273c7cfb74e121e8e70122ddd0b111998ae137c5322acb13a"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/qwen3-4B-CPU-threads-charging-20261005T150158Z-case1-cpu-t4/result.json",
+      "source_sha256": "179f4e67bb8b9c7bad79814fb7e23dac3f1d43c66036dd054b81b93d34a5a574",
+      "export": "data/records/qwen3-4B-CPU-threads-charging-20261005T150158Z-case1-cpu-t4.json",
+      "export_sha256": "a460f31fb5d37675ebc6e5ae0a5ee8f36c28157753039a0a3bd8e89ec82f09fc"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-schedule.json",
+      "source_sha256": "c23d0158b0fc3151a0f7bdf49cecd969cb2dbbb474e8dfa2ccc695b9ff8cdede",
+      "export": "data/plans/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-schedule.json",
+      "export_sha256": "fc9fc8e61458b106991a612817d074a87e10ac80305e4faf2610d22bade6f6db"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-schedule.state.json",
+      "source_sha256": "d2045d60d1c2549f8b22cd24ba3e7c4fade96f59ebd1524c91e11eef68d6b626",
+      "export": "data/plans/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-schedule.state.json",
+      "export_sha256": "d2045d60d1c2549f8b22cd24ba3e7c4fade96f59ebd1524c91e11eef68d6b626"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case0-cpu-t6/result.json",
+      "source_sha256": "ab3b317703567e234039ecdbb39c9233be0a805052a460d08706561099cbf087",
+      "export": "data/records/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case0-cpu-t6.json",
+      "export_sha256": "7c22f1cffae8e08bf91437efc817b356bae2c51f0ddf7de70a24c655402a3b74"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case1-cpu-t4/result.json",
+      "source_sha256": "f9cf3ab16691c05a6f277f7f8ea8e9500cc98aa912453095850cd07025b9485a",
+      "export": "data/records/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case1-cpu-t4.json",
+      "export_sha256": "3bf88a43a36a8d004d844dd01edfa9c18464271ee96bd59b75346d833e5ce4bd"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case2-cpu-t5/result.json",
+      "source_sha256": "36fd2e7cb14035f4b3c6e1a6fafe0dd470cbebfc093e7e8fc30ae2d7f636904a",
+      "export": "data/records/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case2-cpu-t5.json",
+      "export_sha256": "82482673c8e0fc912dd3f6ac109def7e5a16895307d9e81c04f80765cb550141"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case3-gpu-t6/result.json",
+      "source_sha256": "51bb4eac52d23fd15b51cb1e03c3766cc7e8e2d47aa24a7ba1f642e6a6f4c687",
+      "export": "data/records/qwen3-4B-CPU-threads-charging-retry-20261005T150811Z-case3-gpu-t6.json",
+      "export_sha256": "10b39d1c108790efa13140d08f598ddca1c9dd6089760575a23919d24bcfae6b"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen3-4B-cpu-thread-screen-20261005T145923Z-schedule.json",
+      "source_sha256": "ba5d7e15ea5ec67b1d7f0a313f7ba9acb8b29bbf7e8e779c1621d9ba0a678e49",
+      "export": "data/plans/qwen3-4B-cpu-thread-screen-20261005T145923Z-schedule.json",
+      "export_sha256": "24ae920ca96856e1e9744c23f59f496ab1ce7d9ba071adb220af09e8ea3a3d24"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen4-background-p512-20261005T150947Z-schedule.json",
+      "source_sha256": "5f0315f4b50fe74804e7c819d8f76caa33ec42352f4e157887fa801cf63b03c1",
+      "export": "data/plans/qwen4-background-p512-20261005T150947Z-schedule.json",
+      "export_sha256": "4cc69de7f056b13e305a8f5a95bcdff8909e2f37cf08bd0bae8e96c354554663"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/qwen7-window3072-quality-20261005T161820Z-schedule.json",
+      "source_sha256": "cf64e44dbe6ad3eb77bc1b63159f431cfb22b063f4c027034ad7106dcd723a40",
+      "export": "data/plans/qwen7-window3072-quality-20261005T161820Z-schedule.json",
+      "export_sha256": "22e64a7f16960d2614b3a5989c3db05778120878a5003f98b980595c4700f3b5"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/virtual-session-1p5-quality-20261005T155219Z-schedule.json",
+      "source_sha256": "6291e12c19e4c452969f0c063e6107726caf3e4ae5d17f8efcfd07a5497c6906",
+      "export": "data/plans/virtual-session-1p5-quality-20261005T155219Z-schedule.json",
+      "export_sha256": "5247f9eb4557aab8505d1a8be5ed6a1b888d4bc904c20ad3db0353d4372aa64f"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/virtual-session-1p5-quality-20261005T155219Z-schedule.numerical-summary.json",
+      "source_sha256": "cf3a890cc5e1d5f935e57629812a5a9076b0696455953f3ca990afca66b6f058",
+      "export": "data/plans/virtual-session-1p5-quality-20261005T155219Z-schedule.numerical-summary.json",
+      "export_sha256": "cf3a890cc5e1d5f935e57629812a5a9076b0696455953f3ca990afca66b6f058"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/virtual-session-1p5-quality-20261005T155219Z-case0-cpu/result.json",
+      "source_sha256": "7f76f46ddaf271a3208c1a34b664be6530d09b19c4f64ecaa74d8f0e158067a7",
+      "export": "data/records/virtual-session-1p5-quality-20261005T155219Z-case0-cpu.json",
+      "export_sha256": "60702121938d9a3628c345ec5320f9b98574b395180c43fdbacb1e5ec5d6c54a"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/virtual-session-1p5-quality-20261005T155219Z-case1-gpu/result.json",
+      "source_sha256": "1af599e2ff1edc5e42531d5ac3dfac744f963d50a3d5a954c08c57ae22217c0a",
+      "export": "data/records/virtual-session-1p5-quality-20261005T155219Z-case1-gpu.json",
+      "export_sha256": "2ac2eceeeca3259d24287f6526c19cc438e22c5348448e55ddbc84e99697ad49"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v7-batch-threads.cpp",
+      "source_sha256": "efd88208451440682649cdcaf13e256f6e12448b7e346f0a14ba21e539ae50a0",
+      "export": "helpers/hybrid-latency-phase-v7-batch-threads.cpp",
+      "export_sha256": "efd88208451440682649cdcaf13e256f6e12448b7e346f0a14ba21e539ae50a0"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v6-step-checkpoint.cpp",
+      "source_sha256": "c4b12ec0ba8d43d091bb82c9a1fe15c59240e5b5db526d7211d107c7bbeeb896",
+      "export": "helpers/hybrid-latency-phase-v6-step-checkpoint.cpp",
+      "export_sha256": "c4b12ec0ba8d43d091bb82c9a1fe15c59240e5b5db526d7211d107c7bbeeb896"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v5-step-profile.cpp",
+      "source_sha256": "84041347226b591c498aefdc627060ad0ad7bcc6382b5ef580f2c091f6e494f2",
+      "export": "helpers/hybrid-latency-phase-v5-step-profile.cpp",
+      "export_sha256": "84041347226b591c498aefdc627060ad0ad7bcc6382b5ef580f2c091f6e494f2"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v4-canonical.cpp",
+      "source_sha256": "e35324af28288f1123e50d2b1d598c629204fa1523a591ec118e560d619e98d1",
+      "export": "helpers/hybrid-latency-phase-v4-canonical.cpp",
+      "export_sha256": "e35324af28288f1123e50d2b1d598c629204fa1523a591ec118e560d619e98d1"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/openmp-placement-probe.cpp",
+      "source_sha256": "f6945375297d20d63037299c8cc9c305c6828491854b0844904b2f4e2901564e",
+      "export": "helpers/openmp-placement-probe.cpp",
+      "export_sha256": "f6945375297d20d63037299c8cc9c305c6828491854b0844904b2f4e2901564e"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/build-phase-v7-batch-threads.py",
+      "source_sha256": "dae0d80d04f245bd4969a3eb6bb3c1caad4afb801811ca6f5e136dcf18304afa",
+      "export": "helpers/build-phase-v7-batch-threads.py",
+      "export_sha256": "dae0d80d04f245bd4969a3eb6bb3c1caad4afb801811ca6f5e136dcf18304afa"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/placement_measure.py",
+      "source_sha256": "c82eb928e43a2a2def111ed78de5abb93881eeb330988af46b29fd3c66365f93",
+      "export": "helpers/placement_measure.py",
+      "export_sha256": "c82eb928e43a2a2def111ed78de5abb93881eeb330988af46b29fd3c66365f93"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/placement_measure_dual.py",
+      "source_sha256": "2fdd861b1fd1d5b93f6523be4dcd310fa13daa63d8109d3360684da698143a95",
+      "export": "helpers/placement_measure_dual.py",
+      "export_sha256": "2fdd861b1fd1d5b93f6523be4dcd310fa13daa63d8109d3360684da698143a95"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/summarize-phase-plan-oct05.py",
+      "source_sha256": "56e488c8504a1c0ad511d6cbe9d4d4c098e71764c113d58f67850edec8a1a14c",
+      "export": "helpers/summarize-phase-plan-oct05.py",
+      "export_sha256": "56e488c8504a1c0ad511d6cbe9d4d4c098e71764c113d58f67850edec8a1a14c"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/summarize-step-profile.py",
+      "source_sha256": "933704f3f854b90d31b71cedf6c9011a3634f80b034665e0a4fffe29ca39f792",
+      "export": "helpers/summarize-step-profile.py",
+      "export_sha256": "933704f3f854b90d31b71cedf6c9011a3634f80b034665e0a4fffe29ca39f792"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/summarize-phase-telemetry.py",
+      "source_sha256": "3d7ea5aecfd823ddf4b8130878409571a2d655bb5475f4271a470ab4998f6e03",
+      "export": "helpers/summarize-phase-telemetry.py",
+      "export_sha256": "3d7ea5aecfd823ddf4b8130878409571a2d655bb5475f4271a470ab4998f6e03"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/summarize-registration-profile.py",
+      "source_sha256": "c5f8629324b57095d917a1eb8f51d242bc381151f9abf1827087726c67f5c603",
+      "export": "helpers/summarize-registration-profile.py",
+      "export_sha256": "c5f8629324b57095d917a1eb8f51d242bc381151f9abf1827087726c67f5c603"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/confirm-mistral-long-response-oct05.py",
+      "source_sha256": "f526f34bfc8cb1785dd28ea5e15bd30cdd2d8c096c60f4c42082cb4ebacd8222",
+      "export": "helpers/confirm-mistral-long-response-oct05.py",
+      "export_sha256": "f526f34bfc8cb1785dd28ea5e15bd30cdd2d8c096c60f4c42082cb4ebacd8222"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/build-phase-v7-opencl.py",
+      "source_sha256": "d86528b7c55741b9884afec0228c27603e3e6638c5ce78d6220bf2bde040695a",
+      "export": "helpers/build-phase-v7-opencl.py",
+      "export_sha256": "d86528b7c55741b9884afec0228c27603e3e6638c5ce78d6220bf2bde040695a"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v8-virtual-sessions.cpp",
+      "source_sha256": "7fd12a7b97cbcbf9ea5fbbdeefe17c7d5157d7b0b0f8fef4ea1d2dba753335d8",
+      "export": "helpers/hybrid-latency-phase-v8-virtual-sessions.cpp",
+      "export_sha256": "7fd12a7b97cbcbf9ea5fbbdeefe17c7d5157d7b0b0f8fef4ea1d2dba753335d8"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/build-phase-v8-virtual-sessions.py",
+      "source_sha256": "4f5c7e0dd29ef4d2338e65d53df685e823e47218e1b7c05059eab362a3f84ad1",
+      "export": "helpers/build-phase-v8-virtual-sessions.py",
+      "export_sha256": "4f5c7e0dd29ef4d2338e65d53df685e823e47218e1b7c05059eab362a3f84ad1"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-virtual-session-order.cpp",
+      "source_sha256": "97836311e38c7d37961d431fbec0f80b00d1dbb1880be2713bf3f034e858cb44",
+      "export": "helpers/npu-virtual-session-order.cpp",
+      "export_sha256": "97836311e38c7d37961d431fbec0f80b00d1dbb1880be2713bf3f034e858cb44"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/run-virtual-session-order-oct05.py",
+      "source_sha256": "454c69cdd1339194f68403ce9da4ab0e084c8663000932428162273487b9afbc",
+      "export": "helpers/run-virtual-session-order-oct05.py",
+      "export_sha256": "454c69cdd1339194f68403ce9da4ab0e084c8663000932428162273487b9afbc"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/run-virtual-session-strace-oct05.py",
+      "source_sha256": "8a83dceba16b0f2bd8afe1f296dfb22cc959b6c71b10fb550db513e5994bfefa",
+      "export": "helpers/run-virtual-session-strace-oct05.py",
+      "export_sha256": "8a83dceba16b0f2bd8afe1f296dfb22cc959b6c71b10fb550db513e5994bfefa"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/run-background-phases-oct05.py",
+      "source_sha256": "83c17403446a1f6b49dbc999a8f965e4220900a65c82619762fa7c99af1b7774",
+      "export": "helpers/run-background-phases-oct05.py",
+      "export_sha256": "83c17403446a1f6b49dbc999a8f965e4220900a65c82619762fa7c99af1b7774"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/run-numerical-phase-gates-oct05.py",
+      "source_sha256": "d31d303168aa184090df0ea64c467059a402e862e3a70ee15b76c67172ee319c",
+      "export": "helpers/run-numerical-phase-gates-oct05.py",
+      "export_sha256": "d31d303168aa184090df0ea64c467059a402e862e3a70ee15b76c67172ee319c"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/export-oct05-performance.py",
+      "source_sha256": "123a1530cc88a2e638404c1c87494edb6b49e92cc91ea073729ecd21aee19976",
+      "export": "helpers/export-oct05-performance.py",
+      "export_sha256": "123a1530cc88a2e638404c1c87494edb6b49e92cc91ea073729ecd21aee19976"
+    }
+  ],
+  "scope": "Compact evidence and original helper source only. Raw stderr and full telemetry remain local. No SDK, model, vendor library or compiled executable. Earlier experimental source patches remain in reports/2026-10-04/patches; helpers require that experimental workspace. Not an installer default or new clean-room test."
+}

@@ -1,0 +1,14 @@
+{
+  "UTC": "2026-10-05T16:26:14.660925+00:00",
+  "plan": "generic-Qwen4-8K-bestcpu-retry-20261005T160932Z-schedule.json",
+  "exit_code": -9,
+  "abort_reason": "Android benchmark cgroup changed during measurement; invalid controlled comparison",
+  "wall_s": 758.2380012729991,
+  "min_MemAvailable_MiB": 2808.18359375,
+  "latency_metrics": null,
+  "first_changed_UTC": "2026-10-05T16:24:15.395710+00:00",
+  "changed_harness_cgroup": "5:freezer:/\n4:cpuset:/foreground-boost\n3:cpuacct:/\n2:cpu:/foreground-boost\n1:blkio:/high\n0::/apps/uid_10247/pid_29688",
+  "changed_process_cgroup": "5:freezer:/\n4:cpuset:/foreground-boost\n3:cpuacct:/\n2:cpu:/foreground-boost\n1:blkio:/high\n0::/apps/uid_10247/pid_29688",
+  "changed_process_affinity": "0-7",
+  "conclusion": "Second CPU8K controlled timing censored by Android placement transition. SIGKILL follows explicit harnessSIGTERM+8s timeout, not evidence of spontaneous OOM/driver crash. Preserve incomplete evidence; GPUfirst fresh plan can establish its own8K performance but cannot declare crossover without matchedCPU."
+}

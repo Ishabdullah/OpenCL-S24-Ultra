@@ -1,0 +1,954 @@
+{
+  "all64_output_tokens_match": true,
+  "scope": "Exploratory p512/g64/c1024/t6FC/FAon/b512ub256/window3072, canonicalCPUlayouts for partials; optimized repacked CPU control separate. Requested layer percent does not imply compute/time/power share. Positive points require independent confirmation.",
+  "records": [
+    {
+      "id": "mistral7-partial-NPU-20261005T095725Z-case0-ngl0",
+      "ngl": 0,
+      "repack": 0,
+      "PP_tok_s": 15.602979798,
+      "TG_tok_s": 6.448161147,
+      "response_s": 42.912258994,
+      "peak_RSS_MiB": 4372.05078125,
+      "min_MemAvailable_MiB": 7510.5234375,
+      "layers": [
+        [
+          0,
+          33
+        ]
+      ],
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 4165.37,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  4165.37 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 128.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   128.00 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 58.51,
+            "line": "sched_reserve:        CPU compute buffer size =    58.51 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            0,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =   128.00 MiB"
+        ]
+      },
+      "output_tokens": [
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771
+      ],
+      "valid": true
+    },
+    {
+      "id": "mistral7-partial-NPU-20261005T095725Z-case1-ngl3",
+      "ngl": 3,
+      "repack": 0,
+      "PP_tok_s": 16.667257322,
+      "TG_tok_s": 6.406107667,
+      "response_s": 40.953319516,
+      "peak_RSS_MiB": 4183.90625,
+      "min_MemAvailable_MiB": 6877.875,
+      "layers": [
+        [
+          3,
+          33
+        ]
+      ],
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 3900.35,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  3900.35 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "model",
+            "MiB": 399.45,
+            "line": "load_tensors:         HTP0 model buffer size =   399.45 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 120.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   120.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "KV",
+            "MiB": 8.0,
+            "line": "llama_kv_cache:       HTP0 KV buffer size =     8.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "compute",
+            "MiB": 54.51,
+            "line": "sched_reserve:       HTP0 compute buffer size =    54.51 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 58.51,
+            "line": "sched_reserve:        CPU compute buffer size =    58.51 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            3,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =   120.00 MiB",
+          "llama_kv_cache:       HTP0 KV buffer size =     8.00 MiB"
+        ]
+      },
+      "output_tokens": [
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771
+      ],
+      "valid": true
+    },
+    {
+      "id": "mistral7-partial-NPU-20261005T095725Z-case2-ngl6",
+      "ngl": 6,
+      "repack": 0,
+      "PP_tok_s": 17.983905651,
+      "TG_tok_s": 7.133224361,
+      "response_s": 37.532115194,
+      "peak_RSS_MiB": 4183.23046875,
+      "min_MemAvailable_MiB": 6370.734375,
+      "layers": [
+        [
+          6,
+          33
+        ]
+      ],
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 3502.85,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  3502.85 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "model",
+            "MiB": 834.55,
+            "line": "load_tensors:         HTP0 model buffer size =   834.55 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 108.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   108.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "KV",
+            "MiB": 20.0,
+            "line": "llama_kv_cache:       HTP0 KV buffer size =    20.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "compute",
+            "MiB": 54.51,
+            "line": "sched_reserve:       HTP0 compute buffer size =    54.51 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 58.51,
+            "line": "sched_reserve:        CPU compute buffer size =    58.51 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            6,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =   108.00 MiB",
+          "llama_kv_cache:       HTP0 KV buffer size =    20.00 MiB"
+        ]
+      },
+      "output_tokens": [
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771
+      ],
+      "valid": true
+    },
+    {
+      "id": "mistral7-partial-NPU-20261005T095725Z-case3-ngl16",
+      "ngl": 16,
+      "repack": 0,
+      "PP_tok_s": 29.746938427,
+      "TG_tok_s": 6.986210484,
+      "response_s": 26.343625303,
+      "peak_RSS_MiB": 4182.13671875,
+      "min_MemAvailable_MiB": 5389.953125,
+      "layers": [
+        [
+          16,
+          33
+        ]
+      ],
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 2183.59,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  2183.59 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "model",
+            "MiB": 2179.86,
+            "line": "load_tensors:         HTP0 model buffer size =  2179.86 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 68.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =    68.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "KV",
+            "MiB": 60.0,
+            "line": "llama_kv_cache:       HTP0 KV buffer size =    60.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "compute",
+            "MiB": 54.51,
+            "line": "sched_reserve:       HTP0 compute buffer size =    54.51 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 58.51,
+            "line": "sched_reserve:        CPU compute buffer size =    58.51 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            16,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =    68.00 MiB",
+          "llama_kv_cache:       HTP0 KV buffer size =    60.00 MiB"
+        ]
+      },
+      "output_tokens": [
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771
+      ],
+      "valid": true
+    },
+    {
+      "id": "mistral7-partial-NPU-20261005T095725Z-case4-ngl24",
+      "ngl": 24,
+      "repack": 0,
+      "PP_tok_s": 51.713945331,
+      "TG_tok_s": 4.782653356,
+      "response_s": 23.151817959,
+      "peak_RSS_MiB": 4183.31640625,
+      "min_MemAvailable_MiB": 4172.1875,
+      "layers": [
+        [
+          24,
+          33
+        ]
+      ],
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 1287.47,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  1287.47 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "model",
+            "MiB": 3265.11,
+            "line": "load_tensors:         HTP0 model buffer size =  3265.11 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 36.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =    36.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "KV",
+            "MiB": 92.0,
+            "line": "llama_kv_cache:       HTP0 KV buffer size =    92.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "compute",
+            "MiB": 54.51,
+            "line": "sched_reserve:       HTP0 compute buffer size =    54.51 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 58.51,
+            "line": "sched_reserve:        CPU compute buffer size =    58.51 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            24,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =    36.00 MiB",
+          "llama_kv_cache:       HTP0 KV buffer size =    92.00 MiB"
+        ]
+      },
+      "output_tokens": [
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771
+      ],
+      "valid": true
+    },
+    {
+      "id": "mistral7-partial-NPU-20261005T095725Z-case5-ngl99",
+      "ngl": 99,
+      "repack": 0,
+      "PP_tok_s": 363.242976652,
+      "TG_tok_s": 4.383914071,
+      "response_s": 15.782619526,
+      "peak_RSS_MiB": 3892.1015625,
+      "min_MemAvailable_MiB": 2869.953125,
+      "layers": [
+        [
+          33,
+          33
+        ]
+      ],
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 70.31,
+            "line": "load_tensors:   CPU_Mapped model buffer size =    70.31 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "model",
+            "MiB": 4510.39,
+            "line": "load_tensors:         HTP0 model buffer size =  4510.39 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "KV",
+            "MiB": 128.0,
+            "line": "llama_kv_cache:       HTP0 KV buffer size =   128.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "compute",
+            "MiB": 54.51,
+            "line": "sched_reserve:       HTP0 compute buffer size =    54.51 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 8.51,
+            "line": "sched_reserve:        CPU compute buffer size =     8.51 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            33,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:       HTP0 KV buffer size =   128.00 MiB"
+        ]
+      },
+      "output_tokens": [
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771
+      ],
+      "valid": true
+    },
+    {
+      "id": "mistral7-partial-NPU-20261005T095725Z-case6-ngl0",
+      "ngl": 0,
+      "repack": 1,
+      "PP_tok_s": 21.544322814,
+      "TG_tok_s": 6.851704106,
+      "response_s": 33.364412852,
+      "peak_RSS_MiB": 7763.453125,
+      "min_MemAvailable_MiB": 3675.25390625,
+      "layers": [
+        [
+          0,
+          33
+        ]
+      ],
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 4165.37,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  4165.37 MiB"
+          },
+          {
+            "backend": "CPU_REPACK",
+            "kind": "model",
+            "MiB": 4094.04,
+            "line": "load_tensors:   CPU_REPACK model buffer size =  4094.04 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 128.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   128.00 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 58.51,
+            "line": "sched_reserve:        CPU compute buffer size =    58.51 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            0,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =   128.00 MiB"
+        ]
+      },
+      "output_tokens": [
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771,
+        13702,
+        426,
+        272,
+        1204,
+        9547,
+        28723,
+        13,
+        1270,
+        967,
+        28732,
+        28708,
+        28725,
+        287,
+        1329,
+        13,
+        2287,
+        604,
+        264,
+        648,
+        287,
+        13,
+        28771
+      ],
+      "valid": true
+    }
+  ]
+}

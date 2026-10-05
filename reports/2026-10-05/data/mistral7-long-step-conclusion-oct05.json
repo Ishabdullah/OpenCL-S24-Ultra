@@ -1,0 +1,63 @@
+{
+  "UTC": "20261005T084757Z",
+  "records": [
+    {
+      "id": "mistral7-step-long-20261005T082827Z-r0-cpu-canonical",
+      "mode": "cpu",
+      "repack": 0,
+      "prompt": 2048,
+      "generation": 64,
+      "prefill_tok_s": 13.094972478,
+      "decode_tok_s": 5.650738005,
+      "total_response_s": 167.823824988,
+      "handoff_ms": 0.0,
+      "first_decode_s": 0.161632708,
+      "RSS_MiB": 4568.0234375,
+      "MemAvailable_min_MiB": 7079.57421875
+    },
+    {
+      "id": "mistral7-step-long-20261005T082827Z-r1-hybrid",
+      "mode": "hybrid",
+      "repack": 1,
+      "prompt": 2048,
+      "generation": 64,
+      "prefill_tok_s": 349.678582831,
+      "decode_tok_s": 5.619164422,
+      "total_response_s": 17.361639733,
+      "handoff_ms": 194.782,
+      "first_decode_s": 1.401538333,
+      "RSS_MiB": 4456.0546875,
+      "MemAvailable_min_MiB": 2937.7421875
+    },
+    {
+      "id": "mistral7-step-long-20261005T082827Z-r2-npu-full",
+      "mode": "gpu",
+      "repack": 1,
+      "prompt": 2048,
+      "generation": 64,
+      "prefill_tok_s": 347.948406541,
+      "decode_tok_s": 4.0377841,
+      "total_response_s": 21.491226763,
+      "handoff_ms": 0.0,
+      "first_decode_s": 0.257290521,
+      "RSS_MiB": 4182.3515625,
+      "MemAvailable_min_MiB": 2619.55859375
+    },
+    {
+      "id": "mistral7-step-long-20261005T082827Z-r3-cpu-repack",
+      "mode": "cpu",
+      "repack": 1,
+      "prompt": 2048,
+      "generation": 64,
+      "prefill_tok_s": 16.905630432,
+      "decode_tok_s": 5.127468179,
+      "total_response_s": 133.827977136,
+      "handoff_ms": 0.0,
+      "first_decode_s": 0.191064896,
+      "RSS_MiB": 7706.20703125,
+      "MemAvailable_min_MiB": 3694.94921875
+    }
+  ],
+  "all64_output_tokens_match": true,
+  "scope": "Single diagnostic process per mode, instrumented per evaluation; no final performance claim. Persistent old hybrid decode slowdown not reproduced. First CPU hybrid decode alone incurred storage/page faults. Repacked CPU beats canonical prefill but uses more RSS. NPU and hybrid decode CPU time differs; not electrical energy."
+}

@@ -1,0 +1,4747 @@
+{
+  "UTC": "2026-10-05T09:48:01.907939+00:00",
+  "scope": "Sampled clocks/caps, not cycle counters. Worker processor snapshots are not per-core utilization. Decode interval includes handoff. Zero public cooling state does not prove absence of other clock regulation. Process RSS/PSS omit some shared driver allocations; not total physical device use.",
+  "records": [
+    {
+      "id": "mistral7-untraced-2K-20261005T084757Z-round0-cpu",
+      "metrics": {
+        "postload_admission_s": 18.045396659,
+        "request_start_CPU_max_C": 35.8,
+        "request_start_NPU_max_C": 35.0,
+        "request_start_GPU_max_C": 35.6,
+        "request_start_battery_C": 29.2,
+        "device": "HTP0",
+        "attention": "on",
+        "request_start_monotonic_s": 3174.158306912,
+        "switch_start_monotonic_s": 3273.417354686,
+        "mode": "cpu",
+        "shadow": "mmap",
+        "prompt": 2048,
+        "generation": 128,
+        "decode_steps": 127,
+        "context": 2560,
+        "actual_context": 2560,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 256,
+        "prefill_ngl": 0,
+        "prompt_token_hash": "7973595846803307981",
+        "initialization_s": 6.079720727,
+        "prefill_s": 98.992670066,
+        "prefill_tok_s": 20.688400451,
+        "ttft_s": 98.993101472,
+        "handoff_ms": 0.0,
+        "handoff_weights_ms": 0.0,
+        "handoff_kv_ms": 0.0,
+        "handoff_scheduler_ms": 0.0,
+        "first_decode_s": 0.146664531,
+        "decode_s": 20.247345669,
+        "decode_tok_s": 6.272427116,
+        "total_response_s": 119.593622506,
+        "weight_copy_bytes": 0,
+        "cpu_shadow_weight_bytes": 0,
+        "kv_copy_bytes": 0,
+        "gpu_weight_bytes_released": 0,
+        "same_model_and_cache": true,
+        "positions_preserved": true,
+        "all_logits_finite": true,
+        "validation_run": false,
+        "top1_agreements": 0,
+        "logit_RMSE": 0.0,
+        "max_abs_logit_error": 0.0,
+        "mean_KL": 0.0,
+        "output_tokens": [
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287
+        ]
+      },
+      "phases": {
+        "prefill": {
+          "sample_count": 80,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 71.3,
+              "median": 75.2,
+              "max": 95.8
+            },
+            "NPU-max": {
+              "min": 39.3,
+              "median": 52.2,
+              "max": 55.7
+            },
+            "GPU-max": {
+              "min": 42.8,
+              "median": 54.7,
+              "max": 61.0
+            }
+          },
+          "battery_C": {
+            "min": 29.2,
+            "median": 29.9,
+            "max": 31.4
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1689600
+            },
+            "1": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1689600
+            },
+            "2": {
+              "min": 2035200,
+              "median": 2035200.0,
+              "max": 2707200
+            },
+            "3": {
+              "min": 2035200,
+              "median": 2035200.0,
+              "max": 2707200
+            },
+            "4": {
+              "min": 2035200,
+              "median": 2035200.0,
+              "max": 2707200
+            },
+            "5": {
+              "min": 1920000,
+              "median": 1920000.0,
+              "max": 2707200
+            },
+            "6": {
+              "min": 1920000,
+              "median": 1920000.0,
+              "max": 2707200
+            },
+            "7": {
+              "min": 2035200,
+              "median": 2035200.0,
+              "max": 2745600
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              2035200,
+              2707200
+            ],
+            "3": [
+              2035200,
+              2707200
+            ],
+            "4": [
+              2035200,
+              2707200
+            ],
+            "5": [
+              1920000,
+              2707200
+            ],
+            "6": [
+              1920000,
+              2707200
+            ],
+            "7": [
+              2035200,
+              2745600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0",
+              "1"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "7": 157,
+            "3": 164,
+            "2": 82,
+            "4": 84,
+            "5": 70,
+            "6": 3
+          },
+          "RSS_MiB": {
+            "min": 6494.13671875,
+            "median": 6532.08203125,
+            "max": 7295.33984375
+          },
+          "PSS_MiB": {
+            "min": 6492.4609375,
+            "median": 6530.408203125,
+            "max": 7293.5712890625
+          },
+          "MemAvailable_MiB": {
+            "min": 3415.5546875,
+            "median": 3493.486328125,
+            "max": 3868.3984375
+          }
+        },
+        "decode-and-handoff": {
+          "sample_count": 14,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 71.3,
+              "median": 76.3,
+              "max": 78.7
+            },
+            "NPU-max": {
+              "min": 54.5,
+              "median": 60.0,
+              "max": 60.7
+            },
+            "GPU-max": {
+              "min": 55.5,
+              "median": 60.400000000000006,
+              "max": 61.0
+            }
+          },
+          "battery_C": {
+            "min": 31.4,
+            "median": 31.4,
+            "max": 32.1
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 1516800.0,
+              "max": 1689600
+            },
+            "1": {
+              "min": 787200,
+              "median": 1516800.0,
+              "max": 1689600
+            },
+            "2": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 2035200
+            },
+            "3": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 2035200
+            },
+            "4": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 2035200
+            },
+            "5": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 1920000
+            },
+            "6": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 1920000
+            },
+            "7": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 2035200
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              1824000,
+              2035200
+            ],
+            "3": [
+              1824000,
+              2035200
+            ],
+            "4": [
+              1824000,
+              2035200
+            ],
+            "5": [
+              1824000,
+              1920000
+            ],
+            "6": [
+              1824000,
+              1920000
+            ],
+            "7": [
+              1824000,
+              2035200
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "7": 14,
+            "3": 28,
+            "4": 14,
+            "5": 14,
+            "2": 14,
+            "6": 14
+          },
+          "RSS_MiB": {
+            "min": 6494.91015625,
+            "median": 6494.91015625,
+            "max": 6494.91015625
+          },
+          "PSS_MiB": {
+            "min": 6493.0,
+            "median": 6493.015625,
+            "max": 6493.0185546875
+          },
+          "MemAvailable_MiB": {
+            "min": 3390.20703125,
+            "median": 3420.427734375,
+            "max": 3443.3671875
+          }
+        }
+      }
+    },
+    {
+      "id": "mistral7-untraced-2K-20261005T084757Z-round0-gpu",
+      "metrics": {
+        "postload_admission_s": 10.033433434,
+        "request_start_CPU_max_C": 39.7,
+        "request_start_NPU_max_C": 39.7,
+        "request_start_GPU_max_C": 39.2,
+        "request_start_battery_C": 31.3,
+        "device": "HTP0",
+        "attention": "on",
+        "request_start_monotonic_s": 3386.754385737,
+        "switch_start_monotonic_s": 3392.922099068,
+        "mode": "gpu",
+        "shadow": "mmap",
+        "prompt": 2048,
+        "generation": 128,
+        "decode_steps": 127,
+        "context": 2560,
+        "actual_context": 2560,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 256,
+        "prefill_ngl": 99,
+        "prompt_token_hash": "7973595846803307981",
+        "initialization_s": 10.254250933,
+        "prefill_s": 6.16375432,
+        "prefill_tok_s": 332.265027721,
+        "ttft_s": 6.164394268,
+        "handoff_ms": 0.0,
+        "handoff_weights_ms": 0.0,
+        "handoff_kv_ms": 0.0,
+        "handoff_scheduler_ms": 0.0,
+        "first_decode_s": 0.266952135,
+        "decode_s": 32.371691654,
+        "decode_tok_s": 3.923180826,
+        "total_response_s": 38.540879464,
+        "weight_copy_bytes": 0,
+        "cpu_shadow_weight_bytes": 0,
+        "kv_copy_bytes": 0,
+        "gpu_weight_bytes_released": 0,
+        "same_model_and_cache": true,
+        "positions_preserved": true,
+        "all_logits_finite": true,
+        "validation_run": false,
+        "top1_agreements": 0,
+        "logit_RMSE": 0.0,
+        "max_abs_logit_error": 0.0,
+        "mean_KL": 0.0,
+        "output_tokens": [
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287
+        ]
+      },
+      "phases": {
+        "prefill": {
+          "sample_count": 6,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 40.1,
+              "median": 46.7,
+              "max": 50.2
+            },
+            "NPU-max": {
+              "min": 67.0,
+              "median": 83.55,
+              "max": 89.6
+            },
+            "GPU-max": {
+              "min": 39.6,
+              "median": 49.099999999999994,
+              "max": 53.5
+            }
+          },
+          "battery_C": {
+            "min": 31.3,
+            "median": 31.3,
+            "max": 31.3
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1344000
+            },
+            "1": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1344000
+            },
+            "2": {
+              "min": 614400,
+              "median": 844800.0,
+              "max": 1612800
+            },
+            "3": {
+              "min": 614400,
+              "median": 844800.0,
+              "max": 1612800
+            },
+            "4": {
+              "min": 614400,
+              "median": 844800.0,
+              "max": 1612800
+            },
+            "5": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 499200
+            },
+            "6": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 499200
+            },
+            "7": {
+              "min": 672000,
+              "median": 902400.0,
+              "max": 902400
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              2380800,
+              2707200
+            ],
+            "3": [
+              2380800,
+              2707200
+            ],
+            "4": [
+              2380800,
+              2707200
+            ],
+            "5": [
+              2246400,
+              2707200
+            ],
+            "6": [
+              2246400,
+              2707200
+            ],
+            "7": [
+              2380800,
+              2745600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "2": 20,
+            "3": 6,
+            "5": 2,
+            "4": 8
+          },
+          "RSS_MiB": {
+            "min": 28.1015625,
+            "median": 31.296875,
+            "max": 32.26953125
+          },
+          "PSS_MiB": {
+            "min": 25.892578125,
+            "median": 29.130859375,
+            "max": 30.056640625
+          },
+          "MemAvailable_MiB": {
+            "min": 3302.8203125,
+            "median": 3310.478515625,
+            "max": 3316.53125
+          }
+        },
+        "decode-and-handoff": {
+          "sample_count": 31,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 49.4,
+              "median": 50.2,
+              "max": 60.3
+            },
+            "NPU-max": {
+              "min": 58.8,
+              "median": 71.6,
+              "max": 79.4
+            },
+            "GPU-max": {
+              "min": 48.3,
+              "median": 50.3,
+              "max": 53.9
+            }
+          },
+          "battery_C": {
+            "min": 31.3,
+            "median": 31.3,
+            "max": 31.7
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 672000,
+              "median": 787200,
+              "max": 1689600
+            },
+            "1": {
+              "min": 672000,
+              "median": 787200,
+              "max": 1689600
+            },
+            "2": {
+              "min": 614400,
+              "median": 1075200,
+              "max": 2246400
+            },
+            "3": {
+              "min": 614400,
+              "median": 1075200,
+              "max": 2246400
+            },
+            "4": {
+              "min": 614400,
+              "median": 1075200,
+              "max": 2246400
+            },
+            "5": {
+              "min": 499200,
+              "median": 499200,
+              "max": 2131200
+            },
+            "6": {
+              "min": 499200,
+              "median": 499200,
+              "max": 2131200
+            },
+            "7": {
+              "min": 672000,
+              "median": 902400,
+              "max": 2246400
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              2131200,
+              2246400,
+              2380800
+            ],
+            "3": [
+              2131200,
+              2246400,
+              2380800
+            ],
+            "4": [
+              2131200,
+              2246400,
+              2380800
+            ],
+            "5": [
+              2035200,
+              2131200,
+              2246400
+            ],
+            "6": [
+              2035200,
+              2131200,
+              2246400
+            ],
+            "7": [
+              2169600,
+              2246400,
+              2380800
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "4": 50,
+            "2": 84,
+            "3": 48,
+            "5": 2,
+            "6": 2
+          },
+          "RSS_MiB": {
+            "min": 32.6875,
+            "median": 32.6875,
+            "max": 32.6875
+          },
+          "PSS_MiB": {
+            "min": 30.30859375,
+            "median": 30.3134765625,
+            "max": 30.408203125
+          },
+          "MemAvailable_MiB": {
+            "min": 3199.84375,
+            "median": 3290.08203125,
+            "max": 3302.48828125
+          }
+        }
+      }
+    },
+    {
+      "id": "mistral7-untraced-2K-20261005T084757Z-round0-hybrid",
+      "metrics": {
+        "postload_admission_s": 10.029568798,
+        "request_start_CPU_max_C": 38.1,
+        "request_start_NPU_max_C": 38.5,
+        "request_start_GPU_max_C": 38.0,
+        "request_start_battery_C": 30.9,
+        "device": "HTP0",
+        "attention": "on",
+        "request_start_monotonic_s": 3518.078403187,
+        "switch_start_monotonic_s": 3524.209913601,
+        "mode": "hybrid",
+        "shadow": "mmap",
+        "prompt": 2048,
+        "generation": 128,
+        "decode_steps": 127,
+        "context": 2560,
+        "actual_context": 2560,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 256,
+        "prefill_ngl": 99,
+        "prompt_token_hash": "7973595846803307981",
+        "initialization_s": 10.157751975,
+        "prefill_s": 6.033805987,
+        "prefill_tok_s": 339.420923446,
+        "ttft_s": 6.033945883,
+        "handoff_ms": 142.675,
+        "handoff_weights_ms": 11.53,
+        "handoff_kv_ms": 124.334,
+        "handoff_scheduler_ms": 3.754,
+        "first_decode_s": 0.634782708,
+        "decode_s": 17.843408743,
+        "decode_tok_s": 7.117474123,
+        "total_response_s": 24.191520407,
+        "weight_copy_bytes": 0,
+        "cpu_shadow_weight_bytes": 4293976064,
+        "kv_copy_bytes": 335544320,
+        "gpu_weight_bytes_released": 4729487360,
+        "same_model_and_cache": true,
+        "positions_preserved": true,
+        "all_logits_finite": true,
+        "validation_run": false,
+        "top1_agreements": 0,
+        "logit_RMSE": 0.0,
+        "max_abs_logit_error": 0.0,
+        "mean_KL": 0.0,
+        "output_tokens": [
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287
+        ]
+      },
+      "phases": {
+        "prefill": {
+          "sample_count": 6,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 43.2,
+              "median": 48.05,
+              "max": 53.3
+            },
+            "NPU-max": {
+              "min": 56.4,
+              "median": 77.9,
+              "max": 90.7
+            },
+            "GPU-max": {
+              "min": 39.6,
+              "median": 49.3,
+              "max": 53.9
+            }
+          },
+          "battery_C": {
+            "min": 30.9,
+            "median": 30.9,
+            "max": 30.9
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 787200
+            },
+            "1": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 787200
+            },
+            "2": {
+              "min": 844800,
+              "median": 2131200.0,
+              "max": 2707200
+            },
+            "3": {
+              "min": 844800,
+              "median": 2131200.0,
+              "max": 2707200
+            },
+            "4": {
+              "min": 844800,
+              "median": 2131200.0,
+              "max": 2707200
+            },
+            "5": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 499200
+            },
+            "6": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 499200
+            },
+            "7": {
+              "min": 902400,
+              "median": 902400.0,
+              "max": 902400
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              2630400,
+              2707200
+            ],
+            "3": [
+              2630400,
+              2707200
+            ],
+            "4": [
+              2630400,
+              2707200
+            ],
+            "5": [
+              2572800,
+              2707200
+            ],
+            "6": [
+              2572800,
+              2707200
+            ],
+            "7": [
+              2630400,
+              2745600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "4": 3,
+            "2": 20,
+            "3": 12,
+            "6": 1
+          },
+          "RSS_MiB": {
+            "min": 2550.86328125,
+            "median": 2559.466796875,
+            "max": 2563.1171875
+          },
+          "PSS_MiB": {
+            "min": 2549.05078125,
+            "median": 2554.53515625,
+            "max": 2561.24609375
+          },
+          "MemAvailable_MiB": {
+            "min": 3363.6015625,
+            "median": 3367.25,
+            "max": 3374.9609375
+          }
+        },
+        "decode-and-handoff": {
+          "sample_count": 13,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 78.7,
+              "median": 89.2,
+              "max": 95.0
+            },
+            "NPU-max": {
+              "min": 57.6,
+              "median": 64.2,
+              "max": 66.2
+            },
+            "GPU-max": {
+              "min": 53.1,
+              "median": 65.0,
+              "max": 66.6
+            }
+          },
+          "battery_C": {
+            "min": 30.9,
+            "median": 31.2,
+            "max": 31.2
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 902400,
+              "median": 1689600,
+              "max": 1689600
+            },
+            "1": {
+              "min": 902400,
+              "median": 1689600,
+              "max": 1689600
+            },
+            "2": {
+              "min": 1824000,
+              "median": 2131200,
+              "max": 2630400
+            },
+            "3": {
+              "min": 1824000,
+              "median": 2131200,
+              "max": 2630400
+            },
+            "4": {
+              "min": 1824000,
+              "median": 2131200,
+              "max": 2630400
+            },
+            "5": {
+              "min": 1824000,
+              "median": 2035200,
+              "max": 2572800
+            },
+            "6": {
+              "min": 1824000,
+              "median": 2035200,
+              "max": 2572800
+            },
+            "7": {
+              "min": 1824000,
+              "median": 2169600,
+              "max": 2630400
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              1824000,
+              2131200,
+              2630400
+            ],
+            "3": [
+              1824000,
+              2131200,
+              2630400
+            ],
+            "4": [
+              1824000,
+              2131200,
+              2630400
+            ],
+            "5": [
+              1824000,
+              2035200,
+              2572800
+            ],
+            "6": [
+              1824000,
+              2035200,
+              2572800
+            ],
+            "7": [
+              1824000,
+              2169600,
+              2630400
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0",
+              "1"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "4": 13,
+            "2": 52,
+            "3": 39,
+            "5": 13,
+            "6": 13,
+            "7": 13
+          },
+          "RSS_MiB": {
+            "min": 4454.3046875,
+            "median": 4454.3046875,
+            "max": 4454.3046875
+          },
+          "PSS_MiB": {
+            "min": 4456.1982421875,
+            "median": 4456.2177734375,
+            "max": 4456.48828125
+          },
+          "MemAvailable_MiB": {
+            "min": 7795.125,
+            "median": 7829.84375,
+            "max": 7939.9375
+          }
+        }
+      }
+    },
+    {
+      "id": "mistral7-untraced-2K-20261005T084757Z-round1-hybrid",
+      "metrics": {
+        "postload_admission_s": 18.050507962,
+        "request_start_CPU_max_C": 37.7,
+        "request_start_NPU_max_C": 38.9,
+        "request_start_GPU_max_C": 38.0,
+        "request_start_battery_C": 31.3,
+        "device": "HTP0",
+        "attention": "on",
+        "request_start_monotonic_s": 3641.042622827,
+        "switch_start_monotonic_s": 3647.228119908,
+        "mode": "hybrid",
+        "shadow": "mmap",
+        "prompt": 2048,
+        "generation": 128,
+        "decode_steps": 127,
+        "context": 2560,
+        "actual_context": 2560,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 256,
+        "prefill_ngl": 99,
+        "prompt_token_hash": "7973595846803307981",
+        "initialization_s": 7.653420102,
+        "prefill_s": 6.110304008,
+        "prefill_tok_s": 335.171539308,
+        "ttft_s": 6.110498592,
+        "handoff_ms": 183.572,
+        "handoff_weights_ms": 11.228,
+        "handoff_kv_ms": 167.268,
+        "handoff_scheduler_ms": 2.973,
+        "first_decode_s": 0.695352083,
+        "decode_s": 29.693081812,
+        "decode_tok_s": 4.277090563,
+        "total_response_s": 36.133065247,
+        "weight_copy_bytes": 0,
+        "cpu_shadow_weight_bytes": 4293976064,
+        "kv_copy_bytes": 335544320,
+        "gpu_weight_bytes_released": 4729487360,
+        "same_model_and_cache": true,
+        "positions_preserved": true,
+        "all_logits_finite": true,
+        "validation_run": false,
+        "top1_agreements": 0,
+        "logit_RMSE": 0.0,
+        "max_abs_logit_error": 0.0,
+        "mean_KL": 0.0,
+        "output_tokens": [
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287
+        ]
+      },
+      "phases": {
+        "prefill": {
+          "sample_count": 6,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 40.1,
+              "median": 46.7,
+              "max": 49.8
+            },
+            "NPU-max": {
+              "min": 47.5,
+              "median": 79.4,
+              "max": 86.8
+            },
+            "GPU-max": {
+              "min": 38.4,
+              "median": 48.7,
+              "max": 53.1
+            }
+          },
+          "battery_C": {
+            "min": 31.3,
+            "median": 31.3,
+            "max": 31.3
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 787200
+            },
+            "1": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 787200
+            },
+            "2": {
+              "min": 844800,
+              "median": 844800.0,
+              "max": 2707200
+            },
+            "3": {
+              "min": 844800,
+              "median": 844800.0,
+              "max": 2707200
+            },
+            "4": {
+              "min": 844800,
+              "median": 844800.0,
+              "max": 2707200
+            },
+            "5": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 499200
+            },
+            "6": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 499200
+            },
+            "7": {
+              "min": 902400,
+              "median": 902400.0,
+              "max": 902400
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              2707200
+            ],
+            "3": [
+              2707200
+            ],
+            "4": [
+              2707200
+            ],
+            "5": [
+              2707200
+            ],
+            "6": [
+              2707200
+            ],
+            "7": [
+              2745600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "4": 16,
+            "2": 11,
+            "3": 8,
+            "6": 1
+          },
+          "RSS_MiB": {
+            "min": 2458.9921875,
+            "median": 2461.419921875,
+            "max": 2537.4296875
+          },
+          "PSS_MiB": {
+            "min": 2456.814453125,
+            "median": 2459.103515625,
+            "max": 2531.5576171875
+          },
+          "MemAvailable_MiB": {
+            "min": 3236.08984375,
+            "median": 3242.734375,
+            "max": 3273.12109375
+          }
+        },
+        "decode-and-handoff": {
+          "sample_count": 24,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 65.0,
+              "median": 78.3,
+              "max": 95.4
+            },
+            "NPU-max": {
+              "min": 56.8,
+              "median": 57.400000000000006,
+              "max": 63.1
+            },
+            "GPU-max": {
+              "min": 52.7,
+              "median": 58.2,
+              "max": 63.0
+            }
+          },
+          "battery_C": {
+            "min": 31.3,
+            "median": 31.3,
+            "max": 31.3
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 1516800.0,
+              "max": 1689600
+            },
+            "1": {
+              "min": 787200,
+              "median": 1516800.0,
+              "max": 1689600
+            },
+            "2": {
+              "min": 2035200,
+              "median": 2083200.0,
+              "max": 2707200
+            },
+            "3": {
+              "min": 2035200,
+              "median": 2083200.0,
+              "max": 2707200
+            },
+            "4": {
+              "min": 2035200,
+              "median": 2083200.0,
+              "max": 2707200
+            },
+            "5": {
+              "min": 1920000,
+              "median": 1977600.0,
+              "max": 2707200
+            },
+            "6": {
+              "min": 1920000,
+              "median": 1977600.0,
+              "max": 2707200
+            },
+            "7": {
+              "min": 2035200,
+              "median": 2102400.0,
+              "max": 2745600
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              2035200,
+              2131200,
+              2707200
+            ],
+            "3": [
+              2035200,
+              2131200,
+              2707200
+            ],
+            "4": [
+              2035200,
+              2131200,
+              2707200
+            ],
+            "5": [
+              1920000,
+              2035200,
+              2707200
+            ],
+            "6": [
+              1920000,
+              2035200,
+              2707200
+            ],
+            "7": [
+              2035200,
+              2169600,
+              2745600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0",
+              "1"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "5": 23,
+            "2": 48,
+            "4": 72,
+            "3": 72,
+            "6": 7,
+            "7": 42
+          },
+          "RSS_MiB": {
+            "min": 4076.1484375,
+            "median": 4454.08984375,
+            "max": 4454.08984375
+          },
+          "PSS_MiB": {
+            "min": 4224.7822265625,
+            "median": 4456.416015625,
+            "max": 4456.4599609375
+          },
+          "MemAvailable_MiB": {
+            "min": 7749.6953125,
+            "median": 7781.681640625,
+            "max": 7945.98046875
+          }
+        }
+      }
+    },
+    {
+      "id": "mistral7-untraced-2K-20261005T084757Z-round1-cpu",
+      "metrics": {
+        "postload_admission_s": 38.081724517,
+        "request_start_CPU_max_C": 38.1,
+        "request_start_NPU_max_C": 37.7,
+        "request_start_GPU_max_C": 37.6,
+        "request_start_battery_C": 31.3,
+        "device": "HTP0",
+        "attention": "on",
+        "request_start_monotonic_s": 3793.930013707,
+        "switch_start_monotonic_s": 3882.599121485,
+        "mode": "cpu",
+        "shadow": "mmap",
+        "prompt": 2048,
+        "generation": 128,
+        "decode_steps": 127,
+        "context": 2560,
+        "actual_context": 2560,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 256,
+        "prefill_ngl": 0,
+        "prompt_token_hash": "7973595846803307981",
+        "initialization_s": 5.178436352,
+        "prefill_s": 88.395870955,
+        "prefill_tok_s": 23.168502984,
+        "ttft_s": 88.396265591,
+        "handoff_ms": 0.0,
+        "handoff_weights_ms": 0.0,
+        "handoff_kv_ms": 0.0,
+        "handoff_scheduler_ms": 0.0,
+        "first_decode_s": 0.155078906,
+        "decode_s": 20.312787649,
+        "decode_tok_s": 6.252219153,
+        "total_response_s": 109.093809125,
+        "weight_copy_bytes": 0,
+        "cpu_shadow_weight_bytes": 0,
+        "kv_copy_bytes": 0,
+        "gpu_weight_bytes_released": 0,
+        "same_model_and_cache": true,
+        "positions_preserved": true,
+        "all_logits_finite": true,
+        "validation_run": false,
+        "top1_agreements": 0,
+        "logit_RMSE": 0.0,
+        "max_abs_logit_error": 0.0,
+        "mean_KL": 0.0,
+        "output_tokens": [
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287
+        ]
+      },
+      "phases": {
+        "prefill": {
+          "sample_count": 63,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 69.7,
+              "median": 77.5,
+              "max": 95.0
+            },
+            "NPU-max": {
+              "min": 40.5,
+              "median": 52.9,
+              "max": 54.9
+            },
+            "GPU-max": {
+              "min": 42.4,
+              "median": 56.3,
+              "max": 58.2
+            }
+          },
+          "battery_C": {
+            "min": 31.1,
+            "median": 32.1,
+            "max": 32.8
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 1017600,
+              "max": 1689600
+            },
+            "1": {
+              "min": 787200,
+              "median": 1132800,
+              "max": 1689600
+            },
+            "2": {
+              "min": 1824000,
+              "median": 2035200,
+              "max": 2707200
+            },
+            "3": {
+              "min": 1824000,
+              "median": 2035200,
+              "max": 2707200
+            },
+            "4": {
+              "min": 1824000,
+              "median": 2035200,
+              "max": 2707200
+            },
+            "5": {
+              "min": 1824000,
+              "median": 1920000,
+              "max": 2707200
+            },
+            "6": {
+              "min": 1824000,
+              "median": 1920000,
+              "max": 2707200
+            },
+            "7": {
+              "min": 1824000,
+              "median": 2035200,
+              "max": 2745600
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              1824000,
+              2035200,
+              2131200,
+              2707200
+            ],
+            "3": [
+              1824000,
+              2035200,
+              2131200,
+              2707200
+            ],
+            "4": [
+              1824000,
+              2035200,
+              2131200,
+              2707200
+            ],
+            "5": [
+              1824000,
+              1920000,
+              2035200,
+              2707200
+            ],
+            "6": [
+              1824000,
+              1920000,
+              2035200,
+              2707200
+            ],
+            "7": [
+              1824000,
+              2035200,
+              2169600,
+              2745600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0",
+              "1"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "7": 79,
+            "2": 129,
+            "3": 65,
+            "4": 64,
+            "5": 57,
+            "6": 47
+          },
+          "RSS_MiB": {
+            "min": 7100.1796875,
+            "median": 7135.02734375,
+            "max": 7160.27734375
+          },
+          "PSS_MiB": {
+            "min": 7098.396484375,
+            "median": 7133.201171875,
+            "max": 7158.326171875
+          },
+          "MemAvailable_MiB": {
+            "min": 3695.4140625,
+            "median": 3719.40625,
+            "max": 3769.22265625
+          }
+        },
+        "decode-and-handoff": {
+          "sample_count": 14,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 66.6,
+              "median": 75.7,
+              "max": 78.3
+            },
+            "NPU-max": {
+              "min": 53.7,
+              "median": 59.8,
+              "max": 61.9
+            },
+            "GPU-max": {
+              "min": 53.9,
+              "median": 60.2,
+              "max": 62.2
+            }
+          },
+          "battery_C": {
+            "min": 32.8,
+            "median": 32.95,
+            "max": 33.1
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 1689600.0,
+              "max": 1689600
+            },
+            "1": {
+              "min": 787200,
+              "median": 1689600.0,
+              "max": 1689600
+            },
+            "2": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 1824000
+            },
+            "3": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 1824000
+            },
+            "4": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 1824000
+            },
+            "5": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 1824000
+            },
+            "6": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 1824000
+            },
+            "7": {
+              "min": 1824000,
+              "median": 1824000.0,
+              "max": 1824000
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              1824000
+            ],
+            "3": [
+              1824000
+            ],
+            "4": [
+              1824000
+            ],
+            "5": [
+              1824000
+            ],
+            "6": [
+              1824000
+            ],
+            "7": [
+              1824000
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "7": 14,
+            "2": 28,
+            "4": 14,
+            "5": 14,
+            "3": 14,
+            "6": 14
+          },
+          "RSS_MiB": {
+            "min": 7049.9453125,
+            "median": 7049.9453125,
+            "max": 7100.6953125
+          },
+          "PSS_MiB": {
+            "min": 7048.080078125,
+            "median": 7048.083984375,
+            "max": 7098.830078125
+          },
+          "MemAvailable_MiB": {
+            "min": 3694.92578125,
+            "median": 3731.296875,
+            "max": 3738.38671875
+          }
+        }
+      }
+    },
+    {
+      "id": "mistral7-untraced-2K-20261005T084757Z-round1-gpu",
+      "metrics": {
+        "postload_admission_s": 12.04475661,
+        "request_start_CPU_max_C": 40.5,
+        "request_start_NPU_max_C": 41.3,
+        "request_start_GPU_max_C": 40.4,
+        "request_start_battery_C": 32.4,
+        "device": "HTP0",
+        "attention": "on",
+        "request_start_monotonic_s": 3997.613247639,
+        "switch_start_monotonic_s": 4003.782485085,
+        "mode": "gpu",
+        "shadow": "mmap",
+        "prompt": 2048,
+        "generation": 128,
+        "decode_steps": 127,
+        "context": 2560,
+        "actual_context": 2560,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 256,
+        "prefill_ngl": 99,
+        "prompt_token_hash": "7973595846803307981",
+        "initialization_s": 9.356631247,
+        "prefill_s": 6.164752237,
+        "prefill_tok_s": 332.211242442,
+        "ttft_s": 6.165071508,
+        "handoff_ms": 0.0,
+        "handoff_weights_ms": 0.0,
+        "handoff_kv_ms": 0.0,
+        "handoff_scheduler_ms": 0.0,
+        "first_decode_s": 0.275393854,
+        "decode_s": 32.849477331,
+        "decode_tok_s": 3.866119352,
+        "total_response_s": 39.020783579,
+        "weight_copy_bytes": 0,
+        "cpu_shadow_weight_bytes": 0,
+        "kv_copy_bytes": 0,
+        "gpu_weight_bytes_released": 0,
+        "same_model_and_cache": true,
+        "positions_preserved": true,
+        "all_logits_finite": true,
+        "validation_run": false,
+        "top1_agreements": 0,
+        "logit_RMSE": 0.0,
+        "max_abs_logit_error": 0.0,
+        "mean_KL": 0.0,
+        "output_tokens": [
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287
+        ]
+      },
+      "phases": {
+        "prefill": {
+          "sample_count": 6,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 40.9,
+              "median": 47.900000000000006,
+              "max": 51.4
+            },
+            "NPU-max": {
+              "min": 57.2,
+              "median": 84.9,
+              "max": 89.6
+            },
+            "GPU-max": {
+              "min": 40.8,
+              "median": 50.1,
+              "max": 55.1
+            }
+          },
+          "battery_C": {
+            "min": 32.4,
+            "median": 32.4,
+            "max": 32.4
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1344000
+            },
+            "1": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1344000
+            },
+            "2": {
+              "min": 614400,
+              "median": 960000.0,
+              "max": 1708800
+            },
+            "3": {
+              "min": 614400,
+              "median": 960000.0,
+              "max": 1708800
+            },
+            "4": {
+              "min": 614400,
+              "median": 960000.0,
+              "max": 1708800
+            },
+            "5": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 499200
+            },
+            "6": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 499200
+            },
+            "7": {
+              "min": 672000,
+              "median": 902400.0,
+              "max": 902400
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              2131200,
+              2707200
+            ],
+            "3": [
+              2131200,
+              2707200
+            ],
+            "4": [
+              2131200,
+              2707200
+            ],
+            "5": [
+              2035200,
+              2707200
+            ],
+            "6": [
+              2035200,
+              2707200
+            ],
+            "7": [
+              2169600,
+              2745600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "3": 9,
+            "2": 15,
+            "4": 6,
+            "6": 3,
+            "5": 3
+          },
+          "RSS_MiB": {
+            "min": 32.55078125,
+            "median": 36.38671875,
+            "max": 37.35546875
+          },
+          "PSS_MiB": {
+            "min": 30.1455078125,
+            "median": 34.0224609375,
+            "max": 34.9501953125
+          },
+          "MemAvailable_MiB": {
+            "min": 2834.10546875,
+            "median": 2847.619140625,
+            "max": 2850.296875
+          }
+        },
+        "decode-and-handoff": {
+          "sample_count": 32,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 50.6,
+              "median": 51.8,
+              "max": 58.8
+            },
+            "NPU-max": {
+              "min": 65.8,
+              "median": 73.6,
+              "max": 84.1
+            },
+            "GPU-max": {
+              "min": 50.3,
+              "median": 51.1,
+              "max": 55.1
+            }
+          },
+          "battery_C": {
+            "min": 32.4,
+            "median": 32.7,
+            "max": 32.7
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 672000,
+              "median": 787200.0,
+              "max": 1689600
+            },
+            "1": {
+              "min": 672000,
+              "median": 787200.0,
+              "max": 1689600
+            },
+            "2": {
+              "min": 844800,
+              "median": 1123200.0,
+              "max": 2131200
+            },
+            "3": {
+              "min": 844800,
+              "median": 1123200.0,
+              "max": 2131200
+            },
+            "4": {
+              "min": 844800,
+              "median": 1123200.0,
+              "max": 2131200
+            },
+            "5": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 1190400
+            },
+            "6": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 1190400
+            },
+            "7": {
+              "min": 672000,
+              "median": 902400.0,
+              "max": 902400
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              2131200
+            ],
+            "3": [
+              2131200
+            ],
+            "4": [
+              2131200
+            ],
+            "5": [
+              2035200
+            ],
+            "6": [
+              2035200
+            ],
+            "7": [
+              2169600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "2": 95,
+            "4": 46,
+            "3": 42,
+            "5": 5,
+            "6": 4
+          },
+          "RSS_MiB": {
+            "min": 37.6484375,
+            "median": 37.6484375,
+            "max": 37.6484375
+          },
+          "PSS_MiB": {
+            "min": 35.1669921875,
+            "median": 35.171875,
+            "max": 35.1748046875
+          },
+          "MemAvailable_MiB": {
+            "min": 2851.9375,
+            "median": 2887.072265625,
+            "max": 2908.20703125
+          }
+        }
+      }
+    },
+    {
+      "id": "mistral7-untraced-2K-20261005T084757Z-round2-gpu",
+      "metrics": {
+        "postload_admission_s": 10.03966734,
+        "request_start_CPU_max_C": 39.7,
+        "request_start_NPU_max_C": 40.1,
+        "request_start_GPU_max_C": 40.0,
+        "request_start_battery_C": 32.0,
+        "device": "HTP0",
+        "attention": "on",
+        "request_start_monotonic_s": 4131.179986443,
+        "switch_start_monotonic_s": 4137.275133471,
+        "mode": "gpu",
+        "shadow": "mmap",
+        "prompt": 2048,
+        "generation": 128,
+        "decode_steps": 127,
+        "context": 2560,
+        "actual_context": 2560,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 256,
+        "prefill_ngl": 99,
+        "prompt_token_hash": "7973595846803307981",
+        "initialization_s": 11.5961276,
+        "prefill_s": 6.086719633,
+        "prefill_tok_s": 336.470237416,
+        "ttft_s": 6.087044737,
+        "handoff_ms": 0.0,
+        "handoff_weights_ms": 0.0,
+        "handoff_kv_ms": 0.0,
+        "handoff_scheduler_ms": 0.0,
+        "first_decode_s": 0.286908854,
+        "decode_s": 35.381738997,
+        "decode_tok_s": 3.589422216,
+        "total_response_s": 41.47774014,
+        "weight_copy_bytes": 0,
+        "cpu_shadow_weight_bytes": 0,
+        "kv_copy_bytes": 0,
+        "gpu_weight_bytes_released": 0,
+        "same_model_and_cache": true,
+        "positions_preserved": true,
+        "all_logits_finite": true,
+        "validation_run": false,
+        "top1_agreements": 0,
+        "logit_RMSE": 0.0,
+        "max_abs_logit_error": 0.0,
+        "mean_KL": 0.0,
+        "output_tokens": [
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287
+        ]
+      },
+      "phases": {
+        "prefill": {
+          "sample_count": 6,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 40.1,
+              "median": 49.05,
+              "max": 66.2
+            },
+            "NPU-max": {
+              "min": 52.2,
+              "median": 88.2,
+              "max": 92.7
+            },
+            "GPU-max": {
+              "min": 39.6,
+              "median": 49.5,
+              "max": 56.6
+            }
+          },
+          "battery_C": {
+            "min": 32.0,
+            "median": 32.0,
+            "max": 32.0
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1017600
+            },
+            "1": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1017600
+            },
+            "2": {
+              "min": 614400,
+              "median": 1440000.0,
+              "max": 2707200
+            },
+            "3": {
+              "min": 614400,
+              "median": 1440000.0,
+              "max": 2707200
+            },
+            "4": {
+              "min": 614400,
+              "median": 1440000.0,
+              "max": 2707200
+            },
+            "5": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 1190400
+            },
+            "6": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 1190400
+            },
+            "7": {
+              "min": 672000,
+              "median": 902400.0,
+              "max": 2745600
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              2707200
+            ],
+            "3": [
+              2707200
+            ],
+            "4": [
+              2707200
+            ],
+            "5": [
+              2707200
+            ],
+            "6": [
+              2707200
+            ],
+            "7": [
+              2745600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "4": 17,
+            "2": 16,
+            "5": 1,
+            "6": 1,
+            "3": 1
+          },
+          "RSS_MiB": {
+            "min": 26.76953125,
+            "median": 31.130859375,
+            "max": 32.2265625
+          },
+          "PSS_MiB": {
+            "min": 24.48046875,
+            "median": 28.8642578125,
+            "max": 29.927734375
+          },
+          "MemAvailable_MiB": {
+            "min": 2999.94140625,
+            "median": 3127.146484375,
+            "max": 3147.359375
+          }
+        },
+        "decode-and-handoff": {
+          "sample_count": 34,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 50.2,
+              "median": 50.8,
+              "max": 55.7
+            },
+            "NPU-max": {
+              "min": 58.8,
+              "median": 69.9,
+              "max": 79.8
+            },
+            "GPU-max": {
+              "min": 49.5,
+              "median": 50.3,
+              "max": 56.3
+            }
+          },
+          "battery_C": {
+            "min": 32.0,
+            "median": 32.0,
+            "max": 32.7
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1344000
+            },
+            "1": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1344000
+            },
+            "2": {
+              "min": 844800,
+              "median": 1612800.0,
+              "max": 2188800
+            },
+            "3": {
+              "min": 844800,
+              "median": 1612800.0,
+              "max": 2188800
+            },
+            "4": {
+              "min": 844800,
+              "median": 1612800.0,
+              "max": 2188800
+            },
+            "5": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 1497600
+            },
+            "6": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 1497600
+            },
+            "7": {
+              "min": 902400,
+              "median": 902400.0,
+              "max": 902400
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              2131200,
+              2707200
+            ],
+            "3": [
+              2131200,
+              2707200
+            ],
+            "4": [
+              2131200,
+              2707200
+            ],
+            "5": [
+              2035200,
+              2707200
+            ],
+            "6": [
+              2035200,
+              2707200
+            ],
+            "7": [
+              2169600,
+              2745600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "4": 86,
+            "2": 105,
+            "3": 12,
+            "6": 1
+          },
+          "RSS_MiB": {
+            "min": 32.6484375,
+            "median": 32.6484375,
+            "max": 32.6484375
+          },
+          "PSS_MiB": {
+            "min": 30.279296875,
+            "median": 30.28125,
+            "max": 30.28515625
+          },
+          "MemAvailable_MiB": {
+            "min": 2965.94921875,
+            "median": 2994.666015625,
+            "max": 3029.9609375
+          }
+        }
+      }
+    },
+    {
+      "id": "mistral7-untraced-2K-20261005T084757Z-round2-hybrid",
+      "metrics": {
+        "postload_admission_s": 12.027471975,
+        "request_start_CPU_max_C": 38.9,
+        "request_start_NPU_max_C": 39.3,
+        "request_start_GPU_max_C": 38.8,
+        "request_start_battery_C": 31.8,
+        "device": "HTP0",
+        "attention": "on",
+        "request_start_monotonic_s": 4267.371063786,
+        "switch_start_monotonic_s": 4273.637804774,
+        "mode": "hybrid",
+        "shadow": "mmap",
+        "prompt": 2048,
+        "generation": 128,
+        "decode_steps": 127,
+        "context": 2560,
+        "actual_context": 2560,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 256,
+        "prefill_ngl": 99,
+        "prompt_token_hash": "7973595846803307981",
+        "initialization_s": 10.263443433,
+        "prefill_s": 6.195726092,
+        "prefill_tok_s": 330.550442287,
+        "ttft_s": 6.195960675,
+        "handoff_ms": 212.264,
+        "handoff_weights_ms": 13.698,
+        "handoff_kv_ms": 191.055,
+        "handoff_scheduler_ms": 5.462,
+        "first_decode_s": 0.754917344,
+        "decode_s": 20.641322336,
+        "decode_tok_s": 6.152706592,
+        "total_response_s": 27.192199677,
+        "weight_copy_bytes": 0,
+        "cpu_shadow_weight_bytes": 4293976064,
+        "kv_copy_bytes": 335544320,
+        "gpu_weight_bytes_released": 4729487360,
+        "same_model_and_cache": true,
+        "positions_preserved": true,
+        "all_logits_finite": true,
+        "validation_run": false,
+        "top1_agreements": 0,
+        "logit_RMSE": 0.0,
+        "max_abs_logit_error": 0.0,
+        "mean_KL": 0.0,
+        "output_tokens": [
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287
+        ]
+      },
+      "phases": {
+        "prefill": {
+          "sample_count": 6,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 40.9,
+              "median": 49.25,
+              "max": 51.4
+            },
+            "NPU-max": {
+              "min": 65.0,
+              "median": 81.95,
+              "max": 93.9
+            },
+            "GPU-max": {
+              "min": 40.8,
+              "median": 50.3,
+              "max": 54.3
+            }
+          },
+          "battery_C": {
+            "min": 31.8,
+            "median": 31.8,
+            "max": 31.8
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1689600
+            },
+            "1": {
+              "min": 787200,
+              "median": 787200.0,
+              "max": 1689600
+            },
+            "2": {
+              "min": 844800,
+              "median": 1075200.0,
+              "max": 2707200
+            },
+            "3": {
+              "min": 844800,
+              "median": 1075200.0,
+              "max": 2707200
+            },
+            "4": {
+              "min": 844800,
+              "median": 1075200.0,
+              "max": 2707200
+            },
+            "5": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 2707200
+            },
+            "6": {
+              "min": 499200,
+              "median": 499200.0,
+              "max": 2707200
+            },
+            "7": {
+              "min": 902400,
+              "median": 902400.0,
+              "max": 2745600
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              2131200,
+              2707200
+            ],
+            "3": [
+              2131200,
+              2707200
+            ],
+            "4": [
+              2131200,
+              2707200
+            ],
+            "5": [
+              2035200,
+              2707200
+            ],
+            "6": [
+              2035200,
+              2707200
+            ],
+            "7": [
+              2169600,
+              2745600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "4": 15,
+            "3": 8,
+            "2": 11,
+            "5": 1,
+            "6": 1
+          },
+          "RSS_MiB": {
+            "min": 2414.14453125,
+            "median": 2459.560546875,
+            "max": 2514.3203125
+          },
+          "PSS_MiB": {
+            "min": 2412.0341796875,
+            "median": 2445.615234375,
+            "max": 2512.1455078125
+          },
+          "MemAvailable_MiB": {
+            "min": 3372.484375,
+            "median": 3387.4140625,
+            "max": 3422.91796875
+          }
+        },
+        "decode-and-handoff": {
+          "sample_count": 16,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 66.6,
+              "median": 82.4,
+              "max": 85.3
+            },
+            "NPU-max": {
+              "min": 56.1,
+              "median": 60.5,
+              "max": 62.7
+            },
+            "GPU-max": {
+              "min": 52.3,
+              "median": 61.0,
+              "max": 63.0
+            }
+          },
+          "battery_C": {
+            "min": 31.8,
+            "median": 31.8,
+            "max": 32.2
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 1075200.0,
+              "max": 1689600
+            },
+            "1": {
+              "min": 787200,
+              "median": 1190400.0,
+              "max": 1689600
+            },
+            "2": {
+              "min": 1824000,
+              "median": 2131200.0,
+              "max": 2188800
+            },
+            "3": {
+              "min": 1824000,
+              "median": 2131200.0,
+              "max": 2188800
+            },
+            "4": {
+              "min": 1824000,
+              "median": 2131200.0,
+              "max": 2188800
+            },
+            "5": {
+              "min": 1824000,
+              "median": 2035200.0,
+              "max": 2035200
+            },
+            "6": {
+              "min": 1824000,
+              "median": 2035200.0,
+              "max": 2035200
+            },
+            "7": {
+              "min": 1824000,
+              "median": 2169600.0,
+              "max": 2169600
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              1824000,
+              2131200,
+              2188800
+            ],
+            "3": [
+              1824000,
+              2131200,
+              2188800
+            ],
+            "4": [
+              1824000,
+              2131200,
+              2188800
+            ],
+            "5": [
+              1824000,
+              2035200
+            ],
+            "6": [
+              1824000,
+              2035200
+            ],
+            "7": [
+              1824000,
+              2169600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "5": 5,
+            "3": 32,
+            "4": 64,
+            "2": 32,
+            "6": 16,
+            "7": 27
+          },
+          "RSS_MiB": {
+            "min": 4423.7421875,
+            "median": 4452.34765625,
+            "max": 4452.34765625
+          },
+          "PSS_MiB": {
+            "min": 4452.458984375,
+            "median": 4452.48779296875,
+            "max": 4452.5146484375
+          },
+          "MemAvailable_MiB": {
+            "min": 7778.2890625,
+            "median": 7860.84375,
+            "max": 7959.15234375
+          }
+        }
+      }
+    },
+    {
+      "id": "mistral7-untraced-2K-20261005T084757Z-round2-cpu",
+      "metrics": {
+        "postload_admission_s": 20.042215669,
+        "request_start_CPU_max_C": 38.9,
+        "request_start_NPU_max_C": 38.1,
+        "request_start_GPU_max_C": 38.4,
+        "request_start_battery_C": 31.9,
+        "device": "HTP0",
+        "attention": "on",
+        "request_start_monotonic_s": 4393.199034416,
+        "switch_start_monotonic_s": 4492.460958284,
+        "mode": "cpu",
+        "shadow": "mmap",
+        "prompt": 2048,
+        "generation": 128,
+        "decode_steps": 127,
+        "context": 2560,
+        "actual_context": 2560,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 256,
+        "prefill_ngl": 0,
+        "prompt_token_hash": "7973595846803307981",
+        "initialization_s": 4.45799505,
+        "prefill_s": 99.066580067,
+        "prefill_tok_s": 20.672965581,
+        "ttft_s": 99.066876369,
+        "handoff_ms": 0.0,
+        "handoff_weights_ms": 0.0,
+        "handoff_kv_ms": 0.0,
+        "handoff_scheduler_ms": 0.0,
+        "first_decode_s": 0.153757864,
+        "decode_s": 20.305476659,
+        "decode_tok_s": 6.254470266,
+        "total_response_s": 119.690138184,
+        "weight_copy_bytes": 0,
+        "cpu_shadow_weight_bytes": 0,
+        "kv_copy_bytes": 0,
+        "gpu_weight_bytes_released": 0,
+        "same_model_and_cache": true,
+        "positions_preserved": true,
+        "all_logits_finite": true,
+        "validation_run": false,
+        "top1_agreements": 0,
+        "logit_RMSE": 0.0,
+        "max_abs_logit_error": 0.0,
+        "mean_KL": 0.0,
+        "output_tokens": [
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287,
+          604,
+          264,
+          648,
+          287,
+          13,
+          28771,
+          13702,
+          426,
+          272,
+          1204,
+          9547,
+          28723,
+          13,
+          1270,
+          967,
+          28732,
+          28708,
+          28725,
+          287,
+          1329,
+          13,
+          2287
+        ]
+      },
+      "phases": {
+        "prefill": {
+          "sample_count": 77,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 68.9,
+              "median": 74.8,
+              "max": 95.4
+            },
+            "NPU-max": {
+              "min": 41.3,
+              "median": 52.6,
+              "max": 55.7
+            },
+            "GPU-max": {
+              "min": 43.6,
+              "median": 54.7,
+              "max": 61.0
+            }
+          },
+          "battery_C": {
+            "min": 31.8,
+            "median": 32.8,
+            "max": 33.3
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 787200,
+              "max": 1689600
+            },
+            "1": {
+              "min": 787200,
+              "median": 787200,
+              "max": 1689600
+            },
+            "2": {
+              "min": 1824000,
+              "median": 2035200,
+              "max": 2707200
+            },
+            "3": {
+              "min": 1824000,
+              "median": 2035200,
+              "max": 2707200
+            },
+            "4": {
+              "min": 1824000,
+              "median": 2035200,
+              "max": 2707200
+            },
+            "5": {
+              "min": 1824000,
+              "median": 1920000,
+              "max": 2707200
+            },
+            "6": {
+              "min": 1824000,
+              "median": 1920000,
+              "max": 2707200
+            },
+            "7": {
+              "min": 1824000,
+              "median": 2035200,
+              "max": 2745600
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              1824000,
+              2035200,
+              2131200,
+              2707200
+            ],
+            "3": [
+              1824000,
+              2035200,
+              2131200,
+              2707200
+            ],
+            "4": [
+              1824000,
+              2035200,
+              2131200,
+              2707200
+            ],
+            "5": [
+              1824000,
+              1920000,
+              2035200,
+              2707200
+            ],
+            "6": [
+              1824000,
+              1920000,
+              2035200,
+              2707200
+            ],
+            "7": [
+              1824000,
+              2035200,
+              2169600,
+              2745600
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0",
+              "1"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "7": 136,
+            "2": 156,
+            "3": 82,
+            "4": 78,
+            "5": 72,
+            "6": 15
+          },
+          "RSS_MiB": {
+            "min": 6952.84765625,
+            "median": 6984.87109375,
+            "max": 7211.94921875
+          },
+          "PSS_MiB": {
+            "min": 6951.1708984375,
+            "median": 6983.1669921875,
+            "max": 7210.3896484375
+          },
+          "MemAvailable_MiB": {
+            "min": 3653.73828125,
+            "median": 3687.8125,
+            "max": 3774.37890625
+          }
+        },
+        "decode-and-handoff": {
+          "sample_count": 13,
+          "temperature_C": {
+            "CPU-max": {
+              "min": 69.3,
+              "median": 75.9,
+              "max": 77.5
+            },
+            "NPU-max": {
+              "min": 54.5,
+              "median": 59.6,
+              "max": 61.9
+            },
+            "GPU-max": {
+              "min": 55.9,
+              "median": 60.2,
+              "max": 62.2
+            }
+          },
+          "battery_C": {
+            "min": 33.3,
+            "median": 33.5,
+            "max": 33.5
+          },
+          "cpu_current_kHz": {
+            "0": {
+              "min": 787200,
+              "median": 1689600,
+              "max": 1689600
+            },
+            "1": {
+              "min": 787200,
+              "median": 1689600,
+              "max": 1689600
+            },
+            "2": {
+              "min": 1824000,
+              "median": 1824000,
+              "max": 1824000
+            },
+            "3": {
+              "min": 1824000,
+              "median": 1824000,
+              "max": 1824000
+            },
+            "4": {
+              "min": 1824000,
+              "median": 1824000,
+              "max": 1824000
+            },
+            "5": {
+              "min": 1824000,
+              "median": 1824000,
+              "max": 1824000
+            },
+            "6": {
+              "min": 1824000,
+              "median": 1824000,
+              "max": 1824000
+            },
+            "7": {
+              "min": 1824000,
+              "median": 1824000,
+              "max": 1824000
+            }
+          },
+          "cpu_max_kHz": {
+            "0": [
+              1689600
+            ],
+            "1": [
+              1689600
+            ],
+            "2": [
+              1824000
+            ],
+            "3": [
+              1824000
+            ],
+            "4": [
+              1824000
+            ],
+            "5": [
+              1824000
+            ],
+            "6": [
+              1824000
+            ],
+            "7": [
+              1824000
+            ]
+          },
+          "public_thermal_statuses": [
+            0
+          ],
+          "cooling_device_states": {
+            "gpu": [
+              "0"
+            ],
+            "cpufreq-cpu2": [
+              "0"
+            ],
+            "cpu-cluster3": [
+              "0"
+            ],
+            "cdsp_sw_hmx": [
+              "0"
+            ],
+            "cpu-cluster1": [
+              "0"
+            ],
+            "cdsp": [
+              "0"
+            ],
+            "gpu-dump-skip-cdev": [
+              "0"
+            ],
+            "cdsp_hw": [
+              "0"
+            ],
+            "cpufreq-cpu5": [
+              "0"
+            ],
+            "cpufreq-cpu0": [
+              "0"
+            ],
+            "cpu-cluster2": [
+              "0"
+            ],
+            "cdsp_sw_hvx": [
+              "0"
+            ],
+            "cpu-cluster0": [
+              "0"
+            ],
+            "cdsp_ss": [
+              "0"
+            ],
+            "cpufreq-cpu7": [
+              "0"
+            ]
+          },
+          "worker_processor_snapshot_counts": {
+            "7": 13,
+            "2": 26,
+            "5": 13,
+            "6": 13,
+            "4": 13,
+            "3": 13
+          },
+          "RSS_MiB": {
+            "min": 6953.10546875,
+            "median": 6953.10546875,
+            "max": 6953.10546875
+          },
+          "PSS_MiB": {
+            "min": 6951.5419921875,
+            "median": 6951.5693359375,
+            "max": 6951.5732421875
+          },
+          "MemAvailable_MiB": {
+            "min": 3652.66015625,
+            "median": 3677.8125,
+            "max": 3685.5546875
+          }
+        }
+      }
+    }
+  ]
+}

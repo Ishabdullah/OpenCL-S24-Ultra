@@ -1,0 +1,32 @@
+{
+  "UTC": "2026-10-05T16:20:05.423854+00:00",
+  "generic_sources": {
+    "ggml/src/ggml-opencl/CMakeLists.txt": true,
+    "ggml/src/ggml-opencl/cl-program-cache.cpp": true,
+    "ggml/src/ggml-opencl/ggml-opencl.cpp": true,
+    "ggml/src/ggml-opencl/opencl-sphal.cpp": true,
+    "ggml/src/ggml-opencl/opencl-sphal.h": true
+  },
+  "generic_binaries": {
+    "libggml-base.so.0.25.3": true,
+    "libggml-opencl.so.0.25.3": true,
+    "llama-completion": true,
+    "test-backend-ops": true,
+    "llama-bench": true,
+    "libggml-cpu.so.0.25.3": true,
+    "libllama-completion-impl.so": true,
+    "libllama.so.0.5.0": true,
+    "libggml.so.0.25.3": true,
+    "libllama-bench-impl.so": true,
+    "libllama-common.so.0.5.0": true
+  },
+  "NPU_artifacts": {
+    "~/llama-opencl-build/performance-investigation/build-npu/bin/libggml-hexagon.so": true,
+    "~/llama-opencl-build/performance-investigation/build-npu/ggml/src/ggml-hexagon/libggml-htp-v75.so": true
+  },
+  "preserved_npu_source_status": "",
+  "read_only_original_HEAD": "91d2fc387529940230555abd297a8b5e99737d3f",
+  "read_only_original_status": " M ggml/src/ggml-vulkan/CMakeLists.txt\n",
+  "original_HEAD_and_existing_status_match": true,
+  "scope": "Artifact hashes, source status and read-only original HEAD/status; does not repeat earlier entire-tree metadata scan. No original writes or builds."
+}

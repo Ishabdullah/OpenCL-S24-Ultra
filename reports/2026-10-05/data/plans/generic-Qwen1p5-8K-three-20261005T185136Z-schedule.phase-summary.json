@@ -1,0 +1,310 @@
+{
+  "UTC": "2026-10-05T19:11:10.804544+00:00",
+  "plan": "npu-investigation/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.json",
+  "plan_sha256": "ff90c3355e871437c3df4a9f125c15a96034da698607b53f8a96f009e9588107",
+  "complete_and_valid": true,
+  "valid_outputs_all_agree": true,
+  "scope": "Warm response excludes model load and admission, both separately recorded. Each row retains settings and power epoch. Single screens do not establish a repeated winner; profiled runs are diagnostics.",
+  "records": [
+    {
+      "id": "generic-Qwen1p5-8K-three-20261005T185136Z-case0-gpu",
+      "valid": true,
+      "issues": [],
+      "backend": "OpenCL",
+      "model": "qwen2.5-coder-1.5b",
+      "round": 0,
+      "threads": 6,
+      "threads_batch": 6,
+      "prompt": 8192,
+      "generation": 128,
+      "context": 8704,
+      "batch": 512,
+      "ubatch": 256,
+      "attention": "on",
+      "requested_ngl": 99,
+      "repack": 1,
+      "OMP_PLACES": null,
+      "registration_window_MiB": null,
+      "power_epoch": "api-20261005T180328Z-UNPLUGGED",
+      "prefill_tok_s": 42.005919562,
+      "decode_tok_s": 3.525342921,
+      "prefill_s": 195.02013253,
+      "decode_s": 36.024864205,
+      "total_response_s": 231.074332673,
+      "ttft_s": 195.020963155,
+      "handoff_ms": 0.0,
+      "first_decode_s": 0.274322969,
+      "initialization_s": 2.800740416,
+      "postload_admission_s": 10.019751611,
+      "kv_copy_bytes": 0,
+      "weight_copy_bytes": 0,
+      "max_RSS_MiB": 1355.046875,
+      "max_PSS_MiB": 1341.9326171875,
+      "min_MemAvailable_MiB": 4799.98828125,
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 125.19,
+            "line": "load_tensors:   CPU_Mapped model buffer size =   125.19 MiB"
+          },
+          {
+            "backend": "CPU_REPACK",
+            "kind": "model",
+            "MiB": 195.74,
+            "line": "load_tensors:   CPU_REPACK model buffer size =   195.74 MiB"
+          },
+          {
+            "backend": "OpenCL",
+            "kind": "model",
+            "MiB": 739.03,
+            "line": "load_tensors:       OpenCL model buffer size =   739.03 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.58,
+            "line": "llama_context:        CPU  output buffer size =     0.58 MiB"
+          },
+          {
+            "backend": "OpenCL",
+            "kind": "KV",
+            "MiB": 238.0,
+            "line": "llama_kv_cache:     OpenCL KV buffer size =   238.00 MiB"
+          },
+          {
+            "backend": "OpenCL",
+            "kind": "compute",
+            "MiB": 31.25,
+            "line": "sched_reserve:     OpenCL compute buffer size =    31.25 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 151.38,
+            "line": "sched_reserve:        CPU compute buffer size =   151.38 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            29,
+            29
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 1.78 B",
+          "llama_context: n_ctx                 = 8704",
+          "llama_kv_cache:     OpenCL KV buffer size =   238.00 MiB"
+        ]
+      },
+      "library_paths": [
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-base.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-cpu.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-opencl.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libllama.so.0.5.0"
+      ],
+      "prompt_token_hash": "17564863177223858684",
+      "output_sha256": "fbb24679b4896f27459ed67a39f27a78ccbba5ae24419d748463172e14ec165f"
+    },
+    {
+      "id": "generic-Qwen1p5-8K-three-20261005T185136Z-case1-hybrid",
+      "valid": true,
+      "issues": [],
+      "backend": "OpenCL-prefill-CPU-decode",
+      "model": "qwen2.5-coder-1.5b",
+      "round": 1,
+      "threads": 6,
+      "threads_batch": 6,
+      "prompt": 8192,
+      "generation": 128,
+      "context": 8704,
+      "batch": 512,
+      "ubatch": 256,
+      "attention": "on",
+      "requested_ngl": 99,
+      "repack": 1,
+      "OMP_PLACES": null,
+      "registration_window_MiB": null,
+      "power_epoch": "api-20261005T180328Z-UNPLUGGED",
+      "prefill_tok_s": 34.65293793,
+      "decode_tok_s": 2.542211966,
+      "prefill_s": 236.401312253,
+      "decode_s": 49.956495241,
+      "total_response_s": 286.834867807,
+      "ttft_s": 236.402398764,
+      "handoff_ms": 342.984,
+      "first_decode_s": 0.15613901,
+      "initialization_s": 2.385722499,
+      "postload_admission_s": 20.021226034,
+      "kv_copy_bytes": 249561088,
+      "weight_copy_bytes": 0,
+      "max_RSS_MiB": 1820.1953125,
+      "max_PSS_MiB": 1586.443359375,
+      "min_MemAvailable_MiB": 4256.546875,
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 125.19,
+            "line": "load_tensors:   CPU_Mapped model buffer size =   125.19 MiB"
+          },
+          {
+            "backend": "CPU_REPACK",
+            "kind": "model",
+            "MiB": 195.74,
+            "line": "load_tensors:   CPU_REPACK model buffer size =   195.74 MiB"
+          },
+          {
+            "backend": "OpenCL",
+            "kind": "model",
+            "MiB": 739.03,
+            "line": "load_tensors:       OpenCL model buffer size =   739.03 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.58,
+            "line": "llama_context:        CPU  output buffer size =     0.58 MiB"
+          },
+          {
+            "backend": "OpenCL",
+            "kind": "KV",
+            "MiB": 238.0,
+            "line": "llama_kv_cache:     OpenCL KV buffer size =   238.00 MiB"
+          },
+          {
+            "backend": "OpenCL",
+            "kind": "compute",
+            "MiB": 31.25,
+            "line": "sched_reserve:     OpenCL compute buffer size =    31.25 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 151.38,
+            "line": "sched_reserve:        CPU compute buffer size =   151.38 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 151.38,
+            "line": "sched_reserve:        CPU compute buffer size =   151.38 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            29,
+            29
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 1.78 B",
+          "llama_context: n_ctx                 = 8704",
+          "llama_kv_cache:     OpenCL KV buffer size =   238.00 MiB"
+        ]
+      },
+      "library_paths": [
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-base.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-cpu.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-opencl.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libllama.so.0.5.0"
+      ],
+      "prompt_token_hash": "17564863177223858684",
+      "output_sha256": "fbb24679b4896f27459ed67a39f27a78ccbba5ae24419d748463172e14ec165f"
+    },
+    {
+      "id": "generic-Qwen1p5-8K-three-20261005T185136Z-case2-cpu",
+      "valid": true,
+      "issues": [],
+      "backend": "CPU",
+      "model": "qwen2.5-coder-1.5b",
+      "round": 2,
+      "threads": 6,
+      "threads_batch": 6,
+      "prompt": 8192,
+      "generation": 128,
+      "context": 8704,
+      "batch": 512,
+      "ubatch": 256,
+      "attention": "on",
+      "requested_ngl": 0,
+      "repack": 1,
+      "OMP_PLACES": null,
+      "registration_window_MiB": null,
+      "power_epoch": "api-20261005T180328Z-UNPLUGGED",
+      "prefill_tok_s": 66.140776625,
+      "decode_tok_s": 11.723432294,
+      "prefill_s": 123.857027661,
+      "decode_s": 10.833004944,
+      "total_response_s": 134.808490104,
+      "ttft_s": 123.857715473,
+      "handoff_ms": 0.0,
+      "first_decode_s": 0.088315157,
+      "initialization_s": 0.979687291,
+      "postload_admission_s": 104.112392877,
+      "kv_copy_bytes": 0,
+      "weight_copy_bytes": 0,
+      "max_RSS_MiB": 2156.3828125,
+      "max_PSS_MiB": 2150.326171875,
+      "min_MemAvailable_MiB": 4161.13671875,
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 877.31,
+            "line": "load_tensors:   CPU_Mapped model buffer size =   877.31 MiB"
+          },
+          {
+            "backend": "CPU_REPACK",
+            "kind": "model",
+            "MiB": 934.14,
+            "line": "load_tensors:   CPU_REPACK model buffer size =   934.14 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.58,
+            "line": "llama_context:        CPU  output buffer size =     0.58 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 238.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   238.00 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 151.38,
+            "line": "sched_reserve:        CPU compute buffer size =   151.38 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            0,
+            29
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 1.78 B",
+          "llama_context: n_ctx                 = 8704",
+          "llama_kv_cache:        CPU KV buffer size =   238.00 MiB"
+        ]
+      },
+      "library_paths": [
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-base.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-cpu.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml-opencl.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libggml.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-hybrid/bin/libllama.so.0.5.0"
+      ],
+      "prompt_token_hash": "17564863177223858684",
+      "output_sha256": "fbb24679b4896f27459ed67a39f27a78ccbba5ae24419d748463172e14ec165f"
+    }
+  ]
+}

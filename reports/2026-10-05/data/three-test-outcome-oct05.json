@@ -1,0 +1,47 @@
+{
+  "UTC": "2026-10-05T19:24:34.213520+00:00",
+  "experiment": "Exactly three authorized unprofiled matched long-prompt runs",
+  "hypothesis": "Generic OpenCL prefill or one-way hybrid may benefit an occupied 8192-token context even when short prompts are slower",
+  "plan": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.json",
+  "result": "All three valid, finite, identical 128 generated token sequences; CPU fastest",
+  "claim_limit": "Single process per mode in GPU/hybrid/CPU order, no repetitions/SD; bounded screen, no general or repeated winner",
+  "comparisons_against_CPU": {
+    "OpenCL": {
+      "PP_change_percent": -36.49013255444217,
+      "TG_change_percent": -69.92908874643943,
+      "response_change_percent": 71.40933222732062
+    },
+    "OpenCL-prefill-CPU-decode": {
+      "PP_change_percent": -47.60730112609257,
+      "TG_change_percent": -78.31512220784444,
+      "response_change_percent": 112.7721092237715
+    },
+    "CPU": {
+      "PP_change_percent": 0.0,
+      "TG_change_percent": 0.0,
+      "response_change_percent": 0.0
+    }
+  },
+  "thermal_start_C": {
+    "generic-Qwen1p5-8K-three-20261005T185136Z-case0-gpu": {
+      "request_start_CPU_max_C": 35.8,
+      "request_start_NPU_max_C": 33.1,
+      "request_start_GPU_max_C": 32.9,
+      "request_start_battery_C": 27.4
+    },
+    "generic-Qwen1p5-8K-three-20261005T185136Z-case1-hybrid": {
+      "request_start_CPU_max_C": 44.4,
+      "request_start_NPU_max_C": 40.5,
+      "request_start_GPU_max_C": 40.8,
+      "request_start_battery_C": 33.3
+    },
+    "generic-Qwen1p5-8K-three-20261005T185136Z-case2-cpu": {
+      "request_start_CPU_max_C": 42.8,
+      "request_start_NPU_max_C": 40.9,
+      "request_start_GPU_max_C": 40.4,
+      "request_start_battery_C": 35.1
+    }
+  },
+  "state": "Tests paused after completing quota; no new kernel experiments",
+  "next_hypothesis": "Source declines mixed F32/F16 FLASH_ATTN_EXT on A7X including750; quantify CPU fallback/transfer and canonical-shadow CPU cost before attributing slowdown"
+}

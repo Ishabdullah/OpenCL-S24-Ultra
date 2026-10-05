@@ -1,0 +1,23 @@
+{
+  "UTC": "2026-10-05T15:19:07.388315+00:00",
+  "command": [
+    "$PREFIX/bin/c++",
+    "-O2",
+    "-std=c++17",
+    "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v7-batch-threads.cpp",
+    "-I~/llama-opencl-build/performance-investigation/source-hybrid/include",
+    "-I~/llama-opencl-build/performance-investigation/source-hybrid/ggml/include",
+    "-L~/llama-opencl-build/performance-investigation/build-hybrid/bin",
+    "-Wl,-rpath,~/llama-opencl-build/performance-investigation/build-hybrid/bin",
+    "-lllama",
+    "-lggml",
+    "-lggml-cpu",
+    "-lggml-base",
+    "-o",
+    "~/llama-opencl-build/performance-investigation/phase-tools-v7/phase-opencl-batch-threads"
+  ],
+  "exit_code": 0,
+  "source_sha256": "efd88208451440682649cdcaf13e256f6e12448b7e346f0a14ba21e539ae50a0",
+  "scope": "Standalone helper only; generic backend, source and existing binaries unchanged. Same phase/KV/handoff ABI inspected in both headers.",
+  "binary_sha256": "1bad8ec6940c7ff3e22cdc660417918c49d3e8d5df8c191abed1b93dc7d39825"
+}

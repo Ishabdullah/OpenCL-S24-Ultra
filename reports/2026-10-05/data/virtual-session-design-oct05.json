@@ -1,0 +1,11 @@
+{
+  "UTC": "2026-10-05T15:52:19.187556+00:00",
+  "hypothesis": "Layer splitting across two virtual sessions on physicalNPU0 may remove large-model weight registration churn; upstream documents this feature. Not new NPU hardware or extra physical RAM.",
+  "primary_sources": [
+    "~/llama-opencl-build/performance-investigation/source-npu/docs/backend/snapdragon/README.md:234",
+    "~/llama-opencl-build/performance-investigation/source-npu/ggml/src/ggml-hexagon/ggml-hexagon.cpp:8354",
+    "~/llama-opencl-build/performance-investigation/source-npu/src/llama-model.cpp:1557"
+  ],
+  "configuration": "GGML_HEXAGON_DEVICES=HTP0:0,HTP0:1, explicit1:1tensor_split/layer mode, registration_window0",
+  "scope": "Isolated standalonev8helper and alreadybuiltDSP/hostbackend. Begin1.5B32prefix gates; multiple nativeDSPsessions supportandactualkernels stillmustbeproved. No source/kernel/default modifications."
+}

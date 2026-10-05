@@ -1,0 +1,6 @@
+{
+  "UTC": "2026-10-05T08:22:19.931527+00:00",
+  "experiment": "v5 first long diagnostic scheduling-censored",
+  "result": "Top-app changed toforeground-boost; affinity2-7 reset0-7; parent aborted with SIGTERM then SIGKILL after8s because graph did not return. MemAvailable minimum2720MiB; no memory-reserve hit. Not spontaneous driver crash or model-correctness failure.",
+  "conclusion": "Exclude throughput. Preserve v5 source/binary/failed logs. v6 checkpoints each completed evaluate to avoid losing all observations. Retry p128g32 at samec2560 first; no new backend modifications or relaxed guards."
+}

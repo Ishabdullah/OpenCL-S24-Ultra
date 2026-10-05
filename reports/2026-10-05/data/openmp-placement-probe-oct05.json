@@ -1,0 +1,34 @@
+{
+  "UTC": "2026-10-05T10:06:06.322357+00:00",
+  "compile_command": [
+    "$PREFIX/bin/c++",
+    "-O2",
+    "-fopenmp",
+    "~/llama-opencl-build/performance-investigation/openmp-placement-probe.cpp",
+    "-o",
+    "~/llama-opencl-build/performance-investigation/npu-investigation/openmp-placement-probe"
+  ],
+  "compile_exit": 0,
+  "compile_stderr": "",
+  "source_sha256": "f6945375297d20d63037299c8cc9c305c6828491854b0844904b2f4e2901564e",
+  "runs": [
+    {
+      "label": "default",
+      "environment": {},
+      "exit_code": 0,
+      "stdout": "thread=0 cpu=3 affinity_rc=0 allowed=2,3,4,5,6,7,\nthread=4 cpu=2 affinity_rc=0 allowed=2,3,4,5,6,7,\nthread=3 cpu=2 affinity_rc=0 allowed=2,3,4,5,6,7,\nthread=1 cpu=2 affinity_rc=0 allowed=2,3,4,5,6,7,\nthread=2 cpu=4 affinity_rc=0 allowed=2,3,4,5,6,7,\nthread=5 cpu=4 affinity_rc=0 allowed=2,3,4,5,6,7,\n",
+      "stderr": ""
+    },
+    {
+      "label": "explicit-prime-first",
+      "environment": {
+        "OMP_PROC_BIND": "close",
+        "OMP_PLACES": "{7},{2},{3},{4},{5},{6}"
+      },
+      "exit_code": 0,
+      "stdout": "thread=0 cpu=7 affinity_rc=0 allowed=7,\nthread=3 cpu=4 affinity_rc=0 allowed=4,\nthread=2 cpu=3 affinity_rc=0 allowed=3,\nthread=5 cpu=6 affinity_rc=0 allowed=6,\nthread=1 cpu=2 affinity_rc=0 allowed=2,\nthread=4 cpu=5 affinity_rc=0 allowed=5,\n",
+      "stderr": ""
+    }
+  ],
+  "hypothesis": "Two active CPU workers share prime core7 while core6 rarely sampled during prior prefill; explicit unique worker places may improve best CPU/hybrid baseline. Probe alone is not a performance result."
+}

@@ -1,0 +1,48 @@
+[
+  {
+    "group": "mistral7-canonical-highpartial-quality",
+    "mode": "logits",
+    "binary": "~/llama-opencl-build/performance-investigation/sustained-tools-v2/compare-logits-npu-configurable",
+    "library_directory": "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin",
+    "environment": {
+      "ADSP_LIBRARY_PATH": "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/ggml/src/ggml-hexagon",
+      "GGML_HEXAGON_PROFILE": "0",
+      "GGML_HEXAGON_MBUF": "512",
+      "GGML_HEXAGON_VMEM": "3200",
+      "GGML_HEXAGON_VERBOSE": "0",
+      "GGML_HEXAGON_REGISTRATION_WINDOW": "3072"
+    },
+    "additional_artifacts": [
+      "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/ggml/src/ggml-hexagon/libggml-htp-v75.so"
+    ],
+    "source_variant": "registration-hybrid:partial24-quality",
+    "steps": 32,
+    "prefill_validation_tokens": 128,
+    "cooldown": 30,
+    "timeout": 1200,
+    "validation_timing_not_comparable": true,
+    "id": "mistral7-partial24-registration-quality-20261005T095725Z",
+    "model": "mistral-7b-uncensored",
+    "attention": "on",
+    "device": "HTP0",
+    "ngl": 24,
+    "repack": 0,
+    "validation_arguments": [
+      "24",
+      "0",
+      "on"
+    ],
+    "public_thermal": true,
+    "stop_schedule_if_failure": true,
+    "context": 1024,
+    "process_mask": "fc",
+    "max_battery": 36,
+    "max_cpu": 50,
+    "max_gpu": 43,
+    "max_npu": 43,
+    "max_public_thermal_status": 0,
+    "max_public_thermal_headroom": 0.9,
+    "cooling_timeout": 1200,
+    "stop_on_failure": false
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "UTC": "2026-10-05T18:51:36.588197+00:00",
+  "hypothesis": "Obtain a safe matched8Klongprompt screen acrossGPU/hybrid/CPU within three tests;4Bprivatebuffers cannot fit presentMemAvailable while preserving1536MiB.",
+  "MemAvailable_MiB": 4066.87890625,
+  "reserve_MiB": 1536,
+  "context": 8704,
+  "4B_conservative_weight_KV_workspace_MiB": 3855.91162109375,
+  "1p5B_conservative_weight_KV_workspace_MiB": 1553.88525390625,
+  "chosen_model": "qwen2.5-coder-1.5b",
+  "plan": "~/llama-opencl-build/performance-investigation/npu-investigation/generic-Qwen1p5-8K-three-20261005T185136Z-schedule.json",
+  "tests_limit": 3,
+  "conclusion": "4B8Kdeferred by memory budget, not an observedallocationfailure. Use existing1.5B8Kfor allthree modes; noextra model downloads or safetyguard relaxation."
+}

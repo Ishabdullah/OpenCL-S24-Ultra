@@ -1,0 +1,13 @@
+{
+  "UTC": "2026-10-05T16:09:32.611575+00:00",
+  "experiment": "generic-Qwen4-8K-bestcpu-unplugged-20261005T155438Z-schedule.json",
+  "hypothesis": "Generic OpenCL8K benefit must survive comparison with six-core FAonCPU; previousFAoff five-corecandidate insufficient.",
+  "result": {
+    "exit_code": 143,
+    "abort_reason": "Android benchmark cgroup changed during measurement; invalid controlled comparison",
+    "min_MemAvailable_MiB": 3268.4375,
+    "timing_valid": false,
+    "inference_metrics": null
+  },
+  "conclusion": "Controlled timing interrupted by Android top-app to foreground-boost and affinity reset. No driver/numerical/capacity failure demonstrated. Retry with fresh IDs, same limits and settled power epoch."
+}

@@ -1,0 +1,33 @@
+{
+  "UTC": "2026-10-05T16:23:03.288106+00:00",
+  "question": "Can current successful one-way handoff underpin repeated adaptive GPU/NPU-prefill on successive queries?",
+  "source_facts": [
+    {
+      "path": "llama-opencl-build/performance-investigation/source-npu-registration-hybrid/src/llama-context.cpp",
+      "line": 2665,
+      "fact": "Second handoff throws when perf_cpu_only is already true."
+    },
+    {
+      "path": "llama-opencl-build/performance-investigation/source-npu-registration-hybrid/src/llama-context.cpp",
+      "line": 2676,
+      "fact": "Original scheduler/results discarded; CPU-only flags, backend list and scheduler installed."
+    },
+    {
+      "path": "llama-opencl-build/performance-investigation/source-npu-registration-hybrid/src/llama-model.cpp",
+      "function": "perf_switch_weights_cpu",
+      "fact": "Original model tensor buffer/data/extra pointers are overwritten with CPU shadows, including views."
+    },
+    {
+      "path": "llama-opencl-build/performance-investigation/source-npu-registration-hybrid/src/llama-model.cpp",
+      "function": "perf_switch_weights_cpu",
+      "fact": "drop_gpu true releases converted accelerator model buffers; restoring accelerator compute would require recreating/reuploading that representation or preserving another copy."
+    },
+    {
+      "path": "llama-opencl-build/performance-investigation/source-npu-registration-hybrid/src/llama-context.cpp",
+      "line": 2688,
+      "fact": "KV state copied to CPU allocator while cell/position identity is preserved; no implemented reverse migration."
+    }
+  ],
+  "conclusion": "Validated for one prompt followed byCPUdecode. No implemented return-to-accelerator path, so current helper cannot deliver repeated accelerated prefill in the same resident context across requests. Retaining accelerator buffers alone does not restore tensor pointers, deviceKV allocator, scheduler or coherence. A production reversible scheduler needs explicit ownership/state design and numerical/memory/latency gates; not implied by one-way speed benefit.",
+  "sustained_comparison_scope": "Existing600s equal-offered-workCPU/NPU controls are valid; current hybrid sustained multi-query behavior cannot be inferred without a new reversible implementation or explicitly accounting model/context reinitialization."
+}
