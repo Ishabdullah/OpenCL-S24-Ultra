@@ -1,0 +1,37 @@
+{
+  "controls": [
+    {
+      "path": "registration-probe-20261004T075838Z-retain",
+      "mode": "retain",
+      "exit_code": 4,
+      "abort_reason": null,
+      "graph_passes": 7,
+      "remapped_graph_passes": 0,
+      "released_registrations": 0,
+      "registration_failed": true,
+      "cleanup_complete": true,
+      "llama_library_paths": null,
+      "min_MemAvailable_MiB": 2460.35546875
+    },
+    {
+      "path": "registration-probe-20261004T075919Z-unregister",
+      "mode": "unregister",
+      "exit_code": 0,
+      "abort_reason": null,
+      "graph_passes": 8,
+      "remapped_graph_passes": 8,
+      "released_registrations": 16,
+      "registration_failed": false,
+      "cleanup_complete": true,
+      "llama_library_paths": [
+        "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml-base.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml-cpu.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml-hexagon.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml.so.0.25.3",
+        "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libllama.so.0.5.0"
+      ],
+      "min_MemAvailable_MiB": 2346.0625
+    }
+  ],
+  "interpretation": "Same isolated diagnostic backend: retaining eight 512 MiB inputs reproduces failure on eighth registration; explicit synchronized unregister keeps every physical allocation and its values intact and permits eight original and eight remapped NPU graphs. This directly distinguishes host registration lifetime from physical allocation capacity in this no-model workload. Not full7B inference or a speed measurement."
+}

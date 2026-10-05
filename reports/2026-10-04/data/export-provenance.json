@@ -1,0 +1,444 @@
+{
+  "UTC": "2026-10-05T01:07:35.911785+00:00",
+  "records": [
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/fresh-bestcpu-matched-resume-20261004.json",
+      "source_sha256": "15aa54e1d9ab3e021d4da4c55c05c72d50ea2602bd445b71e1890d31a9caa3a8",
+      "export": "data/fresh-bestcpu-matched-resume-20261004.json",
+      "export_sha256": "15aa54e1d9ab3e021d4da4c55c05c72d50ea2602bd445b71e1890d31a9caa3a8"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/phase-v4-temperature-ready-20261004T062756Z-plan.summary.json",
+      "source_sha256": "5769d77ea68e3c31c6f0f6590039f467987692d69bdc23d6ebf8e72a0ed4aa71",
+      "export": "data/phase-v4-temperature-ready-20261004T062756Z-plan.summary.json",
+      "export_sha256": "5769d77ea68e3c31c6f0f6590039f467987692d69bdc23d6ebf8e72a0ed4aa71"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/cadence600-two-order-summary.json",
+      "source_sha256": "ad511c6e717444fb49358ccbe2cdd1dfafe34b8798b7341090f77f59882ee085",
+      "export": "data/cadence600-two-order-summary.json",
+      "export_sha256": "ad511c6e717444fb49358ccbe2cdd1dfafe34b8798b7341090f77f59882ee085"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/cadence600-foreground-20261004T151529Z-results.json",
+      "source_sha256": "ccd0803b3c9fde7fc62c4672bb32f6a3d0b33cda605204535324702aa187451e",
+      "export": "data/cadence600-foreground-20261004T151529Z-results.json",
+      "export_sha256": "ccd0803b3c9fde7fc62c4672bb32f6a3d0b33cda605204535324702aa187451e"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/cadence600-foreground-20261004T151529Z-results.csv",
+      "source_sha256": "5ab961331f669d50b751a2c1abdb3b58d94f0d398221be1f8dc23a2e2b5e6c40",
+      "export": "data/cadence600-foreground-20261004T151529Z-results.csv",
+      "export_sha256": "6a96a64f17d43987961a00b6dc71abb883266c2f8a98d7b0e3874fa2decd4109"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/cadence600-reverse-20261004T154432Z-results.json",
+      "source_sha256": "d9317217f7ca8368f18e08d3605aa45f349a710926d534c163514f65bac83a3c",
+      "export": "data/cadence600-reverse-20261004T154432Z-results.json",
+      "export_sha256": "d9317217f7ca8368f18e08d3605aa45f349a710926d534c163514f65bac83a3c"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/cadence600-reverse-20261004T154432Z-results.csv",
+      "source_sha256": "7ea1e7aba8d0c53514f7b82c2f8048d0371af049da1c73bfc0de5080e2169ceb",
+      "export": "data/cadence600-reverse-20261004T154432Z-results.csv",
+      "export_sha256": "6341002948c505f4f8a4f1214368eb341a6f55cafd59a8f6d3e21180e295c929"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/architecture-memory-canonical-summary.json",
+      "source_sha256": "cdac87d0fde8f4a3157d64e9fccc188b6917a84a0a7084984d99af746bd8c957",
+      "export": "data/architecture-memory-canonical-summary.json",
+      "export_sha256": "f9dbfc3cb6c80bb1ac5371a3bd536de279252f8d9002c4af3e898655d5399e8a"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/architecture-memory-canonical-summary.csv",
+      "source_sha256": "96723333eb59511ce72df8d898d6a06746dffa8d852dcfb567a00de28c74a5c5",
+      "export": "data/architecture-memory-canonical-summary.csv",
+      "export_sha256": "165b4b0720eefb0a53328eca2b69af5e966d1356a18689906b2026a925ee4d9c"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-phase2048-screen-summary.json",
+      "source_sha256": "20961ce433c884a2af696ede15e35c3f61bca1c3efd639f52ea87c8e745a8316",
+      "export": "data/mistral7-phase2048-screen-summary.json",
+      "export_sha256": "8723d133c02a1e7a5004b18c86a1871e2a8513f7443e9176ddfaaab63c71bf28"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-handoff-qualified-summary.json",
+      "source_sha256": "5d8e26fe53075b1083122408413d987464ad9d3f985b927b6ed47369121b3ea1",
+      "export": "data/mistral7-handoff-qualified-summary.json",
+      "export_sha256": "dbf06cf3cd12c5018849cc1637ee3fc774432ca0906cd017b0cf3fd1ea778db3"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-canonical-partial-response-screen.json",
+      "source_sha256": "ad3f415f02bf233f83ceb35eed216b834eaa9182ca09fe547b2f203a3f11fe64",
+      "export": "data/mistral7-canonical-partial-response-screen.json",
+      "export_sha256": "ad3f415f02bf233f83ceb35eed216b834eaa9182ca09fe547b2f203a3f11fe64"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-canonical-partial-quality-summary.json",
+      "source_sha256": "4136a545d69adb1714bd3c1f394b4492a20cded28f722b7cce62a8f76098e4bd",
+      "export": "data/mistral7-canonical-partial-quality-summary.json",
+      "export_sha256": "4136a545d69adb1714bd3c1f394b4492a20cded28f722b7cce62a8f76098e4bd"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mmap-registration-controls-resume-20261004.json",
+      "source_sha256": "3466a9bf3c04e324fa0142b4198db1f017f211349d23286264e2579c0336b579",
+      "export": "data/mmap-registration-controls-resume-20261004.json",
+      "export_sha256": "3466a9bf3c04e324fa0142b4198db1f017f211349d23286264e2579c0336b579"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-retained-storage-control-resume-20261004.json",
+      "source_sha256": "c51373bed836dadab2bdac76c1425d785d90e23029388ec2d9b9e1a9bbd0923a",
+      "export": "data/registration-retained-storage-control-resume-20261004.json",
+      "export_sha256": "846afb3a9aab31c03a8b0a0f4829ae70436fcddb24e82e30767e6143847c3739"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/automatic-registration-window-control-resume-20261004.json",
+      "source_sha256": "8fcef1ceab6b52fa7c7c31c0d4372129637af0d8fdad0eb216938bad9a5cc98e",
+      "export": "data/automatic-registration-window-control-resume-20261004.json",
+      "export_sha256": "c50e20c323d28ae34dfc5163992cc017e6d1dd6ebd80616f3ff2a99fd5866a86"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-window-first-llm-quality.json",
+      "source_sha256": "9c4195b1c557abb02ccef57792e9c65ba8f8ed83eac13ce5ccbf6972dfdc9096",
+      "export": "data/registration-window-first-llm-quality.json",
+      "export_sha256": "490117a92d35319b7c7b4804d5ecfb0caad2c4b0e60f48783661d7f930322916"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-window-qwen4-quality.json",
+      "source_sha256": "a8117e20b94b912508e82f87b29417636defe37f28877a99ed229aea947aeb31",
+      "export": "data/registration-window-qwen4-quality.json",
+      "export_sha256": "a8117e20b94b912508e82f87b29417636defe37f28877a99ed229aea947aeb31"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-window-mistral7-quality.json",
+      "source_sha256": "273238410c78dab4e63fce6056836d51e25521bcfee0848f49d5e3bcbf389397",
+      "export": "data/registration-window-mistral7-quality.json",
+      "export_sha256": "13b8ba07bc6e721b04523127b37bcd52549a7a9575bd74300269a8aa33746d66"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/full7-first-response-screen.json",
+      "source_sha256": "6b9b80b0a5fb4344d97f2c802c9f5a959088dbaa2633c59b93bf5bec439f90c8",
+      "export": "data/full7-first-response-screen.json",
+      "export_sha256": "6b9b80b0a5fb4344d97f2c802c9f5a959088dbaa2633c59b93bf5bec439f90c8"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/full7-registration-profile-background-excluded.json",
+      "source_sha256": "bd904332275b6626da960b56d2acb43a5736970d803e1c4ecf1124cee9eec972",
+      "export": "data/full7-registration-profile-background-excluded.json",
+      "export_sha256": "bd904332275b6626da960b56d2acb43a5736970d803e1c4ecf1124cee9eec972"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-wall-time-bottleneck-lead.json",
+      "source_sha256": "449f7b2c579a731a7885b437f8fa5d1fbc82c44201055f57d5a42635b77e2d7b",
+      "export": "data/registration-wall-time-bottleneck-lead.json",
+      "export_sha256": "449f7b2c579a731a7885b437f8fa5d1fbc82c44201055f57d5a42635b77e2d7b"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-nomap-negative-controls.json",
+      "source_sha256": "283bdbb221fb6eeebfc4a01d03d2957d13fceff6a68b6f0a93dd121b6c41465f",
+      "export": "data/registration-nomap-negative-controls.json",
+      "export_sha256": "283bdbb221fb6eeebfc4a01d03d2957d13fceff6a68b6f0a93dd121b6c41465f"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/specialized-workaround-config-audit.json",
+      "source_sha256": "2ab0ecfe7c350be29ff99ce30d9e5866d11b1f52d31002fcf35e0fa4f42d1d56",
+      "export": "data/specialized-workaround-config-audit.json",
+      "export_sha256": "2ab0ecfe7c350be29ff99ce30d9e5866d11b1f52d31002fcf35e0fa4f42d1d56"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/specialized-corrected-faon-quality.json",
+      "source_sha256": "db0356461726d66cbfde26de845882ae4dbed19880538ba3fa6a321f9c9a5910",
+      "export": "data/specialized-corrected-faon-quality.json",
+      "export_sha256": "96fa5f1b74091db1ae14e6187ad6749e15d4fcd192454b3be602e9909ec71818"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-hybrid-build-inputs.json",
+      "source_sha256": "6ce2c8fcf86d1a6b1443f61377a6e7750a4b5e2ea042acbee34367bd06624eaa",
+      "export": "data/registration-hybrid-build-inputs.json",
+      "export_sha256": "a49f2002211c3a104ad3bc771f43bbaadb6134b120f56018bbca23537367f6fe"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-hybrid-build-result.json",
+      "source_sha256": "07029de28e9f57434fb9d72c6cce7864251a73d00b3fbcdd87b7b0c1e02cb76b",
+      "export": "data/registration-hybrid-build-result.json",
+      "export_sha256": "07029de28e9f57434fb9d72c6cce7864251a73d00b3fbcdd87b7b0c1e02cb76b"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-hybrid-runtime-fix.json",
+      "source_sha256": "eb1fd9c23f70c665f388c820896eba04e2b35512f60509b3dbfc8140a58fe130",
+      "export": "data/registration-hybrid-runtime-fix.json",
+      "export_sha256": "71d8572d64b51dd1708618ace41eb0afd5a160cdd403610b8ee095c00be01041"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-hybrid-qualification-helper.json",
+      "source_sha256": "c4de1e198c7d0da1aded129350d9cb31efaf0665324780d0f1bcf87e88890a93",
+      "export": "data/registration-hybrid-qualification-helper.json",
+      "export_sha256": "3db5ca5eb402c5c7555161a5bc60c513d5c76c264512b2d1e410dbf0c61baf30"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/phase-canonical-helper-build.json",
+      "source_sha256": "e491d42b06a3cac8bbc7b74cc2690864ec6bb1a12c6ba8dd40a92763d745148a",
+      "export": "data/phase-canonical-helper-build.json",
+      "export_sha256": "6d379df0f819db59fdbc8dd549e7c276682d310e785549b26d125b10883f1419"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-CPU2048-charging-tuning-summary.json",
+      "source_sha256": "6f2bd1123e687aeb92c779469d304730c6ba0462969ca2fa33f65926f2c1b483",
+      "export": "data/mistral7-CPU2048-charging-tuning-summary.json",
+      "export_sha256": "6f2bd1123e687aeb92c779469d304730c6ba0462969ca2fa33f65926f2c1b483"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/final-preservation-check-oct04.json",
+      "source_sha256": "8b61cff15f9bdc740f5e06dcb4942853c9bc90a3ae917e16bc3a556d80933421",
+      "export": "data/final-preservation-check-oct04.json",
+      "export_sha256": "65b6d2c07a02f2682cc3ff0b0e008b6dd88340fe0d3ab897f741e054109d6ea6"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/USER_PAUSE_OCT04.json",
+      "source_sha256": "19a2d1ba9d80cd701aef84dd97e8fc205ebd036a4e57a35d8e94e0987e61a6b6",
+      "export": "data/USER_PAUSE_OCT04.json",
+      "export_sha256": "19a2d1ba9d80cd701aef84dd97e8fc205ebd036a4e57a35d8e94e0987e61a6b6"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/results-api-20261004T141923Z-UNPLUGGED/cadence-quality-records.json",
+      "source_sha256": "0e3ad10637755c00b7f749b0e2170131d11aadc77a37db7634e82cabe04a70b7",
+      "export": "data/cadence-quality-records.json",
+      "export_sha256": "bebc5b1ac344e141992737c5ff4089ac34d2cced129a1a23a89fab264924952d"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/results-api-20261004T141923Z-UNPLUGGED/request-responses.json",
+      "source_sha256": "1939812f2d933195e984e73fde54de9bc37ee42945f026bbb8d156a6b797b279",
+      "export": "data/request-responses.json",
+      "export_sha256": "1939812f2d933195e984e73fde54de9bc37ee42945f026bbb8d156a6b797b279"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/results-api-20261004T141923Z-UNPLUGGED/request-responses.csv",
+      "source_sha256": "cb64ad457401ef6a2b0f9f2b4dab70a28cf2162e915b0987936d0f1009978436",
+      "export": "data/request-responses.csv",
+      "export_sha256": "38e76d14a02cfb60a1ed8f6e53f08579b478ca7dec62cb50ae26d3036b818fe1"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/results-api-20261004T141923Z-UNPLUGGED/numerical-gates.json",
+      "source_sha256": "3124dc55e52c1a448ef4fc7e427694c0beb5c5a80a62b581ec88b7cfde5b1485",
+      "export": "data/numerical-gates.json",
+      "export_sha256": "3124dc55e52c1a448ef4fc7e427694c0beb5c5a80a62b581ec88b7cfde5b1485"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/results-api-20261004T141923Z-UNPLUGGED/numerical-gates.csv",
+      "source_sha256": "123833e7d6ca6e76484042f4acabda97e630478549ebc59f374b8910b0e29d2c",
+      "export": "data/numerical-gates.csv",
+      "export_sha256": "33b9d378950dfb7af79d539ae19911b2bce5e8a64b633342e3739d1932fc4db2"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/results-api-20261004T141923Z-UNPLUGGED/phase-responses.csv",
+      "source_sha256": "f9921d3a3686fbd744f7c34400f98d2119108eeb2c8644c70c7d7a08b24b1346",
+      "export": "data/phase-responses.csv",
+      "export_sha256": "cccae3bb0a519960a6210e97b49b9b442193a2b9b38d2f830471843a5d665da3"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/results-api-20261004T141923Z-UNPLUGGED/phase-responses.json",
+      "source_sha256": "fda37f53767f1bae128ff1e283db0595a5d6712a6781ef2ac2c2bb41d6777b62",
+      "export": "data/phase-responses.json",
+      "export_sha256": "8a5fd1a6a43a6bdca758a953abba9cb1176191267adcc6ec636c2eab9a95c8f3"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/results-api-20261004T141923Z-UNPLUGGED/phase-records.json",
+      "source_sha256": "6a35969f1e60a56f5ff6622cd2ac14003c0c984ca48ff7f26947089469602d7e",
+      "export": "data/phase-records.json",
+      "export_sha256": "f6ddc89164b11ebd79fe070c7d2c02d147903bc87025346ff02b0c1be07bcc85"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/models.json",
+      "source_sha256": "e4d54b8466993a807f47b13022509ab69a4bb91aef87ca75b2b301d046548cf4",
+      "export": "data/model-metadata.json",
+      "export_sha256": "622f43a6cc202abda7ea30a6cf2017db7f9f52e60d5d36fbe9bbe8cf0bd9de4a"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/results-api-recovered-20261004T213622Z-PLUGGED_AC/phase-responses.csv",
+      "source_sha256": "c48a3fbee9aa2fad8c36d9a57cd4090b02aaf7147c80a4b329d7b7310a070365",
+      "export": "data/charging/phase-responses.csv",
+      "export_sha256": "d0d28834fecabaab1a836e8830d7dc6e6b952472c5721fe8a899d18aa9045c68"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/results-api-recovered-20261004T213622Z-PLUGGED_AC/phase-responses.json",
+      "source_sha256": "603ab4fda017f0bd7fd3f67de7f5df5251a7c1878c7f5fa1b8b31923e2b981b1",
+      "export": "data/charging/phase-responses.json",
+      "export_sha256": "c1d6e5426446303c5cb4b64e1d199285ad7c9871b499f650b124bc4feb56f21a"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/results-api-recovered-20261004T213622Z-PLUGGED_AC/phase-records.json",
+      "source_sha256": "aa53cebf7705c0a4467ce53aabe36a904f4451c04e596940ebd1d9ea1bde6c55",
+      "export": "data/charging/phase-records.json",
+      "export_sha256": "591653e2e434c8a53d8552ea8bae1382bad8a6d65fbc4a16d68161f2966f0b0b"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-CPU2048-charging-tuning-20261004T231749Z-schedule.json",
+      "source_sha256": "27cca0219af69958e772d0fce1f5ba80404e37f38176b786e4352d0c62069523",
+      "export": "data/plans/mistral7-CPU2048-charging-tuning-20261004T231749Z-schedule.json",
+      "export_sha256": "ea3be62406eca14ae076cbb7025d77bc48e4ded87a0a4124be0e8b81101f4f80"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-CPU2048-charging-tuning-20261004T231749Z-schedule.state.json",
+      "source_sha256": "bae00896bd6f7a7c4977df42197af807156c4efc517615800bb9944e4c0b9b47",
+      "export": "data/plans/mistral7-CPU2048-charging-tuning-20261004T231749Z-schedule.state.json",
+      "export_sha256": "bae00896bd6f7a7c4977df42197af807156c4efc517615800bb9944e4c0b9b47"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-phase2048-charging-confirm-20261005T005214Z-schedule.json",
+      "source_sha256": "4430aa0b0a16a8b5b7babbeab3ce974c3f6e8dd9b635c4da3c3b3a3a8e099acb",
+      "export": "data/plans/mistral7-phase2048-charging-confirm-20261005T005214Z-schedule.json",
+      "export_sha256": "9ebcbfcc8b1e7b5e70d3980ce15844d8739aad25dcc979014c404210b96d4618"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/mistral7-phase2048-charging-confirm-20261005T005214Z-schedule.state.json",
+      "source_sha256": "ab957403a81d14589ad06be5c64bd6f28aed654e71ec8727cd6998d31d9d15bd",
+      "export": "data/plans/mistral7-phase2048-charging-confirm-20261005T005214Z-schedule.state.json",
+      "export_sha256": "ab957403a81d14589ad06be5c64bd6f28aed654e71ec8727cd6998d31d9d15bd"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/architecture-memory-canonical-20261004T184708Z-mistral-7b-uncensored-c16384/result.json",
+      "source_sha256": "564803c06567e3d46a81393bacf15c0be7083b951479bec2fb8c690b38183681",
+      "export": "data/memory-records/architecture-memory-canonical-20261004T184708Z-mistral-7b-uncensored-c16384.json",
+      "export_sha256": "f2ddd75439d59c9acbe15b960e53864ddbf987a40068c1ebe75ba3c76218165f"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/architecture-memory-canonical-20261004T184708Z-mistral-7b-uncensored-c2048/result.json",
+      "source_sha256": "e9403af06a3a692c9324f088a7541ef37ae033aacf5dfdbdd4455363b7953efa",
+      "export": "data/memory-records/architecture-memory-canonical-20261004T184708Z-mistral-7b-uncensored-c2048.json",
+      "export_sha256": "bb8dcc4a514fc97bc88e9a5c847766019c75a8b691d7bc176906731e3fee4122"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/architecture-memory-canonical-20261004T184708Z-mistral-7b-uncensored-c512/result.json",
+      "source_sha256": "618ebfc1ae971dd0481aab782e6f4b79763d44acf96fa4154a793aa9fa82d377",
+      "export": "data/memory-records/architecture-memory-canonical-20261004T184708Z-mistral-7b-uncensored-c512.json",
+      "export_sha256": "efbeccfdb7e1f2f6316c4baed01bfebdc1e48a8330de1e4c38dffe4a912de47a"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/architecture-memory-canonical-20261004T184708Z-mistral-7b-uncensored-c8192/result.json",
+      "source_sha256": "957cbe844aa26e3831818e438ab7359f9ca44f0b18f462491ff217087099a28d",
+      "export": "data/memory-records/architecture-memory-canonical-20261004T184708Z-mistral-7b-uncensored-c8192.json",
+      "export_sha256": "38f5f11162e41c52b3a384f2a90ac23c862db1154d52e60721af0aea49c4d112"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/architecture-memory-canonical-20261004T184708Z-qwen2.5-coder-7b-c16384/result.json",
+      "source_sha256": "d15632666ac2ede75647a6ca2db64242449a16c2af3a8545762b3c31ac17697c",
+      "export": "data/memory-records/architecture-memory-canonical-20261004T184708Z-qwen2.5-coder-7b-c16384.json",
+      "export_sha256": "1c4ae29eaded2d14dcef1f14f53600f78a0dcdd3eb4f4d41c65a4341f473e81c"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/architecture-memory-canonical-20261004T184708Z-qwen2.5-coder-7b-c2048/result.json",
+      "source_sha256": "544ed1968c1bfcb7592a02c0f65c57699d9a00847960f60604d4a32577703055",
+      "export": "data/memory-records/architecture-memory-canonical-20261004T184708Z-qwen2.5-coder-7b-c2048.json",
+      "export_sha256": "47c927636aaeafd05b3aedb2959773b5277bdf448c394905b4a4fc13e3063524"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/architecture-memory-canonical-20261004T184708Z-qwen2.5-coder-7b-c512/result.json",
+      "source_sha256": "fe69e889c186a18172bc5dee9567aab63b817267b7e97c2fde09f3ea7735c1ef",
+      "export": "data/memory-records/architecture-memory-canonical-20261004T184708Z-qwen2.5-coder-7b-c512.json",
+      "export_sha256": "6caa0cfaa3d6598189548f6fa8a9b8b2d211b84663b515753175b690a41b0230"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/runs/architecture-memory-canonical-20261004T184708Z-qwen2.5-coder-7b-c8192/result.json",
+      "source_sha256": "edb46cbc173943571509025914c8ce0a3ac675375e5ec7aefa5edf68d8c42e9e",
+      "export": "data/memory-records/architecture-memory-canonical-20261004T184708Z-qwen2.5-coder-7b-c8192.json",
+      "export_sha256": "00a913fe1d458a41f8e44172c10503a1bb26b6970435bcf30de8c4515732fb81"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-hybrid.patch",
+      "source_sha256": "8a4d09ac572c10c9744af4917601ca3abf8f969643809c527cdd837ef1c13e21",
+      "export": "patches/registration-hybrid.patch",
+      "export_sha256": "8a4d09ac572c10c9744af4917601ca3abf8f969643809c527cdd837ef1c13e21"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-window.patch",
+      "source_sha256": "b16c99ed35fd98e11857289eaadc699fa62681d8db0de20515b9ca0533e821ef",
+      "export": "patches/registration-window.patch",
+      "export_sha256": "b16c99ed35fd98e11857289eaadc699fa62681d8db0de20515b9ca0533e821ef"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v3.cpp",
+      "source_sha256": "ee13adbe5fac51a3c2b32d87d30eee2085cbfede8d300b69dbc49499fa289452",
+      "export": "helpers/hybrid-latency-phase-v3.cpp",
+      "export_sha256": "ee13adbe5fac51a3c2b32d87d30eee2085cbfede8d300b69dbc49499fa289452"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v4.cpp",
+      "source_sha256": "9cb8f3fa79261604e2efcbc8cc56fb1481d0df65806ae9e8f4ef40a4f4c448a7",
+      "export": "helpers/hybrid-latency-phase-v4.cpp",
+      "export_sha256": "9cb8f3fa79261604e2efcbc8cc56fb1481d0df65806ae9e8f4ef40a4f4c448a7"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v4-canonical.cpp",
+      "source_sha256": "e35324af28288f1123e50d2b1d598c629204fa1523a591ec118e560d619e98d1",
+      "export": "helpers/hybrid-latency-phase-v4-canonical.cpp",
+      "export_sha256": "e35324af28288f1123e50d2b1d598c629204fa1523a591ec118e560d619e98d1"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/cadence-requests-v3.cpp",
+      "source_sha256": "7c0b58fa23bd13787c2fa78e67de4a0a7af8e2258885b5f9783803ad7c3508ab",
+      "export": "helpers/cadence-requests-v3.cpp",
+      "export_sha256": "7c0b58fa23bd13787c2fa78e67de4a0a7af8e2258885b5f9783803ad7c3508ab"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/android-thermal-probe.c",
+      "source_sha256": "35ad7144d939562f4cd603baf11dfff48fcc1f3fb8fa86848ba7e9116d6faafb",
+      "export": "helpers/android-thermal-probe.c",
+      "export_sha256": "35ad7144d939562f4cd603baf11dfff48fcc1f3fb8fa86848ba7e9116d6faafb"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/mmap-registration-probe.cpp",
+      "source_sha256": "dc58d2e93718e910d3eacaaad8e352037e868fedae34fe801013c38e3b713e96",
+      "export": "helpers/mmap-registration-probe.cpp",
+      "export_sha256": "dc58d2e93718e910d3eacaaad8e352037e868fedae34fe801013c38e3b713e96"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/measure.py",
+      "source_sha256": "6b45dfa3b08d7a4b6ca3cfd549598ec547c033232db19cb89ab7930a7fb06e7b",
+      "export": "helpers/measure.py",
+      "export_sha256": "6b45dfa3b08d7a4b6ca3cfd549598ec547c033232db19cb89ab7930a7fb06e7b"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/run-controlled-cases.py",
+      "source_sha256": "2efb9bd9b5cc42206b1276f353a57296bb01c13d2d4f4f0b5f0e62b6ccac37a6",
+      "export": "helpers/run-controlled-cases.py",
+      "export_sha256": "2efb9bd9b5cc42206b1276f353a57296bb01c13d2d4f4f0b5f0e62b6ccac37a6"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/build-registration-hybrid.py",
+      "source_sha256": "25a32d5bc7a6ab2fa7b65b98d90e55ce6ead3596caf8ba2160cd437904a4f0b8",
+      "export": "helpers/build-registration-hybrid.py",
+      "export_sha256": "25a32d5bc7a6ab2fa7b65b98d90e55ce6ead3596caf8ba2160cd437904a4f0b8"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/validation.py",
+      "source_sha256": "0b92b9857bf93a7aee47f3d7e4382765c5957b7b2b64d3fa03ed9cc69e003fea",
+      "export": "helpers/validation.py",
+      "export_sha256": "0b92b9857bf93a7aee47f3d7e4382765c5957b7b2b64d3fa03ed9cc69e003fea"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/export-phase-results.py",
+      "source_sha256": "751d90a52074eacfdde380b15a0b6c29b620a693c6c92b74780ce64b19a8e00b",
+      "export": "helpers/export-phase-results.py",
+      "export_sha256": "751d90a52074eacfdde380b15a0b6c29b620a693c6c92b74780ce64b19a8e00b"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/export-cadence-quality.py",
+      "source_sha256": "7eb6052fcf53fccdde4391a62f847d26dc00f808d08820ce093266204405520b",
+      "export": "helpers/export-cadence-quality.py",
+      "export_sha256": "7eb6052fcf53fccdde4391a62f847d26dc00f808d08820ce093266204405520b"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/summarize-cadence.py",
+      "source_sha256": "097a2bb0d1af6d773d1fc1ea26c020658b5d51112f01cfd0a3690d5e9625e294",
+      "export": "helpers/summarize-cadence.py",
+      "export_sha256": "097a2bb0d1af6d773d1fc1ea26c020658b5d51112f01cfd0a3690d5e9625e294"
+    },
+    {
+      "source": "~/llama-opencl-build/performance-investigation/export-oct04-checkpoint.py",
+      "source_sha256": "2cf2e6d2cf4b09cdd270388493bf1086fb77c6e54f4605d20ac344b51871632c",
+      "export": "helpers/export-oct04-checkpoint.py",
+      "export_sha256": "2cf2e6d2cf4b09cdd270388493bf1086fb77c6e54f4605d20ac344b51871632c"
+    }
+  ],
+  "scope": "Compact evidence/source only; local absolute paths normalized. Raw large logs and full telemetry remain on phone."
+}

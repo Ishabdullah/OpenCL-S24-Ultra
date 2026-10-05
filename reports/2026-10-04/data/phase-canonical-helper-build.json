@@ -1,0 +1,22 @@
+{
+  "UTC": "2026-10-04T20:33:02.522849+00:00",
+  "command": [
+    "$PREFIX/bin/c++",
+    "-O2",
+    "-std=c++17",
+    "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v4-canonical.cpp",
+    "-I~/llama-opencl-build/performance-investigation/source-npu-registration-hybrid/include",
+    "-I~/llama-opencl-build/performance-investigation/source-npu-registration-hybrid/ggml/include",
+    "-L~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin",
+    "-Wl,-rpath,$ORIGIN",
+    "-lllama",
+    "-lggml",
+    "-lggml-cpu",
+    "-lggml-base",
+    "-o",
+    "~/llama-opencl-build/performance-investigation/build-npu-registration-hybrid/bin/phase-npu-canonical-control"
+  ],
+  "source_sha256": "e35324af28288f1123e50d2b1d598c629204fa1523a591ec118e560d619e98d1",
+  "binary_sha256": "63c53abe8f7686c1d80206c8d3f02f6f45d32a97d263d28216a325151f9b9a0f",
+  "scope": "Identical existing v4 helper with explicit model.use_extra_bufts0/1 environment control and log. Backend/source/phase execution unchanged."
+}

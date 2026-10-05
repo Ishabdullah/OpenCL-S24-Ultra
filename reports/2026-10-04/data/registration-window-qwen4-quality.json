@@ -1,0 +1,27 @@
+{
+  "run_id": "npu-qwen4-window2048-quality-20261004T143620Z",
+  "quality": {
+    "steps": 32,
+    "top1_agreements": 32,
+    "logit_RMSE": 0.42791958,
+    "max_abs_logit_error": 8.63104153,
+    "mean_KL": 1.662e-05,
+    "all_logits_finite": true
+  },
+  "eviction_events": 220,
+  "evicted_buffers": 220,
+  "logged_unmap_ms_sum": 229.312,
+  "logged_unmap_excludes_flush_and_remap": true,
+  "minimum_MemAvailable_MiB": 3412.5390625,
+  "layer_records": [
+    [
+      0,
+      37
+    ],
+    [
+      37,
+      37
+    ]
+  ],
+  "scope": "32 forced-common-token numerical check; absolute logit max8.631 despite top-token agreement and small KL, not bit-identical."
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "full7-response-20261004T144134Z-HTP0-p128g64",
+    "device": "HTP0",
+    "PP_tok_s": 237.793490276,
+    "TG_tok_s": 3.875396048,
+    "response_s": 16.794777806,
+    "service_s": 16.798010931,
+    "max_process_RSS_MiB": 3692.03515625,
+    "min_MemAvailable_MiB": 2317.90234375,
+    "scope": "Exploratory one process per backend, warmed resident model, post-load ready, PP128/64 outputs (63 decode), not optimized CPU/sustained/cold-start comparison."
+  },
+  {
+    "id": "full7-response-20261004T144134Z-none-p128g64",
+    "device": "none",
+    "PP_tok_s": 35.895557961,
+    "TG_tok_s": 7.887564132,
+    "response_s": 11.553265933,
+    "service_s": 11.560434683,
+    "max_process_RSS_MiB": 6850.765625,
+    "min_MemAvailable_MiB": 3115.17578125,
+    "scope": "Exploratory one process per backend, warmed resident model, post-load ready, PP128/64 outputs (63 decode), not optimized CPU/sustained/cold-start comparison."
+  }
+]

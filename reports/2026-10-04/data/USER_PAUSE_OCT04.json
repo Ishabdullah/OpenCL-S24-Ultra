@@ -1,0 +1,27 @@
+{
+  "UTC": "2026-10-05T01:05:26.401667+00:00",
+  "reason": "User explicitly requests report/publication and pause until another day",
+  "investigation_paused_by_user": true,
+  "owned_battery_monitor_stopped": 17081,
+  "last_battery_snapshot": {
+    "UTC": "2026-10-05T01:03:36.476714+00:00",
+    "battery_api": {
+      "present": true,
+      "technology": "Li-ion",
+      "health": "GOOD",
+      "plugged": "PLUGGED_AC",
+      "status": "NOT_CHARGING",
+      "temperature": 25.6,
+      "voltage": 4221,
+      "current": 17000,
+      "current_average": 1,
+      "percentage": 94,
+      "level": 94,
+      "scale": 100,
+      "charge_counter": 4656743,
+      "cycle": 0
+    },
+    "observation": "Whole-device Android API, no per-process energy attribution"
+  },
+  "automatic_resume_job": "None; next session requires explicit user resume; pending schedule IDs must not be reused"
+}

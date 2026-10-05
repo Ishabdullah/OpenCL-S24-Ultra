@@ -1,0 +1,464 @@
+{
+  "controls": [
+    {
+      "path": "mmap-probe-20261004T074025Z-retain",
+      "mode": "retain",
+      "exit_code": 4,
+      "graph_passes": 7,
+      "registration_failed": true,
+      "guard": null,
+      "min_MemAvailable_MiB": 2607.77734375,
+      "rows": [
+        {
+          "status": "before_graph",
+          "index": 0,
+          "mode": "retain",
+          "chunk_MiB": 512,
+          "retained_inputs": 1,
+          "MemAvailable_kB": 6293320
+        },
+        {
+          "status": "graph_passed",
+          "index": 0,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 1,
+          "mode": "retain",
+          "chunk_MiB": 512,
+          "retained_inputs": 2,
+          "MemAvailable_kB": 5757384
+        },
+        {
+          "status": "graph_passed",
+          "index": 1,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 2,
+          "mode": "retain",
+          "chunk_MiB": 512,
+          "retained_inputs": 3,
+          "MemAvailable_kB": 5219448
+        },
+        {
+          "status": "graph_passed",
+          "index": 2,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 3,
+          "mode": "retain",
+          "chunk_MiB": 512,
+          "retained_inputs": 4,
+          "MemAvailable_kB": 4684792
+        },
+        {
+          "status": "graph_passed",
+          "index": 3,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 4,
+          "mode": "retain",
+          "chunk_MiB": 512,
+          "retained_inputs": 5,
+          "MemAvailable_kB": 4149632
+        },
+        {
+          "status": "graph_passed",
+          "index": 4,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 5,
+          "mode": "retain",
+          "chunk_MiB": 512,
+          "retained_inputs": 6,
+          "MemAvailable_kB": 3613724
+        },
+        {
+          "status": "graph_passed",
+          "index": 5,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 6,
+          "mode": "retain",
+          "chunk_MiB": 512,
+          "retained_inputs": 7,
+          "MemAvailable_kB": 3134212
+        },
+        {
+          "status": "graph_passed",
+          "index": 6,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 7,
+          "mode": "retain",
+          "chunk_MiB": 512,
+          "retained_inputs": 8,
+          "MemAvailable_kB": 2657728
+        }
+      ]
+    },
+    {
+      "path": "mmap-probe-20261004T074305Z-free",
+      "mode": "free",
+      "exit_code": 0,
+      "graph_passes": 8,
+      "registration_failed": false,
+      "guard": null,
+      "min_MemAvailable_MiB": 5929.73046875,
+      "rows": [
+        {
+          "status": "before_graph",
+          "index": 0,
+          "mode": "free",
+          "chunk_MiB": 512,
+          "retained_inputs": 1,
+          "MemAvailable_kB": 6343584
+        },
+        {
+          "status": "graph_passed",
+          "index": 0,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 1,
+          "mode": "free",
+          "chunk_MiB": 512,
+          "retained_inputs": 1,
+          "MemAvailable_kB": 6336544
+        },
+        {
+          "status": "graph_passed",
+          "index": 1,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 2,
+          "mode": "free",
+          "chunk_MiB": 512,
+          "retained_inputs": 1,
+          "MemAvailable_kB": 6335608
+        },
+        {
+          "status": "graph_passed",
+          "index": 2,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 3,
+          "mode": "free",
+          "chunk_MiB": 512,
+          "retained_inputs": 1,
+          "MemAvailable_kB": 6332976
+        },
+        {
+          "status": "graph_passed",
+          "index": 3,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 4,
+          "mode": "free",
+          "chunk_MiB": 512,
+          "retained_inputs": 1,
+          "MemAvailable_kB": 6331032
+        },
+        {
+          "status": "graph_passed",
+          "index": 4,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 5,
+          "mode": "free",
+          "chunk_MiB": 512,
+          "retained_inputs": 1,
+          "MemAvailable_kB": 6329052
+        },
+        {
+          "status": "graph_passed",
+          "index": 5,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 6,
+          "mode": "free",
+          "chunk_MiB": 512,
+          "retained_inputs": 1,
+          "MemAvailable_kB": 6329548
+        },
+        {
+          "status": "graph_passed",
+          "index": 6,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 7,
+          "mode": "free",
+          "chunk_MiB": 512,
+          "retained_inputs": 1,
+          "MemAvailable_kB": 6328104
+        },
+        {
+          "status": "graph_passed",
+          "index": 7,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "complete",
+          "mode": "free",
+          "count": 8,
+          "no_model": true
+        }
+      ]
+    },
+    {
+      "path": "mmap-probe-20261004T074513Z-retain",
+      "mode": "retain",
+      "chunk_MiB": 256,
+      "exit_code": 0,
+      "graph_passes": 12,
+      "registration_failed": false,
+      "guard": null,
+      "min_MemAvailable_MiB": 3745.94921875,
+      "rows": [
+        {
+          "status": "before_graph",
+          "index": 0,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 1,
+          "MemAvailable_kB": 6523820
+        },
+        {
+          "status": "graph_passed",
+          "index": 0,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 1,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 2,
+          "MemAvailable_kB": 6254368
+        },
+        {
+          "status": "graph_passed",
+          "index": 1,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 2,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 3,
+          "MemAvailable_kB": 5986424
+        },
+        {
+          "status": "graph_passed",
+          "index": 2,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 3,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 4,
+          "MemAvailable_kB": 5717208
+        },
+        {
+          "status": "graph_passed",
+          "index": 3,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 4,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 5,
+          "MemAvailable_kB": 5447748
+        },
+        {
+          "status": "graph_passed",
+          "index": 4,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 5,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 6,
+          "MemAvailable_kB": 5180048
+        },
+        {
+          "status": "graph_passed",
+          "index": 5,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 6,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 7,
+          "MemAvailable_kB": 4914864
+        },
+        {
+          "status": "graph_passed",
+          "index": 6,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 7,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 8,
+          "MemAvailable_kB": 4647104
+        },
+        {
+          "status": "graph_passed",
+          "index": 7,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 8,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 9,
+          "MemAvailable_kB": 4379604
+        },
+        {
+          "status": "graph_passed",
+          "index": 8,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 9,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 10,
+          "MemAvailable_kB": 4112040
+        },
+        {
+          "status": "graph_passed",
+          "index": 9,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 10,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 11,
+          "MemAvailable_kB": 3844056
+        },
+        {
+          "status": "graph_passed",
+          "index": 10,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "before_graph",
+          "index": 11,
+          "mode": "retain",
+          "chunk_MiB": 256,
+          "retained_inputs": 12,
+          "MemAvailable_kB": 3576300
+        },
+        {
+          "status": "graph_passed",
+          "index": 11,
+          "all_values_finite": true,
+          "within_tolerance": true,
+          "max_abs_error": 3.81469727e-06
+        },
+        {
+          "status": "complete",
+          "mode": "retain",
+          "count": 12,
+          "no_model": true
+        }
+      ]
+    }
+  ],
+  "interpretation": "Twelve retained 256 MiB buffers pass, while eight retained 512 MiB buffers fail on the eighth registration. This rules out a simple eight-buffer limit and supports cumulative registered-byte/resource pressure near 4 GiB. Freeing buffers also frees physical allocations; explicit synchronized unregister with storage retained is the next distinguishing control. No universal physical RAM or NPU model-capacity claim."
+}

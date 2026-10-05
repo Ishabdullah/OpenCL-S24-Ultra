@@ -1,0 +1,13 @@
+{
+  "upstream": "https://github.com/ggml-org/llama.cpp.git",
+  "upstream_commit": "e358d59178377be4c58ba567925e05faadbccb57",
+  "local_base_checkpoint": "53d539ccc327858498c055909d19468954b90531",
+  "published_base_patch": "patches/llama.cpp-hexagon-sphal.patch",
+  "apply_check": {
+    "returncode": 0,
+    "scope": "Read-only check against fresh installer-patched source; no new clean-room compile/inference"
+  },
+  "combined_patch_sha256": "8a4d09ac572c10c9744af4917601ca3abf8f969643809c527cdd837ef1c13e21",
+  "standalone_window_patch": "Alternative single-file experiment; do not apply both window and combined patches",
+  "build_scope": "Isolated native host rebuild reused 41 unchanged preserved objects and unchanged v75 DSP. Not clean-room validation."
+}

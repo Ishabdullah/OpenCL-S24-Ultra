@@ -1,0 +1,15 @@
+{
+  "utc": "2026-10-04T15:03:01.873583+00:00",
+  "run_id": "full7-registration-profile-20261004T145249Z-window2048",
+  "condition": "Unplanned background restriction to CPUs5,6; excluded from foreground comparisons",
+  "decode_steps": 15,
+  "decode_seconds": 5.567543332,
+  "host_mapping_ms": 3553.7910870000005,
+  "checked_unmapping_ms": 233.64771100000002,
+  "window_flush_wait_ms": 1700.606507,
+  "mapping_fraction_of_observed_decode": 0.6383050611522391,
+  "unmapping_fraction": 0.04196603368259156,
+  "flush_wait_fraction": 0.305450071169738,
+  "map_calls_per_decode_step": 11.0,
+  "interpretation": "The observed slow background run spends most decoder wall time inside FastRPC mapping calls; synchronization waits include NPU kernel work. This motivates testing SDK-defined NOMAP registration, not a foreground optimized-rate or pure-overhead claim."
+}

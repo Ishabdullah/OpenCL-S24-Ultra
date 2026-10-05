@@ -1,6 +1,6 @@
 # S24 Ultra CPU, Adreno OpenCL, Hexagon NPU and hybrid investigation
 
-**Snapshot: October 3, 2026, America/New_York (exported October 4 UTC). Investigation paused at the user's request.** This is a report of evidence collected so far, not a completed characterization or a new accelerator installer release. All experiment controllers and the battery monitor were stopped before preparing this report. Testing requires an explicit instruction to resume.
+**Current checkpoint: October 4, 2026, America/New_York. Paused at the owner's request; characterization incomplete.** The [October 4 update](reports/2026-10-04/) contains repeated improved-CPU/NPU comparisons, two-order equal-work measurements, experimental full 7B and phase-handoff results, actual architecture/context RAM measurements, and separate charging CPU screens with CSV/JSON evidence. [Next-session priorities](reports/2026-10-04/NEXT_SESSION.md) record the unfinished comparison/profile work. Experimental patches are separated from installer defaults. The sections below preserve the October 3 snapshot and its measurement scope; later evidence supersedes its progress statements, including pending Mistral memory/handoff statements.
 
 ## What the evidence establishes
 
@@ -209,7 +209,7 @@ The prototype is one-way, supports plain Qwen2/Qwen3 KV only, and mutates weight
 
 Plain vendor CDSP loading from the Termux namespace fails; loading `/vendor/lib64/libcdsprpc.so` through `sphal` succeeds and resolves17 needed runtime functions. Direct device open is denied, but the vendor HIDL FastRPC broker supplies the permitted device path/session. Unsigned user-PD initialization works without root. Capability queries report architecture0x8c75, four128-byte HVX resources and8MiB VTCM. Successful HMX kernels, not a hardcoded SDK capability field, establish tensor-unit use.
 
-An official calculator control succeeded in three sessions. Our own QAIC-generated/source-built arithmetic module passed12/12 checks. The native ARM64 llama host and source-built v75 DSP library subsequently passed8 small plus24 larger quantized matrix checks. Profile traces classified four N128 operations as `hmx-tiled` and four N1 operations as `hvx-tiled`, with12 HMX_COMP start/stop traces. Full1.5B29/29 and4B37/37 layer offload completed32-token generation; recurrent Qwen3.5-4B also completed a full-offload smoke test.
+An official calculator control succeeded in three sessions. Our own QAIC-generated/source-built arithmetic module passed12/12 checks. The native ARM64 llama host and source-built v75 DSP library subsequently passed8 small plus24 larger quantized matrix checks. Profile traces classified four N128 operations as `hmx-tiled` and four N1 operations as `hvx-tiled`, with12 HMX_COMP start/stop traces. Full1.5B29/29 and4B37/37 layer offload completed 32-token generation; recurrent Qwen3.5-4B also completed a full-offload smoke test.
 
 QEMU was required for x86 SDK build tools because the installed Termux compiler lacked the necessary HMX compilation support. **Inference executes natively on ARM64/Hexagon, never inside QEMU.** SDK6.6.0.0/QuIC19.0.07 uses v75/HVX/HMX/Release/LTO builds. DSP build parallelism was limited to two, and an unnecessary repeated install-time LTO rebuild was removed. The only additional package recorded for this path was `qemu-user-x86-64`1:11.0.3; the SDK/build runtime stays in experimental storage.
 
@@ -232,9 +232,9 @@ Highest saved valid4B CPU whole-response decode is **15.555508tok/s**, repeated 
 
 There is **no full-offload7B NPU benchmark**. Its first attempt was admission-skipped: estimated5112MiB buffers versus4767MiB available after1536MiB reserve. This is a safety decision, not an observed allocator/driver failure or proof that7B cannot work.
 
-A canonical/no-CPU-repack partial7B smoke test completed32 generated tokens with15/29 layers offloaded,2533.11MiB HTP weights,2146.07MiB CPU weights,14MiB CPU plus14MiB HTP KV. It reported **4.04tok/s**, a verbose unpaired smoke measurement. It is not a repeated7B NPU throughput result. Minimum system MemAvailable was about1708MiB, close to the reserve.
+A canonical/no-CPU-repack partial 7B smoke test completed 32 generated tokens with15/29 layers offloaded,2533.11MiB HTP weights,2146.07MiB CPU weights,14MiB CPU plus14MiB HTP KV. It reported **4.04tok/s**, a verbose unpaired smoke measurement. It is not a repeated7B NPU throughput result. Minimum system MemAvailable was about1708MiB, close to the reserve.
 
-Forced-prefix comparisons use128prompt tokens and32 CPU-selected subsequent tokens, finite-logit checks,ctx1024,t4,b/ub128,F16KV. Different attention/offload gates are listed separately:
+Forced-prefix comparisons use128prompt tokens and 32 CPU-selected subsequent tokens, finite-logit checks,ctx1024,t4,b/ub128,F16KV. Different attention/offload gates are listed separately:
 
 |Model / settings|Top-token agreement|RMSE|Max absolute logit difference|Mean KL|
 |---|---:|---:|---:|---:|
@@ -269,7 +269,7 @@ All models were already present; no duplicate model downloads were needed. Nomic
 |Mistral7B|7.242|llama|4.069|32|32 /8|128 /128|32768|
 |Qwen2.5-Coder14B|14.770|qwen2|8.371|48|40 /8|128 /128|131072|
 
-Quantization is Q4_K_M for these files. Effective dimensions come from explicit metadata where present and documented fallback interpretation elsewhere; do not infer every model's KV dimension from embedding width alone. Trained maximum context is metadata, not a validated phone capacity. The14B large-file case was not forced through an unsafe allocation.
+Quantization is Q4_K_M for these files. Effective dimensions come from explicit metadata where present and documented fallback interpretation elsewhere; do not infer every model's KV dimension from embedding width alone. Trained maximum context is metadata, not a validated phone capacity. The 14B large-file case was not forced through an unsafe allocation.
 
 ### Measured KV and recurrent-state allocation
 
@@ -365,7 +365,7 @@ An eventual Codey-OS scheduler would need measured admission/thermal signals, co
 2. Validate graceful shutdown helper v2 before using it for sustained experiments. Its latest edits/recompile were pending when paused; v1 measured artifacts remain preserved. Repeat cold CPU/GPU/NPU blocks with stable cgroup state and balanced ordering; record safety censoring rather than attempting to override thermal limits.
 3. Investigate lower/scalable HTP performance corners and explicit idle/backend vote release in an isolated build. Measure response latency, host occupation, temperatures and energy only when power measurements are reliable.
 4. Finish NPU partial offload, batch, occupied-context and architectural memory series. The prepared124-configuration screening schedule is a plan, not124 completed tests. Determine safe7B/full-offload feasibility without sacrificing the memory reserve.
-5. Profile NPU decode and memory traffic. Packed-weight-size times TG gives about32.95GiB/s for1.5B and32.96GiB/s for4B, a striking bandwidth-bound hypothesis. This is a weight-throughput **proxy**, not a hardware DDR bandwidth measurement or exact bytes touched.
+5. Profile NPU decode and memory traffic. Packed-weight-size times TG gives about32.95GiB/s for1.5B and 32.96GiB/s for4B, a striking bandwidth-bound hypothesis. This is a weight-throughput **proxy**, not a hardware DDR bandwidth measurement or exact bytes touched.
 6. Reduce generic GPU K/V placement fallbacks and repeated backend boundaries; preserve supported-shape checks. Consider fused/specialized kernels only after numerical gates. Avoid equating fewer launches with faster execution.
 7. Finish isolated specialized-path best-CPU and larger-model confirmations, then sustained GPU controls. Keep the released generic installer baseline until correctness/reproducibility/stability evidence justifies a separate option.
 8. Improve hybrid CPU layout and selective occupied-KV migration, quantify page faults/repacking/transition cost, and benchmark total response across128/512/2048/8192 prompts. Production scheduling requires independent ownership/concurrency and accelerator power teardown.

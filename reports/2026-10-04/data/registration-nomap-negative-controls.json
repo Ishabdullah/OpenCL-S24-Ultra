@@ -1,0 +1,25 @@
+{
+  "controls": [
+    {
+      "id": "nomap-probe-20261004T150629Z-retain",
+      "exit_code": 4,
+      "registration_failed": true,
+      "graph_passes": 0,
+      "cleanup_complete": true,
+      "abort_reason": null,
+      "llama_library_paths": [],
+      "stderr_tail": "pinned 0\nggml-hex: HTP0 init-tensor probe_input : base 0x77347c2000 data 0x77347c2000 nbytes 128\nggml-hex: HTP0 set-tensor probe_input : data 0x7ffdc3ae80 offset 0 size 128 usage 1 flags 0x2\nggml-hex: HTP0 supports-op SCALE|probe_input -> probe_output|32:1 -> 32:1|f32 -> f32|4:128 -> 4:128|HTP0 -> NONE|yes\nggml-hex: HTP0 allocated buffer: base 0x7a5711e000 size 8192 fd 23 pinned 0\nggml-hex: HTP0 init-tensor probe_output : base 0x7a5711e000 data 0x7a5711e000 nbytes 128\nggml-hex: HTP0 graph-compute n_nodes 1\nggml-hex: HTP0 buffer mapping failed : domain_id 3 size 536875008 fd 22 error 0x00000001\nMMAP_PROBE failure: ggml-hex: fastrpc_mmap failed (see log for details)\nggml-hex: HTP0 release ref on buffer: base 0x7a5711e000 size 8192 fd 23\nggml-hex: HTP0 release ref on buffer: base 0x77347c2000 size 536875008 fd 22\nMMAP_PROBE cleanup complete\n"
+    },
+    {
+      "id": "nomap-probe-20261004T151014Z-retain",
+      "exit_code": 4,
+      "registration_failed": true,
+      "graph_passes": 0,
+      "cleanup_complete": true,
+      "abort_reason": null,
+      "llama_library_paths": [],
+      "stderr_tail": " 22 pinned 0\nggml-hex: HTP0 init-tensor probe_input : base 0x6d306c8000 data 0x6d306c8000 nbytes 128\nggml-hex: HTP0 set-tensor probe_input : data 0x7fe1d35930 offset 0 size 128 usage 1 flags 0x2\nggml-hex: HTP0 supports-op SCALE|probe_input -> probe_output|32:1 -> 32:1|f32 -> f32|4:128 -> 4:128|HTP0 -> NONE|yes\nggml-hex: HTP0 allocated buffer: base 0x7035ccf000 size 8192 fd 23 pinned 0\nggml-hex: HTP0 init-tensor probe_output : base 0x7035ccf000 data 0x7035ccf000 nbytes 128\nggml-hex: HTP0 graph-compute n_nodes 1\nggml-hex: HTP0 buffer mapping failed : domain_id 3 size 1052672 fd 22 error 0x00000001\nMMAP_PROBE failure: ggml-hex: fastrpc_mmap failed (see log for details)\nggml-hex: HTP0 release ref on buffer: base 0x7035ccf000 size 8192 fd 23\nggml-hex: HTP0 release ref on buffer: base 0x6d306c8000 size 1052672 fd 22\nMMAP_PROBE cleanup complete\n"
+    }
+  ],
+  "conclusion": "SDK NOMAP flag invocation failed on the first registration for both512MiB and1MiB with error0x1. No model inference attempted. Do not claim vendor support or generalize exact hidden cause from generic error. Prototype remains isolated/default disabled."
+}

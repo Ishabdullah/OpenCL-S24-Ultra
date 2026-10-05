@@ -1,0 +1,155 @@
+diff --git a/ggml/src/ggml-hexagon/ggml-hexagon.cpp b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
+index ad0905f..c317a54 100644
+--- a/ggml/src/ggml-hexagon/ggml-hexagon.cpp
++++ b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
+@@ -87,6 +87,8 @@ struct ggml_hexagon_device_config {
+ 
+ static ggml_hexagon_device_config opt_device_configs[GGML_HEXAGON_MAX_SESSIONS];
+ 
++static size_t opt_registration_window = 0;
++
+ static int    opt_arch    = 0; // autodetect
+ static size_t opt_ndev    = 1;
+ static size_t opt_nhvx    = 0; // use all
+@@ -481,6 +483,9 @@ struct ggml_hexagon_session {
+     bool             valid_queue;
+     bool             valid_iface;
+ 
++    std::unordered_set<ggml_hexagon_shared_buffer *> registered_buffers;
++    void prepare_registration_window(const htp_opnode & node);
++
+     ggml_hexagon_opbatch* op_batch;
+     ggml_hexagon_opqueue* op_queue;
+ 
+@@ -619,6 +624,7 @@ struct ggml_hexagon_shared_buffer {
+     ggml_hexagon_session *                     sess;
+     std::shared_ptr<ggml_hexagon_rpcmem_block> mem;
+     std::vector<ggml_hexagon_tensor_extra *>   tensor_extra;
++    bool     weight = false;
+     bool     mapped;
+     bool     pinned;
+     bool     extended;
+@@ -648,6 +654,7 @@ struct ggml_hexagon_shared_buffer {
+                 sess->c_name(), (void *) base(), size(), fd(), pinned, extended);
+ 
+         this->mapped = true;
++        sess->registered_buffers.insert(this);
+     }
+ 
+     void unmap() {
+@@ -666,6 +673,18 @@ struct ggml_hexagon_shared_buffer {
+                 (void *) base(), size(), fd());
+ 
+         this->mapped = false;
++        sess->registered_buffers.erase(this);
++    }
++
++    void unmap_checked() {
++        if (!mapped) return;
++        if (pinned || !mem || !mem->mapped_clones.empty()) throw std::runtime_error("unsafe registration eviction");
++        int err = htp_iface_munmap(sess->handle, fd());
++        if (err != 0) throw std::runtime_error("DSP registration eviction failed: " + std::to_string(err));
++        err = fastrpc_munmap(sess->domain_id, fd(), (void *) base(), size());
++        if (err != 0) throw std::runtime_error("host registration eviction failed: " + std::to_string(err));
++        mapped = false;
++        sess->registered_buffers.erase(this);
+     }
+ 
+     void alloc(size_t size) {
+@@ -3686,7 +3705,49 @@ void ggml_hexagon_session::flush_batch(size_t min_ops) {
+     op_batch->reset();
+ }
+ 
++void ggml_hexagon_session::prepare_registration_window(const htp_opnode & node) {
++    if (!opt_registration_window) return;
++    if (mdev.count > 1 || !mdev.sessions.empty() || !virt_peers.empty() || !phys_peers.empty()) {
++        throw std::runtime_error("registration window prototype supports one session only");
++    }
++    std::unordered_set<ggml_hexagon_shared_buffer *> needed;
++    auto collect = [&](const ggml_tensor * t) {
++        if (!t) return;
++        auto sbuf = static_cast<ggml_hexagon_shared_buffer *>(t->buffer->context);
++        if (sbuf->sess != this) throw std::runtime_error("registration window requires owned buffers");
++        needed.insert(sbuf);
++    };
++    for (auto t : node.get_inputs()) collect(t);
++    for (auto t : node.get_outputs()) collect(t);
++    size_t bytes = 0;
++    for (auto sbuf : registered_buffers) bytes += sbuf->size();
++    for (auto sbuf : needed) if (!sbuf->mapped) bytes += sbuf->size();
++    if (bytes <= opt_registration_window) return;
++
++    // All queued references must finish before idle weight mappings are removed.
++    flush_sync();
++    if (last_error > HTP_STATUS_OK) throw std::runtime_error("DSP error before registration eviction");
++    auto start = std::chrono::steady_clock::now();
++    std::vector<ggml_hexagon_shared_buffer *> candidates;
++    for (auto sbuf : registered_buffers) {
++        if (sbuf->weight && !sbuf->pinned && sbuf->mem && sbuf->mem->mapped_clones.empty() && !needed.count(sbuf)) candidates.push_back(sbuf);
++    }
++    std::sort(candidates.begin(), candidates.end(), [](auto a, auto b) { return a->fd() < b->fd(); });
++    size_t evicted = 0;
++    for (auto sbuf : candidates) {
++        if (bytes <= opt_registration_window) break;
++        size_t size = sbuf->size();
++        sbuf->unmap_checked();
++        bytes -= size;
++        evicted++;
++    }
++    if (bytes > opt_registration_window) throw std::runtime_error("current operation and non-evictable buffers exceed registration window");
++    double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now()-start).count();
++    HEX_VERBOSE("ggml-hex: registration-window evicted %zu buffers planned bytes %zu limit %zu unmap_ms %.3f\n", evicted, bytes, opt_registration_window, ms);
++}
++
+ void ggml_hexagon_session::enqueue_op(const htp_opnode & node) {
++    prepare_registration_window(node);
+     auto clone_tensor_buffer = [this](const ggml_tensor * t) {
+         auto sbuf = this->mmap_tensor(t);
+         if (!sbuf) return;
+@@ -3974,6 +4035,7 @@ ggml_hexagon_shared_buffer * ggml_hexagon_session::mmap_tensor(const ggml_tensor
+     if (!t) return nullptr;
+ 
+     auto sbuf = static_cast<ggml_hexagon_shared_buffer *>(t->buffer->context);
++    if (ggml_backend_buffer_get_usage(t->buffer) == GGML_BACKEND_BUFFER_USAGE_WEIGHTS) sbuf->weight = true;
+     if (!sbuf->mapped) {
+         const bool is_weight = ggml_backend_buffer_get_usage(t->buffer) == GGML_BACKEND_BUFFER_USAGE_WEIGHTS;
+         const bool extended  = opt_dma64 && is_weight;
+@@ -8090,7 +8152,26 @@ static ggml_backend_buffer_type_t ggml_backend_hexagon_split_buffer_type(int mai
+     return &dev_ctx->buffer_type;
+ }
+ 
++// Diagnostic only: retain physical storage while dropping an idle mapping.
++static int ggml_hexagon_probe_unmap(ggml_backend_t backend, ggml_backend_buffer_t buffer) {
++    if (!backend || !buffer || buffer->iface.free_buffer != ggml_backend_hexagon_buffer_free_buffer) return -1;
++    auto sess = static_cast<ggml_hexagon_session *>(backend->context);
++    auto sbuf = static_cast<ggml_hexagon_shared_buffer *>(buffer->context);
++    if (sbuf->sess != sess || sbuf->pinned || !sbuf->mem || !sbuf->mem->mapped_clones.empty() || !sess->mdev.sessions.empty()) return -2;
++    sess->flush_sync();
++    if (!sbuf->mapped) return 0;
++    int err = htp_iface_munmap(sess->handle, sbuf->fd());
++    if (err != 0) return err;
++    err = fastrpc_munmap(sess->domain_id, sbuf->fd(), (void *) sbuf->base(), sbuf->size());
++    if (err != 0) return err;
++    sbuf->mapped = false;
++    sess->registered_buffers.erase(sbuf);
++    HEX_VERBOSE("ggml-hex: diagnostic retained-storage unmap fd %d size %zu\n", sbuf->fd(), sbuf->size());
++    return 0;
++}
++
+ static void * ggml_backend_hexagon_get_proc_address(ggml_backend_reg_t reg, const char * name) {
++    if (strcmp(name, "ggml_hexagon_probe_unmap") == 0) return (void *) ggml_hexagon_probe_unmap;
+     GGML_UNUSED(reg);
+     if (strcmp(name, "ggml_backend_split_buffer_type") == 0) {
+         return (void *) ggml_backend_hexagon_split_buffer_type;
+@@ -8277,6 +8358,11 @@ static void ggml_hexagon_init(ggml_backend_reg * reg) {
+     }
+ 
+     size_t MiB = 1024 * 1024;
++    if (const char * window = getenv("GGML_HEXAGON_REGISTRATION_WINDOW")) {
++        size_t value = strtoul(window, nullptr, 10);
++        if (value > 4096) throw std::runtime_error("registration window must be 0..4096 MiB");
++        opt_registration_window = value * MiB;
++    }
+ 
+     // Update vmem default
+     opt_vmem = opt_arch >= 75 ? HTP_OP_MAX_VMEM_DEFAULT : 3000 * MiB;

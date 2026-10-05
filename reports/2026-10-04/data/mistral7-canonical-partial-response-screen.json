@@ -1,0 +1,456 @@
+{
+  "UTC": "2026-10-04T19:09:02.650360+00:00",
+  "scope": "One warm request per configuration, canonical CPU weight layout. CPU bracket failed Android cgroup/CPU availability guard. No independent repeated partial-offload advantage established. Post-load wait excluded from response but reported. Different default quality model-buffer placement must not be treated as the cadence MMAP allocation.",
+  "records": [
+    {
+      "id": "mistral7-canonical-screen-20261004T183541Z-ngl0-r0",
+      "valid": true,
+      "issues": [],
+      "ngl": 0,
+      "cpu_repack": 0,
+      "response": {
+        "request_period_s": 0.0,
+        "cpu_repack": false,
+        "scheduled_arrival_monotonic_s": -1.0,
+        "service_start_monotonic_s": 500786.354953647,
+        "queue_delay_s": 0.0,
+        "service_s": 14.689826505,
+        "arrival_to_completion_s": 14.689826505,
+        "missed_deadline": false,
+        "postload_admission_s": 28.035009885,
+        "initial_CPU_max_C": 42.0,
+        "initial_NPU_max_C": 39.3,
+        "initial_GPU_max_C": 39.6,
+        "initial_battery_C": 31.5,
+        "iteration": 0,
+        "monotonic_s": 500786.362559325,
+        "prompt": 128,
+        "generation": 64,
+        "decode_steps": 63,
+        "context": 1024,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 128,
+        "attention": "on",
+        "device": "none",
+        "ngl": 0,
+        "prompt_hash": "6562453013952157076",
+        "output_hash": "13471825428213023274",
+        "reset_s": 0.007605468,
+        "prefill_s": 7.030341196,
+        "prefill_tok_s": 18.206797712,
+        "ttft_s": 7.030412081,
+        "decode_s": 7.651808851,
+        "decode_tok_s": 8.233347334,
+        "total_response_s": 14.682221037,
+        "all_logits_finite": true
+      },
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 4165.37,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  4165.37 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 128.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   128.00 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 29.25,
+            "line": "sched_reserve:        CPU compute buffer size =    29.25 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            0,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =   128.00 MiB"
+        ]
+      },
+      "max_RSS_MiB": 4334.9140625,
+      "minimum_MemAvailable_MiB": 6897.421875
+    },
+    {
+      "id": "mistral7-canonical-screen-20261004T183541Z-ngl3-r1",
+      "valid": true,
+      "issues": [],
+      "ngl": 3,
+      "cpu_repack": 0,
+      "response": {
+        "request_period_s": 0.0,
+        "cpu_repack": false,
+        "scheduled_arrival_monotonic_s": -1.0,
+        "service_start_monotonic_s": 501003.424497575,
+        "queue_delay_s": 0.0,
+        "service_s": 16.355424837,
+        "arrival_to_completion_s": 16.355424837,
+        "missed_deadline": false,
+        "postload_admission_s": 140.116226665,
+        "initial_CPU_max_C": 42.4,
+        "initial_NPU_max_C": 41.6,
+        "initial_GPU_max_C": 40.4,
+        "initial_battery_C": 33.1,
+        "iteration": 0,
+        "monotonic_s": 501003.428827367,
+        "prompt": 128,
+        "generation": 64,
+        "decode_steps": 63,
+        "context": 1024,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 128,
+        "attention": "on",
+        "device": "HTP0",
+        "ngl": 3,
+        "prompt_hash": "6562453013952157076",
+        "output_hash": "13471825428213023274",
+        "reset_s": 0.004329531,
+        "prefill_s": 6.683271299,
+        "prefill_tok_s": 19.152297471,
+        "ttft_s": 6.683339945,
+        "decode_s": 9.667755205,
+        "decode_tok_s": 6.516507572,
+        "total_response_s": 16.351095306,
+        "all_logits_finite": true
+      },
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 3900.35,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  3900.35 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "model",
+            "MiB": 399.45,
+            "line": "load_tensors:         HTP0 model buffer size =   399.45 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 120.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   120.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "KV",
+            "MiB": 8.0,
+            "line": "llama_kv_cache:       HTP0 KV buffer size =     8.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "compute",
+            "MiB": 27.25,
+            "line": "sched_reserve:       HTP0 compute buffer size =    27.25 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 29.25,
+            "line": "sched_reserve:        CPU compute buffer size =    29.25 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            3,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =   120.00 MiB",
+          "llama_kv_cache:       HTP0 KV buffer size =     8.00 MiB"
+        ]
+      },
+      "max_RSS_MiB": 4182.8203125,
+      "minimum_MemAvailable_MiB": 6383.796875
+    },
+    {
+      "id": "mistral7-canonical-screen-20261004T183541Z-ngl6-r2",
+      "valid": true,
+      "issues": [],
+      "ngl": 6,
+      "cpu_repack": 0,
+      "response": {
+        "request_period_s": 0.0,
+        "cpu_repack": false,
+        "scheduled_arrival_monotonic_s": -1.0,
+        "service_start_monotonic_s": 501254.602349458,
+        "queue_delay_s": 0.0,
+        "service_s": 13.685448849,
+        "arrival_to_completion_s": 13.685448849,
+        "missed_deadline": false,
+        "postload_admission_s": 174.153314569,
+        "initial_CPU_max_C": 43.6,
+        "initial_NPU_max_C": 42.4,
+        "initial_GPU_max_C": 41.6,
+        "initial_battery_C": 34.5,
+        "iteration": 0,
+        "monotonic_s": 501254.608626906,
+        "prompt": 128,
+        "generation": 64,
+        "decode_steps": 63,
+        "context": 1024,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 128,
+        "attention": "on",
+        "device": "HTP0",
+        "ngl": 6,
+        "prompt_hash": "6562453013952157076",
+        "output_hash": "13471825428213023274",
+        "reset_s": 0.006277187,
+        "prefill_s": 5.982866144,
+        "prefill_tok_s": 21.394428175,
+        "ttft_s": 5.982939321,
+        "decode_s": 7.696232237,
+        "decode_tok_s": 8.185823668,
+        "total_response_s": 13.679171662,
+        "all_logits_finite": true
+      },
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 3502.85,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  3502.85 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "model",
+            "MiB": 834.55,
+            "line": "load_tensors:         HTP0 model buffer size =   834.55 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 108.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   108.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "KV",
+            "MiB": 20.0,
+            "line": "llama_kv_cache:       HTP0 KV buffer size =    20.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "compute",
+            "MiB": 27.25,
+            "line": "sched_reserve:       HTP0 compute buffer size =    27.25 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 29.25,
+            "line": "sched_reserve:        CPU compute buffer size =    29.25 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            6,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =   108.00 MiB",
+          "llama_kv_cache:       HTP0 KV buffer size =    20.00 MiB"
+        ]
+      },
+      "max_RSS_MiB": 4182.953125,
+      "minimum_MemAvailable_MiB": 5891.5703125
+    },
+    {
+      "id": "mistral7-canonical-screen-20261004T183541Z-ngl16-r3",
+      "valid": true,
+      "issues": [],
+      "ngl": 16,
+      "cpu_repack": 0,
+      "response": {
+        "request_period_s": 0.0,
+        "cpu_repack": false,
+        "scheduled_arrival_monotonic_s": -1.0,
+        "service_start_monotonic_s": 501719.849395843,
+        "queue_delay_s": 0.0,
+        "service_s": 11.841036662,
+        "arrival_to_completion_s": 11.841036662,
+        "missed_deadline": false,
+        "postload_admission_s": 370.31816465,
+        "initial_CPU_max_C": 43.2,
+        "initial_NPU_max_C": 42.8,
+        "initial_GPU_max_C": 41.6,
+        "initial_battery_C": 35.3,
+        "iteration": 0,
+        "monotonic_s": 501719.894392718,
+        "prompt": 128,
+        "generation": 64,
+        "decode_steps": 63,
+        "context": 1024,
+        "threads": 6,
+        "batch": 512,
+        "ubatch": 128,
+        "attention": "on",
+        "device": "HTP0",
+        "ngl": 16,
+        "prompt_hash": "6562453013952157076",
+        "output_hash": "13471825428213023274",
+        "reset_s": 0.044996718,
+        "prefill_s": 3.936940572,
+        "prefill_tok_s": 32.512555793,
+        "ttft_s": 3.937021718,
+        "decode_s": 7.85901807,
+        "decode_tok_s": 8.016268628,
+        "total_response_s": 11.796039944,
+        "all_logits_finite": true
+      },
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 2183.59,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  2183.59 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "model",
+            "MiB": 2179.86,
+            "line": "load_tensors:         HTP0 model buffer size =  2179.86 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 68.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =    68.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "KV",
+            "MiB": 60.0,
+            "line": "llama_kv_cache:       HTP0 KV buffer size =    60.00 MiB"
+          },
+          {
+            "backend": "HTP0",
+            "kind": "compute",
+            "MiB": 27.25,
+            "line": "sched_reserve:       HTP0 compute buffer size =    27.25 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 29.25,
+            "line": "sched_reserve:        CPU compute buffer size =    29.25 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            16,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =    68.00 MiB",
+          "llama_kv_cache:       HTP0 KV buffer size =    60.00 MiB"
+        ]
+      },
+      "max_RSS_MiB": 4181.6484375,
+      "minimum_MemAvailable_MiB": 4290.76953125
+    },
+    {
+      "id": "mistral7-canonical-screen-20261004T183541Z-ngl0-r4",
+      "valid": false,
+      "issues": [
+        "CPU availability or Android cgroup changed during measurement",
+        "Benchmark process Android cgroup changed during measurement",
+        "Run failed, was aborted, or did not parse"
+      ],
+      "ngl": 0,
+      "cpu_repack": 0,
+      "response": null,
+      "allocations": {
+        "buffers": [
+          {
+            "backend": "CPU_Mapped",
+            "kind": "model",
+            "MiB": 4165.37,
+            "line": "load_tensors:   CPU_Mapped model buffer size =  4165.37 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "output",
+            "MiB": 0.12,
+            "line": "llama_context:        CPU  output buffer size =     0.12 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "KV",
+            "MiB": 128.0,
+            "line": "llama_kv_cache:        CPU KV buffer size =   128.00 MiB"
+          },
+          {
+            "backend": "CPU",
+            "kind": "compute",
+            "MiB": 29.25,
+            "line": "sched_reserve:        CPU compute buffer size =    29.25 MiB"
+          }
+        ],
+        "layers_offloaded": [
+          [
+            0,
+            33
+          ]
+        ],
+        "context_and_memory_lines": [
+          "print_info: model params          = 7.24 B",
+          "llama_context: n_ctx                 = 1024",
+          "llama_kv_cache:        CPU KV buffer size =   128.00 MiB"
+        ]
+      },
+      "max_RSS_MiB": 4341.4296875,
+      "minimum_MemAvailable_MiB": 6474.2734375
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "utc": "2026-10-04T15:54:55.586362+00:00",
+  "finding": "Recent specialized cadence/FA-on gates omitted GGML_OPENCL_Q4K_GEMV_WIDE=0 required by previously qualified specialized configuration. Default wide setting is known numerically failing; these runs are not tests of the narrowed workaround.",
+  "affected_ids": [
+    "cadence-gate-20261004T144259Z-adreno",
+    "opencl-faon-quality-20261004T145249Z-adreno"
+  ],
+  "actual_outcome": "Both remain genuine unsuccessful execution records, with SIGKILL and observed reset counter change in cadence run; exact cause not established.",
+  "correction": "Fresh isolated forced-token gate with explicit WIDE=0, trace enabled and sameFAon; diagnostic timing excluded. No proven source/build modifications."
+}

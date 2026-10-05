@@ -1,0 +1,16 @@
+{
+  "UTC": "2026-10-04T19:21:59.020450+00:00",
+  "exit_code": 0,
+  "patch_sha256": "8a4d09ac572c10c9744af4917601ca3abf8f969643809c527cdd837ef1c13e21",
+  "artifacts_sha256": {
+    "libggml-base.so.0.25.3": "26a6584a0f947685091834ecc2dd2570115ad35b2d63f82233fc63807ebb689d",
+    "libggml-cpu.so.0.25.3": "4d4fc5a240c7542d4409c4deac6efdde9a8302342b26fce90f4989040a5243e9",
+    "libggml-hexagon.so.0.25.3": "5990eb898f92dbcd4dc90a0a3bccc9ac7bbbd9dfda31773a0cabb05fee7fc788",
+    "libggml.so.0.25.3": "825646f17c88a4d72a1558694b6d4f8e92d1cfc491ede1fc6550f13815fe1922",
+    "phase-npu-registration": "627c0894359e72d58057c95a9d3abf331fb23d25f13114bca7296d88156b4c35",
+    "libllama-common.so.0.5.0": "1dec67f73f33e8fba121896926e4a31208522eccd776be49d98c68231e21c5cb",
+    "libllama-completion-impl.so": "f94955c6cd0fd35af1483a69c11765d15afdb77abf77047abfefa45affea464d",
+    "libllama-bench-impl.so": "ec6fd47fdc39ea52ac693b92b179feb4534994723cd16c369981b363a6d3b32d",
+    "libllama.so.0.5.0": "ee8c3f6212c088fce05b8eb31de12bdeffe71391187ac5343970f875ae0d168f"
+  }
+}

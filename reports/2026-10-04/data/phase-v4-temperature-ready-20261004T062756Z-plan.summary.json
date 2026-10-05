@@ -1,0 +1,88 @@
+[
+  {
+    "model": "qwen2.5-coder-1.5b",
+    "total_response_s": {
+      "cpu": {
+        "values": [
+          5.217942237,
+          5.090099373,
+          5.35455781
+        ],
+        "mean": 5.220866473333333,
+        "between_process_SD": 0.13225346722759534
+      },
+      "gpu": {
+        "values": [
+          2.374173593,
+          2.36384328,
+          2.365035103
+        ],
+        "mean": 2.367683992,
+        "between_process_SD": 0.005651663593158485
+      },
+      "hybrid": {
+        "values": [
+          2.37090901,
+          2.414292656,
+          2.375559062
+        ],
+        "mean": 2.3869202426666667,
+        "between_process_SD": 0.02381895263584885
+      }
+    },
+    "roundwise_CPU_over_NPU": [
+      2.197793056238411,
+      2.1533150763700375,
+      2.2640500359626166
+    ],
+    "roundwise_CPU_over_hybrid": [
+      2.200819270158326,
+      2.1083191221039774,
+      2.254020072854749
+    ],
+    "scope": "Resident warmed model; post-load admission <=45CPU/43NPU/43GPU/36batteryC held10s, ready waiting outside response. Not cold-launch latency, energy, sustained performance or global best CPU."
+  },
+  {
+    "model": "qwen3-4b-instruct",
+    "total_response_s": {
+      "cpu": {
+        "values": [
+          16.317889004,
+          17.875103222,
+          15.581140202
+        ],
+        "mean": 16.591377476,
+        "between_process_SD": 1.1711804056248338
+      },
+      "gpu": {
+        "values": [
+          5.669743227,
+          5.669594945,
+          5.671307185
+        ],
+        "mean": 5.670215119,
+        "between_process_SD": 0.0009486585261030312
+      },
+      "hybrid": {
+        "values": [
+          10.150544058,
+          6.418318487,
+          6.682042133
+        ],
+        "mean": 7.750301559333333,
+        "between_process_SD": 2.082849149523096
+      }
+    },
+    "roundwise_CPU_over_NPU": [
+      2.8780649053544876,
+      3.152800754798895,
+      2.7473631199541524
+    ],
+    "roundwise_CPU_over_hybrid": [
+      1.607587623949999,
+      2.785013435871899,
+      2.3317931691946128
+    ],
+    "scope": "Resident warmed model; post-load admission <=45CPU/43NPU/43GPU/36batteryC held10s, ready waiting outside response. Not cold-launch latency, energy, sustained performance or global best CPU."
+  }
+]

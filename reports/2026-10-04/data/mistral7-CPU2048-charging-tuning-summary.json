@@ -1,0 +1,54 @@
+{
+  "power_epoch": "api-recovered-20261004T213622Z-PLUGGED_AC",
+  "scope": "One process per configuration; charging only; independent repetition pending",
+  "records": [
+    {
+      "id": "mistral7-CPU2048-charging-tuning-20261004T231749Z-r0",
+      "threads": 6,
+      "process_mask": "fc",
+      "ubatch": 256,
+      "prefill_tok_s": 24.918031513,
+      "decode_tok_s": 6.814418163,
+      "total_response_s": 101.106431211,
+      "initialization_s": 8.968825622,
+      "postload_admission_s": 12.016267443,
+      "all_logits_finite": true
+    },
+    {
+      "id": "mistral7-CPU2048-charging-tuning-20261004T231749Z-r1",
+      "threads": 6,
+      "process_mask": "fc",
+      "ubatch": 512,
+      "prefill_tok_s": 22.075534526,
+      "decode_tok_s": 6.378042178,
+      "total_response_s": 112.933705999,
+      "initialization_s": 5.451061196,
+      "postload_admission_s": 14.040713484,
+      "all_logits_finite": true
+    },
+    {
+      "id": "mistral7-CPU2048-charging-tuning-20261004T231749Z-r2",
+      "threads": 4,
+      "process_mask": "f0",
+      "ubatch": 512,
+      "prefill_tok_s": 11.112275103,
+      "decode_tok_s": 2.844918546,
+      "total_response_s": 229.079725693,
+      "initialization_s": 5.968310518,
+      "postload_admission_s": 20.041682128,
+      "all_logits_finite": true
+    },
+    {
+      "id": "mistral7-CPU2048-charging-tuning-20261004T231749Z-r3",
+      "threads": 5,
+      "process_mask": "bc",
+      "ubatch": 512,
+      "prefill_tok_s": 18.886985145,
+      "decode_tok_s": 6.236614294,
+      "total_response_s": 129.06741917,
+      "initialization_s": 6.687596195,
+      "postload_admission_s": 16.040154212,
+      "all_logits_finite": true
+    }
+  ]
+}

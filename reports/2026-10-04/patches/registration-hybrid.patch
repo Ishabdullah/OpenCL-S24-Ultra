@@ -1,0 +1,509 @@
+diff --git a/ggml/src/ggml-hexagon/ggml-hexagon.cpp b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
+index ad0905f..c317a54 100644
+--- a/ggml/src/ggml-hexagon/ggml-hexagon.cpp
++++ b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
+@@ -87,6 +87,8 @@ struct ggml_hexagon_device_config {
+ 
+ static ggml_hexagon_device_config opt_device_configs[GGML_HEXAGON_MAX_SESSIONS];
+ 
++static size_t opt_registration_window = 0;
++
+ static int    opt_arch    = 0; // autodetect
+ static size_t opt_ndev    = 1;
+ static size_t opt_nhvx    = 0; // use all
+@@ -481,6 +483,9 @@ struct ggml_hexagon_session {
+     bool             valid_queue;
+     bool             valid_iface;
+ 
++    std::unordered_set<ggml_hexagon_shared_buffer *> registered_buffers;
++    void prepare_registration_window(const htp_opnode & node);
++
+     ggml_hexagon_opbatch* op_batch;
+     ggml_hexagon_opqueue* op_queue;
+ 
+@@ -619,6 +624,7 @@ struct ggml_hexagon_shared_buffer {
+     ggml_hexagon_session *                     sess;
+     std::shared_ptr<ggml_hexagon_rpcmem_block> mem;
+     std::vector<ggml_hexagon_tensor_extra *>   tensor_extra;
++    bool     weight = false;
+     bool     mapped;
+     bool     pinned;
+     bool     extended;
+@@ -648,6 +654,7 @@ struct ggml_hexagon_shared_buffer {
+                 sess->c_name(), (void *) base(), size(), fd(), pinned, extended);
+ 
+         this->mapped = true;
++        sess->registered_buffers.insert(this);
+     }
+ 
+     void unmap() {
+@@ -666,6 +673,18 @@ struct ggml_hexagon_shared_buffer {
+                 (void *) base(), size(), fd());
+ 
+         this->mapped = false;
++        sess->registered_buffers.erase(this);
++    }
++
++    void unmap_checked() {
++        if (!mapped) return;
++        if (pinned || !mem || !mem->mapped_clones.empty()) throw std::runtime_error("unsafe registration eviction");
++        int err = htp_iface_munmap(sess->handle, fd());
++        if (err != 0) throw std::runtime_error("DSP registration eviction failed: " + std::to_string(err));
++        err = fastrpc_munmap(sess->domain_id, fd(), (void *) base(), size());
++        if (err != 0) throw std::runtime_error("host registration eviction failed: " + std::to_string(err));
++        mapped = false;
++        sess->registered_buffers.erase(this);
+     }
+ 
+     void alloc(size_t size) {
+@@ -3686,7 +3705,49 @@ void ggml_hexagon_session::flush_batch(size_t min_ops) {
+     op_batch->reset();
+ }
+ 
++void ggml_hexagon_session::prepare_registration_window(const htp_opnode & node) {
++    if (!opt_registration_window) return;
++    if (mdev.count > 1 || !mdev.sessions.empty() || !virt_peers.empty() || !phys_peers.empty()) {
++        throw std::runtime_error("registration window prototype supports one session only");
++    }
++    std::unordered_set<ggml_hexagon_shared_buffer *> needed;
++    auto collect = [&](const ggml_tensor * t) {
++        if (!t) return;
++        auto sbuf = static_cast<ggml_hexagon_shared_buffer *>(t->buffer->context);
++        if (sbuf->sess != this) throw std::runtime_error("registration window requires owned buffers");
++        needed.insert(sbuf);
++    };
++    for (auto t : node.get_inputs()) collect(t);
++    for (auto t : node.get_outputs()) collect(t);
++    size_t bytes = 0;
++    for (auto sbuf : registered_buffers) bytes += sbuf->size();
++    for (auto sbuf : needed) if (!sbuf->mapped) bytes += sbuf->size();
++    if (bytes <= opt_registration_window) return;
++
++    // All queued references must finish before idle weight mappings are removed.
++    flush_sync();
++    if (last_error > HTP_STATUS_OK) throw std::runtime_error("DSP error before registration eviction");
++    auto start = std::chrono::steady_clock::now();
++    std::vector<ggml_hexagon_shared_buffer *> candidates;
++    for (auto sbuf : registered_buffers) {
++        if (sbuf->weight && !sbuf->pinned && sbuf->mem && sbuf->mem->mapped_clones.empty() && !needed.count(sbuf)) candidates.push_back(sbuf);
++    }
++    std::sort(candidates.begin(), candidates.end(), [](auto a, auto b) { return a->fd() < b->fd(); });
++    size_t evicted = 0;
++    for (auto sbuf : candidates) {
++        if (bytes <= opt_registration_window) break;
++        size_t size = sbuf->size();
++        sbuf->unmap_checked();
++        bytes -= size;
++        evicted++;
++    }
++    if (bytes > opt_registration_window) throw std::runtime_error("current operation and non-evictable buffers exceed registration window");
++    double ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now()-start).count();
++    HEX_VERBOSE("ggml-hex: registration-window evicted %zu buffers planned bytes %zu limit %zu unmap_ms %.3f\n", evicted, bytes, opt_registration_window, ms);
++}
++
+ void ggml_hexagon_session::enqueue_op(const htp_opnode & node) {
++    prepare_registration_window(node);
+     auto clone_tensor_buffer = [this](const ggml_tensor * t) {
+         auto sbuf = this->mmap_tensor(t);
+         if (!sbuf) return;
+@@ -3974,6 +4035,7 @@ ggml_hexagon_shared_buffer * ggml_hexagon_session::mmap_tensor(const ggml_tensor
+     if (!t) return nullptr;
+ 
+     auto sbuf = static_cast<ggml_hexagon_shared_buffer *>(t->buffer->context);
++    if (ggml_backend_buffer_get_usage(t->buffer) == GGML_BACKEND_BUFFER_USAGE_WEIGHTS) sbuf->weight = true;
+     if (!sbuf->mapped) {
+         const bool is_weight = ggml_backend_buffer_get_usage(t->buffer) == GGML_BACKEND_BUFFER_USAGE_WEIGHTS;
+         const bool extended  = opt_dma64 && is_weight;
+@@ -8090,7 +8152,26 @@ static ggml_backend_buffer_type_t ggml_backend_hexagon_split_buffer_type(int mai
+     return &dev_ctx->buffer_type;
+ }
+ 
++// Diagnostic only: retain physical storage while dropping an idle mapping.
++static int ggml_hexagon_probe_unmap(ggml_backend_t backend, ggml_backend_buffer_t buffer) {
++    if (!backend || !buffer || buffer->iface.free_buffer != ggml_backend_hexagon_buffer_free_buffer) return -1;
++    auto sess = static_cast<ggml_hexagon_session *>(backend->context);
++    auto sbuf = static_cast<ggml_hexagon_shared_buffer *>(buffer->context);
++    if (sbuf->sess != sess || sbuf->pinned || !sbuf->mem || !sbuf->mem->mapped_clones.empty() || !sess->mdev.sessions.empty()) return -2;
++    sess->flush_sync();
++    if (!sbuf->mapped) return 0;
++    int err = htp_iface_munmap(sess->handle, sbuf->fd());
++    if (err != 0) return err;
++    err = fastrpc_munmap(sess->domain_id, sbuf->fd(), (void *) sbuf->base(), sbuf->size());
++    if (err != 0) return err;
++    sbuf->mapped = false;
++    sess->registered_buffers.erase(sbuf);
++    HEX_VERBOSE("ggml-hex: diagnostic retained-storage unmap fd %d size %zu\n", sbuf->fd(), sbuf->size());
++    return 0;
++}
++
+ static void * ggml_backend_hexagon_get_proc_address(ggml_backend_reg_t reg, const char * name) {
++    if (strcmp(name, "ggml_hexagon_probe_unmap") == 0) return (void *) ggml_hexagon_probe_unmap;
+     GGML_UNUSED(reg);
+     if (strcmp(name, "ggml_backend_split_buffer_type") == 0) {
+         return (void *) ggml_backend_hexagon_split_buffer_type;
+@@ -8277,6 +8358,11 @@ static void ggml_hexagon_init(ggml_backend_reg * reg) {
+     }
+ 
+     size_t MiB = 1024 * 1024;
++    if (const char * window = getenv("GGML_HEXAGON_REGISTRATION_WINDOW")) {
++        size_t value = strtoul(window, nullptr, 10);
++        if (value > 4096) throw std::runtime_error("registration window must be 0..4096 MiB");
++        opt_registration_window = value * MiB;
++    }
+ 
+     // Update vmem default
+     opt_vmem = opt_arch >= 75 ? HTP_OP_MAX_VMEM_DEFAULT : 3000 * MiB;
+diff --git a/include/llama.h b/include/llama.h
+index dea4d46..89ea131 100644
+--- a/include/llama.h
++++ b/include/llama.h
+@@ -1732,6 +1732,21 @@ extern "C" {
+             ggml_opt_epoch_callback   callback_train,
+             ggml_opt_epoch_callback   callback_eval);
+ 
++
++    // Isolated performance prototype: one model/context, one-way GPU -> CPU.
++    struct llama_perf_handoff_stats {
++        uint64_t weight_copy_bytes;
++        uint64_t cpu_shadow_weight_bytes;
++        uint64_t kv_copy_bytes;
++        uint64_t gpu_weight_bytes_released;
++        double weights_ms;
++        double kv_ms;
++        double scheduler_ms;
++        double total_ms;
++    };
++    LLAMA_API int llama_perf_switch_to_cpu(struct llama_context * ctx,
++            bool drop_gpu_weights, struct llama_perf_handoff_stats * stats);
++
+ #ifdef __cplusplus
+ }
+ #endif
+diff --git a/src/llama-context.cpp b/src/llama-context.cpp
+index 4f04db0..d7a42f6 100644
+--- a/src/llama-context.cpp
++++ b/src/llama-context.cpp
+@@ -7,6 +7,7 @@
+ #include "llama-batch.h"
+ #include "llama-io.h"
+ #include "llama-memory.h"
++#include "llama-kv-cache.h"
+ #include "llama-mmap.h"
+ #include "llama-model.h"
+ #include "llama-ext.h"
+@@ -2640,6 +2641,7 @@ llm_graph_cb llama_context::graph_get_cb() const {
+             ggml_set_name(cur, name);
+         }
+ 
++        if (perf_cpu_only) { return; } // CPU-only scheduler, no stale device-layer overrides.
+         // - norm may be automatically assigned to the backend of the previous layer, increasing data transfer between backends
+         // - force the last op of the layer on the specified backend to avoid running it on the backend of the next layer due to scheduling
+         // FIXME: fix in ggml_backend_sched
+@@ -2659,6 +2661,47 @@ llm_graph_cb llama_context::graph_get_cb() const {
+     };
+ }
+ 
++void llama_context::perf_switch_cpu(bool drop_gpu_weights, llama_perf_handoff_stats & stats) {
++    if (perf_cpu_only) throw std::runtime_error("hybrid handoff is one-way and already completed");
++    auto * kv = dynamic_cast<llama_kv_cache *>(memory.get());
++    const bool supported_arch = model.arch == LLM_ARCH_QWEN2 || model.arch == LLM_ARCH_QWEN3 ||
++            (model.arch == LLM_ARCH_LLAMA && !model.hparams.is_swa_any());
++    if (!kv || !supported_arch) {
++        throw std::runtime_error("hybrid prototype requires supported plain KV without Llama SWA");
++    }
++    const int64_t start = ggml_time_us();
++    synchronize();
++    for (auto & res : gf_res_prev) res.reset();
++    gf_res_reserve.reset(); gf_res_prev_active = nullptr;
++    perf_cpu_only = true;
++    cparams.op_offload = false; cparams.pipeline_parallel = false; cparams.offload_kqv = false;
++    backend_ptrs = {backend_cpu};
++    backend_buft = {ggml_backend_get_default_buffer_type(backend_cpu)};
++    backend_buf_exp_size = {0};
++    sched.reset(ggml_backend_sched_new(backend_ptrs.data(), backend_buft.data(), 1,
++            graph_max_nodes(std::min(cparams.n_ctx, cparams.n_ubatch)), false, false));
++    const int64_t weights_start = ggml_time_us();
++    const_cast<llama_model &>(model).perf_switch_weights_cpu(drop_gpu_weights, stats);
++    stats.weights_ms = (ggml_time_us() - weights_start)/1000.0;
++    const int64_t kv_start = ggml_time_us();
++    stats.kv_copy_bytes = kv->perf_migrate_cpu();
++    stats.kv_ms = (ggml_time_us() - kv_start)/1000.0;
++    const int64_t sched_start = ggml_time_us();
++    sched_need_reserve = true;
++    sched_reserve();
++    stats.scheduler_ms = (ggml_time_us() - sched_start)/1000.0;
++    stats.total_ms = (ggml_time_us() - start)/1000.0;
++    LLAMA_LOG_INFO("HYBRID: handoff complete in %.3f ms; scheduler backends=%d CPU-only; same model/context, no prompt replay\n",
++            stats.total_ms, ggml_backend_sched_get_n_backends(sched.get()));
++}
++
++int llama_perf_switch_to_cpu(llama_context * ctx, bool drop_gpu_weights, llama_perf_handoff_stats * stats) {
++    if (!ctx || !stats) return -1;
++    *stats = {};
++    try { ctx->perf_switch_cpu(drop_gpu_weights, *stats); return 0; }
++    catch (const std::exception & e) { LLAMA_LOG_ERROR("HYBRID: handoff failed: %s\n", e.what()); return -1; }
++}
++
+ //
+ // state save/load
+ //
+diff --git a/src/llama-context.h b/src/llama-context.h
+index 95b7226..015e1e7 100644
+--- a/src/llama-context.h
++++ b/src/llama-context.h
+@@ -57,6 +57,7 @@ struct llama_context {
+     void sched_reserve();
+ 
+     void synchronize();
++    void perf_switch_cpu(bool drop_gpu_weights, llama_perf_handoff_stats & stats);
+ 
+     const llama_model   & get_model()   const;
+     const llama_cparams & get_cparams() const;
+@@ -354,6 +355,7 @@ private:
+ 
+     ggml_backend_sched_ptr sched;
+ 
++    bool perf_cpu_only = false;
+     bool sched_need_reserve = true;
+ 
+     ggml_backend_t backend_cpu = nullptr;
+diff --git a/src/llama-kv-cache.cpp b/src/llama-kv-cache.cpp
+index 1d0554f..adac481 100644
+--- a/src/llama-kv-cache.cpp
++++ b/src/llama-kv-cache.cpp
+@@ -14,6 +14,51 @@
+ #include <stdexcept>
+ #include <unordered_map>
+ 
++uint64_t llama_kv_cache::perf_migrate_cpu() {
++    uint64_t bytes = 0;
++    for (auto & item : ctxs_bufs) {
++        if (ggml_backend_buffer_is_host(item.second.get())) continue;
++        // Save source descriptors while the old driver buffer remains alive.
++        std::vector<std::pair<ggml_tensor *, ggml_tensor>> sources;
++        for (auto * t = ggml_get_first_tensor(item.first.get()); t; t = ggml_get_next_tensor(item.first.get(), t)) {
++            if (!t->view_src) sources.emplace_back(t, *t);
++        }
++        size_t capacity = 0;
++        for (const auto & pair : sources) capacity += ggml_nbytes(&pair.second);
++        FILE * mem = fopen("/proc/meminfo", "r"); size_t available = 0; char line[256];
++        if (mem) { while (fgets(line, sizeof(line), mem)) { if (sscanf(line, "MemAvailable: %zu kB", &available) == 1) break; } fclose(mem); }
++        if (!available || capacity + 512ULL*1024*1024 > available*1024ULL) {
++            throw std::runtime_error("hybrid KV migration admission guard: insufficient MemAvailable for temporary cache duplication");
++        }
++        for (auto * t = ggml_get_first_tensor(item.first.get()); t; t = ggml_get_next_tensor(item.first.get(), t)) {
++            t->data = nullptr; t->buffer = nullptr; t->extra = nullptr;
++        }
++        ggml_backend_buffer_ptr host(ggml_backend_alloc_ctx_tensors_from_buft(item.first.get(), ggml_backend_cpu_buffer_type()));
++        if (!host) throw std::runtime_error("hybrid CPU KV allocation failed");
++        for (const auto & pair : sources) {
++            ggml_backend_tensor_copy(&pair.second, pair.first);
++            bytes += ggml_nbytes(&pair.second);
++            const char * check = getenv("GGML_PERF_HYBRID_CHECK_COPY");
++            if (check && strcmp(check, "1") == 0) {
++                std::vector<char> chunk(1024*1024);
++                const size_t size = ggml_nbytes(&pair.second);
++                for (size_t offset = 0; offset < size; offset += chunk.size()) {
++                    size_t n = std::min(chunk.size(), size - offset);
++                    ggml_backend_tensor_get(&pair.second, chunk.data(), offset, n);
++                    if (memcmp(chunk.data(), (char *) pair.first->data + offset, n)) {
++                        throw std::runtime_error("hybrid KV copy validation mismatch");
++                    }
++                }
++                LLAMA_LOG_INFO("HYBRID: KV byte copy verified: %s, %zu bytes (diagnostic timing only)\n", pair.first->name, size);
++            }
++        }
++        // Free driver storage only after all base tensors and views are valid.
++        item.second = std::move(host);
++    }
++    LLAMA_LOG_INFO("HYBRID: copied %.2f MiB allocated KV to CPU; cache cells, positions and sequence metadata retained\n", bytes/1048576.0);
++    return bytes;
++}
++
+ static bool ggml_is_power_of_2(int n) {
+     return (n & (n - 1)) == 0;
+ }
+diff --git a/src/llama-kv-cache.h b/src/llama-kv-cache.h
+index 52cc8cd..655105c 100644
+--- a/src/llama-kv-cache.h
++++ b/src/llama-kv-cache.h
+@@ -155,6 +155,7 @@ public:
+     // llama_kv_cache specific API
+     //
+ 
++    uint64_t perf_migrate_cpu();
+     uint32_t get_size()     const;
+     uint32_t get_n_seq_max() const;
+     uint32_t get_n_stream() const;
+diff --git a/src/llama-model-loader.cpp b/src/llama-model-loader.cpp
+index 6cc0b20..e3dbd80 100644
+--- a/src/llama-model-loader.cpp
++++ b/src/llama-model-loader.cpp
+@@ -1774,8 +1774,10 @@ bool llama_model_loader::load_all_data(
+ 
+     // check if this is the last call and do final cleanup
+     if (size_done >= size_data) {
++        // Retained original GGUF mappings are opt-in, only for this experiment.
++        const char * hybrid_keep = getenv("GGML_PERF_HYBRID_KEEP_MMAP");
+         // unmap offloaded tensors and metadata
+-        if (use_mmap) {
++        if (use_mmap && !(hybrid_keep && strcmp(hybrid_keep, "1") == 0)) {
+             for (uint32_t idx = 0; idx < mappings.size(); idx++) {
+                 const auto & mmap_used = mmaps_used.at(idx);
+                 auto & mapping = mappings.at(idx);
+diff --git a/src/llama-model.cpp b/src/llama-model.cpp
+index 4045098..89177fd 100644
+--- a/src/llama-model.cpp
++++ b/src/llama-model.cpp
+@@ -1207,6 +1207,10 @@ struct llama_model::impl {
+     // contexts where the model tensors metadata is stored as well as the corresponding buffers:
+     std::vector<std::pair<ggml_context_ptr, std::vector<ggml_backend_buffer_ptr>>> ctxs_bufs;
+ 
++    ggml_context_ptr perf_shadow_ctx;
++    std::vector<ggml_backend_buffer_ptr> perf_shadow_buffers;
++    std::vector<std::pair<ggml_tensor *, ggml_tensor *>> perf_shadow_pairs;
++    bool perf_shadow_mapped = false;
+     buft_list_t cpu_buft_list;
+     std::map<ggml_backend_dev_t, buft_list_t> gpu_buft_list;
+ 
+@@ -1951,6 +1955,10 @@ bool llama_model_base::load_tensors(llama_model_loader & ml) {
+         }
+     }
+ 
++    const char * hybrid_keep = getenv("GGML_PERF_HYBRID_KEEP_MMAP");
++    if (hybrid_keep && strcmp(hybrid_keep, "1") == 0) {
++        perf_prepare_cpu_shadows(ml);
++    }
+     if (use_mmap_buffer) {
+         for (auto & mapping : ml.mappings) {
+             pimpl->mappings.emplace_back(std::move(mapping));
+@@ -1960,6 +1968,116 @@ bool llama_model_base::load_tensors(llama_model_loader & ml) {
+     return true;
+ }
+ 
++static bool perf_buffer_is_gpu(ggml_backend_buffer_t buffer) {
++    auto * dev = ggml_backend_buft_get_device(ggml_backend_buffer_get_type(buffer));
++    return dev && ggml_backend_dev_type(dev) == GGML_BACKEND_DEVICE_TYPE_GPU;
++}
++
++void llama_model::perf_prepare_cpu_shadows(llama_model_loader & ml) {
++    if (!ml.use_mmap || ml.mappings.empty()) {
++        throw std::runtime_error("hybrid mapped shadows require explicit MMAP loading");
++    }
++    size_t count = 0;
++    for (const auto & item : pimpl->ctxs_bufs) {
++        for (auto * t = ggml_get_first_tensor(item.first.get()); t; t = ggml_get_next_tensor(item.first.get(), t)) {
++            if (t->buffer && perf_buffer_is_gpu(t->buffer) && !t->view_src) count++;
++        }
++    }
++    ggml_init_params ip { count * ggml_tensor_overhead() + 4096, nullptr, true };
++    pimpl->perf_shadow_ctx.reset(ggml_init(ip));
++    if (!pimpl->perf_shadow_ctx) throw std::runtime_error("hybrid CPU shadow metadata allocation failed");
++    for (const auto & mapping : ml.mappings) {
++        ggml_backend_buffer_ptr buf(ggml_backend_cpu_buffer_from_ptr(mapping->addr(), mapping->size()));
++        ggml_backend_buffer_set_usage(buf.get(), GGML_BACKEND_BUFFER_USAGE_WEIGHTS);
++        pimpl->perf_shadow_buffers.emplace_back(std::move(buf));
++    }
++    uint64_t bytes = 0;
++    for (const auto & item : pimpl->ctxs_bufs) {
++        for (auto * t = ggml_get_first_tensor(item.first.get()); t; t = ggml_get_next_tensor(item.first.get(), t)) {
++            if (!t->buffer || !perf_buffer_is_gpu(t->buffer) || t->view_src) continue;
++            const auto & w = ml.require_weight(t->name);
++            if (t->type != w.tensor->type || memcmp(t->ne, w.tensor->ne, sizeof(t->ne)) ||
++                    memcmp(t->nb, w.tensor->nb, sizeof(t->nb))) throw std::runtime_error("hybrid shadow GGUF layout mismatch");
++            auto * shadow = ggml_dup_tensor(pimpl->perf_shadow_ctx.get(), t);
++            ggml_set_name(shadow, t->name);
++            void * addr = (char *) ml.mappings.at(w.idx)->addr() + w.offs;
++            if (ggml_backend_tensor_alloc(pimpl->perf_shadow_buffers.at(w.idx).get(), shadow, addr) != GGML_STATUS_SUCCESS) {
++                throw std::runtime_error("hybrid CPU mapped tensor initialization failed");
++            }
++            pimpl->perf_shadow_pairs.emplace_back(t, shadow);
++            bytes += ggml_nbytes(t);
++        }
++    }
++    pimpl->perf_shadow_mapped = true;
++    LLAMA_LOG_INFO("HYBRID: retained CPU mapped shadows: %zu tensors, %.2f MiB logical weights (distinct from GPU storage)\n",
++            count, bytes / 1048576.0);
++}
++
++void llama_model::perf_switch_weights_cpu(bool drop_gpu, llama_perf_handoff_stats & stats) {
++    if (!pimpl->perf_shadow_mapped) {
++        std::vector<ggml_tensor *> targets;
++        size_t bytes = 0;
++        for (const auto & item : pimpl->ctxs_bufs) {
++            for (auto * t = ggml_get_first_tensor(item.first.get()); t; t = ggml_get_next_tensor(item.first.get(), t)) {
++                if (t->buffer && perf_buffer_is_gpu(t->buffer) && !t->view_src) {
++                    targets.push_back(t); bytes += ggml_nbytes(t);
++                }
++            }
++        }
++        if (targets.empty()) return;
++        // Refuse unsafe eager weight duplication. A guard is not an OOM result.
++        FILE * mem = fopen("/proc/meminfo", "r");
++        size_t available = 0; char line[256];
++        if (mem) { while (fgets(line, sizeof(line), mem)) { if (sscanf(line, "MemAvailable: %zu kB", &available) == 1) break; } fclose(mem); }
++        if (!available || bytes + 512ULL*1024*1024 > available*1024ULL) {
++            throw std::runtime_error("hybrid weight-readback admission guard: insufficient MemAvailable; use retained mmap shadows");
++        }
++        ggml_init_params ip { targets.size() * ggml_tensor_overhead() + 4096, nullptr, true };
++        pimpl->perf_shadow_ctx.reset(ggml_init(ip));
++        if (!pimpl->perf_shadow_ctx) throw std::runtime_error("hybrid CPU shadow metadata allocation failed");
++        for (auto * t : targets) {
++            auto * shadow = ggml_dup_tensor(pimpl->perf_shadow_ctx.get(), t);
++            ggml_set_name(shadow, t->name);
++            pimpl->perf_shadow_pairs.emplace_back(t, shadow);
++        }
++        ggml_backend_buffer_ptr host(ggml_backend_alloc_ctx_tensors_from_buft(pimpl->perf_shadow_ctx.get(), ggml_backend_cpu_buffer_type()));
++        if (!host) throw std::runtime_error("hybrid CPU weight allocation failed");
++        ggml_backend_buffer_set_usage(host.get(), GGML_BACKEND_BUFFER_USAGE_WEIGHTS);
++        pimpl->perf_shadow_buffers.emplace_back(std::move(host));
++        for (const auto & pair : pimpl->perf_shadow_pairs) {
++            ggml_backend_tensor_copy(pair.first, pair.second);
++            stats.weight_copy_bytes += ggml_nbytes(pair.first);
++        }
++    }
++    for (const auto & pair : pimpl->perf_shadow_pairs) {
++        stats.cpu_shadow_weight_bytes += ggml_nbytes(pair.first);
++        pair.first->buffer = pair.second->buffer;
++        pair.first->data = pair.second->data;
++        pair.first->extra = pair.second->extra;
++    }
++    // Preserve view identities while rebasing them to the CPU representation.
++    for (const auto & item : pimpl->ctxs_bufs) {
++        for (auto * t = ggml_get_first_tensor(item.first.get()); t; t = ggml_get_next_tensor(item.first.get(), t)) {
++            if (t->view_src && ggml_backend_buffer_is_host(t->view_src->buffer)) {
++                t->buffer = t->view_src->buffer; t->extra = nullptr;
++                t->data = (char *) t->view_src->data + t->view_offs;
++            }
++        }
++    }
++    if (drop_gpu) {
++        for (auto & item : pimpl->ctxs_bufs) {
++            auto & buffers = item.second;
++            buffers.erase(std::remove_if(buffers.begin(), buffers.end(), [&](const ggml_backend_buffer_ptr & buf) {
++                if (!perf_buffer_is_gpu(buf.get())) return false;
++                stats.gpu_weight_bytes_released += ggml_backend_buffer_get_size(buf.get());
++                return true;
++            }), buffers.end());
++        }
++    }
++    LLAMA_LOG_INFO("HYBRID: CPU weight references installed; readback %.2f MiB, shadow weights %.2f MiB, GPU weights released %.2f MiB\n",
++            stats.weight_copy_bytes/1048576.0, stats.cpu_shadow_weight_bytes/1048576.0, stats.gpu_weight_bytes_released/1048576.0);
++}
++
+ ggml_tensor * llama_model_base::create_tensor(llama_model_loader & ml, const LLM_TN_IMPL & tn, const std::initializer_list<int64_t> & ne, int flags) {
+     const buft_list_t * buft_list_layer = tn.bid == -1 ? nullptr : pimpl->dev_layer.at(tn.bid).buft_list;
+     return ml.create_tensor(
+diff --git a/src/llama-model.h b/src/llama-model.h
+index 25e5148..01c72ef 100644
+--- a/src/llama-model.h
++++ b/src/llama-model.h
+@@ -764,6 +764,8 @@ struct llama_model {
+     const float * tensor_split() const;
+ 
+     uint32_t n_gpu_layers() const;
++    void perf_prepare_cpu_shadows(llama_model_loader & ml);
++    void perf_switch_weights_cpu(bool drop_gpu, llama_perf_handoff_stats & stats);
+     llama_split_mode split_mode() const;
+ 
+     std::map<ggml_backend_buffer_type_t, size_t> memory_breakdown() const;

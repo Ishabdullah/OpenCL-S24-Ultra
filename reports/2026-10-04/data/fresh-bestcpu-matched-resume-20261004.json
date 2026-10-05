@@ -1,0 +1,118 @@
+[
+  {
+    "model": "qwen2.5-coder-1.5b",
+    "epoch": "resume-20261004T033534Z-UNPLUGGED",
+    "groups": {
+      "none": {
+        "valid": true,
+        "threads": 6,
+        "mask": "fc",
+        "attention": "on",
+        "PP": {
+          "mean": 146.363125,
+          "between_process_sd": 7.897914443714113,
+          "values": [
+            153.737623,
+            138.029411,
+            147.322341
+          ]
+        },
+        "TG": {
+          "mean": 28.536706333333335,
+          "between_process_sd": 2.5618948070725573,
+          "values": [
+            30.825275,
+            25.769109,
+            29.015735
+          ]
+        }
+      },
+      "HTP0": {
+        "valid": true,
+        "threads": 6,
+        "mask": "fc",
+        "attention": "on",
+        "PP": {
+          "mean": 1278.351641,
+          "between_process_sd": 13.89431321174572,
+          "values": [
+            1266.336815,
+            1293.566926,
+            1275.151182
+          ]
+        },
+        "TG": {
+          "mean": 33.787101666666665,
+          "between_process_sd": 0.12276875096836636,
+          "values": [
+            33.706915,
+            33.928436,
+            33.725954
+          ]
+        }
+      }
+    },
+    "ratio": {
+      "PP": 8.734110049918653,
+      "TG": 1.1839874326071196
+    }
+  },
+  {
+    "model": "qwen3-4b-instruct",
+    "epoch": "resume-20261004T033534Z-UNPLUGGED",
+    "groups": {
+      "none": {
+        "valid": true,
+        "threads": 6,
+        "mask": "fc",
+        "attention": "on",
+        "PP": {
+          "mean": 46.391079,
+          "between_process_sd": 0.9051554349165662,
+          "values": [
+            45.542316,
+            47.343672,
+            46.287249
+          ]
+        },
+        "TG": {
+          "mean": 12.954366666666667,
+          "between_process_sd": 0.6330519807956791,
+          "values": [
+            12.79862,
+            12.413724,
+            13.650756
+          ]
+        }
+      },
+      "HTP0": {
+        "valid": true,
+        "threads": 6,
+        "mask": "fc",
+        "attention": "on",
+        "PP": {
+          "mean": 559.037476,
+          "between_process_sd": 1.6863339220936928,
+          "values": [
+            560.972004,
+            558.262366,
+            557.878058
+          ]
+        },
+        "TG": {
+          "mean": 14.469615333333333,
+          "between_process_sd": 0.02219980230392435,
+          "values": [
+            14.493879,
+            14.464645,
+            14.450322
+          ]
+        }
+      }
+    },
+    "ratio": {
+      "PP": 12.050538337338521,
+      "TG": 1.116968178040352
+    }
+  }
+]

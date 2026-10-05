@@ -1,0 +1,225 @@
+{
+  "UTC": "2026-10-05T01:09:30.392434+00:00",
+  "ordinary_staged_files_diff_check": 0,
+  "actual_experimental_source_diff_check": 0,
+  "patch_apply_check_on_fresh_installer_patched_source": 0,
+  "JSON_and_Python_syntax": "passed",
+  "patch_artifact_empty_context_whitespace_markers": [
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 6,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 8,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 17,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 23,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 34,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 38,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 42,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 57,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 62,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 111,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 120,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 146,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 153,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 163,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 197,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 205,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 256,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 259,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 263,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 265,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 268,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 277,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 333,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 343,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 361,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 368,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 372,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 383,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 503,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-hybrid.patch",
+      "line": 508,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 6,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 8,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 17,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 23,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 34,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 38,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 42,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 57,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 62,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 111,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 120,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 146,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    },
+    {
+      "path": "reports/2026-10-04/patches/registration-window.patch",
+      "line": 153,
+      "scope": "Required unified-diff empty context marker, not source-code whitespace"
+    }
+  ],
+  "scope": "Data/source archive validation; no new clean-room build/inference claim"
+}

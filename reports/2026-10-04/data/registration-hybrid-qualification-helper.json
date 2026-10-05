@@ -1,0 +1,7 @@
+{
+  "source": "~/llama-opencl-build/performance-investigation/hybrid-latency-phase-v3.cpp",
+  "source_sha256": "ee13adbe5fac51a3c2b32d87d30eee2085cbfede8d300b69dbc49499fa289452",
+  "reused_binary_sha256": "6a1baf93719225795c42f583486acca9173e6aad58e782cbb0d26bd99f8eb461",
+  "isolated_binary_sha256": "b8af7086263c83cbec651d0a44fd92fe8a86313e780449fc09043902c3b8c20c",
+  "scope": "Existing v3 forced-trajectory qualification only; timings excluded. Runtime library path points to isolated combined build. v4 retained for performance."
+}

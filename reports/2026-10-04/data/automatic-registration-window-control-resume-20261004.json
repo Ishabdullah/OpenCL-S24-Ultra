@@ -1,0 +1,17 @@
+{
+  "exit_code": 0,
+  "abort_reason": null,
+  "graph_passes": 8,
+  "registration_failed": false,
+  "cleanup_complete": true,
+  "llama_library_paths": [
+    "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml-base.so.0.25.3",
+    "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml-cpu.so.0.25.3",
+    "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml-hexagon.so.0.25.3",
+    "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml.so.0.25.3",
+    "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libllama.so.0.5.0"
+  ],
+  "raw_directory": "~/llama-opencl-build/performance-investigation/npu-investigation/registration-probe-20261004T080315Z-retain",
+  "min_MemAvailable_MiB": 2205.33203125,
+  "meaning": "Opt-in 2048 MiB automatic registration window passes eight retained 512 MiB SCALE graphs; physical storage remains allocated. Five synchronous idle-weight evictions recorded. Diagnostic only, no LLM or throughput claim."
+}

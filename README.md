@@ -13,11 +13,11 @@ Builds a pinned llama.cpp revision with Android `sphal` vendor-runtime loading. 
 
 OpenCL was 32.8% slower for prompt processing and 66.9% slower for generation. Measurements and reproduction details: [Benchmarks](docs/BENCHMARKS.md).
 
-## Performance investigation snapshot: October 3, 2026
+## Performance investigation checkpoint: October 4, 2026
 
-The [full CPU/OpenCL/NPU/hybrid report](OPENCL_PERFORMANCE_ANALYSIS.md) and [machine-readable evidence](reports/2026-10-03/) are now available. The investigation is **paused at the owner's request**; its final characterization is incomplete.
+The [CPU/OpenCL/NPU/hybrid report](OPENCL_PERFORMANCE_ANALYSIS.md), [latest results and experimental source](reports/2026-10-04/), and [earlier machine-readable evidence](reports/2026-10-03/) are available. The investigation is paused at the owner's request; final characterization is incomplete. [Next-session work](reports/2026-10-04/NEXT_SESSION.md) is recorded. Power epochs, Android scheduling exclusions and cold-start versus resident-model latency are kept distinct.
 
-Experimental native Hexagon NPU tests show repeated prompt-processing gains of 7.14x for the tested 1.5B model and 7.83x for Qwen3-4B against matched common-setting CPU tests. NPU generation averaged 32.97 and 12.94 tok/s respectively; the best practical CPU comparison remains unfinished. Long-prompt GPU/hybrid results are candidates, and no sustained thermal winner is established. The GPU installer preserves the proven generic OpenCL baseline. The separate NPU installer packages the working native Hexagon implementation; experimental specialized GPU and handoff patches remain research snapshots. The historical report predates NPU packaging; see the [current NPU guide](docs/NPU_INSTALL.md).
+Repeated native Hexagon tests against improved CPU settings show strong prefill gains and shorter tested 1.5B/4B warm responses. Two reversed-order equal-work 1.5B blocks also favored full NPU response time; they do not establish thermal immunity or energy savings. An isolated registration-window prototype now completes full Mistral 7B inference and a numerically checked NPU-prefill/CPU-decode handoff. The first long-prompt 7B screen favors full NPU, but best-CPU tuning and independent confirmation remain necessary; hybrid decode is unexpectedly slow. Measured architecture/context memory differences are included. These experimental 7B changes are **not installer defaults or a new clean-room installer validation**. Generic GPU performance remains below the proven original CPU baseline, and no final GPU crossover or general sustained thermal winner is established. See the [current NPU guide](docs/NPU_INSTALL.md) for the separately validated installer.
 
 ## NPU installation: fresh Termux to model generation
 

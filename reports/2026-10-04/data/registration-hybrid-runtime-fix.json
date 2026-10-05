@@ -1,0 +1,22 @@
+{
+  "UTC": "2026-10-04T19:39:29.380397+00:00",
+  "failure": "Stripping compiler-injected Termux RUNPATH caused libc++_shared.so not found before model initialization.",
+  "fix": "Specific libc++_shared.so symlink in isolated bin. LD_LIBRARY_PATH remains own bin only; no global Termux directory, no binder shim or installed llama libs.",
+  "runtime_path": "$PREFIX/lib/libc++_shared.so",
+  "runtime_sha256": "05bef9d3901910c3ff8ab450b03bc8b28383d363a2290f2f7b9aed7331ea6ff7",
+  "all_needed": [
+    "libc++_shared.so",
+    "libc.so",
+    "libcrypto.so.3",
+    "libdl.so",
+    "libggml-base.so.0",
+    "libggml-cpu.so.0",
+    "libggml-hexagon.so.0",
+    "libggml.so.0",
+    "libllama-common.so.0",
+    "libllama.so.0",
+    "liblog.so",
+    "libm.so",
+    "libssl.so.3"
+  ]
+}

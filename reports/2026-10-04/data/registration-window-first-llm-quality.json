@@ -1,0 +1,34 @@
+{
+  "run_id": "npu-qwen15-window768-mbuf256-quality-20261004T143319Z",
+  "quality": {
+    "steps": 32,
+    "top1_agreements": 32,
+    "logit_RMSE": 0.06721162,
+    "max_abs_logit_error": 0.47015882,
+    "mean_KL": 2.691e-05,
+    "all_logits_finite": true
+  },
+  "eviction_events": 158,
+  "evicted_buffers": 158,
+  "logged_unmap_ms_sum": 117.881,
+  "logged_unmap_excludes_flush_and_remap": true,
+  "minimum_MemAvailable_MiB": 3343.390625,
+  "layer_records": [
+    [
+      0,
+      29
+    ],
+    [
+      29,
+      29
+    ]
+  ],
+  "libraries": [
+    "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml-base.so.0.25.3",
+    "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml-cpu.so.0.25.3",
+    "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml-hexagon.so.0.25.3",
+    "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libggml.so.0.25.3",
+    "~/llama-opencl-build/performance-investigation/build-npu-registration/bin/libllama.so.0.5.0"
+  ],
+  "scope": "32 forced-common-token numerical validation, not speed benchmark, full7B proof or long-run quality evaluation."
+}
