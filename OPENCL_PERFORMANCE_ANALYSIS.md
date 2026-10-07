@@ -126,6 +126,8 @@ The CPU control inside the generic OpenCL-enabled helper eagerly probes the vend
 
 A later preservation audit again matched all5 generic source files,11 known-good generic binaries and2 nativeNPU binary hashes. PreservedNPU source remained clean. Original ~/llama.cpp was inspected read-only with optional Git locks disabled; HEAD and its pre-existing Vulkan CMake modification remained the same. This audit did not repeat the earlier entire-tree metadata scan.
 
+**Correction (NEW-788, 2026-10-07):** this audit's "unchanged HEAD" premise held only through 2026-10-05. Codey-OS's `b5b805a` (2026-10-06) rebuilt `~/llama.cpp` to `4f5406761517648c23dbd60ea5ade37f77a316c9` to restore `--load-mode` compatibility (NEW-758); the pre-existing Vulkan CMake modification mentioned above is still present in the working tree as of 2026-10-07 (independently re-verified via `git status --porcelain`), but HEAD itself is no longer what this audit recorded.
+
 
 ### Long-prompt scheduling censoring
 
@@ -234,6 +236,8 @@ Confirmed device: Samsung Galaxy S24 Ultra, SM-S928U / QTI SM8650, Snapdragon 8 
 The checkpoint hashes identify local experimental commits; they are not promises that those commits exist in upstream or in this repository's Git history. Experimental patch snapshots are included under [reports/2026-10-03/patches](reports/2026-10-03/patches/), with bases and hashes documented there. They are research artifacts, not integrated installer options.
 
 `~/llama.cpp` was treated as read-only throughout. The recorded preservation audit checked 109,483 metadata entries, with no changed/missing/added entries, and unchanged HEAD/status. Its pre-existing Vulkan CMake modification is unrelated and was retained. Five generic patched source hashes and eleven known-good build artifact hashes matched the preserved snapshot. Accelerator tests select their own build libraries, never libraries from the original installation.
+
+**Correction (NEW-788, 2026-10-07):** this audit's "unchanged HEAD" premise held only through 2026-10-05. Codey-OS's `b5b805a` (2026-10-06) rebuilt `~/llama.cpp` to `4f5406761517648c23dbd60ea5ade37f77a316c9` to restore `--load-mode` compatibility (NEW-758); the pre-existing Vulkan CMake modification mentioned above is still present in the working tree as of 2026-10-07 (independently re-verified via `git status --porcelain`), but HEAD itself is no longer what this audit recorded.
 
 ## Benchmark methodology and limitations
 
