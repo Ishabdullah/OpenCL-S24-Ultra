@@ -71,13 +71,31 @@ thread count. The earlier table used `llama-bench`'s default thread count,
 under which NPU won; at 6 threads, CPU wins instead. Report the thread
 count alongside any of these numbers — it is not a minor tuning detail.
 
-A true **NPU-prefill / CPU-decode handoff was attempted and does not work**
-for this model: llama.cpp's `--prompt-cache` session mechanism cannot reuse
-a cached prompt prefix when the model has recurrent memory (this
-architecture's hybrid GDN/SSM state) — confirmed as a hardcoded behavior in
-`tools/completion/completion.cpp`, not a flag or tuning issue. The prompt
-gets fully reprocessed regardless of what was cached from the NPU prefill
-step.
+A true **NPU-prefill / CPU-decode handoff works for this model** — but not
+via llama.cpp's generic `--prompt-cache` session mechanism, which cannot
+reuse a cached prompt prefix when the model has recurrent memory (confirmed
+hardcoded in `tools/completion/completion.cpp`). This repo already proved a
+working in-process handoff for Mistral 7B (see the October 5 checkpoint
+above: 29.17s hybrid vs. 116.13s CPU / 39.68s full NPU) via a local,
+never-upstreamed patch adding `llama_perf_switch_to_cpu()`. That patch was
+gated to plain Qwen2/Qwen3 attention-only KV; extending it to also migrate
+`qwen3next`'s recurrent (SSM/GDN) memory state
+([`reports/2026-10-08/patches/`](reports/2026-10-08/patches/)) worked on the
+first live attempt — zero crashes, both memory types migrated correctly, no
+prompt replay.
+
+| `-t 6` | Prefill tok/s | Decode tok/s |
+|---|---:|---:|
+| Full CPU | 8.17 | **3.30** |
+| Full NPU | **7.44** | 1.92 |
+| NPU-prefill → handoff → CPU-decode | 4.71 | 0.79 |
+
+Unlike the Mistral 7B case, the hybrid handoff is **not a speed win here**:
+post-handoff decode is markedly slower than native full-CPU, because the
+handoff uses canonical (non-repacked) CPU weight shadows rather than the
+`CPU_REPACK`-optimized layout a native load uses — the same tradeoff
+documented for Mistral 7B, apparently much more punishing for this model's
+IQ1_S quantization.
 
 A separate, pre-existing, intermittent heap-corruption-on-exit affects
 `llama-completion`/`llama-bench`/`llama-cli` on this build (reproduces even

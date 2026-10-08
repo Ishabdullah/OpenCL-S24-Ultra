@@ -474,8 +474,8 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       **CPU beats NPU on both metrics**. Thread count is not a minor
       tuning knob here — it changes which backend wins. Report both; don't
       cherry-pick the thread count that favors either side.
-      **NPU-prefill → CPU-decode via `--prompt-cache`: attempted, does
-      not work for this architecture — an honest negative result.**
+      **NPU-prefill → CPU-decode via `--prompt-cache`: attempted, doesn't
+      work this way — but see the corrected finding below.**
       Step 1 (NPU prefill, `-fa off`, `-n 0 --prompt-cache FILE`) saved a
       cache cleanly (34 tokens, 79.8 MiB, 5.42 tok/s prefill). Step 2 (CPU
       decode loading that cache) first failed with
@@ -488,14 +488,76 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       `unable to reuse common prefix (for example, when the memory is
       recurrent)`. Confirmed via source
       (`tools/completion/completion.cpp:334`) that this is a **hardcoded,
-      deliberate limitation**: llama.cpp's session mechanism does not
-      support reusing a cached common prefix when the model has recurrent
-      memory (this architecture's hybrid GDN/SSM state) — the prompt gets
-      fully reprocessed regardless of what was cached. **A true
-      device-split prefill/decode handoff is not achievable for this model
-      with the current llama.cpp session/cache mechanism**, independent of
-      NPU involvement; this is a property of the architecture's memory
-      type, not something fixable by flag tuning.
+      deliberate limitation of the generic session/prompt-cache mechanism
+      specifically**: it does not support reusing a cached common prefix
+      when the model has recurrent memory. This conclusion is correct for
+      `--prompt-cache`, but it is not the full story — see below.
+
+- [x] **CORRECTED: a true NPU-prefill → CPU-decode handoff *is* achievable
+      for this model — via the repo's own existing technique, extended.**
+      The user pointed out that this repo already has proof a hybrid
+      handoff works (the Oct 3-5 Mistral 7B investigation: 29.17s mean
+      response, beating both CPU 116.13s and full NPU 39.68s). That
+      technique is **not** `--prompt-cache` at all — it's a custom, local,
+      never-upstreamed patch
+      ([`reports/2026-10-03/patches/npu-prefill-cpu-decode.patch`](../reports/2026-10-03/patches/npu-prefill-cpu-decode.patch))
+      adding `llama_perf_switch_to_cpu(ctx, drop_gpu_weights, &stats)`: an
+      **in-process, same-context, same-KV-cache** handoff that directly
+      migrates backend buffer data and rebinds tensor pointers, with no
+      save-to-disk/reload/prefix-matching step at all — so it never hits
+      the recurrent-memory limitation found above.
+      That patch's dispatch was hardcoded to `LLM_ARCH_QWEN2`/
+      `LLM_ARCH_QWEN3` with a bare `llama_kv_cache` (`dynamic_cast` gate:
+      _"hybrid prototype supports plain Qwen2/Qwen3 KV only"_), excluding
+      `qwen3next`'s hybrid memory. But the existing
+      `llama_kv_cache::perf_migrate_cpu()` was already architecture-agnostic
+      (generic buffer iteration, no Qwen-specific tensor names) — so this
+      was a tractable extension, not a dead end. Extended it (full diff:
+      [`reports/2026-10-08/patches/qwen3next-hybrid-handoff.patch`](../reports/2026-10-08/patches/qwen3next-hybrid-handoff.patch)):
+      1. Added `llama_memory_recurrent::perf_migrate_cpu()` — a near-direct
+         port of the kv-cache version, since `llama_memory_recurrent` has
+         the identical internal `ctxs_bufs` structure.
+      2. Extended `llama_context::perf_switch_cpu()` to also recognize
+         `llama_memory_hybrid` (the class `qwen3next` actually uses — it
+         wraps a `llama_kv_cache` for the periodic full-attention layers
+         and a `llama_memory_recurrent` for the linear-attention layers),
+         migrating both via `get_mem_attn()`/`get_mem_recr()`.
+      3. Added `LLM_ARCH_QWEN3NEXT` to the allowed-architecture check.
+      Compiled cleanly (incremental rebuild, no errors). Wrote a small
+      standalone driver,
+      [`scripts/hybrid-handoff-probe.cpp`](../scripts/hybrid-handoff-probe.cpp)
+      (adapted from the Oct 5 helper, not part of llama.cpp, compiled
+      directly against the built `libllama.so`), since the new API isn't
+      wired to any CLI flag.
+      **Ran it with full logcat+memory+watchdog instrumentation — success,
+      zero crashes:** NPU prefill (32 tokens): 6.80s, 4.71 tok/s. Handoff:
+      1.98s wall, migrating **both** memory types — 6.00 MiB attention KV
+      and 75.38 MiB recurrent/SSM-GDN state — with 331.37 MiB of NPU
+      weights released. CPU decode after handoff (15 steps): 18.94s,
+      **0.79 tok/s**.
+      **The honest caveat**: post-handoff decode (0.79 tok/s) is markedly
+      *slower* than a native full-CPU run at the same thread count (3.30
+      tok/s from the `-t 6` table above). The handoff installs canonical
+      (non-repacked) CPU weight shadows, not the `CPU_REPACK`-optimized
+      layout a native CPU load uses — the exact tradeoff the Mistral 7B
+      investigation already documented (_"CPU uses its optimized repacked
+      weights while the hybrid decodes from mapped canonical GGUF
+      shadows"_), apparently far more punishing for this model's IQ1_S
+      quantization than it was for Mistral's Q4_K_M.
+      **Net result: the technique is proven correct and functional for
+      this hybrid recurrent-memory architecture — the earlier "not
+      achievable" conclusion was wrong, and extending an existing local
+      prototype rather than fighting the generic session mechanism was the
+      right call. It is, however, not a speed win for this quant**: full
+      CPU decode (3.30 tok/s) beats the hybrid handoff's decode phase
+      (0.79 tok/s) here, unlike the Mistral 7B case where hybrid won
+      outright. The three-way comparison for this model at `-t 6`:
+
+      | Config | Prefill tok/s | Decode tok/s |
+      |---|---:|---:|
+      | Full CPU | 8.17 | **3.30** |
+      | Full NPU | **7.44** | 1.92 |
+      | NPU-prefill → handoff → CPU-decode | 4.71 | 0.79 |
 - [x] Log every run (success or failure, exact error text, config) to
       `execution_history.log` immediately; update `.codex_state.json`
       `metrics` after each completed run. (Done continuously throughout
