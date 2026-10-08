@@ -646,9 +646,26 @@ after a dropped connection at 92%; final size matched exactly:
       handled: no further live-fire trial-and-error without a debug/ASAN
       build to actually find the race in the MTP draft context's
       thread-pool interaction with the main context's.
-- [ ] NPU (`-dev HTP0 -lm mmap`) + `--spec-type draft-mtp`: not yet
-      attempted. Open question whether this CPU-thread-pool race
-      reproduces under NPU offload — don't assume either way.
+- [x] **NPU (`-dev HTP0 -lm mmap --n-cpu-moe 0`) + `--spec-type draft-mtp`
+      — works cleanly, resolving the race condition favorably.** Tested
+      `-t 6 -np 1 --spec-draft-n-max 2 -rea off` at both a short (`-n 16`)
+      and the exact longer length (`-n 48`) that reliably crashed on
+      CPU-only. **Zero crashes at either length.** Short: *"The capital of
+      France is **Paris**."* (0.8/0.3 tok/s). Long: *"The history of the
+      French Revolution is generally considered to have begun on **July
+      14, 1789**, with the **Storming of the Bastille**. ### Key Context:
+      - **Immediate Trigger**: The storm"* (1.0/0.3 tok/s) — factually
+      correct, well-formatted, cut off naturally by the token limit, not
+      by a crash. Memory stable throughout (available pinned ~7.0 GiB).
+      **Likely explanation**: the `mtp-openmp-thread-race` issue is
+      specific to the CPU-only threadpool path — offloading most compute
+      to Hexagon leaves far less concurrent CPU-side work for the race to
+      manifest in. **This is the first clean, working combination of all
+      three original pillars on real hardware**: NPU-resident compute
+      (ULBC/APLS via `--n-cpu-moe 0` + `-lm mmap`) plus genuine native MTP
+      self-speculative decoding (`--spec-type draft-mtp`), stable across
+      both short and long generations, on a model that actually ships the
+      MTP weights this architecture needs.
 - [ ] NPU/CPU hybrid (the `llama_perf_switch_to_cpu` handoff from Phase C)
       combined with `draft-mtp`: not yet attempted; would need the hybrid
       patch extended again for `qwen35moe`'s architecture (likely similar
