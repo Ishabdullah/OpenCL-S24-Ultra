@@ -603,6 +603,59 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
 
 ---
 
+## Phase E — Qwen3.6-35B-A3B: a model with real MTP tensors
+
+User-directed pivot to find a model that genuinely ships MTP/NextN weights
+(Qwen3-Coder-Next does not — see Decision D4). `Qwen/Qwen3.6-35B-A3B`'s own
+`config.json` has `text_config.mtp_num_hidden_layers: 1`. Verified at the GGUF
+level before downloading (same range-request + sparse-file + `gguf-py` probe
+used throughout Phase A): `unsloth/Qwen3.6-35B-A3B-MTP-GGUF`'s smallest file
+(`UD-IQ1_M`, 10.59 GiB) has `qwen35moe.nextn_predict_layers=1` and 4 real
+`nextn.*` tensors at block 40 (`eh_proj`, `enorm`, `hnorm`,
+`shared_head_norm`), across 41 blocks / 753 tensors. Downloaded (resumed once
+after a dropped connection at 92%; final size matched exactly:
+11,366,414,624 bytes).
+
+- [x] **Gate 1 (CPU-only load/generate): PASSED.** `--device none -t 6`:
+      *"The capital of France is Paris. [end of text]"* — correct, clean
+      EOS stop. Very slow (0.46 / 0.12 tok/s prompt/decode) but functional.
+- [x] **`--spec-type draft-mtp`: accepted and functionally real, but
+      unstable under multi-threaded CPU execution — a race condition, not
+      a flag-tuning problem.** The flag was accepted with no "MTP tensors
+      missing" error, confirming the GGUF's MTP tensors are genuinely
+      usable. Short generations (`-n 16`/`-n 24`) completed cleanly
+      multiple times at `-t 1`, `-t 2`, and `-t 6` (with `-rea off`),
+      producing correct output (e.g. "The capital of France is **Paris**.").
+      A longer generation (`-n 48`) at the identical working `-t 6`
+      config produced real, coherent, substantive text first (*"There is
+      no single event that universally marks the absolute 'beginning' of
+      the French Revolution..."*) then hit `OMP: Error #132: Thread
+      identifier invalid` repeatedly before crashing (`Fatal signal 6`, a
+      worker thread). A separate attempt with `--log-verbosity 4` crashed
+      differently and earlier: `Fatal signal 11` (SIGSEGV) at a near-null
+      address, before any token was produced. **Disabling reasoning mode
+      (`-rea off`) does not reliably fix this** — initial short successful
+      runs made it look like the fix, but it only narrowed the window in
+      which the race was observed; the longer run crashed with `-rea off`
+      too. The failure rate appears to scale with generation length (more
+      MTP draft/verify cycles = more chances to hit the race), not with
+      reasoning mode or thread count alone.
+      **This is logged as a known, not-yet-root-caused issue**
+      (`.codex_state.json` → `known_issues` → `mtp-openmp-thread-race`),
+      consistent with how the unrelated `exit-time-scudo-abort` issue was
+      handled: no further live-fire trial-and-error without a debug/ASAN
+      build to actually find the race in the MTP draft context's
+      thread-pool interaction with the main context's.
+- [ ] NPU (`-dev HTP0 -lm mmap`) + `--spec-type draft-mtp`: not yet
+      attempted. Open question whether this CPU-thread-pool race
+      reproduces under NPU offload — don't assume either way.
+- [ ] NPU/CPU hybrid (the `llama_perf_switch_to_cpu` handoff from Phase C)
+      combined with `draft-mtp`: not yet attempted; would need the hybrid
+      patch extended again for `qwen35moe`'s architecture (likely similar
+      `llama_memory_hybrid` shape, not yet confirmed).
+
+---
+
 ## State & recovery
 
 - `.codex_state.json` (repo root, gitignored is **not** required — it's
