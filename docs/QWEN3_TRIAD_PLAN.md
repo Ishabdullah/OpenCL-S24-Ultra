@@ -558,6 +558,29 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       | Full CPU | 8.17 | **3.30** |
       | Full NPU | **7.44** | 1.92 |
       | NPU-prefill → handoff → CPU-decode | 4.71 | 0.79 |
+
+- [x] **The originally-envisioned full combo, tested as literally described
+      (minus the impossible MTP piece): pin attn/shared-experts/dense on
+      NPU (`--n-cpu-moe 48`), stream routed experts from CPU, speculative
+      decoding on top (`ngram-simple`, substituting for `draft-mtp` which
+      cannot exist for this model).** `llama-cli -dev HTP0 -lm mmap
+      --n-cpu-moe 48 -t 6 --spec-type ngram-simple --repeat-penalty 1.1
+      --repeat-last-n 64`: **Prompt 2.8 tok/s, Generation 0.9 tok/s** — the
+      **slowest decode of every NPU configuration tested in this track.**
+      No crash. Output quality was also noticeably worse this run than the
+      earlier coherent "Paris" result under the same repeat-penalty
+      settings (likely sampler interaction with speculative
+      rejection/acceptance, or just run-to-run variance — no `--seed` was
+      fixed). **Honest conclusion: the full envisioned architecture
+      (NPU-pinned core params + CPU-streamed experts + speculative
+      decoding) does not outperform simpler configurations for this
+      model/quant/hardware.** The best decode throughput found across this
+      entire Phase C remains plain `--n-cpu-moe 0` with no speculation
+      (2.30 tok/s). Both "pin only active params" (`--n-cpu-moe 48`) and
+      adding `ngram-simple` on top make things slower, not faster, here —
+      this doesn't contradict anything measured earlier, it's consistent
+      with `--n-cpu-moe 48` already being the slowest point in the original
+      sweep.
 - [x] Log every run (success or failure, exact error text, config) to
       `execution_history.log` immediately; update `.codex_state.json`
       `metrics` after each completed run. (Done continuously throughout

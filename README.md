@@ -97,6 +97,16 @@ handoff uses canonical (non-repacked) CPU weight shadows rather than the
 documented for Mistral 7B, apparently much more punishing for this model's
 IQ1_S quantization.
 
+**The full originally-envisioned design — pin attention/shared-experts/dense
+on NPU, stream routed experts from CPU, speculative decoding on top —
+performs worst of everything tested.** `--n-cpu-moe 48` (pin only the
+always-active ~3B params on NPU) plus `ngram-simple` speculative decoding
+(substituting for `draft-mtp`, which cannot exist for this model — no
+MTP/NextN weights were ever shipped for it) reached only **2.8 / 0.9
+tok/s**, the slowest decode of any NPU configuration in this track. The
+best decode throughput found remains plain `--n-cpu-moe 0` with no
+speculation: **2.30 tok/s**.
+
 A separate, pre-existing, intermittent heap-corruption-on-exit affects
 `llama-completion`/`llama-bench`/`llama-cli` on this build (reproduces even
 on a bare `--help` call with no model) — unrelated to this model or the NPU
