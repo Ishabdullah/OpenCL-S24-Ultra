@@ -783,11 +783,38 @@ and speed, not an approximation.
       correct and measured. Correctness gate before any speed claim:
       numerically compare against unmodified full-residency output on
       identical prompts.
-- [ ] **Tighter per-layer expert-selection locality measurement** (needed
-      before choosing `K`): rerun with a custom data-capturing callback
-      (not the truncating text-dump) grouped by layer, to measure real
-      reuse rates across nearby decode steps per layer, not pooled across
-      the whole model.
+- [x] **Tighter per-layer expert-selection locality measurement —
+      rigorous, and the result is sobering.** Rebuilt the probe with a
+      custom `cb_eval` capturing the full, untruncated `ffn_moe_topk`
+      tensor per layer (confirmed the `-N` suffix is the layer index `il`).
+      Discovered the prefill-batch call (32 tokens, one forward pass)
+      flattens to `{8,32}` = 256 elements (8 experts × 32 tokens); decode
+      calls are 8 elements each. Parsed both correctly. Rerun confirmed
+      the catastrophic re-read pattern again (126.3 GiB cumulative by end
+      of decode — consistent, not a one-off).
+      **Finding: every one of the 40 layers touches all 256 experts
+      within just 63 calls** (32 prefill positions + 31 decode steps).
+      Mean overlap between *consecutive* decode steps' 8-expert
+      selections is only 1.66/8 (~20%). Routing is close to
+      uniform-random at this granularity, not clustered/sticky.
+      **Simulated real LRU hit rates** (using the actual captured
+      per-layer sequences, not an assumption):
+
+      | Cache size K (per layer) | % of 256 experts | Mean hit rate |
+      |---:|---:|---:|
+      | 8 | 3% | 15.4% |
+      | 32 | 12% | 32.6% |
+      | 64 | 25% | 39.0% |
+      | 128 | 50% | 43.5% |
+      | 192 | 75% | 46.4% |
+
+      Gains plateau hard past `K≈64`; even caching 75% of all experts per
+      layer barely exceeds 46% hit rate. **A RAM-bounded LRU cache
+      (realistic K≈32-64 given the actual memory budget across 40 layers)
+      would cut storage re-reads by roughly 30-40%, not eliminate the
+      problem.** Real, worthwhile — but far short of solving it with pure
+      recency alone. This measured result (not a guess) should inform the
+      go/no-go and sizing of the Phase 1 implementation below.
 
 ---
 

@@ -2,27 +2,60 @@
 // NPU-resident MoE run before any expert-caching work, per the user's
 // explicit request -- "profile your existing run before changing it:
 // record expert selections, cache misses, storage reads, NPU transfers,
-// and draft acceptance." This probe covers expert selections (via the
-// existing common_debug_cb_user_data hook on the "ffn_moe_topk" tensor,
-// which holds the router's chosen expert indices) plus cache misses and
-// storage reads (via /proc/self/stat minflt/majflt and /proc/self/io
-// rchar/read_bytes, sampled at phase boundaries). No MTP/speculative
-// decoding here by design -- draft acceptance is measured separately via
-// llama-server, which already has that instrumentation built in.
+// and draft acceptance." This probe covers expert selections (via a
+// custom eval callback reading the full, UNTRUNCATED "ffn_moe_topk-<il>"
+// tensor -- the router's chosen expert indices, named by layer index per
+// src/llama-graph.cpp's cb(selected_experts, "ffn_moe_topk", il) -- plus
+// cache misses and storage reads (via /proc/self/stat minflt/majflt and
+// /proc/self/io rchar/read_bytes, sampled at phase boundaries). No MTP/
+// speculative decoding here by design -- draft acceptance is measured
+// separately via llama-server, which already has that instrumentation
+// built in. An earlier version of this probe used the existing
+// common_debug_cb_user_data hook, which truncates each 8-expert array to
+// its first/last 3 for display -- not good enough for a real per-layer
+// locality measurement, hence this custom callback.
 // See docs/QWEN3_TRIAD_PLAN.md Phase F for context.
 #include "llama.h"
-#include "common.h"
-#include "debug.h"
+#include "ggml-backend.h"
 #include <algorithm>
 #include <chrono>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
+#include <map>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
+
+// Per-layer step counter and callback: prints every element of
+// "ffn_moe_topk-<il>" with no truncation, tagged with a per-layer step
+// index so the profiling analysis can group by (layer, step) cleanly.
+static std::map<int, int> g_layer_step_counter;
+
+static bool moe_topk_cb_eval(struct ggml_tensor * t, bool ask, void * /*user_data*/) {
+    if (ask) {
+        return strncmp(t->name, "ffn_moe_topk-", 13) == 0;
+    }
+    int il = -1;
+    sscanf(t->name, "ffn_moe_topk-%d", &il);
+    int step = g_layer_step_counter[il]++;
+
+    const int64_t n = ggml_nelements(t);
+    std::vector<int32_t> buf(n);
+    if (ggml_backend_buffer_is_host(t->buffer)) {
+        memcpy(buf.data(), t->data, n * sizeof(int32_t));
+    } else {
+        ggml_backend_tensor_get(t, buf.data(), 0, n * sizeof(int32_t));
+    }
+    fprintf(stderr, "MOE_TOPK layer=%d step=%d experts=[", il, step);
+    for (int64_t i = 0; i < n; ++i) {
+        fprintf(stderr, "%s%d", i ? "," : "", buf[i]);
+    }
+    fprintf(stderr, "]\n");
+    return true;
+}
 
 using clock_type = std::chrono::steady_clock;
 static double seconds(clock_type::time_point start) {
@@ -126,12 +159,10 @@ int main(int argc, char ** argv) {
         cp.op_offload = true;
         cp.offload_kqv = true;
 
-        // Wire the expert-selection tensor dump (filters to the router's
-        // top-k output; see src/llama-graph.cpp cb(selected_experts, "ffn_moe_topk", il)).
-        common_params dbg_params;
-        common_debug_cb_user_data dbg_cb(dbg_params, {"ffn_moe_topk"}, /*abort_on_nan=*/false);
-        cp.cb_eval = dbg_params.cb_eval;
-        cp.cb_eval_user_data = dbg_params.cb_eval_user_data;
+        // Wire the custom, untruncated expert-selection capture (see
+        // moe_topk_cb_eval above).
+        cp.cb_eval = moe_topk_cb_eval;
+        cp.cb_eval_user_data = nullptr;
 
         auto * ctx = llama_init_from_model(model, cp);
         if (!ctx) throw std::runtime_error("context allocation failed");
