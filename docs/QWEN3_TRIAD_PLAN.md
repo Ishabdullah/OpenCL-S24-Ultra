@@ -106,13 +106,20 @@ flag) until/unless an MTP-bearing checkpoint for this model surfaces.
 
 ## Decisions
 
-- **D1 — Separate checkout, pin untouched.** This track clones a second,
-  unpinned llama.cpp checkout under `.work-qwen3/llama.cpp` (gitignored,
-  mirroring the `.work/` pattern) rather than modifying the pinned
-  `.work/llama.cpp` the GPU/NPU installers depend on. `upstream.json` and
-  `npu-upstream.json` are not touched by this track. If a result here
-  eventually warrants re-pinning the main installers, that's a separate,
-  explicit decision — not a side effect of this work.
+- **D1 — REVISED after Phase A: reuse the existing `install-npu.sh`, no
+  second checkout.** Originally this track planned a separate, unpinned
+  llama.cpp clone (`.work-qwen3/llama.cpp`), on the assumption the pinned
+  commit might not support `qwen3next`/MTP/APLS. Phase 0 and Phase A proved
+  that assumption wrong — the exact pin `install-npu.sh` already builds
+  (`e358d591...`) fully supports everything this track needs. A second
+  checkout would mean a second SDK/toolchain setup for zero benefit, so
+  this track instead runs the existing, validated `./install-npu.sh`
+  unmodified. This still satisfies the "don't touch the validated
+  installers" rule: `install-npu.sh` builds into `.work-npu/` (separate from
+  `.work/`, the GPU installer's directory) and touches neither
+  `upstream.json` nor `npu-upstream.json`. GPU/OpenCL is also dropped from
+  this track's hardware target (see below) — only CPU + Hexagon NPU are
+  built.
 - **D2 — ULBC redefined as REAP pruning + MXFP4/IQ2 quantization**, not
   literal BitNet ternary, because no trained-ternary Qwen3-Coder-Next
   checkpoint exists. This is the closest real substitute for "extreme
@@ -135,6 +142,12 @@ flag) until/unless an MTP-bearing checkpoint for this model surfaces.
   NextN heads, but it has no target on this model today. Use
   `--spec-type ngram-simple` for pillar 3 instead, and revisit if Qwen
   releases an MTP-bearing variant.
+- **D5 — GPU/OpenCL dropped from this track's hardware target.** The
+  project's own measured README data shows OpenCL 32.8% slower for prefill
+  and 66.9% slower for generation than CPU on this exact device. Carrying
+  it into this track would cost a third backend's build time for a
+  configuration already known to lose. `hardware_target` is
+  `NPU_CPU_HYBRID`, not a three-way NPU/GPU/CPU split.
 
 ---
 
@@ -223,21 +236,24 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
 
 ## Phase B — Implementation & setup
 
-- [ ] Clone second checkout: `.work-qwen3/llama.cpp` at a recent upstream
-      commit (does not need to match the pinned `e358d591`; record whatever
-      commit is used here in `.codex_state.json`, not in `upstream.json`).
-- [ ] Build with Hexagon NPU + OpenCL backends enabled (reuse
-      `install-npu.sh`'s SDK/toolchain setup logic as reference, but do not
-      invoke the installer against this checkout — build manually or via a
-      new script under `scripts/`).
-- [ ] Download `mradermacher/Qwen3-Coder-Next-REAP-40B-A3B-i1-GGUF`'s
-      `Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ1_S.gguf` (7.85 GiB, Phase A
-      candidate) into `~/models/` (outside the repo, consistent with
-      existing convention).
+- [x] ~~Clone second checkout~~ — superseded by [Decision D1 (revised)](#decisions):
+      run the existing `./install-npu.sh` against its own pin instead.
+      Launched `./install-npu.sh --jobs 1` (jobs=1, not 2, because available
+      RAM was ~450-900 MiB free at launch time with 2.4 GiB swap already in
+      use — a QEMU-emulated amd64 toolchain plus `ninja -j2` is exactly the
+      Android LMK's target profile). Runs in the background; builds CPU +
+      Hexagon NPU only, into `.work-npu/` (does not touch `.work/` or any
+      pin file).
+- [x] Started `Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ1_S.gguf` (7.85 GiB)
+      downloading in the background (`curl -C -`, resumable) into
+      `~/models/qwen3-coder-next-reap-40b/` *before* the build, so the long
+      I/O-bound download overlaps the long CPU-bound build instead of
+      serializing after it.
 - [ ] Configure APLS: `--n-cpu-moe N` sweeps (N = 0, partial, all routed
       experts) crossed with `GGML_HEXAGON_MBUF` sweeps (default 1024 MiB —
       try smaller/larger), keeping attention/dense/shared-experts
-      NPU/GPU-resident. This is the real tuning surface per Phase A, not VTCM.
+      NPU-resident (no GPU in this track — see Decision D5). This is the
+      real tuning surface per Phase A, not VTCM.
 - [ ] Configure pillar 3: `--spec-type ngram-simple` (the model has no MTP
       weights — see Decision D4). Do not spend time on `--spec-type
       draft-mtp` against this checkpoint; it will fail to find the required
@@ -252,11 +268,31 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
 
 ## Phase C — Live verification & testing
 
-- [ ] Baseline: CPU-only, no speculation, IQ1_S REAP-40B-A3B — tok/s + peak
-      RAM, and confirm it loads/generates coherent text at all at this bit
-      width before investing in acceleration tuning.
-- [ ] NPU/GPU dense+attention resident, CPU-streamed experts (APLS), no
-      speculation — tok/s + peak RAM, compare to baseline.
+- [ ] **Gate, run first: does the binary load and generate from this GGUF
+      at all.** `qwen3next` is not plain attention — the config shows
+      `linear_num_key_heads`/`linear_conv_kernel_dim` (a hybrid
+      full-attention + linear/recurrent (GDN-style) layer stack,
+      `full_attention_interval: 4`) and llama.cpp has a *separate* recurrent
+      KV-memory path (`llama-memory-recurrent.cpp`) distinct from normal
+      attention KV. A single `-n 8` smoke-test generation on the real
+      downloaded GGUF is the actual Phase C gate — `install-npu.sh`'s own
+      validation only exercises a dense Qwen2.5-1.5B and proves nothing
+      about this hybrid architecture loading correctly. Do this before any
+      tuning or benchmarking.
+- [ ] Quality/coherence check at IQ1_S (promoted ahead of the sweeps,
+      not after): does it produce coherent text at all? IQ1_S on an
+      already-REAP-pruned MoE is the single most likely point of total
+      failure in this plan — if output is incoherent, every tok/s number
+      below is meaningless. **Fallback if it fails: re-run with
+      `mradermacher`'s IQ2_XXS (10.14 GiB) before concluding the model is
+      unusable**, not an immediate abandonment of the track.
+- [ ] Baseline: CPU-only, no speculation — tok/s + peak RAM.
+- [ ] NPU dense+attention resident, CPU-streamed experts (APLS), no
+      speculation — tok/s + peak RAM, compare to baseline. Do not assume
+      "KV-cache on NPU" is a single knob: recurrent/linear-attention state
+      and full-attention KV are allocated through different code paths for
+      this architecture (see the gate item above) — check what the loader
+      actually places where before describing the split as one decision.
 - [ ] APLS + `ngram-simple` speculative decoding — tok/s, acceptance rate,
       peak RAM.
 - [ ] Measure page-fault/thrashing behavior directly (not just inferred from
@@ -265,10 +301,6 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       actually thrashes, and how badly.
 - [ ] Sweep `--n-cpu-moe` × `GGML_HEXAGON_MBUF` with real measurements (per
       Phase A, VTCM is not expected to bind — confirm or refute that here).
-- [ ] Quality spot-check at IQ1_S: is output coherent at all? 1-bit-class
-      quantization on a REAP-pruned (already lossy) MoE is a real risk of
-      unusable output — this is not a formal eval, just a sanity check
-      before reporting any speed numbers as meaningful.
 - [ ] Log every run (success or failure, exact error text, config) to
       `execution_history.log` immediately; update `.codex_state.json`
       `metrics` after each completed run.

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-08T01:00:00Z",
-  "current_phase": "IMPLEMENTATION",
-  "active_subtask": "Phase B: clone second llama.cpp checkout, build NPU+GPU backends, download chosen GGUF",
+  "updated_at": "2026-10-08T01:30:00Z",
+  "current_phase": "ENGINE_BUILD",
+  "active_subtask": "Phase B: downloading mradermacher IQ1_S GGUF to ~/models/qwen3-coder-next-reap-40b/ in background (curl pid logged to ~/models/qwen3-coder-next-reap-40b/curl.log) while running ./install-npu.sh --jobs 1 in background (reusing the EXISTING pinned installer, not a new checkout -- see revised Decision D1)",
   "completed_steps": [
     "Phase 0: verified llama.cpp pin (e358d59178377be4c58ba567925e05faadbccb57) already supports LLM_ARCH_QWEN3NEXT with native NextN/MTP code path",
     "Phase 0: confirmed --spec-type draft-mtp and --spec-type ngram-simple are real CLI options at this pin",
@@ -16,7 +16,10 @@
     "Phase A: CONFIRMED Qwen3-Coder-Next has NO MTP/NextN weights in any checked GGUF (mradermacher REAP-40B i1-IQ1_S and bartowski unpruned IQ1_S both: 48 blocks, 843 tensors, zero nextn.* tensors, no qwen3next.nextn_predict_layers KV key) and no such field in the upstream Qwen/Qwen3-Coder-Next config.json. This is upstream, not a conversion artifact. Decision D4: pillar 3 (MTP) is not usable for this model; fall back to --spec-type ngram-simple.",
     "Phase A: read ggml-hexagon.cpp VTCM-budget code directly: VTCM gates per-op tile size (auto-shrinks, floor at 128 elem/1 row), not NPU-resident capacity. Real ceiling is opt_mbuf (GGML_HEXAGON_MBUF env var), default 1024 MiB max single fastRPC/DMA buffer -- this is the APLS tuning knob, not VTCM. Corrects the Phase 0 guess.",
     "Phase A: picked working candidate -- mradermacher/Qwen3-Coder-Next-REAP-40B-A3B-i1-GGUF, file Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ1_S.gguf",
-    "Wrote and committed docs/QWEN3_TRIAD_PLAN.md updates for Phase A findings"
+    "Wrote and committed docs/QWEN3_TRIAD_PLAN.md updates for Phase A findings",
+    "Phase B: REVISED Decision D1 -- no separate checkout needed. The existing pinned commit (e358d591, same one install-npu.sh already builds) was confirmed in Phase 0/A to fully support qwen3next/MTP-code-path/n-cpu-moe/MUL_MAT_ID, so running the existing validated install-npu.sh (into .work-npu/, untouched pin files) is strictly better than a second SDK/toolchain setup.",
+    "Phase B: dropped OpenCL/GPU from hardware_target -- README already has measured evidence OpenCL is 32.8-66.9% slower than CPU on this device; no reason to carry it into this track. hardware_target changed from HYBRID_NPU_STREAMING to NPU_CPU_HYBRID.",
+    "Phase B: started background download of the 7.85GiB candidate GGUF to ~/models/qwen3-coder-next-reap-40b/ (resumable curl, log at curl.log in that dir) to overlap with the build instead of serializing after it"
   ],
   "failed_attempts": [],
   "technique_status": {
@@ -24,7 +27,7 @@
     "APLS_streaming_config": "plan: attention + dense FFN + shared experts NPU/GPU-resident, routed experts via --n-cpu-moe; NPU-resident MoE capacity bounded by GGML_HEXAGON_MBUF (default 1024 MiB), not VTCM. Not yet measured on-device.",
     "MTP_speculation_config": "REVISED: draft-mtp is NOT usable -- Qwen3-Coder-Next ships no NextN/MTP weights (confirmed via GGUF metadata probe + upstream config.json). Using --spec-type ngram-simple instead. Not yet measured."
   },
-  "hardware_target": "HYBRID_NPU_STREAMING",
+  "hardware_target": "NPU_CPU_HYBRID",
   "metrics": {
     "prompt_tok_s": null,
     "generation_tok_s": null,
