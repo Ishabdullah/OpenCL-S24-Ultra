@@ -146,8 +146,23 @@ flag) until/unless an MTP-bearing checkpoint for this model surfaces.
   project's own measured README data shows OpenCL 32.8% slower for prefill
   and 66.9% slower for generation than CPU on this exact device. Carrying
   it into this track would cost a third backend's build time for a
-  configuration already known to lose. `hardware_target` is
-  `NPU_CPU_HYBRID`, not a three-way NPU/GPU/CPU split.
+  configuration already known to lose. `hardware_target` was
+  `NPU_CPU_HYBRID`, not a three-way NPU/GPU/CPU split — see D6, which
+  further narrows this to CPU-only.
+- **D6 — NPU (Hexagon HTP0) offload is blocked by a confirmed,
+  reproducible heap-corruption crash; `hardware_target` is CPU-only.**
+  Every attempt to run the real model through `-dev HTP0` aborted with
+  `Scudo ERROR: invalid chunk state when deallocating` (confirmed via
+  `logcat`, not inferred) — heap corruption, not an OOM or tuning issue. A
+  synthetic-matrix-only `test-backend-ops -b HTP0` run passed clean, which
+  rules out a simple "Hexagon doesn't work at all" explanation and points
+  at this architecture's real tensors (MoE routing + hybrid
+  attention/recurrent layers) interacting badly with the **experimental**
+  `ggml-hexagon` backend. Full detail and reproduction history in Phase C
+  below. This is a stop, not a workaround-and-continue: no further
+  `-dev HTP0` attempts against this model without an upstream fix or a
+  debug/ASAN build to actually root-cause it — both out of scope here
+  given the crash risk already experienced.
 
 ---
 
@@ -304,21 +319,55 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       --repeat-last-n 64` is now a **required** flag for every subsequent
       Phase C run, not optional tuning — the default sampler config loops
       on this model/quant combination. No fallback to IQ2_XXS needed.
-- [ ] Baseline: CPU-only, no speculation — tok/s + peak RAM.
-- [ ] NPU dense+attention resident, CPU-streamed experts (APLS), no
-      speculation — tok/s + peak RAM, compare to baseline. Do not assume
-      "KV-cache on NPU" is a single knob: recurrent/linear-attention state
-      and full-attention KV are allocated through different code paths for
-      this architecture (see the gate item above) — check what the loader
-      actually places where before describing the split as one decision.
-- [ ] APLS + `ngram-simple` speculative decoding — tok/s, acceptance rate,
-      peak RAM.
+- [x] **Baseline: CPU-only (`--device none`), no speculation.** `llama-bench
+      -dev none -p 64 -n 16 -r 1`: **pp64 = 6.69 tok/s, tg16 = 1.21 tok/s**.
+      Model identified by llama-bench as `qwen3next 80B.A3B IQ1_S - 1.5625
+      bpw`, 40.99B params, 7.84 GiB.
+- [x] **NPU (Hexagon HTP0) offload — BLOCKED by a confirmed, reproducible
+      crash. Do not retry.** `--list-devices` first showed `HTP0: Hexagon
+      (0 MiB, 0 MiB free)`; attempting `-dev HTP0 -ngl 99` failed to open a
+      session (`error 0x80000406`). Root cause: `ADSP_LIBRARY_PATH` must
+      point at `<build>/ggml/src/ggml-hexagon` (where `libggml-htp-v75.so`
+      lives) — `install-npu.sh`'s own `scripts/npu-common.sh` sets this via
+      `npu_runtime()`, but that's only called inside the installer's script
+      chain, not when binaries are run directly. **This is a real gap in
+      `docs/NPU_INSTALL.md` for anyone invoking the binaries directly.**
+      After exporting `LD_LIBRARY_PATH`/`ADSP_LIBRARY_PATH` correctly, a
+      **standalone `test-backend-ops -b HTP0` run with small synthetic
+      matrices passed clean (8/8 OK, no crash)** — but every subsequent
+      attempt to push the *real* model's tensors through `-dev HTP0`
+      (`llama-completion`, `llama-bench`, and later even `test-backend-ops`
+      itself) died with **`Fatal signal 6 (SIGABRT)`, abort message `Scudo
+      ERROR: invalid chunk state when deallocating address 0x...`** —
+      Android's hardened allocator detecting **heap corruption**, not
+      out-of-memory. Confirmed via `logcat -d -b main -b system -b crash -b
+      events` across 11+ reproductions. This is **not** a RAM-budget or
+      batch-size problem — it reproduces regardless of `-ngl`/`-b`/`-ub`
+      tried, and the synthetic-matrix case proves the Hexagon path itself
+      can work; something about this architecture's real tensors (MoE
+      `MUL_MAT_ID` + hybrid full-attention/linear-recurrent layers) flowing
+      through the **experimental** `ggml-hexagon` backend corrupts memory.
+      **Decision: do not retry `-dev HTP0` against this model.** Pillar 2
+      (APLS)'s NPU-residency half is blocked pending an upstream fix or
+      deeper (ASAN/debug-build) investigation — out of scope for this
+      session given the crash risk. The CPU+mmap streaming half of APLS
+      (via `--n-cpu-moe`, independent of any NPU device) is unaffected and
+      still worth measuring on CPU alone.
+      (Separately, unrelated: `python`/`python3` processes hit a
+      differently-worded Scudo abort — `internal map failure, Out of
+      memory` — repeatedly on 10-06/10-07, before this task existed. That's
+      a pre-existing device memory-pressure pattern, not the same bug, and
+      should not be conflated with the HTP0 finding above.)
+- [ ] APLS (CPU-only half) + `ngram-simple` speculative decoding — tok/s,
+      acceptance rate, peak RAM, no NPU device involved.
 - [ ] Measure page-fault/thrashing behavior directly (not just inferred from
       file-size-vs-RAM): watch RSS and I/O wait during a long generation to
       see whether the 7.85 GiB file mmap'd against ~4.2 GiB available RAM
       actually thrashes, and how badly.
-- [ ] Sweep `--n-cpu-moe` × `GGML_HEXAGON_MBUF` with real measurements (per
-      Phase A, VTCM is not expected to bind — confirm or refute that here).
+- [ ] Sweep `--n-cpu-moe` on CPU only (no `GGML_HEXAGON_MBUF`/device-split
+      relevance now that NPU offload is blocked — see above). This becomes
+      a question of CPU cache/mmap behavior under different expert-offload
+      splits, not a hardware-residency question.
 - [ ] Log every run (success or failure, exact error text, config) to
       `execution_history.log` immediately; update `.codex_state.json`
       `metrics` after each completed run.

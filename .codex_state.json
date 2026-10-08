@@ -2,7 +2,7 @@
   "schema_version": 1,
   "updated_at": "2026-10-08T06:36:00Z",
   "current_phase": "BENCHMARKING",
-  "active_subtask": "Phase C: PAUSED. CPU-only baseline measured. NPU-offload attempts caused two system crashes (second one before any new command was even issued, with no zombie processes or kernel reboot found afterward -- suggests general device memory/load pressure, not just this track's flags). Waiting on the user to confirm the device is in a clean state (other apps closed, Termux restarted if needed) before resuming any NPU+full-model testing.",
+  "active_subtask": "Phase C: NPU (Hexagon HTP0) offload for this model is BLOCKED by a confirmed, reproducible heap-corruption crash (Scudo 'invalid chunk state'), isolated via logcat -- not a memory-pressure/tuning issue. CPU-only path is safe and already has measured numbers. Reverting hardware_target to CPU-only; APLS/NPU-residency pillar is blocked pending upstream investigation, not pursued further this session.",
   "completed_steps": [
     "Phase 0: verified llama.cpp pin (e358d59178377be4c58ba567925e05faadbccb57) already supports LLM_ARCH_QWEN3NEXT with native NextN/MTP code path",
     "Phase 0: confirmed --spec-type draft-mtp and --spec-type ngram-simple are real CLI options at this pin",
@@ -30,11 +30,11 @@
   ],
   "failed_attempts": [
     {
-      "when": "2026-10-08T07:12:00Z",
-      "what": "llama-bench -m <IQ1_S REAP-40B-A3B GGUF, 8.4GB> -dev HTP0 -ngl 99 -p 64 -n 16 -r 1 (full NPU offload of all 48 layers, after fixing the ADSP_LIBRARY_PATH session-open issue)",
-      "error": "No process-level error captured -- the user reports the system (Termux/session) crashed twice during/after this class of invocation. uptime showed no kernel reboot, so this is consistent with Android's low-memory killer taking down Termux (and the Claude Code session with it), not a device reboot. Available RAM was ~1.2-5.7GB at the time against an 8.4GB mmap'd file plus whatever additional memory the Hexagon session/DMA buffers need on top.",
-      "hardware_context": "S24 Ultra, 10GiB total RAM, ~1.2GiB free / 5.7GiB available (reclaimable) at last check, 1.0GiB swap used of 15GiB",
-      "do_not_repeat": "Do not re-run -ngl 99 (full NPU offload of all layers) against this 8.4GB file without a much smaller -ngl, smaller -b/-ub, or --n-cpu-moe keeping most/all MoE experts off NPU first. Escalate offload gradually (e.g. -ngl 4, then 8, ...) rather than jumping to full offload again."
+      "when": "2026-10-08T06:43:00Z to 2026-10-08T07:07:51Z",
+      "what": "Any invocation of llama-completion, llama-bench, or test-backend-ops with -dev HTP0 / -b HTP0 against the real qwen3next model (IQ1_S REAP-40B-A3B GGUF) on the Hexagon backend built at pin e358d591.",
+      "error": "CONFIRMED via `logcat -d -b main -b system -b crash -b events`: every one of these processes died with Fatal signal 6 (SIGABRT) and abort message 'Scudo ERROR: invalid chunk state when deallocating address 0x...' -- this is Android's hardened allocator detecting HEAP CORRUPTION (a bad/already-freed pointer), not out-of-memory. 100% reproducible across 11+ separate attempts from 06:43 to 07:07 (pids 18179, 18232, 19894, 20364, 20680, 25360, 32528, 32614, 7633, 13467, 13640, 14171, 14434, 14971). Initially misdiagnosed by the assistant as a generic device/memory-pressure 'crash' -- logcat evidence corrected this. KEY ISOLATING FACT: a standalone `test-backend-ops -b HTP0` run with only small synthetic matrices (examples/npu-matrix-cases.txt, no real model) passed clean (8/8 OK, no abort) right after the ADSP_LIBRARY_PATH fix. The corruption appears specifically when the real model's tensors (qwen3next: MoE MUL_MAT_ID + hybrid full-attention/linear-recurrent layers) run through the experimental Hexagon backend -- not a RAM-capacity issue tunable via batch size.",
+      "hardware_context": "S24 Ultra, 10GiB total RAM. Not fixed by reducing -ngl, -b/-ub, or any resource knob tried -- this is being treated as a likely memory-safety bug in ggml-hexagon.cpp (explicitly logged as 'Hexagon backend (experimental)') when combined with this architecture, not a tuning problem.",
+      "do_not_repeat": "DO NOT re-run any llama.cpp binary with -dev HTP0 / -b HTP0 against this model (or likely any qwen3next-architecture MoE model) until this is root-caused or an upstream fix lands. CPU-only (--device none) has run cleanly and repeatedly with no crashes -- that remains the safe path. If NPU debugging resumes later, do it with a debug/ASAN build and small isolated repro cases, not full benchmark runs."
     }
   ],
   "technique_status": {
@@ -42,7 +42,7 @@
     "APLS_streaming_config": "plan: attention + dense FFN + shared experts NPU/GPU-resident, routed experts via --n-cpu-moe; NPU-resident MoE capacity bounded by GGML_HEXAGON_MBUF (default 1024 MiB), not VTCM. Not yet measured on-device.",
     "MTP_speculation_config": "REVISED: draft-mtp is NOT usable -- Qwen3-Coder-Next ships no NextN/MTP weights (confirmed via GGUF metadata probe + upstream config.json). Using --spec-type ngram-simple instead. Not yet measured."
   },
-  "hardware_target": "NPU_CPU_HYBRID",
+  "hardware_target": "CPU_ONLY (NPU_CPU_HYBRID blocked by a confirmed Hexagon-backend heap-corruption crash -- see failed_attempts)",
   "metrics": {
     "prompt_tok_s": 1.46,
     "generation_tok_s": 0.30,
