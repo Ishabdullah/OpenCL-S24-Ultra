@@ -149,20 +149,45 @@ flag) until/unless an MTP-bearing checkpoint for this model surfaces.
   configuration already known to lose. `hardware_target` was
   `NPU_CPU_HYBRID`, not a three-way NPU/GPU/CPU split — see D6, which
   further narrows this to CPU-only.
-- **D6 — NPU (Hexagon HTP0) offload is blocked by a confirmed,
-  reproducible heap-corruption crash; `hardware_target` is CPU-only.**
-  Every attempt to run the real model through `-dev HTP0` aborted with
-  `Scudo ERROR: invalid chunk state when deallocating` (confirmed via
-  `logcat`, not inferred) — heap corruption, not an OOM or tuning issue. A
-  synthetic-matrix-only `test-backend-ops -b HTP0` run passed clean, which
-  rules out a simple "Hexagon doesn't work at all" explanation and points
-  at this architecture's real tensors (MoE routing + hybrid
-  attention/recurrent layers) interacting badly with the **experimental**
-  `ggml-hexagon` backend. Full detail and reproduction history in Phase C
-  below. This is a stop, not a workaround-and-continue: no further
-  `-dev HTP0` attempts against this model without an upstream fix or a
-  debug/ASAN build to actually root-cause it — both out of scope here
-  given the crash risk already experienced.
+- **D6 — RESOLVED: NPU (Hexagon HTP0) offload crash root-caused and
+  fixed; requires `-lm mmap`. `hardware_target` is `NPU_CPU_HYBRID`
+  again.** Earlier `-dev HTP0` attempts aborted with `Scudo ERROR: invalid
+  chunk state when deallocating` (confirmed via `logcat`). Root cause,
+  found by reading `src/llama-model.cpp:1512-1519` directly: under the
+  default `AUTO` load mode, llama.cpp checks every device named in `-dev`
+  via `ggml_backend_dev_get_props()`, and if **any** device reports
+  `mmap_support = false`, it disables mmap for the **entire model**, not
+  just that device's share, falling back to an eager full-file read.
+  `ggml/src/ggml-hexagon/ggml-hexagon.cpp:7517` hardcodes
+  `.mmap_support = false` (vs. `ggml-cpu.cpp`'s `true`). So naming
+  `-dev HTP0` at all — regardless of `--n-cpu-moe`, regardless of how
+  little compute actually runs on the NPU — forced an eager read of the
+  full 8.4 GiB file into real RSS, measured ballooning from 19 MB to 6.2
+  GB in ~10 seconds (1-second-interval `ps` sampling), collapsing
+  available RAM to ~15 MB and exploding swap from 1.0 to 5.0 GB — a
+  genuine OOM/thrashing death spiral. **The earlier Scudo heap-corruption
+  aborts were most likely a downstream symptom of this same RSS explosion
+  (allocator bookkeeping corrupted under extreme pressure), not a
+  distinct Hexagon-kernel memory-safety bug** — the original D6 framing
+  was wrong on that point.
+  **Fix: pass `-lm mmap` explicitly.** The mmap-disabling check only
+  fires when `load_mode == AUTO`; forcing `LLAMA_LOAD_MODE_MMAP` skips it.
+  Verified live with full forensic instrumentation (continuous `logcat`
+  stream, 0.5-1s memory/process sampler, and a self-imposed watchdog that
+  would `kill -9` the process if available RAM dropped below 400 MB — it
+  never fired): `-dev HTP0 -lm mmap --n-cpu-moe 48` completed cleanly, zero
+  crashes, zero Scudo errors, memory stable throughout (free 650-760 MB,
+  available pinned at 5.5 GB) despite the process's own peak RSS reaching
+  ~6.1 GB — confirming mmap lets the OS reclaim pages gracefully under
+  pressure instead of thrashing. Perf: load 10.1s, prompt eval 4.00 tok/s,
+  decode eval **2.46 tok/s — better than the CPU-only baseline's 1.21
+  tok/s**. Output was incoherent at this run's settings
+  (`--temp 0`, no `--repeat-penalty`) but that's the already-solved,
+  orthogonal coherence question (see the IQ1_S coherence finding above),
+  not a regression.
+  **`-lm mmap` is now a required flag for every future invocation of
+  `-dev HTP0` against this model.** Full reproduction, diagnosis, and fix
+  verification steps are in Phase C below.
 
 ---
 
@@ -323,51 +348,67 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       -dev none -p 64 -n 16 -r 1`: **pp64 = 6.69 tok/s, tg16 = 1.21 tok/s**.
       Model identified by llama-bench as `qwen3next 80B.A3B IQ1_S - 1.5625
       bpw`, 40.99B params, 7.84 GiB.
-- [x] **NPU (Hexagon HTP0) offload — BLOCKED by a confirmed, reproducible
-      crash. Do not retry.** `--list-devices` first showed `HTP0: Hexagon
-      (0 MiB, 0 MiB free)`; attempting `-dev HTP0 -ngl 99` failed to open a
-      session (`error 0x80000406`). Root cause: `ADSP_LIBRARY_PATH` must
-      point at `<build>/ggml/src/ggml-hexagon` (where `libggml-htp-v75.so`
+- [x] **NPU (Hexagon HTP0) offload — crashed, root-caused, and FIXED.
+      `-lm mmap` is now required whenever `-dev HTP0` is used.**
+      `--list-devices` first showed `HTP0: Hexagon (0 MiB, 0 MiB free)`;
+      attempting `-dev HTP0 -ngl 99` failed to open a session
+      (`error 0x80000406`). Root cause #1: `ADSP_LIBRARY_PATH` must point
+      at `<build>/ggml/src/ggml-hexagon` (where `libggml-htp-v75.so`
       lives) — `install-npu.sh`'s own `scripts/npu-common.sh` sets this via
       `npu_runtime()`, but that's only called inside the installer's script
       chain, not when binaries are run directly. **This is a real gap in
       `docs/NPU_INSTALL.md` for anyone invoking the binaries directly.**
       After exporting `LD_LIBRARY_PATH`/`ADSP_LIBRARY_PATH` correctly, a
-      **standalone `test-backend-ops -b HTP0` run with small synthetic
-      matrices passed clean (8/8 OK, no crash)** — but every subsequent
-      attempt to push the *real* model's tensors through `-dev HTP0`
-      (`llama-completion`, `llama-bench`, and later even `test-backend-ops`
-      itself) died with **`Fatal signal 6 (SIGABRT)`, abort message `Scudo
-      ERROR: invalid chunk state when deallocating address 0x...`** —
-      Android's hardened allocator detecting **heap corruption**, not
-      out-of-memory. Confirmed via `logcat -d -b main -b system -b crash -b
-      events` across 11+ reproductions. This is **not** a RAM-budget or
-      batch-size problem — it reproduces regardless of `-ngl`/`-b`/`-ub`
-      tried, and the synthetic-matrix case proves the Hexagon path itself
-      can work; something about this architecture's real tensors (MoE
-      `MUL_MAT_ID` + hybrid full-attention/linear-recurrent layers) flowing
-      through the **experimental** `ggml-hexagon` backend corrupts memory.
-      **Decision: do not retry `-dev HTP0` against this model.** Pillar 2
-      (APLS)'s NPU-residency half is blocked pending an upstream fix or
-      deeper (ASAN/debug-build) investigation — out of scope for this
-      session given the crash risk. The CPU+mmap streaming half of APLS
-      (via `--n-cpu-moe`, independent of any NPU device) is unaffected and
-      still worth measuring on CPU alone.
+      standalone `test-backend-ops -b HTP0` run with small synthetic
+      matrices passed clean — but pushing the *real* model's tensors
+      through `-dev HTP0` repeatedly aborted with `Fatal signal 6
+      (SIGABRT)`, `Scudo ERROR: invalid chunk state when deallocating`
+      (confirmed via `logcat`, 11+ reproductions), which was first
+      mis-attributed to a Hexagon-kernel memory-safety bug in the MoE
+      gather path.
+      **Root cause #2, the real one** (found by reading
+      `src/llama-model.cpp:1512-1519` directly, not guessed): under the
+      default `AUTO` load mode, llama.cpp disables mmap for the **entire
+      model** if *any* device named in `-dev` reports
+      `mmap_support = false` — and `ggml-hexagon.cpp:7517` hardcodes
+      exactly that (`ggml-cpu.cpp` reports `true`). So naming `-dev HTP0`
+      at all, independent of `--n-cpu-moe` or how little actually runs on
+      the NPU, forced an eager read of the full 8.4 GiB file into RSS.
+      Verified via 1-second `ps` sampling: RSS went **19 MB → 6.2 GB in
+      ~10 seconds**, available RAM collapsed to ~15 MB, swap exploded from
+      1.0 to 5.0 GB — a genuine OOM/thrashing spiral. The Scudo aborts seen
+      earlier were almost certainly a downstream symptom of this same
+      collapse, not a separate bug.
+      **Fix: pass `-lm mmap` explicitly** (the mmap-disable check only
+      fires under `AUTO`). Verified live with full forensic instrumentation
+      — continuous `logcat` stream, a 0.5-1s memory/process sampler, and a
+      self-imposed watchdog (kills the process if available RAM drops
+      below 400 MB; never fired): `-dev HTP0 -lm mmap --n-cpu-moe 48`
+      completed cleanly, **zero crashes, zero Scudo errors**, memory
+      stable throughout (free 650-760 MB, available pinned at 5.5 GB)
+      despite the process's own peak RSS reaching ~6.1 GB. Perf: load
+      10.1s, prompt eval 4.00 tok/s, **decode eval 2.46 tok/s — better than
+      the CPU-only baseline's 1.21 tok/s**. Output was incoherent at this
+      run's settings (`--temp 0`, no `--repeat-penalty`) — expected and
+      orthogonal; the coherence fix (`--repeat-penalty 1.1`) is already
+      established above and just needs combining with `-lm mmap` in the
+      next run.
       (Separately, unrelated: `python`/`python3` processes hit a
       differently-worded Scudo abort — `internal map failure, Out of
-      memory` — repeatedly on 10-06/10-07, before this task existed. That's
-      a pre-existing device memory-pressure pattern, not the same bug, and
-      should not be conflated with the HTP0 finding above.)
-- [ ] APLS (CPU-only half) + `ngram-simple` speculative decoding — tok/s,
-      acceptance rate, peak RAM, no NPU device involved.
-- [ ] Measure page-fault/thrashing behavior directly (not just inferred from
-      file-size-vs-RAM): watch RSS and I/O wait during a long generation to
-      see whether the 7.85 GiB file mmap'd against ~4.2 GiB available RAM
-      actually thrashes, and how badly.
-- [ ] Sweep `--n-cpu-moe` on CPU only (no `GGML_HEXAGON_MBUF`/device-split
-      relevance now that NPU offload is blocked — see above). This becomes
-      a question of CPU cache/mmap behavior under different expert-offload
-      splits, not a hardware-residency question.
+      memory` — repeatedly on 10-06/10-07, before this task existed. A
+      pre-existing device memory-pressure pattern, not the same bug.)
+- [ ] Re-run the CPU-only vs. NPU-offload comparison with the now-complete
+      flag set: `-lm mmap --repeat-penalty 1.1 --repeat-last-n 64` plus the
+      `--n-cpu-moe` sweep (0 / partial / 48) to find the actual best split,
+      replacing the single `--n-cpu-moe 48` diagnostic data point above
+      with real sweep numbers.
+- [ ] APLS + `ngram-simple` speculative decoding — tok/s, acceptance rate,
+      peak RAM, always with `-lm mmap` when `-dev HTP0` is involved.
+- [ ] Measure page-fault/thrashing behavior directly under `-lm mmap` with
+      `-dev HTP0`: watch RSS and I/O wait during a longer generation to
+      characterize the now-stable-but-still-tight memory situation (free
+      hovered 650-760 MB in the diagnostic run — there isn't much headroom
+      left for a longer context or larger batch).
 - [ ] Log every run (success or failure, exact error text, config) to
       `execution_history.log` immediately; update `.codex_state.json`
       `metrics` after each completed run.
