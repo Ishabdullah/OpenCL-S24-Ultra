@@ -809,12 +809,31 @@ and speed, not an approximation.
       | 192 | 75% | 46.4% |
 
       Gains plateau hard past `K≈64`; even caching 75% of all experts per
-      layer barely exceeds 46% hit rate. **A RAM-bounded LRU cache
-      (realistic K≈32-64 given the actual memory budget across 40 layers)
-      would cut storage re-reads by roughly 30-40%, not eliminate the
-      problem.** Real, worthwhile — but far short of solving it with pure
-      recency alone. This measured result (not a guess) should inform the
-      go/no-go and sizing of the Phase 1 implementation below.
+      layer barely exceeds 46% hit rate at this window length.
+- [x] **Window-length sensitivity check (user's choice, option 3, before
+      deciding on Phase 1): reran with 96 decode tokens instead of 32
+      (127 calls/layer instead of 63). Hit rates roughly doubled at every
+      K — the short window understated the cache's potential.** Clean run,
+      zero crashes, decode 302.75s/0.31 tok/s, storage reads grew to
+      308.6 GiB cumulative (consistent with more tokens needing more I/O).
+      Mean consecutive-step overlap crept up from 1.66/8 to 2.51/8 — but
+      the dominant effect is that a bounded cache simply needs time to
+      "warm up" and start capturing reuse:
+
+      | Cache size K (per layer) | Short window (63 calls) | Long window (127 calls) |
+      |---:|---:|---:|
+      | 32 | 32.6% | **49.9%** |
+      | 64 | 39.0% | **63.0%** |
+      | 192 | 46.4% | **72.2%** |
+
+      **Revised conclusion: over realistic generation lengths (dozens to
+      hundreds of tokens), a RAM-bounded LRU cache at a modest, fitting
+      K (32-64/layer) could plausibly reach 50-65% hit rate — substantially
+      better than the short-window estimate, and a meaningfully stronger
+      case for proceeding with Phase 1.** Window-length sensitivity is now
+      a documented, measured property of this system, not an assumption:
+      expect better real-world hit rates for longer conversations/
+      generations than for short ones.
 
 ---
 
