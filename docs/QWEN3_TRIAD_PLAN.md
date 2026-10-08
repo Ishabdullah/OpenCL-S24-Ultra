@@ -459,9 +459,47 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       file comfortably at this batch/context size (`-c 512 -b 128
       -ub 128`); a longer context or larger batch is the next thing that
       would actually test the remaining headroom, not attempted here.
-- [ ] Log every run (success or failure, exact error text, config) to
+- [x] **Thread-count comparison at `-t 6`, matching the project's established
+      "six CPU threads" benchmark convention** (see README's October 5
+      checkpoint). Full CPU vs. full NPU vs. an attempted NPU-prefill/
+      CPU-decode split:
+
+      | Config (`-t 6`, `-p 64 -n 16 -r 1 -b 128 -ub 128 -fa off`) | Prefill tok/s | Decode tok/s |
+      |---|---:|---:|
+      | Full CPU (`-dev none`) | 8.17 | 3.30 |
+      | Full NPU (`-dev HTP0 -lm mmap --n-cpu-moe 0`) | 7.44 | 1.92 |
+
+      **This reverses the earlier sweep's conclusion.** At the default
+      thread count (8), NPU beat CPU (8.28/2.30 vs 6.69/1.21). At `-t 6`,
+      **CPU beats NPU on both metrics**. Thread count is not a minor
+      tuning knob here — it changes which backend wins. Report both; don't
+      cherry-pick the thread count that favors either side.
+      **NPU-prefill → CPU-decode via `--prompt-cache`: attempted, does
+      not work for this architecture — an honest negative result.**
+      Step 1 (NPU prefill, `-fa off`, `-n 0 --prompt-cache FILE`) saved a
+      cache cleanly (34 tokens, 79.8 MiB, 5.42 tok/s prefill). Step 2 (CPU
+      decode loading that cache) first failed with
+      `state_read_data: incompatible V transposition` — traced to a flag
+      mismatch in testing (the CPU step defaulted `flash_attn` to `auto`/on
+      while the NPU step used `-fa off`; matching `-fa off` on both sides
+      fixed this specific error). With that fixed, the cache *loaded*
+      without error, but llama.cpp then reported `session file has low
+      similarity to prompt (0/26 tokens); will mostly be reevaluated` and
+      `unable to reuse common prefix (for example, when the memory is
+      recurrent)`. Confirmed via source
+      (`tools/completion/completion.cpp:334`) that this is a **hardcoded,
+      deliberate limitation**: llama.cpp's session mechanism does not
+      support reusing a cached common prefix when the model has recurrent
+      memory (this architecture's hybrid GDN/SSM state) — the prompt gets
+      fully reprocessed regardless of what was cached. **A true
+      device-split prefill/decode handoff is not achievable for this model
+      with the current llama.cpp session/cache mechanism**, independent of
+      NPU involvement; this is a property of the architecture's memory
+      type, not something fixable by flag tuning.
+- [x] Log every run (success or failure, exact error text, config) to
       `execution_history.log` immediately; update `.codex_state.json`
-      `metrics` after each completed run.
+      `metrics` after each completed run. (Done continuously throughout
+      Phase C — see `execution_history.log` for the full timestamped trail.)
 
 ---
 

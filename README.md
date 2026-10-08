@@ -64,6 +64,21 @@ a short prompt, not directly comparable to the table above). At IQ1_S,
 `--repeat-penalty 1.1 --repeat-last-n 64` is required for coherent output;
 without it, generation degenerates into a repetition loop.
 
+**The table above (default thread count) is not the whole picture — thread
+count flips which backend wins.** At `-t 6` specifically: full CPU reached
+**8.17 / 3.30 tok/s**, beating full NPU's **7.44 / 1.92 tok/s** at the same
+thread count. The earlier table used `llama-bench`'s default thread count,
+under which NPU won; at 6 threads, CPU wins instead. Report the thread
+count alongside any of these numbers — it is not a minor tuning detail.
+
+A true **NPU-prefill / CPU-decode handoff was attempted and does not work**
+for this model: llama.cpp's `--prompt-cache` session mechanism cannot reuse
+a cached prompt prefix when the model has recurrent memory (this
+architecture's hybrid GDN/SSM state) — confirmed as a hardcoded behavior in
+`tools/completion/completion.cpp`, not a flag or tuning issue. The prompt
+gets fully reprocessed regardless of what was cached from the NPU prefill
+step.
+
 A separate, pre-existing, intermittent heap-corruption-on-exit affects
 `llama-completion`/`llama-bench`/`llama-cli` on this build (reproduces even
 on a bare `--help` call with no model) — unrelated to this model or the NPU
