@@ -666,6 +666,31 @@ after a dropped connection at 92%; final size matched exactly:
       self-speculative decoding (`--spec-type draft-mtp`), stable across
       both short and long generations, on a model that actually ships the
       MTP weights this architecture needs.
+- [x] **Controlled throughput comparison, MTP on vs. off, NPU only —
+      MTP is stable but NOT a speed win here.** Identical config both
+      runs (`-dev HTP0 -lm mmap --n-cpu-moe 0 -t 6 -np 1 -n 48`, same
+      prompt, same `--seed 42` for a fair, deterministic comparison —
+      confirmed by identical output text up to the point of divergence):
+
+      | Config | Prompt tok/s | Decode tok/s |
+      |---|---:|---:|
+      | No speculation | **1.2** | **0.4** |
+      | `--spec-type draft-mtp --spec-draft-n-max 2` | 0.9 | 0.2 |
+
+      MTP is **slower** — ~25% slower prompt eval, ~50% slower decode, no
+      crash either way. At this base decode rate (well under 1 tok/s),
+      the cost of running the draft head and verifying its predictions
+      outweighs any acceptance-driven savings. Speculative decoding's
+      payoff requires a base speed fast enough that draft/verify overhead
+      is small relative to it — this model/quant/hardware combination
+      (IQ1_M 35B-A3B on an S24 Ultra NPU) is far from that regime.
+      **Honest conclusion: native MTP self-speculative decoding is now
+      proven functionally real and stable on this hardware (resolving the
+      open question from Phase A/D4 for Qwen3-Coder-Next, which genuinely
+      lacked MTP weights), but it is not currently a throughput win for
+      this specific model/quant/device combination.** It may become one
+      at a higher quant (faster base decode) or with different
+      `--spec-draft-n-max` tuning — not explored further here.
 - [ ] NPU/CPU hybrid (the `llama_perf_switch_to_cpu` handoff from Phase C)
       combined with `draft-mtp`: not yet attempted; would need the hybrid
       patch extended again for `qwen35moe`'s architecture (likely similar
