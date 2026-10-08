@@ -698,6 +698,99 @@ after a dropped connection at 92%; final size matched exactly:
 
 ---
 
+## Phase F — Profiling before changing anything, and a bounded expert-caching design
+
+User-directed: profile the current NPU run (expert selections, cache
+misses, storage reads, NPU transfers, draft acceptance) *before* building
+anything, per the explicit ordering: profile → bounded expert caching
+(MTP disabled) → short MTP drafts + prefetching once caching works. Target:
+"full-model behavior with a bounded expert working set," with measured RAM
+and speed, not an approximation.
+
+- [x] **Built [`scripts/moe-profile-probe.cpp`](../scripts/moe-profile-probe.cpp)**
+      (local tool, not part of llama.cpp). Loads the model on NPU
+      (`-dev HTP0`, `mmap`, all experts through NPU — our best-known
+      config, no MTP by design here), wires `common_debug_cb_user_data`
+      (an existing, ready-made llama.cpp debug hook already exported from
+      `libllama-common.so` — no new patch needed for this part) filtered
+      to `"ffn_moe_topk"` (the tensor holding the router's actual selected
+      expert IDs, tagged in `src/llama-graph.cpp`), and samples
+      `/proc/self/stat` (minflt/majflt), `/proc/self/io`
+      (rchar/read_bytes), and `/proc/self/status` (VmRSS) at load/prefill/
+      decode phase boundaries.
+- [x] **Ran it cleanly (32-token prompt, 32-token decode, `-t 6`), zero
+      crashes. Headline finding: decode-phase storage re-reads are
+      catastrophically redundant.**
+
+      | Phase | Storage reads (cumulative) | Major faults (cumulative) | RSS |
+      |---|---:|---:|---:|
+      | Load (13.6s) | 10.8 GiB | 4,783 | 4.08 GB |
+      | Prefill (32 tok, 4.88 tok/s) | 18.8 GiB | 13,543 | 2.1 GB |
+      | **Decode (32 tok, 0.35 tok/s)** | **104.0 GiB** | **59,290** | **647 MB** |
+
+      Decoding 32 tokens re-read **~85 GiB from storage — roughly 8x the
+      entire 10.59 GiB model file**. RSS shrank monotonically throughout
+      the whole run (4.08 GB → 2.1 GB → 647 MB) despite reading *more*
+      data each phase: the OS's generic page-cache LRU is evicting
+      indiscriminately under memory pressure, with no concept of "this
+      expert gets reused soon," forcing the same experts to be re-read
+      from storage repeatedly across nearby decode steps. This is solid,
+      `/proc`-sourced data, not an estimate, and it directly motivates the
+      bounded expert-caching design below.
+- [x] **Captured the actual expert-selection trace** (1280
+      `ffn_moe_topk` dumps = 40 layers × 32 calls) via the debug hook —
+      **but this specific analysis is preliminary, not rigorous**: the
+      debug dump truncates each 8-expert selection to its first/last 3
+      (hiding the middle 2), and the quick aggregate analysis pooled all
+      40 layers together rather than isolating per-layer reuse. Raw
+      result: all 256 experts appear touched across the run; the most
+      frequently selected experts appeared 70-108 times out of 1280 calls.
+      **Do not read this as proof of "no locality"** — a proper
+      per-layer locality measurement (needed to actually size a bounded
+      cache's `K` experts-per-layer) requires a tighter capture: have our
+      own `cb_eval` copy the raw tensor data directly instead of relying
+      on the text dump's truncation, and group by layer index rather than
+      pooling. Not yet done.
+- [x] **Backend feasibility check for a bounded expert slot cache**
+      (per the user's own spec: "inspect whether the backend supports
+      reusable expert slots... before implementing"). Two concrete,
+      source-grounded facts: (1) `ggml-hexagon` already implements the
+      standard `set_tensor`/`get_tensor` backend interface
+      (`ggml-hexagon.cpp:1993`/`2036`) — the primitive needed to write new
+      data into an already-allocated NPU buffer at runtime; (2) this repo
+      already *proved* tensor-level buffer/data rebinding works at runtime
+      in this exact codebase — that's what the hybrid NPU→CPU handoff
+      patch does (`pair.first->buffer = pair.second->buffer; pair.first->data = pair.second->data;`),
+      just as a one-time full migration rather than a continuous per-token
+      swap. **Verdict: structurally feasible, but a materially bigger
+      patch than anything built so far** — `MUL_MAT_ID`'s current design
+      assumes each expert tensor has one fixed backend buffer for the
+      whole context lifetime; a real bounded cache needs a new per-token
+      hook that checks the router's output against a slot table and
+      re-points/re-fills slots on a miss, correctly synchronized so the
+      NPU never reads a slot mid-overwrite.
+- [ ] **Scoped Phase 1 implementation (proposed, not yet started,
+      pending confirmation):** given the full 10-section spec the user
+      provided (observation, model-identity tracking, continuous learning,
+      dynamic expert grading, bounded caching, adaptive prefetching,
+      repeated-context routing memory, MTP integration, persistence,
+      validation) is realistically a multi-week systems project, proposed
+      starting with only the bounded-slot-cache mechanism itself
+      (sections 1/5/9's smallest testable slice, MTP-independent per the
+      spec's own section 8 ordering), deferring learned grading,
+      prefetching, task-context association, repeated-context memory,
+      and MTP-assisted prediction until the core mechanism is proven
+      correct and measured. Correctness gate before any speed claim:
+      numerically compare against unmodified full-residency output on
+      identical prompts.
+- [ ] **Tighter per-layer expert-selection locality measurement** (needed
+      before choosing `K`): rerun with a custom data-capturing callback
+      (not the truncating text-dump) grouped by layer, to measure real
+      reuse rates across nearby decode steps per layer, not pooled across
+      the whole model.
+
+---
+
 ## State & recovery
 
 - `.codex_state.json` (repo root, gitignored is **not** required — it's
