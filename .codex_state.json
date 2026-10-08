@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-08T01:30:00Z",
-  "current_phase": "ENGINE_BUILD",
-  "active_subtask": "Phase B: downloading mradermacher IQ1_S GGUF to ~/models/qwen3-coder-next-reap-40b/ in background (curl pid logged to ~/models/qwen3-coder-next-reap-40b/curl.log) while running ./install-npu.sh --jobs 1 in background (reusing the EXISTING pinned installer, not a new checkout -- see revised Decision D1)",
+  "updated_at": "2026-10-08T06:36:00Z",
+  "current_phase": "BENCHMARKING",
+  "active_subtask": "Phase C: gate 1 (load/generate) passed CPU-only; running a longer (-n 48) coherence check before any NPU/APLS tuning",
   "completed_steps": [
     "Phase 0: verified llama.cpp pin (e358d59178377be4c58ba567925e05faadbccb57) already supports LLM_ARCH_QWEN3NEXT with native NextN/MTP code path",
     "Phase 0: confirmed --spec-type draft-mtp and --spec-type ngram-simple are real CLI options at this pin",
@@ -19,7 +19,11 @@
     "Wrote and committed docs/QWEN3_TRIAD_PLAN.md updates for Phase A findings",
     "Phase B: REVISED Decision D1 -- no separate checkout needed. The existing pinned commit (e358d591, same one install-npu.sh already builds) was confirmed in Phase 0/A to fully support qwen3next/MTP-code-path/n-cpu-moe/MUL_MAT_ID, so running the existing validated install-npu.sh (into .work-npu/, untouched pin files) is strictly better than a second SDK/toolchain setup.",
     "Phase B: dropped OpenCL/GPU from hardware_target -- README already has measured evidence OpenCL is 32.8-66.9% slower than CPU on this device; no reason to carry it into this track. hardware_target changed from HYBRID_NPU_STREAMING to NPU_CPU_HYBRID.",
-    "Phase B: started background download of the 7.85GiB candidate GGUF to ~/models/qwen3-coder-next-reap-40b/ (resumable curl, log at curl.log in that dir) to overlap with the build instead of serializing after it"
+    "Phase B: started background download of the 7.85GiB candidate GGUF to ~/models/qwen3-coder-next-reap-40b/ (resumable curl, log at curl.log in that dir) to overlap with the build instead of serializing after it",
+    "Phase B: GGUF download completed (8426713408 bytes, matches expected size)",
+    "Phase B: ./install-npu.sh --jobs 1 completed successfully (~1hr wall clock, overlapped with the download). Binaries at .work-npu/build/bin/{llama-completion,llama-bench,test-backend-ops}. Installer's own DSP matrix validation: 8/8 passed. --list-devices confirms HTP0 (Hexagon) detected.",
+    "Phase C: GATE 1 PASSED -- llama-completion loads the real downloaded GGUF and generates coherent (if repetitive) English with --device none (CPU-only): 'The capital of France is what?\\nThe capital of France is **' from -n 8. No crash, no OOM. CPU-only perf: 1.46 tok/s prompt, 0.30 tok/s generation -- very slow, likely mmap page-fault bound against the ~4-6GB RAM budget vs 8.4GB file; not yet isolated from pure compute cost.",
+    "Phase C: started a longer (-n 48) CPU-only coherence check, same prompt, to judge output quality before any NPU/APLS acceleration tuning"
   ],
   "failed_attempts": [],
   "technique_status": {
@@ -29,11 +33,12 @@
   },
   "hardware_target": "NPU_CPU_HYBRID",
   "metrics": {
-    "prompt_tok_s": null,
-    "generation_tok_s": null,
+    "prompt_tok_s": 1.46,
+    "generation_tok_s": 0.30,
     "mtp_acceptance_pct": null,
     "ngram_acceptance_pct": null,
-    "peak_ram_mb": null
+    "peak_ram_mb": null,
+    "_note": "first real numbers, CPU-only (--device none), no APLS/speculation tuning applied yet; see completed_steps for context. Expect NPU offload + --n-cpu-moe tuning to change this substantially."
   },
   "notes": "This track uses a separate, unpinned llama.cpp checkout (.work-qwen3/llama.cpp, not yet created) so the existing validated GPU/NPU installers and their pins (upstream.json, npu-upstream.json) are not touched. See docs/QWEN3_TRIAD_PLAN.md Decision D1. Candidate GGUF (7.85 GiB) exceeds the measured 4.2GiB available RAM as a raw file size; relies on mmap page-level loading, must be verified empirically for thrashing in Phase C before claiming it 'works'."
 }

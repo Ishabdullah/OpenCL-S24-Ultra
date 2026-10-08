@@ -268,17 +268,21 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
 
 ## Phase C — Live verification & testing
 
-- [ ] **Gate, run first: does the binary load and generate from this GGUF
-      at all.** `qwen3next` is not plain attention — the config shows
-      `linear_num_key_heads`/`linear_conv_kernel_dim` (a hybrid
-      full-attention + linear/recurrent (GDN-style) layer stack,
-      `full_attention_interval: 4`) and llama.cpp has a *separate* recurrent
-      KV-memory path (`llama-memory-recurrent.cpp`) distinct from normal
-      attention KV. A single `-n 8` smoke-test generation on the real
-      downloaded GGUF is the actual Phase C gate — `install-npu.sh`'s own
-      validation only exercises a dense Qwen2.5-1.5B and proves nothing
-      about this hybrid architecture loading correctly. Do this before any
-      tuning or benchmarking.
+- [x] **Gate, run first: does the binary load and generate from this GGUF
+      at all. PASSED.** `./.work-npu/build/bin/llama-completion -m
+      Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ1_S.gguf --device none -c 512 -n 8
+      -p "The capital of France is" -no-cnv` loaded in ~9.9s and generated:
+      _"The capital of France is what?\nThe capital of France is \*\*"_ —
+      grammatical English, no crash, no OOM, on the real hybrid
+      full-attention/linear-recurrent `qwen3next` architecture. (Note:
+      `-no-cnv`, single dash, is required — the model ships a chat template
+      so the binary otherwise auto-enters interactive conversation mode and
+      hangs waiting on stdin.) CPU-only (`--device none`) perf at this
+      stage: **1.46 tok/s prompt, 0.30 tok/s generation** — very slow,
+      consistent with mmap page-fault I/O against the 8.4GB file on a
+      ~4-6GB RAM budget; not yet isolated from pure compute cost. Hexagon
+      device confirmed visible to the binary via `--list-devices` → `HTP0:
+      Hexagon`.
 - [ ] Quality/coherence check at IQ1_S (promoted ahead of the sweeps,
       not after): does it produce coherent text at all? IQ1_S on an
       already-REAP-pruned MoE is the single most likely point of total
