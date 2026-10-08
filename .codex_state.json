@@ -1,30 +1,36 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-08T00:00:00Z",
-  "current_phase": "RESEARCH",
-  "active_subtask": "Phase A: pick and inspect candidate Qwen3-Coder-Next GGUF files",
+  "updated_at": "2026-10-08T01:00:00Z",
+  "current_phase": "IMPLEMENTATION",
+  "active_subtask": "Phase B: clone second llama.cpp checkout, build NPU+GPU backends, download chosen GGUF",
   "completed_steps": [
-    "Phase 0: verified llama.cpp pin (e358d59178377be4c58ba567925e05faadbccb57) already supports LLM_ARCH_QWEN3NEXT with native NextN/MTP tensors",
+    "Phase 0: verified llama.cpp pin (e358d59178377be4c58ba567925e05faadbccb57) already supports LLM_ARCH_QWEN3NEXT with native NextN/MTP code path",
     "Phase 0: confirmed --spec-type draft-mtp and --spec-type ngram-simple are real CLI options at this pin",
     "Phase 0: confirmed --n-cpu-moe / --cpu-moe exist for MoE expert CPU offload (APLS pillar)",
-    "Phase 0: confirmed GGML_OP_MUL_MAT_ID is implemented in the Hexagon backend, gated by a VTCM size budget check",
+    "Phase 0: confirmed GGML_OP_MUL_MAT_ID is implemented in the Hexagon backend",
     "Phase 0: confirmed no true BitNet ternary (1.58-bit) checkpoint exists for Qwen3-Coder-Next; corrected ULBC to REAP pruning + MXFP4/IQ2 post-hoc quantization (Decision D2)",
-    "Phase 0: confirmed via Hugging Face connector that Qwen/Qwen3-Coder-Next is a real base model with REAP-pruned (40B/48B/60B-A3B) and MXFP4_MOE GGUF conversions available",
+    "Phase 0: confirmed via Hugging Face connector that Qwen/Qwen3-Coder-Next is a real base model with REAP-pruned and MXFP4_MOE GGUF conversions available",
     "Phase 0: measured RAM ceiling via free -h: 10Gi total, 4.2Gi available at task start",
-    "Wrote docs/QWEN3_TRIAD_PLAN.md as the master checkable plan"
+    "Phase A: surveyed GGUF file sizes across 4 repos/quant families via HF hf_fs; smallest real candidate is mradermacher/Qwen3-Coder-Next-REAP-40B-A3B-i1-GGUF IQ1_S at 7.85 GiB -- still exceeds the 4.2GiB RAM budget as a raw file size; mmap paging behavior must be measured, not assumed, in Phase C",
+    "Phase A: verified GGUF metadata via HTTP range request (first 32MiB) + local sparse-file trick (os.truncate to real size) feeding gguf-py's GGUFReader, avoiding full multi-GB downloads",
+    "Phase A: CONFIRMED Qwen3-Coder-Next has NO MTP/NextN weights in any checked GGUF (mradermacher REAP-40B i1-IQ1_S and bartowski unpruned IQ1_S both: 48 blocks, 843 tensors, zero nextn.* tensors, no qwen3next.nextn_predict_layers KV key) and no such field in the upstream Qwen/Qwen3-Coder-Next config.json. This is upstream, not a conversion artifact. Decision D4: pillar 3 (MTP) is not usable for this model; fall back to --spec-type ngram-simple.",
+    "Phase A: read ggml-hexagon.cpp VTCM-budget code directly: VTCM gates per-op tile size (auto-shrinks, floor at 128 elem/1 row), not NPU-resident capacity. Real ceiling is opt_mbuf (GGML_HEXAGON_MBUF env var), default 1024 MiB max single fastRPC/DMA buffer -- this is the APLS tuning knob, not VTCM. Corrects the Phase 0 guess.",
+    "Phase A: picked working candidate -- mradermacher/Qwen3-Coder-Next-REAP-40B-A3B-i1-GGUF, file Qwen3-Coder-Next-REAP-40B-A3B.i1-IQ1_S.gguf",
+    "Wrote and committed docs/QWEN3_TRIAD_PLAN.md updates for Phase A findings"
   ],
   "failed_attempts": [],
   "technique_status": {
-    "ULBC_quant_type": "undecided — shortlist: REAP-40B/48B/60B-A3B GGUF (lovedheart), MXFP4_MOE per-expert (noctrex). No ternary/BitNet artifact exists for this model.",
-    "APLS_streaming_config": "undecided — plan: attention + dense FFN + shared experts NPU/GPU-resident, routed experts via --n-cpu-moe sweep; actual on-NPU routing capacity bounded by Hexagon backend VTCM budget, not yet measured",
-    "MTP_speculation_config": "undecided — plan: --spec-type draft-mtp using the model's own NextN head (no separate draft model required); ngram-simple as fallback/comparison"
+    "ULBC_quant_type": "mradermacher REAP-40B-A3B i1-IQ1_S GGUF (7.85 GiB) -- expert-pruned (256 experts, down from 512) + IQ1_S post-hoc quant with imatrix. No ternary/BitNet artifact exists for this model.",
+    "APLS_streaming_config": "plan: attention + dense FFN + shared experts NPU/GPU-resident, routed experts via --n-cpu-moe; NPU-resident MoE capacity bounded by GGML_HEXAGON_MBUF (default 1024 MiB), not VTCM. Not yet measured on-device.",
+    "MTP_speculation_config": "REVISED: draft-mtp is NOT usable -- Qwen3-Coder-Next ships no NextN/MTP weights (confirmed via GGUF metadata probe + upstream config.json). Using --spec-type ngram-simple instead. Not yet measured."
   },
   "hardware_target": "HYBRID_NPU_STREAMING",
   "metrics": {
     "prompt_tok_s": null,
     "generation_tok_s": null,
     "mtp_acceptance_pct": null,
+    "ngram_acceptance_pct": null,
     "peak_ram_mb": null
   },
-  "notes": "This track uses a separate, unpinned llama.cpp checkout (.work-qwen3/llama.cpp, not yet created) so the existing validated GPU/NPU installers and their pins (upstream.json, npu-upstream.json) are not touched. See docs/QWEN3_TRIAD_PLAN.md Decision D1."
+  "notes": "This track uses a separate, unpinned llama.cpp checkout (.work-qwen3/llama.cpp, not yet created) so the existing validated GPU/NPU installers and their pins (upstream.json, npu-upstream.json) are not touched. See docs/QWEN3_TRIAD_PLAN.md Decision D1. Candidate GGUF (7.85 GiB) exceeds the measured 4.2GiB available RAM as a raw file size; relies on mmap page-level loading, must be verified empirically for thrashing in Phase C before claiming it 'works'."
 }
