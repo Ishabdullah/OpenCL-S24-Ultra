@@ -2,7 +2,7 @@
   "schema_version": 1,
   "updated_at": "2026-10-08T06:36:00Z",
   "current_phase": "BENCHMARKING",
-  "active_subtask": "Phase C: NPU offload crash ROOT-CAUSED AND FIXED. ggml-hexagon.cpp hardcodes mmap_support=false; llama.cpp's AUTO load-mode logic disables mmap for the WHOLE model (not just the NPU's share) whenever any device in -dev reports no mmap support, forcing an eager full-file read that blew past available RAM in ~10s. Fix: pass -lm mmap explicitly (bypasses the AUTO-only mmap-disable check). Verified live with full logcat+mem+watchdog instrumentation: -dev HTP0 -lm mmap --n-cpu-moe 48 completed cleanly, no crash, no Scudo error, memory stayed healthy (free 650-760MB, available pinned at 5.5GB throughout) despite peak process RSS of ~6.1GB. Earlier Scudo 'invalid chunk state' crashes were very likely a downstream symptom of the same RSS-explosion/OOM pressure, not a distinct Hexagon kernel bug. hardware_target restored to NPU_CPU_HYBRID. Next: re-run the full Phase C sweep (baseline/APLS/ngram-simple) with -lm mmap as a now-mandatory flag whenever -dev HTP0 is used.",
+  "active_subtask": "Phase C: baseline, --n-cpu-moe sweep (0/24/48), and ngram-simple speculative decoding all measured with the -lm mmap fix applied. A separate, pre-existing, non-deterministic exit-time Scudo crash was found (reproduces even on a bare --help call, unrelated to this model/NPU) and logged as a known, non-blocking issue per explicit user instruction -- not investigated further unless it recurs/becomes blocking. Next: write up final Phase C summary and consider Phase D (README update with measured results).",
   "completed_steps": [
     "Phase 0: verified llama.cpp pin (e358d59178377be4c58ba567925e05faadbccb57) already supports LLM_ARCH_QWEN3NEXT with native NextN/MTP code path",
     "Phase 0: confirmed --spec-type draft-mtp and --spec-type ngram-simple are real CLI options at this pin",
@@ -34,7 +34,20 @@
     "Phase C: set up full forensic harness (continuous logcat stream to file, 1s/0.5s memory+process sampler, verbose llama.cpp logging) before re-testing, so a repeat crash would be fully diagnosable",
     "Phase C: ran -dev HTP0 --n-cpu-moe 48 (all MoE forced to CPU, isolating whether crash is MoE-specific) with full instrumentation -- NO Scudo crash this time, but captured a DIFFERENT failure: process RSS ballooned from 19MB to 6.2GB in ~10 seconds (measured via 1s-interval ps samples), available RAM crashed to ~15MB, swap exploded from 1.0GB to 5GB -- a genuine OOM/thrashing death spiral, not heap corruption",
     "Phase C: root-caused via source inspection: llama-model.cpp:1512-1519 disables mmap for the ENTIRE model if ANY device in -dev reports mmap_support=false under AUTO load-mode; ggml-hexagon.cpp:7517 hardcodes mmap_support=false (vs ggml-cpu.cpp's true). This means -dev HTP0 alone (regardless of --n-cpu-moe) forces eager full-file read instead of lazy paging -- explaining the RSS explosion precisely. Likely also explains the earlier Scudo aborts as a downstream symptom of the same memory exhaustion.",
-    "Phase C: FIX VERIFIED LIVE with full logcat+mem-monitor+watchdog safety net: -dev HTP0 -lm mmap --n-cpu-moe 48 (forcing mmap explicitly bypasses the AUTO-only disable check) completed cleanly -- load 10.1s, prompt eval 4.00 tok/s, decode eval 2.46 tok/s (better than CPU-only baseline's 1.21 tok/s), zero crashes, zero Scudo errors, memory stable throughout (free 650-760MB, available 5.5GB, peak RSS ~6.1GB but no thrashing). Output was incoherent at this run's settings (temp=0 greedy, no repeat-penalty) -- expected per the earlier coherence findings, orthogonal to the crash fix. -lm mmap is now a REQUIRED flag whenever -dev HTP0 is used."
+    "Phase C: FIX VERIFIED LIVE with full logcat+mem-monitor+watchdog safety net: -dev HTP0 -lm mmap --n-cpu-moe 48 (forcing mmap explicitly bypasses the AUTO-only disable check) completed cleanly -- load 10.1s, prompt eval 4.00 tok/s, decode eval 2.46 tok/s (better than CPU-only baseline's 1.21 tok/s), memory stable throughout (free 650-760MB, available 5.5GB, peak RSS ~6.1GB but no thrashing). Output was incoherent at this run's settings (temp=0 greedy, no repeat-penalty) -- expected per the earlier coherence findings, orthogonal to the crash fix. -lm mmap is now a REQUIRED flag whenever -dev HTP0 is used.",
+    "Phase C: --n-cpu-moe sweep via llama-bench (-dev HTP0 -lm mmap, -p 64 -n 16 -r 1 -b 128 -ub 128 -fa off): n-cpu-moe=48 -> pp64=7.95, tg16=1.33. n-cpu-moe=24 -> pp64=7.99, tg16=2.22. n-cpu-moe=0 -> pp64=8.28, tg16=2.30 (best). 1.24x prompt / 1.90x decode speedup over the CPU-only baseline (6.69/1.21). Full MoE routing through Hexagon MUL_MAT_ID did not hit a VTCM budget wall, correcting the Phase A worry.",
+    "Phase C: reconfigured .work-npu/build with -DLLAMA_BUILD_SERVER=ON and incrementally built the llama-cli target (reused all existing compiled objects) to get a binary exposing --spec-type, since llama-completion/llama-bench don't surface it.",
+    "Phase C: tested --spec-type ngram-simple via llama-cli with the best config (-dev HTP0 -lm mmap --n-cpu-moe 0 --repeat-penalty 1.1 --repeat-last-n 64 --single-turn): ran successfully, correct fact retained (Paris), reported Prompt: 3.5 t/s | Generation: 2.1 t/s. Pillar 3 (speculative decoding) confirmed functional in combination with the NPU fix.",
+    "Phase C: discovered via post-hoc logcat review that 5 Scudo heap-corruption aborts occurred during the sweep+ngram session, hitting llama-completion/llama-bench/llama-cli -- isolated as a SEPARATE, pre-existing, non-deterministic exit-time bug unrelated to this model or NPU (reproduces on a bare 'llama-completion --help' call, 1s uptime, no model/device involved). Logged as known_issues entry 'exit-time-scudo-abort'; user explicitly instructed to log and continue without further investigation unless it recurs/becomes blocking. All captured output (sweep numbers, ngram-simple generation) remains valid since crashes occurred after output was already printed."
+  ],
+  "known_issues": [
+    {
+      "id": "exit-time-scudo-abort",
+      "first_observed": "2026-10-08T07:54:31Z",
+      "what": "Intermittent, non-deterministic heap-corruption-on-exit: llama-completion, llama-bench, and llama-cli (all binaries sharing common/libllama-common and the Hexagon backend's static teardown code) occasionally abort with Fatal signal 6 (SIGABRT), 'Scudo ERROR: invalid chunk state when deallocating', AFTER their normal output (benchmark row, generated text, --help text) has already printed. Confirmed via logcat crash-dump context that this fires even on a bare `llama-completion --help` call (no model, no device, 1s process uptime) -- proving it is unrelated to this model, to -dev HTP0, or to the -lm mmap fix. Most likely a destructor-ordering or double-free bug in shared startup/teardown code, probabilistically detected by Scudo depending on heap layout/reuse timing at exit -- which is why many earlier runs showed no crash at all (absence of a detected abort is not proof the corruption didn't occur, just that it wasn't caught that time).",
+      "status": "NOT BLOCKING -- logged and deliberately not investigated further per explicit user instruction (\"continue as if it doesn't exist\" unless it recurs/becomes blocking). Output captured before the crash (sweep benchmark numbers, ngram-simple generation) is still considered valid, since the abort happens during teardown after the relevant data was already written.",
+      "revisit_if": "This becomes blocking, affects a long-running process (e.g. a server), or someone wants to file an upstream llama.cpp issue -- would need a debug/ASAN build to actually pin down which destructor/free is at fault."
+    }
   ],
   "failed_attempts": [
     {
@@ -52,12 +65,15 @@
   },
   "hardware_target": "NPU_CPU_HYBRID (unblocked -- requires -lm mmap whenever -dev HTP0 is used, see failed_attempts and completed_steps for root cause)",
   "metrics": {
-    "prompt_tok_s": 1.46,
-    "generation_tok_s": 0.30,
+    "cpu_only_baseline": {"prompt_tok_s": 6.69, "generation_tok_s": 1.21, "note": "llama-bench -dev none -p 64 -n 16 -r 1"},
+    "npu_n_cpu_moe_48": {"prompt_tok_s": 7.95, "generation_tok_s": 1.33},
+    "npu_n_cpu_moe_24": {"prompt_tok_s": 7.99, "generation_tok_s": 2.22},
+    "npu_n_cpu_moe_0_best": {"prompt_tok_s": 8.28, "generation_tok_s": 2.30, "speedup_vs_cpu_baseline": "1.24x prompt, 1.90x decode"},
+    "ngram_simple_speculative": {"prompt_tok_s": 3.5, "generation_tok_s": 2.1, "note": "llama-cli, -dev HTP0 -lm mmap --n-cpu-moe 0, single short prompt, not directly comparable to llama-bench numbers (different harness/overhead)"},
     "mtp_acceptance_pct": null,
-    "ngram_acceptance_pct": null,
-    "peak_ram_mb": null,
-    "_note": "first real numbers, CPU-only (--device none), no APLS/speculation tuning applied yet; see completed_steps for context. Expect NPU offload + --n-cpu-moe tuning to change this substantially."
+    "ngram_acceptance_pct": "not captured -- llama-cli's basic output doesn't print speculative accept-rate stats; would need --log-verbosity or server endpoint to get this",
+    "peak_ram_mb": 6223,
+    "_note": "all NPU numbers require -lm mmap and --n-cpu-moe as shown; -lm mmap is mandatory whenever -dev HTP0 is used on this model (see failed_attempts). A separate, non-blocking, non-deterministic exit-time crash bug exists across all binaries -- see known_issues."
   },
   "notes": "This track uses a separate, unpinned llama.cpp checkout (.work-qwen3/llama.cpp, not yet created) so the existing validated GPU/NPU installers and their pins (upstream.json, npu-upstream.json) are not touched. See docs/QWEN3_TRIAD_PLAN.md Decision D1. Candidate GGUF (7.85 GiB) exceeds the measured 4.2GiB available RAM as a raw file size; relies on mmap page-level loading, must be verified empirically for thrashing in Phase C before claiming it 'works'."
 }
