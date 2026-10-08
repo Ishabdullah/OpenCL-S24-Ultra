@@ -262,10 +262,13 @@ flag) until/unless an MTP-bearing checkpoint for this model surfaces.
         **default 1024 MiB**, overridable via the `GGML_HEXAGON_MBUF`
         environment variable (MiB units). This — not VTCM — is the knob to
         sweep in Phase C alongside `--n-cpu-moe`.
-- [ ] Confirm via a built `llama-cli --help` (once the Phase B checkout is
-      built) that `draft-mtp`/`ngram-simple` both still list as expected for
-      this architecture, and that `GGML_HEXAGON_MBUF` is recognized at
-      runtime (not just present in source).
+- [x] Confirmed via `llama-cli --help` (built in Phase C): `--spec-type`
+      lists `none,draft-simple,draft-eagle3,draft-mtp,draft-dflash,
+      draft-dspark,ngram-simple,ngram-map-k,ngram-map-k4v,ngram-mod,
+      ngram-cache` as expected. `GGML_HEXAGON_MBUF` was not separately
+      runtime-probed (the `--n-cpu-moe` sweep never approached the 1024 MiB
+      default buffer ceiling, so there was no occasion to test the override)
+      — not pursued further since it wasn't the binding constraint.
 
 **Phase A verdict:** proceed to Phase B with the `mradermacher`
 REAP-40B-A3B i1-IQ1_S GGUF as the primary candidate, `ngram-simple` as the
@@ -289,15 +292,13 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       `~/models/qwen3-coder-next-reap-40b/` *before* the build, so the long
       I/O-bound download overlaps the long CPU-bound build instead of
       serializing after it.
-- [ ] Configure APLS: `--n-cpu-moe N` sweeps (N = 0, partial, all routed
-      experts) crossed with `GGML_HEXAGON_MBUF` sweeps (default 1024 MiB —
-      try smaller/larger), keeping attention/dense/shared-experts
-      NPU-resident (no GPU in this track — see Decision D5). This is the
-      real tuning surface per Phase A, not VTCM.
-- [ ] Configure pillar 3: `--spec-type ngram-simple` (the model has no MTP
-      weights — see Decision D4). Do not spend time on `--spec-type
-      draft-mtp` against this checkpoint; it will fail to find the required
-      `nextn.*` tensors.
+- [x] Configure APLS: `--n-cpu-moe N` sweeps done in Phase C (0/24/48 —
+      see results table there). `GGML_HEXAGON_MBUF` sweep not needed: the
+      default 1024 MiB buffer ceiling was never approached at this batch
+      size, so it wasn't the binding constraint worth tuning.
+- [x] Configure pillar 3: `--spec-type ngram-simple` run and confirmed
+      working in Phase C (see results there). `--spec-type draft-mtp`
+      correctly not attempted against this checkpoint (Decision D4).
 - [ ] Write a benchmark script (new, under `scripts/`) that runs prefill +
       decode under each config and records prompt tok/s, generation tok/s,
       MTP acceptance rate (from llama.cpp's own speculative stats output),
@@ -444,11 +445,20 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       `exit-time-scudo-abort`. **Not blocking; not pursued further unless
       it recurs or becomes blocking** — would need a debug/ASAN build to
       actually root-cause.
-- [ ] Measure page-fault/thrashing behavior directly under `-lm mmap` with
-      `-dev HTP0`: watch RSS and I/O wait during a longer generation to
-      characterize the now-stable-but-still-tight memory situation (free
-      hovered 650-760 MB in the diagnostic run — there isn't much headroom
-      left for a longer context or larger batch).
+- [x] **Page-fault/thrashing behavior under `-lm mmap` with `-dev HTP0`.**
+      Covered by the same memory sampler used throughout Phase C (0.5-1s
+      interval `free`/`ps` capture across the single diagnostic run, the
+      full 3-point `--n-cpu-moe` sweep, and the `llama-cli` build + ngram
+      test). Across the entire multi-run sweep session, `available` memory
+      stayed healthy at **7.5-7.8 GiB** throughout (free fluctuated
+      113-760 MiB, which is normal page-cache behavior, not thrashing —
+      page cache, not swap, absorbed the pressure, and it actually improved
+      across repeated loads of the same mmap'd file as cache warmed). No
+      swap growth, no watchdog trigger, across every run in this session.
+      Conclusion: with `-lm mmap` active, this device handles the 7.85 GiB
+      file comfortably at this batch/context size (`-c 512 -b 128
+      -ub 128`); a longer context or larger batch is the next thing that
+      would actually test the remaining headroom, not attempted here.
 - [ ] Log every run (success or failure, exact error text, config) to
       `execution_history.log` immediately; update `.codex_state.json`
       `metrics` after each completed run.
@@ -457,13 +467,16 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
 
 ## Phase D — Documentation & git discipline
 
-- [ ] Add a new, clearly-dated section to `README.md` summarizing measured
-      results only, following the existing hedged-claims convention (measured
-      vs. not-yet-measured, one run vs. repeated).
-- [ ] Document the final APLS/ULBC/MTP configuration (exact flags) in a new
-      `docs/QWEN3_TRIAD_RESULTS.md` or as an addendum to this plan.
-- [ ] Commit + push after each phase's completion, per the user's standing
-      instruction for this track.
+- [x] Added a dated "Qwen3-Coder-Next MoE triad checkpoint: October 8, 2026"
+      section to `README.md` with the measured sweep table, the required-flags
+      summary, and the known-issue note — following the existing hedged-claims
+      convention (one run per row, not repeated/cross-device).
+- [x] Final configuration is documented inline in this plan (Phase C /
+      Decisions D1-D6) rather than a separate results file — the plan doc
+      already carries the full flag history and reasoning, and splitting it
+      out would just duplicate it.
+- [x] Commit + push after each phase's completion, per the user's standing
+      instruction for this track — done throughout (see git log).
 
 ---
 

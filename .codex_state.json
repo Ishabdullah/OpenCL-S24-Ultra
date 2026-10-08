@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "updated_at": "2026-10-08T06:36:00Z",
-  "current_phase": "BENCHMARKING",
-  "active_subtask": "Phase C: baseline, --n-cpu-moe sweep (0/24/48), and ngram-simple speculative decoding all measured with the -lm mmap fix applied. A separate, pre-existing, non-deterministic exit-time Scudo crash was found (reproduces even on a bare --help call, unrelated to this model/NPU) and logged as a known, non-blocking issue per explicit user instruction -- not investigated further unless it recurs/becomes blocking. Next: write up final Phase C summary and consider Phase D (README update with measured results).",
+  "current_phase": "DOCUMENTATION",
+  "active_subtask": "Phase C and D substantially complete. Baseline, --n-cpu-moe sweep (0/24/48), and ngram-simple speculative decoding all measured with the -lm mmap fix applied; README updated with a dated measured-results section. Remaining open item: scripts/ benchmark automation script (optional, not yet written). Known exit-time Scudo crash logged as non-blocking per explicit user instruction.",
   "completed_steps": [
     "Phase 0: verified llama.cpp pin (e358d59178377be4c58ba567925e05faadbccb57) already supports LLM_ARCH_QWEN3NEXT with native NextN/MTP code path",
     "Phase 0: confirmed --spec-type draft-mtp and --spec-type ngram-simple are real CLI options at this pin",

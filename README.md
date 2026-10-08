@@ -29,6 +29,47 @@ All three completed, and all 128 generated tokens matched in this repetitive tes
 
 A separate NPU-prefill/CPU-decode prototype beat CPU and full NPU in **three repeated Mistral 7B tests with a 2048-token prompt and 128 outputs**: mean warm response **116.13 seconds CPU, 39.68 full NPU, 29.17 hybrid**. This is a bounded resident-model benefit, distinct from the negative OpenCL screen. It does not establish generation-only, energy or sustained thermal superiority. These experimental 7B changes are **not installer defaults or a new clean-room installer validation**. No final generic OpenCL crossover, extra accelerator RAM or general thermal winner is established. The [NPU guide](docs/NPU_INSTALL.md) covers the separately validated source-build installer.
 
+## Qwen3-Coder-Next MoE triad checkpoint: October 8, 2026
+
+A separate track pivoted to **Qwen3-Coder-Next** (a 48-layer, 256-expert MoE
+with hybrid full-attention/linear-recurrent layers), targeting ultra-low-bit
+compression, NPU-resident attention with CPU/RAM-streamed MoE experts, and
+speculative decoding. Full plan, decisions, and reproduction steps:
+[docs/QWEN3_TRIAD_PLAN.md](docs/QWEN3_TRIAD_PLAN.md). This uses the same
+`install-npu.sh`-built CPU+Hexagon binaries as above, plus one additional
+incrementally-built `llama-cli` target; it does not touch the GPU/NPU
+installers' pins.
+
+Model: [`mradermacher/Qwen3-Coder-Next-REAP-40B-A3B-i1-GGUF`](https://huggingface.co/mradermacher/Qwen3-Coder-Next-REAP-40B-A3B-i1-GGUF)
+IQ1_S (7.85 GiB, expert-pruned from 512 to 256 experts). No MTP/NextN
+weights exist for this model (confirmed against the upstream checkpoint, not
+just this GGUF), so speculative decoding used `ngram-simple` rather than the
+originally planned `draft-mtp`.
+
+| Config (`llama-bench`, `-p 64 -n 16 -r 1`) | Prefill tok/s | Decode tok/s |
+|---|---:|---:|
+| CPU only | 6.69 | 1.21 |
+| NPU, `--n-cpu-moe 48` (MoE on CPU) | 7.95 | 1.33 |
+| NPU, `--n-cpu-moe 24` | 7.99 | 2.22 |
+| NPU, `--n-cpu-moe 0` (MoE through NPU too) | 8.28 | 2.30 |
+
+One run per row, same prompt/output length, same device, same session —
+not a repeated or cross-device claim. The NPU rows **require** `-lm mmap`:
+the Hexagon backend reports no mmap support, and llama.cpp's default `auto`
+load mode disables mmap for the *entire* model the instant any `-dev`
+device lacks it, forcing an eager full-file read that overflows this
+device's RAM in seconds. `-lm mmap` bypasses that. `ngram-simple`
+speculative decoding ran successfully on the best config (3.5/2.1 tok/s on
+a short prompt, not directly comparable to the table above). At IQ1_S,
+`--repeat-penalty 1.1 --repeat-last-n 64` is required for coherent output;
+without it, generation degenerates into a repetition loop.
+
+A separate, pre-existing, intermittent heap-corruption-on-exit affects
+`llama-completion`/`llama-bench`/`llama-cli` on this build (reproduces even
+on a bare `--help` call with no model) — unrelated to this model or the NPU
+work above, not yet root-caused, and not blocking: it fires after a run's
+output has already printed. Tracked in `.codex_state.json`.
+
 ## NPU installation: fresh Termux to model generation
 
 For the separate CPU + Hexagon v75 NPU build, use:
