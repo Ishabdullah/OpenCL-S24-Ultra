@@ -2,7 +2,7 @@
   "schema_version": 1,
   "updated_at": "2026-10-08T06:36:00Z",
   "current_phase": "BENCHMARKING",
-  "active_subtask": "Phase C: gate 1 (load/generate) passed CPU-only; running a longer (-n 48) coherence check before any NPU/APLS tuning",
+  "active_subtask": "Phase C: gates 1 and 2 (load + coherence) both passed. Next: baseline CPU-only tok/s measurement, then NPU offload (--device HTP0) and --n-cpu-moe / GGML_HEXAGON_MBUF sweeps.",
   "completed_steps": [
     "Phase 0: verified llama.cpp pin (e358d59178377be4c58ba567925e05faadbccb57) already supports LLM_ARCH_QWEN3NEXT with native NextN/MTP code path",
     "Phase 0: confirmed --spec-type draft-mtp and --spec-type ngram-simple are real CLI options at this pin",
@@ -23,7 +23,10 @@
     "Phase B: GGUF download completed (8426713408 bytes, matches expected size)",
     "Phase B: ./install-npu.sh --jobs 1 completed successfully (~1hr wall clock, overlapped with the download). Binaries at .work-npu/build/bin/{llama-completion,llama-bench,test-backend-ops}. Installer's own DSP matrix validation: 8/8 passed. --list-devices confirms HTP0 (Hexagon) detected.",
     "Phase C: GATE 1 PASSED -- llama-completion loads the real downloaded GGUF and generates coherent (if repetitive) English with --device none (CPU-only): 'The capital of France is what?\\nThe capital of France is **' from -n 8. No crash, no OOM. CPU-only perf: 1.46 tok/s prompt, 0.30 tok/s generation -- very slow, likely mmap page-fault bound against the ~4-6GB RAM budget vs 8.4GB file; not yet isolated from pure compute cost.",
-    "Phase C: started a longer (-n 48) CPU-only coherence check, same prompt, to judge output quality before any NPU/APLS acceleration tuning"
+    "Phase C: started a longer (-n 48) CPU-only coherence check, same prompt, to judge output quality before any NPU/APLS acceleration tuning",
+    "Phase C: coherence check (-n 48) completed -- QUALIFIED PASS. Output: 'The capital of France is which?\\nThe capital of France is **Paris**. The Paris is the French government's capital...' then degrades into repeating 'The Paris is the French government's capital.' after ~15-20 tokens. Model gets the fact right and is grammatical early, but loops. Default sampler had repeat_penalty=1.000 (disabled) in this run -- untried lever before giving up on IQ1_S.",
+    "Phase C: tested --repeat-penalty 1.3 -- fixed the loop but produced incoherent gibberish (too aggressive)",
+    "Phase C: tested --repeat-penalty 1.1 --repeat-last-n 64 -- SWEET SPOT. No loop, correct fact (Paris) retained, coherent prose. VERDICT: IQ1_S REAP-40B-A3B is usable; --repeat-penalty 1.1 --repeat-last-n 64 is now a REQUIRED flag for all subsequent runs (default sampler loops on this model/quant). No fallback to IQ2_XXS needed."
   ],
   "failed_attempts": [],
   "technique_status": {

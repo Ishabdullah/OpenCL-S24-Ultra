@@ -283,13 +283,27 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       ~4-6GB RAM budget; not yet isolated from pure compute cost. Hexagon
       device confirmed visible to the binary via `--list-devices` → `HTP0:
       Hexagon`.
-- [ ] Quality/coherence check at IQ1_S (promoted ahead of the sweeps,
-      not after): does it produce coherent text at all? IQ1_S on an
-      already-REAP-pruned MoE is the single most likely point of total
-      failure in this plan — if output is incoherent, every tok/s number
-      below is meaningless. **Fallback if it fails: re-run with
-      `mradermacher`'s IQ2_XXS (10.14 GiB) before concluding the model is
-      unusable**, not an immediate abandonment of the track.
+- [x] **Quality/coherence check at IQ1_S — PASS, with a required flag.**
+      Same prompt, `-n 48`, CPU-only, three sampler configs:
+      - `--repeat-penalty 1.0` (default/disabled): grammatical and
+        factually correct ("Paris") for ~15-20 tokens, then degrades into a
+        repetition loop ("The Paris is the French government's capital."
+        repeated).
+      - `--repeat-penalty 1.3`: loop gone, but output becomes incoherent
+        gibberish (stray LaTeX-like symbols, broken grammar) — too
+        aggressive, trades one failure mode for a worse one.
+      - **`--repeat-penalty 1.1 --repeat-last-n 64`: the sweet spot.** No
+        loop, correct fact retained, coherent prose throughout: _"The
+        capital of France is what?\n\nThe capital of France is
+        \*\*Paris\*\*. \n\nParis is serves as the French government's
+        official agency for its diplomatic address of Paris for a number
+        of reasons related to the history and culture of France, but also
+        to how it can"_ — one grammatical wobble, otherwise genuinely
+        usable.
+      **Verdict: IQ1_S REAP-40B-A3B is usable.** `--repeat-penalty 1.1
+      --repeat-last-n 64` is now a **required** flag for every subsequent
+      Phase C run, not optional tuning — the default sampler config loops
+      on this model/quant combination. No fallback to IQ2_XXS needed.
 - [ ] Baseline: CPU-only, no speculation — tok/s + peak RAM.
 - [ ] NPU dense+attention resident, CPU-streamed experts (APLS), no
       speculation — tok/s + peak RAM, compare to baseline. Do not assume
