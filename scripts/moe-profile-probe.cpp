@@ -122,9 +122,9 @@ static void evaluate(llama_context * ctx, llama_batch_ext * batch,
 }
 
 int main(int argc, char ** argv) {
-    // MODEL PROMPT GEN THREADS BATCH UBATCH
-    if (argc != 7) {
-        fprintf(stderr, "usage: %s MODEL PROMPT_TOKENS GEN_TOKENS THREADS BATCH UBATCH\n", argv[0]);
+    // MODEL PROMPT GEN THREADS BATCH UBATCH [SEED_TEXT]
+    if (argc != 7 && argc != 8) {
+        fprintf(stderr, "usage: %s MODEL PROMPT_TOKENS GEN_TOKENS THREADS BATCH UBATCH [SEED_TEXT]\n", argv[0]);
         return 2;
     }
     const std::string model_path = argv[1];
@@ -133,6 +133,8 @@ int main(int argc, char ** argv) {
     const int threads = std::stoi(argv[4]);
     const int batch_size = std::stoi(argv[5]);
     const int ubatch = std::stoi(argv[6]);
+    const std::string seed_text = argc == 8 ? argv[7] :
+        "The history of the French Revolution began with a severe fiscal crisis caused by France's involvement in several costly wars, including the American Revolution. ";
 
     try {
         llama_backend_init();
@@ -169,8 +171,8 @@ int main(int argc, char ** argv) {
 
         auto * vocab = llama_model_get_vocab(model);
         const int nv = llama_vocab_n_tokens(vocab);
-        std::string text = "The history of the French Revolution began with a severe fiscal crisis caused by France's involvement in several costly wars, including the American Revolution. ";
-        while ((int) text.size() < prompt_n * 8) text += "The fiscal crisis deepened as the national debt grew and tax revenues failed to keep pace with expenditures. ";
+        std::string text = seed_text;
+        while ((int) text.size() < prompt_n * 8) text += seed_text;
         int nt = -llama_tokenize(vocab, text.data(), text.size(), nullptr, 0, true, true);
         std::vector<llama_token> tokens(nt);
         nt = llama_tokenize(vocab, text.data(), text.size(), tokens.data(), nt, true, true);

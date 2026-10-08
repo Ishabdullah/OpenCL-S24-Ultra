@@ -834,6 +834,29 @@ and speed, not an approximation.
       a documented, measured property of this system, not an assumption:
       expect better real-world hit rates for longer conversations/
       generations than for short ones.
+- [x] **Domain-specificity check (user's choice, option 2): does a
+      narrower task — sustained code generation — show better locality
+      than generic prose? No, not measurably.** Added an optional
+      `SEED_TEXT` CLI arg to the probe; reran at the same 96-decode-token
+      window with a code-generation prompt (binary search tree + unit
+      tests) instead of generic prose. Clean run, zero crashes.
+
+      | Cache size K/layer | Generic prose (127 calls) | Code prompt (127 calls) |
+      |---:|---:|---:|
+      | 32 | 49.9% | 48.3% |
+      | 64 | 63.0% | 59.0% |
+      | 128 | 69.5% | 65.9% |
+      | 192 | 72.2% | 69.5% |
+
+      The two prompts land within normal run-to-run variation of each
+      other (code slightly lower, if anything) — the hypothesis that task
+      domain drives expert clustering did not hold at this sample size.
+      **Window length, not task domain, was the dominant factor** in the
+      earlier short-vs-long-window improvement. This is also reassuring in
+      a different way: the 50-70% hit-rate range is now confirmed
+      reproducible across two independent prompts, not a fluke of one
+      sample, strengthening confidence in it as the real expected payoff
+      for Phase 1 regardless of task type.
 
 ---
 
