@@ -34,14 +34,21 @@
 // index so the profiling analysis can group by (layer, step) cleanly.
 static std::map<int, int> g_layer_step_counter;
 
+// A/B harness for isolating the per-layer host-sync cost (see the "does
+// the cache's benefit get eaten by the readback tax" discussion in
+// docs/QWEN3_TRIAD_PLAN.md Phase G): MOE_PROBE_MODE env var selects:
+//   "off"   -- no callback at all (baseline, no extra sync points)
+//   "sync"  -- callback fires and does the real ggml_backend_tensor_get
+//              host readback (the actual cost we're isolating), but does
+//              NOT print -- so stderr I/O never pollutes the timing.
+//   "print" -- readback AND print (the original full-fidelity capture
+//              mode, for locality analysis, not for timing).
+static std::string g_mode = "print";
+
 static bool moe_topk_cb_eval(struct ggml_tensor * t, bool ask, void * /*user_data*/) {
     if (ask) {
         return strncmp(t->name, "ffn_moe_topk-", 13) == 0;
     }
-    int il = -1;
-    sscanf(t->name, "ffn_moe_topk-%d", &il);
-    int step = g_layer_step_counter[il]++;
-
     const int64_t n = ggml_nelements(t);
     std::vector<int32_t> buf(n);
     if (ggml_backend_buffer_is_host(t->buffer)) {
@@ -49,11 +56,16 @@ static bool moe_topk_cb_eval(struct ggml_tensor * t, bool ask, void * /*user_dat
     } else {
         ggml_backend_tensor_get(t, buf.data(), 0, n * sizeof(int32_t));
     }
-    fprintf(stderr, "MOE_TOPK layer=%d step=%d experts=[", il, step);
-    for (int64_t i = 0; i < n; ++i) {
-        fprintf(stderr, "%s%d", i ? "," : "", buf[i]);
+    if (g_mode == "print") {
+        int il = -1;
+        sscanf(t->name, "ffn_moe_topk-%d", &il);
+        int step = g_layer_step_counter[il]++;
+        fprintf(stderr, "MOE_TOPK layer=%d step=%d experts=[", il, step);
+        for (int64_t i = 0; i < n; ++i) {
+            fprintf(stderr, "%s%d", i ? "," : "", buf[i]);
+        }
+        fprintf(stderr, "]\n");
     }
-    fprintf(stderr, "]\n");
     return true;
 }
 
@@ -162,9 +174,14 @@ int main(int argc, char ** argv) {
         cp.offload_kqv = true;
 
         // Wire the custom, untruncated expert-selection capture (see
-        // moe_topk_cb_eval above).
-        cp.cb_eval = moe_topk_cb_eval;
-        cp.cb_eval_user_data = nullptr;
+        // moe_topk_cb_eval above) -- unless MOE_PROBE_MODE=off, for the
+        // A/B sync-cost isolation test.
+        if (const char * mode_env = getenv("MOE_PROBE_MODE")) g_mode = mode_env;
+        fprintf(stderr, "PROBE: mode=%s\n", g_mode.c_str());
+        if (g_mode != "off") {
+            cp.cb_eval = moe_topk_cb_eval;
+            cp.cb_eval_user_data = nullptr;
+        }
 
         auto * ctx = llama_init_from_model(model, cp);
         if (!ctx) throw std::runtime_error("context allocation failed");

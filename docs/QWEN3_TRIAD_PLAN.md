@@ -860,6 +860,60 @@ and speed, not an approximation.
 
 ---
 
+## Phase G — Before writing the cache: isolating the per-layer sync tax
+
+A real bounded expert cache needs a per-layer host-sync point (read the
+router's decision back to the host, decide hit/miss, before the expert
+weights can be gathered) — this is architecturally required because each
+layer's MoE weights are **one single packed tensor per layer**
+(`blk.N.ffn_gate_exps` etc.), not 256 separately-addressable expert
+tensors, confirmed via `src/llama-arch.cpp`. `ggml_mul_mat_id` gathers
+internally from that one tensor using the router's `ids`; there's no
+per-expert tensor to rebind the way the hybrid NPU→CPU handoff patch did.
+
+This splits two costs that behave differently as the cache "learns":
+1. **Data-copy cost on a miss** (re-reading an expert from storage) —
+   shrinks as hit rate improves; this is exactly what Phase F measured
+   (50-70% reduction at a warmed-up cache).
+2. **Fixed per-layer sync cost** (reading the router's decision back to
+   host) — happens every layer, every token, regardless of hit or miss;
+   does **not** shrink with learning.
+
+- [x] **Attempted to isolate cost #2 via an A/B test — inconclusive, and
+      honestly reported as such.** Added `MOE_PROBE_MODE` (`off`/`sync`/
+      `print`) to the probe: `off` = no eval callback; `sync` = the real
+      `ggml_backend_tensor_get` host readback happens every layer but
+      nothing is printed (isolates sync cost from stderr I/O noise).
+      Ran both at identical config (32-tok prompt, 96-tok decode,
+      `-t 6`), zero crashes either way. **Result: `off` = 0.268 tok/s,
+      `sync` = 0.466 tok/s — the run *with* extra readback was faster.**
+      This is not evidence the readback is free; it's evidence that
+      run-to-run environmental noise on this device (thermal state,
+      scheduling, page-cache warmth from repeated loads of the same
+      `mmap`'d file) swings by roughly 2x between consecutive runs —
+      large enough to swamp whatever the true per-layer sync cost
+      actually is. A single A/B pair cannot isolate an effect this size
+      against noise this large; a confident measurement would need many
+      repeated, order-randomized trials.
+      **Directionally reassuring, not precise**: every run measured
+      across this whole session, regardless of readback mode — plain
+      `llama-cli` (0.2-0.4 tok/s), this probe in any mode (0.27-0.47
+      tok/s) — lands in the same rough range. No evidence of a
+      catastrophic, order-of-magnitude tax from per-layer sync. But
+      there is no confident number for it either.
+- [ ] **Decision point, not yet resolved**: given this inconclusive (but
+      not alarming) overhead signal and the real implementation
+      complexity already identified (splitting `build_moe_ffn`'s
+      per-layer graph construction, new persistent slot-management state,
+      correctness risk around DMA/read ordering), decide whether to:
+      (a) commit to the full implementation anyway, accepting the
+      uncertainty; (b) invest in a more rigorous multi-trial measurement
+      of the sync tax first; or (c) stop here, given the balance of
+      effort and risk already incurred against a benefit that is real
+      but not yet precisely quantified net of this cost.
+
+---
+
 ## State & recovery
 
 - `.codex_state.json` (repo root, gitignored is **not** required — it's
