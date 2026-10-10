@@ -1,0 +1,13 @@
+{
+  "upstream_commit": "e358d59178377be4c58ba567925e05faadbccb57",
+  "sha256": {
+    "scripts/moe-slot-cache.h": "4db9196fbcf697bc83d4e471f1c7ce5a53dc4f9bba601893df65f9471816bdd2",
+    "scripts/moe-cache-validate.cpp": "0e177ca1b3283e48fce44a198ff7a0659b79ab6b3597ff5a5e444c3a747468ff",
+    "scripts/apply-moe-cache.py": "5be4da273e887e051b5e55196b8048810f25448e24b024951e8f06d7dea30d1a",
+    "patches/experimental-cpu-moe-cache.patch": "e8232f3a9ac41a0d5562d8ca65a8ca6bad2581b733ca568ce796c705f83d5607",
+    "patches/experimental-cpu-moe-cache.json": "b6e879b73e36a157a74fbf0cc7118bf5816c5c927b3b4910fde68be3a5da0b2f",
+    "tests/test_moe_slot_cache.cpp": "f7494d3d0e96e6d18862054cf5288f9990e005bb1daae9d5e0395a71e2c2f996",
+    "tests/test_moe_cache_graph.cpp": "c1c9303920fc340d87caf70fe7657f118eba35455fb0d272fffabd8fa2ec70f9",
+    "reports/2026-10-10/cache/run-validation.py": "59b543e5a67367fef14cc0349660e06020b063c6d14cffe3ebbc81157d01d930"
+  }
+}

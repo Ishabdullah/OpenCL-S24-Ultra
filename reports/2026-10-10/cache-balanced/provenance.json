@@ -1,0 +1,15 @@
+{
+  "upstream_commit": "e358d59178377be4c58ba567925e05faadbccb57",
+  "sha256": {
+    "scripts/moe-cache-benchmark.cpp": "a17762b3ed620b2fc71cef43ed3ae2b6e1a2a68d5b3ea0a507acc0f5079292a2",
+    "scripts/analyze-moe-cache-benchmark.py": "5d3ddb4f2885081a43199fc37deb74785aa873ec882c4be69cc95964b4a1fee7",
+    "scripts/moe-thermal-monitor.py": "d61f3a7a2fa7d47c8575be00df68bc863f506420dbfe8e1cb23e93785dda949e",
+    "tests/test_moe_cache_benchmark_analysis.py": "86bc6b81e594b1aef3b7f2b9544a4760e393209e36375c905a5c6a73b02b7486",
+    "reports/2026-10-10/cache-balanced/run-benchmark.py": "e6c0b13ff9c8e6d8f76a897c54e5b59fb98e0da23c46a0080f03c646412d5f31",
+    "patches/experimental-cpu-moe-cache.patch": "e8232f3a9ac41a0d5562d8ca65a8ca6bad2581b733ca568ce796c705f83d5607"
+  },
+  "runner_at_launch_sha256": "8f66ec8e5627d6b154218425e1c38d1c09ec8bc892b4e7ff21922e7a0883deac",
+  "benchmark_binary_sha256": "f5db57ca239e5a45ab845adc809b054d22eb2ccfbd0b819a745c57311ed4e65e",
+  "cpu_library_sha256": "2f6f0271d56bf21bd4c98e71a9aaa95055634fb96e7a1f1431c45a72793e6751",
+  "note": "Recorded run launched before thermal collection was integrated into the saved runner. A separate collector was attached mid-pass 1, then updated to tag phases while preserving its earlier samples. Current runner starts that collector immediately. Cache implementation unchanged."
+}

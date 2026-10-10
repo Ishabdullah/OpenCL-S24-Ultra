@@ -1,0 +1,28 @@
+[
+  {
+    "slots": 32,
+    "allocated_bytes": 1168375808,
+    "requests": 7680,
+    "hits": 34554,
+    "misses": 25926,
+    "evictions": 22086,
+    "copied_bytes": 7929913344,
+    "oversized": 120,
+    "budget_fallback": 0,
+    "identity_fallback": 0,
+    "pass": 2
+  },
+  {
+    "slots": 32,
+    "allocated_bytes": 1168375808,
+    "requests": 7680,
+    "hits": 34554,
+    "misses": 25926,
+    "evictions": 22086,
+    "copied_bytes": 7929913344,
+    "oversized": 120,
+    "budget_fallback": 0,
+    "identity_fallback": 0,
+    "pass": 3
+  }
+]

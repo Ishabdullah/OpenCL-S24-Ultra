@@ -1,0 +1,25 @@
+{
+  "recorded_at": "2026-10-10T18:50:54.424322+00:00",
+  "sha256": {
+    "scripts/moe-cache-benchmark.cpp": "ac193de640fff854081ffaabcb188a137ce509a3a87a862957b73b5f5968a55a",
+    "scripts/moe-thermal-admission.py": "054f2e758d5fe03bfbfef27673a13bfb4b134f6e9e2f2db4d7c161b80dea5057",
+    "scripts/moe-thermal-monitor.py": "d61f3a7a2fa7d47c8575be00df68bc863f506420dbfe8e1cb23e93785dda949e",
+    "scripts/analyze-moe-cache-benchmark.py": "8f28ff6012d0fcdee4b9b6c4b0147a496863e84149a9d2f334fbfd72ed161671",
+    "reports/2026-10-10/cache-thermal-matched/run-benchmark.py": "7a2f54bb8602dca0f5828f41f08abc70eae8be1a565f973448a67d3f23880281",
+    "tests/test_moe_thermal_admission.py": "0293533dbc3c6b6d8a919bd87d717b16ccccc80826c04267b531563476a1f72b",
+    "tests/test_moe_cache_benchmark_analysis.py": "48b685c649f71fb3396bdccd3abb11737e5687797e3a5d835bce78c88c877fa5",
+    ".work-npu/build/bin/moe-cache-benchmark": "7214511571356a76bc8944248dad50070829884f6abe3ef7fd5a1233bf0dc493",
+    ".work-npu/build/bin/libggml-cpu.so": "2f6f0271d56bf21bd4c98e71a9aaa95055634fb96e7a1f1431c45a72793e6751",
+    "patches/experimental-cpu-moe-cache.patch": "e8232f3a9ac41a0d5562d8ca65a8ca6bad2581b733ca568ce796c705f83d5607"
+  },
+  "notes": [
+    "Same expert cache implementation and ABBA 64-position trajectory as previous trial.",
+    "Added post-context thermal handshake outside timed evaluation; initial stable-window medians frozen as common reference.",
+    "No environmental controls beyond admission; page cache, within-pass heating and scheduling remain uncontrolled.",
+    "Analyzer gained partial-window auditing during the wait; the benchmark, runner and admission policy stayed unchanged throughout execution."
+  ],
+  "final_analysis_sha256": {
+    "scripts/analyze-moe-cache-benchmark.py": "df0bb8591529d34b16627d71acd8cfda44b5a706c3d9cabd84155c4a020d0da2",
+    "tests/test_moe_cache_benchmark_analysis.py": "98d55679b1f1fc76ca5169abfa10b6f8cff3e13f1dfe146943a4619404fa52cf"
+  }
+}

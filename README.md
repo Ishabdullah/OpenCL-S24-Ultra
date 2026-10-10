@@ -13,6 +13,20 @@ Builds a pinned llama.cpp revision with Android `sphal` vendor-runtime loading. 
 
 OpenCL was 32.8% slower for prompt processing and 66.9% slower for generation. Measurements and reproduction details: [Benchmarks](docs/BENCHMARKS.md).
 
+## Qwen3.6 throughput checkpoint: October 10, 2026
+
+The opt-in CPU expert cache reached **1.333 tokens/sec peak** on
+Qwen3.6-35B-A3B UD-IQ1_M with **64 cache slots, four CPU threads and a
+2560 MiB cache budget**, using HTP0 with forced mmap. Two cooled runs
+pooled **1.041 tokens/sec**; all 256 replayed logit vectors matched exactly.
+Measurements time synchronized forward calls, excluding sampling and setup.
+These are observations on one prompt/device; installer defaults remain unchanged.
+
+Read the [performance handoff](docs/QWEN36_PERFORMANCE_HANDOFF.md) for
+settings, reproduction, completed checks and next work, and the
+[cooled follow-up results](reports/2026-10-10/cache-throughput-confirmation/README.md)
+for raw evidence and variability. Allow 3–5 minute cooling pauses between runs.
+
 ## Performance investigation checkpoint: October 5, 2026
 
 The [CPU/OpenCL/NPU/hybrid report](OPENCL_PERFORMANCE_ANALYSIS.md), [October 5 measurements and helper source](reports/2026-10-05/), and [remaining work](reports/2026-10-05/NEXT_WORK.md) are available. **The requested three tests are complete; testing is paused.** Broader characterization remains incomplete. The [October 4 checkpoint](reports/2026-10-04/) is preserved. Power epochs, scheduling exclusions, profiling and warm versus cold-start latency remain separate.
@@ -112,6 +126,38 @@ A separate, pre-existing, intermittent heap-corruption-on-exit affects
 on a bare `--help` call with no model) — unrelated to this model or the NPU
 work above, not yet root-caused, and not blocking: it fires after a run's
 output has already printed. Tracked in `.codex_state.json`.
+
+## Repeated-prompt expert mapping: October 10, 2026
+
+Eight sampled continuations on Qwen3.6-35B-A3B UD-IQ1_M completed cleanly.
+A frozen map from the first six trials covered **92.37% of held-out decode
+expert selections**, but required **4.47 GiB of expert weights alone**.
+The union continued growing through trial eight. This supports retaining
+full-model fallback and pursuing a bounded cache; it does not establish
+a cache speedup or a safe reduced model. [Measurements and reproduction](reports/2026-10-10/README.md).
+
+A follow-up **32-slot bounded expert cache prototype** now passes a full-model
+correctness gate: all vocabulary logits were bit-identical at 16 positions,
+with **1.09 GiB** of cached expert payload and eviction exercised. The
+IQ1/IQ2 experts use CPU fallback, so the cache belongs in the CPU backend;
+HTP layer offload counts do not prove NPU expert execution. In one
+baseline-then-cache pair, evaluation time fell from 41.147 to 24.003 seconds
+and storage reads from 42.87 to 10.54 GiB. These order-biased measurements
+need repeated testing. The feature is opt-in, separate from installer
+defaults. [Implementation, validation and operation](reports/2026-10-10/cache/README.md).
+
+Four longer trials in baseline/cache/cache/baseline order now preserve all
+logits bit for bit across the 64 evaluated positions. Mean forward evaluation
+time was **288.2 → 122.7 seconds (2.35×)**, with **83.3% fewer storage reads**.
+Readable thermal sensors recorded a **42.2°C battery peak** and **84.9°C CPU
+sensor peak**. Starting temperatures were unmatched and the first-pass
+thermal trace is partial; these two pairs do not establish sustained thermal
+superiority. [Balanced trials and temperature trace](reports/2026-10-10/cache-balanced/README.md).
+
+A subsequent trial with fixed starting-temperature admission stopped before
+cached inference: the battery did not return to its initial 25.3–26.1°C
+band within 15 minutes. It supplies **no new comparative result**.
+[Admission implementation and incomplete trace](reports/2026-10-10/cache-thermal-matched/README.md).
 
 ## NPU installation: fresh Termux to model generation
 

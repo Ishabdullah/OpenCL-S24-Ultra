@@ -1,0 +1,154 @@
+{
+  "status": "incomplete_thermal_admission_timeout",
+  "comparative_result_available": false,
+  "completed_passes": [
+    {
+      "type": "pass",
+      "pass": 1,
+      "slots": 0,
+      "evaluated_positions": 64,
+      "decode_evaluations": 63,
+      "bit_identical_positions": 0,
+      "prefill_s": 5.894366,
+      "decode_s": 273.421917,
+      "evaluation_s": 279.316283,
+      "decode_tok_s": 0.230413,
+      "prefill_storage_bytes": 8480849920,
+      "decode_storage_bytes": 246189342720,
+      "storage_bytes": 254670192640,
+      "available_start_kib": 4885272,
+      "available_end_kib": 6076284,
+      "rss_start_kib": 1431612,
+      "rss_end_kib": 418172
+    }
+  ],
+  "validated_admissions": [
+    {
+      "target_c": {
+        "battery_c": 25.7,
+        "cpu_max_c": 36.8,
+        "htp_max_c": 34.6
+      },
+      "tolerance_c": {
+        "battery_c": 0.4,
+        "cpu_max_c": 4.0,
+        "htp_max_c": 4.0
+      },
+      "initial_ceiling_c": {
+        "battery_c": 34.0,
+        "cpu_max_c": 55.0,
+        "htp_max_c": 45.0
+      },
+      "hold_s": 30.0,
+      "window_start_monotonic_s": 399943.097101649,
+      "window_end_monotonic_s": 399973.180820387,
+      "samples": 16,
+      "window_c": {
+        "battery_c": {
+          "min": 25.7,
+          "max": 25.7
+        },
+        "cpu_max_c": {
+          "min": 35.0,
+          "max": 40.5
+        },
+        "htp_max_c": {
+          "min": 34.2,
+          "max": 35.0
+        }
+      },
+      "admitted_c": {
+        "battery_c": 25.7,
+        "cpu_max_c": 36.6,
+        "htp_max_c": 34.6
+      },
+      "pass_number": 1,
+      "slots": 0,
+      "wait_s": 242.6312714179512,
+      "utc": "2026-10-10T18:55:13.181786+00:00"
+    }
+  ],
+  "verified_logit_vectors": 0,
+  "reference_tokens_match_previous_trial": true,
+  "recorded_peak_c": {
+    "battery_c": 32.9,
+    "cpu_max_c": 76.7,
+    "htp_max_c": 70.1
+  },
+  "last_sample": {
+    "battery_c": 28.8,
+    "cpu_max_c": 40.1,
+    "htp_max_c": 37.4
+  },
+  "pass_2_wait": {
+    "sampled_s": 900.4113021040102,
+    "battery_first_c": 32.9,
+    "battery_last_c": 28.8,
+    "battery_min_c": 28.8,
+    "samples": 450
+  },
+  "run": {
+    "command": [
+      "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/moe-cache-benchmark",
+      "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+      "64"
+    ],
+    "returncode": -15,
+    "stop_reason": "pass 2 thermal admission exceeded 900 seconds",
+    "elapsed_s": 1469.6171866270015,
+    "minimum_available_kib": 4542928,
+    "peak_rss_kib": 5943296,
+    "admissions": [
+      {
+        "target_c": {
+          "battery_c": 25.7,
+          "cpu_max_c": 36.8,
+          "htp_max_c": 34.6
+        },
+        "tolerance_c": {
+          "battery_c": 0.4,
+          "cpu_max_c": 4.0,
+          "htp_max_c": 4.0
+        },
+        "initial_ceiling_c": {
+          "battery_c": 34.0,
+          "cpu_max_c": 55.0,
+          "htp_max_c": 45.0
+        },
+        "hold_s": 30.0,
+        "window_start_monotonic_s": 399943.097101649,
+        "window_end_monotonic_s": 399973.180820387,
+        "samples": 16,
+        "window_c": {
+          "battery_c": {
+            "min": 25.7,
+            "max": 25.7
+          },
+          "cpu_max_c": {
+            "min": 35.0,
+            "max": 40.5
+          },
+          "htp_max_c": {
+            "min": 34.2,
+            "max": 35.0
+          }
+        },
+        "admitted_c": {
+          "battery_c": 25.7,
+          "cpu_max_c": 36.6,
+          "htp_max_c": 34.6
+        },
+        "pass_number": 1,
+        "slots": 0,
+        "wait_s": 242.6312714179512,
+        "utc": "2026-10-10T18:55:13.181786+00:00"
+      }
+    ]
+  },
+  "limitations": [
+    "Only baseline ran; no cache comparison or new logit replay occurred.",
+    "Initial reference was not recovered within 900 seconds under observed conditions.",
+    "Ambient conditions/external cooling and within-pass heating are not controlled."
+  ],
+  "next_step": "Establish a recoverable common starting reference after thermal equilibration, then repeat in a fresh directory with fixed bands."
+}

@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-10-10T22:48:00.009335+00:00",
+  "sha256": {
+    "scripts/moe-cache-benchmark.cpp": "24fc48e8adacc82cf9de65825c4c4e19b01d0069bf7b62d2e7ff9841abbf8693",
+    "scripts/moe-slot-cache.h": "4db9196fbcf697bc83d4e471f1c7ce5a53dc4f9bba601893df65f9471816bdd2",
+    "scripts/moe-between-run-cooldown.py": "e345ae190bcf2c4e2a66ce38d542ce82f2f664b9d18fbcdd48f9c295a74d4b39",
+    "scripts/moe-thermal-monitor.py": "279c996e499fe123f379ed1207c668744e464e8b542fe61b1ab7280c5a00281e",
+    "scripts/analyze-moe-cache-sweep.py": "16515f42a9b5490c671c4674e528cbc8e839183c914da3c9ad026298eb3d6c6b",
+    "reports/2026-10-10/cache-throughput-confirmation/run-benchmark.py": "392716877dee8bb5667e69ca0e303a176e455713728bd7be53086fe373e957ab",
+    ".work-npu/build/bin/moe-cache-benchmark": "1d507f38241db253a42191935a81d91070edc63cc915edc988f20bc660f4fd55",
+    ".work-npu/build/bin/libggml-cpu.so": "2f6f0271d56bf21bd4c98e71a9aaa95055634fb96e7a1f1431c45a72793e6751",
+    "patches/experimental-cpu-moe-cache.patch": "e8232f3a9ac41a0d5562d8ca65a8ca6bad2581b733ca568ce796c705f83d5607"
+  },
+  "notes": [
+    "Backend/cache implementation unchanged.",
+    "Compared repeated 64/four and 128/four, plus one 128/six trial, with cooling before launch and between every pass.",
+    "Benchmark config now labels the initial thread setting reference_threads; per-pass plan and records carry actual settings."
+  ]
+}

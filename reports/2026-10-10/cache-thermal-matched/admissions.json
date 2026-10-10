@@ -1,0 +1,46 @@
+[
+  {
+    "target_c": {
+      "battery_c": 25.7,
+      "cpu_max_c": 36.8,
+      "htp_max_c": 34.6
+    },
+    "tolerance_c": {
+      "battery_c": 0.4,
+      "cpu_max_c": 4.0,
+      "htp_max_c": 4.0
+    },
+    "initial_ceiling_c": {
+      "battery_c": 34.0,
+      "cpu_max_c": 55.0,
+      "htp_max_c": 45.0
+    },
+    "hold_s": 30.0,
+    "window_start_monotonic_s": 399943.097101649,
+    "window_end_monotonic_s": 399973.180820387,
+    "samples": 16,
+    "window_c": {
+      "battery_c": {
+        "min": 25.7,
+        "max": 25.7
+      },
+      "cpu_max_c": {
+        "min": 35.0,
+        "max": 40.5
+      },
+      "htp_max_c": {
+        "min": 34.2,
+        "max": 35.0
+      }
+    },
+    "admitted_c": {
+      "battery_c": 25.7,
+      "cpu_max_c": 36.6,
+      "htp_max_c": 34.6
+    },
+    "pass_number": 1,
+    "slots": 0,
+    "wait_s": 242.6312714179512,
+    "utc": "2026-10-10T18:55:13.181786+00:00"
+  }
+]

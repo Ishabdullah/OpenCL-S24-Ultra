@@ -1,0 +1,11 @@
+{
+  "repository_commit": "55e933973d4744408199afc30b5408034ec5a8cc",
+  "llama_cpp_commit": "e358d59178377be4c58ba567925e05faadbccb57",
+  "compiler": "clang version 21.1.8",
+  "sha256": {
+    "scripts/moe-mapping-probe.cpp": "49362808deec30c65f50c1916b4c3c1aa8c0557a92c30bc74425d6707c53225f",
+    "scripts/analyze-moe-mapping.py": "34830be64ad2bfc932cbba5106eac2fc2b5371dc2e772437249ebef4a9a719b5",
+    "reports/2026-10-10/run-mapping.py": "e78aadf7f2bb9fdd62c67f0634480a8fa4d12eca9fbc0c83765eb97725115d2a"
+  },
+  "note": "Uses existing locally patched NPU build; installer pins and backend source unchanged by this experiment."
+}

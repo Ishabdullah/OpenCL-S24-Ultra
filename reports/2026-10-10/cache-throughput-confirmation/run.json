@@ -1,0 +1,15 @@
+{
+  "plan": "64:4:2560,128:4:5120,128:6:5120,128:4:5120,64:4:2560",
+  "cooldown_monitor_returncode": 0,
+  "thermal_monitor_returncode": 0,
+  "command": [
+    "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/moe-cache-benchmark",
+    "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+    "64"
+  ],
+  "returncode": 0,
+  "stop_reason": null,
+  "elapsed_s": 1321.8665081409854,
+  "minimum_available_kib": 1314408,
+  "peak_rss_kib": 6893884
+}

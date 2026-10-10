@@ -1,0 +1,24 @@
+MOE_CACHE enabled slots=2 byte_limit=1342177280
+MOE_CACHE slots=2 allocated_bytes=2688 requests=5 hits=4 misses=4 evictions=2 copied_bytes=5376 oversized=1 budget_fallback=0 identity_fallback=0
+MOE_CACHE enabled slots=2 byte_limit=1342177280
+MOE_CACHE slots=2 allocated_bytes=2688 requests=5 hits=4 misses=4 evictions=2 copied_bytes=5376 oversized=1 budget_fallback=0 identity_fallback=0
+MOE_CACHE enabled slots=2 byte_limit=1342177280
+MOE_CACHE slots=2 allocated_bytes=2112 requests=5 hits=4 misses=4 evictions=2 copied_bytes=4224 oversized=1 budget_fallback=0 identity_fallback=0
+MOE_CACHE enabled slots=2 byte_limit=1342177280
+MOE_CACHE slots=2 allocated_bytes=2112 requests=5 hits=4 misses=4 evictions=2 copied_bytes=4224 oversized=1 budget_fallback=0 identity_fallback=0
+MOE_CACHE enabled slots=2 byte_limit=1342177280
+MOE_CACHE slots=2 allocated_bytes=1600 requests=5 hits=4 misses=4 evictions=2 copied_bytes=3200 oversized=1 budget_fallback=0 identity_fallback=0
+MOE_CACHE enabled slots=2 byte_limit=1342177280
+MOE_CACHE slots=2 allocated_bytes=1600 requests=5 hits=4 misses=4 evictions=2 copied_bytes=3200 oversized=1 budget_fallback=0 identity_fallback=0
+MOE_CACHE enabled slots=2 byte_limit=1342177280
+MOE_CACHE slots=2 allocated_bytes=1792 requests=5 hits=4 misses=4 evictions=2 copied_bytes=3584 oversized=1 budget_fallback=0 identity_fallback=0
+MOE_CACHE enabled slots=2 byte_limit=1342177280
+MOE_CACHE slots=2 allocated_bytes=1792 requests=5 hits=4 misses=4 evictions=2 copied_bytes=3584 oversized=1 budget_fallback=0 identity_fallback=0
+type=q2_K threads=1: bit-identical outputs; router IDs preserved
+type=q2_K threads=6: bit-identical outputs; router IDs preserved
+type=iq2_xxs threads=1: bit-identical outputs; router IDs preserved
+type=iq2_xxs threads=6: bit-identical outputs; router IDs preserved
+type=iq1_s threads=1: bit-identical outputs; router IDs preserved
+type=iq1_s threads=6: bit-identical outputs; router IDs preserved
+type=iq1_m threads=1: bit-identical outputs; router IDs preserved
+type=iq1_m threads=6: bit-identical outputs; router IDs preserved

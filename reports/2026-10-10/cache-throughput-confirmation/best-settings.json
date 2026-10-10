@@ -1,0 +1,21 @@
+{
+  "model": "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+  "backend": "HTP0 with CPU fallback for low-bit expert operations",
+  "load_mode": "mmap",
+  "cpu_threads": 4,
+  "cache_slots": 64,
+  "cache_budget_mib": 2560,
+  "allocated_expert_payload_bytes": 2336751616,
+  "peak_decode_tok_s": 1.333348,
+  "pooled_decode_tok_s": 1.0407929976967,
+  "decode_rates_tok_s": [
+    0.853519,
+    1.333348
+  ],
+  "forward_timing_only": true,
+  "report": "reports/2026-10-10/cache-throughput-confirmation/README.md",
+  "cooling_pause_seconds": [
+    180,
+    300
+  ]
+}

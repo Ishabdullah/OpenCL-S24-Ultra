@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/moe-cache-validate",
+    "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+    "16"
+  ],
+  "returncode": 0,
+  "stop_reason": null,
+  "elapsed_s": 81.19899028196232,
+  "minimum_available_kib": 5023016,
+  "peak_rss_kib": 6833948
+}

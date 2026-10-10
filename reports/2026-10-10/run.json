@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/moe-mapping-probe",
+    "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+    "24",
+    "8",
+    "6",
+    "Write a Python function to reverse a string:"
+  ],
+  "returncode": 0,
+  "stop_reason": null,
+  "elapsed_s": 874.1835697180359,
+  "minimum_available_kib": 3788132,
+  "peak_rss_kib": 5791116
+}

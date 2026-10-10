@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-08T06:36:00Z",
+  "updated_at": "2026-10-10T23:18:51.818902+00:00",
   "current_phase": "DOCUMENTATION",
-  "active_subtask": "Phase G: before implementing the cache, discovered each layer's MoE weights are ONE packed tensor (not 256 separate expert tensors), meaning a real cache requires splitting build_moe_ffn's per-layer graph construction to sync the router's decision back to host before gathering -- a materially bigger change than first scoped. Attempted to isolate this fixed per-layer sync cost via an A/B test (MOE_PROBE_MODE off vs sync) -- INCONCLUSIVE: run-to-run device noise (~2x swings) swamps the effect. Directionally reassuring (no catastrophic tax observed across any config, all land in 0.2-0.5 tok/s) but not precise. Decision point open with the user: commit to the full implementation anyway, measure more rigorously first (multi-trial), or stop here.",
+  "active_subtask": "Phase M complete; handoff ready at docs/QWEN36_PERFORMANCE_HANDOFF.md. Qwen3.6 fastest 1.333348 tok/s, repeated pooled 1.040793, 64 slots/four threads/2560 MiB, HTP0 forced mmap. All 256 replayed vectors exact. Cooling before launch and between every pass, all jobs finished. Next tuning: intermediate capacities and fewer threads with cooling throughout; no thermal-policy testing requested.",
   "completed_steps": [
     "Phase 0: verified llama.cpp pin (e358d59178377be4c58ba567925e05faadbccb57) already supports LLM_ARCH_QWEN3NEXT with native NextN/MTP code path",
     "Phase 0: confirmed --spec-type draft-mtp and --spec-type ngram-simple are real CLI options at this pin",
@@ -38,7 +38,13 @@
     "Phase C: --n-cpu-moe sweep via llama-bench (-dev HTP0 -lm mmap, -p 64 -n 16 -r 1 -b 128 -ub 128 -fa off): n-cpu-moe=48 -> pp64=7.95, tg16=1.33. n-cpu-moe=24 -> pp64=7.99, tg16=2.22. n-cpu-moe=0 -> pp64=8.28, tg16=2.30 (best). 1.24x prompt / 1.90x decode speedup over the CPU-only baseline (6.69/1.21). Full MoE routing through Hexagon MUL_MAT_ID did not hit a VTCM budget wall, correcting the Phase A worry.",
     "Phase C: reconfigured .work-npu/build with -DLLAMA_BUILD_SERVER=ON and incrementally built the llama-cli target (reused all existing compiled objects) to get a binary exposing --spec-type, since llama-completion/llama-bench don't surface it.",
     "Phase C: tested --spec-type ngram-simple via llama-cli with the best config (-dev HTP0 -lm mmap --n-cpu-moe 0 --repeat-penalty 1.1 --repeat-last-n 64 --single-turn): ran successfully, correct fact retained (Paris), reported Prompt: 3.5 t/s | Generation: 2.1 t/s. Pillar 3 (speculative decoding) confirmed functional in combination with the NPU fix.",
-    "Phase C: discovered via post-hoc logcat review that 5 Scudo heap-corruption aborts occurred during the sweep+ngram session, hitting llama-completion/llama-bench/llama-cli -- isolated as a SEPARATE, pre-existing, non-deterministic exit-time bug unrelated to this model or NPU (reproduces on a bare 'llama-completion --help' call, 1s uptime, no model/device involved). Logged as known_issues entry 'exit-time-scudo-abort'; user explicitly instructed to log and continue without further investigation unless it recurs/becomes blocking. All captured output (sweep numbers, ngram-simple generation) remains valid since crashes occurred after output was already printed."
+    "Phase C: discovered via post-hoc logcat review that 5 Scudo heap-corruption aborts occurred during the sweep+ngram session, hitting llama-completion/llama-bench/llama-cli -- isolated as a SEPARATE, pre-existing, non-deterministic exit-time bug unrelated to this model or NPU (reproduces on a bare 'llama-completion --help' call, 1s uptime, no model/device involved). Logged as known_issues entry 'exit-time-scudo-abort'; user explicitly instructed to log and continue without further investigation unless it recurs/becomes blocking. All captured output (sweep numbers, ngram-simple generation) remains valid since crashes occurred after output was already printed.",
+    "Phase H: repaired mapping probe, added flushed JSONL phase-separated counts, metadata-based expert bounds, context/sampler reset, sampling penalties and EOG handling. Ran 8 trials cleanly; 40-layer capture validation and four analyzer tests pass. Results and reproduction: reports/2026-10-10/README.md.",
+    "Phase I: implemented bounded canonical CPU MUL_MAT_ID slot cache with per-backend byte cap, recency eviction, whole-request pinning, strided ID capture, private ID remapping and full-model fallback. Unit/graph tests and full-model 16-position bit-exact logit gate pass; fresh patch apply/idempotence/reverse checks pass. Installer scripts/pins unchanged. See reports/2026-10-10/cache/README.md.",
+    "Phase J: completed ABBA 64-position cache benchmark, 192 bit-exact replayed logit vectors, faster in both orders and 83.30% mean storage-read reduction. Confirmed readable thermal sensors; saved partial-first-pass temperature trace and explicit unmatched-temperature limitations. See reports/2026-10-10/cache-balanced/README.md.",
+    "Phase K: added thermal admission handshake with immutable reference, continuous holds, missing-sensor/gap resets and bounded timeout. Three policy and four analyzer tests passed. Live first admission validated; cached pass never started because battery could not recover the initial band within 900 s. Saved incomplete outcome without speedup claim.",
+    "Phase L: completed nine-context cache/thread throughput screen. Best 64 slots/four threads 0.984233 tok/s, 128/six 0.835118; controls pooled 0.525992. All 512 replayed vectors exact, deterministic cache counters, budget/identity fallbacks zero, available RAM >=1.93 GiB. User-requested longer cooling before final three runs recorded.",
+    "Phase M: five cooled contexts completed; 256 exact replayed vectors; 64/four peak 1.333348 and pooled 1.040793 tok/s, beating 128/four in both orders. Saved best-settings.json and continuation handoff."
   ],
   "known_issues": [
     {
@@ -73,26 +79,640 @@
   },
   "hardware_target": "NPU_CPU_HYBRID (unblocked -- requires -lm mmap whenever -dev HTP0 is used, see failed_attempts and completed_steps for root cause)",
   "metrics": {
-    "cpu_only_baseline": {"prompt_tok_s": 6.69, "generation_tok_s": 1.21, "note": "llama-bench -dev none -p 64 -n 16 -r 1"},
-    "npu_n_cpu_moe_48": {"prompt_tok_s": 7.95, "generation_tok_s": 1.33},
-    "npu_n_cpu_moe_24": {"prompt_tok_s": 7.99, "generation_tok_s": 2.22},
-    "npu_n_cpu_moe_0_best": {"prompt_tok_s": 8.28, "generation_tok_s": 2.30, "speedup_vs_cpu_baseline": "1.24x prompt, 1.90x decode"},
-    "ngram_simple_speculative": {"prompt_tok_s": 3.5, "generation_tok_s": 2.1, "note": "llama-cli, -dev HTP0 -lm mmap --n-cpu-moe 0, single short prompt, not directly comparable to llama-bench numbers (different harness/overhead)"},
-    "t6_full_cpu": {"prompt_tok_s": 8.17, "generation_tok_s": 3.30, "note": "-t 6, beats both the default-thread CPU baseline AND full-NPU-at-t6 -- thread count matters a lot"},
-    "t6_full_npu": {"prompt_tok_s": 7.44, "generation_tok_s": 1.92, "note": "-t 6 -dev HTP0 -lm mmap --n-cpu-moe 0 -- REVERSES the default-thread-count conclusion; CPU wins at t6, NPU won at t8"},
-    "pinned_npu_ncmoe48_plus_ngram": {"prompt_tok_s": 2.8, "generation_tok_s": 0.9, "note": "llama-cli -dev HTP0 -lm mmap --n-cpu-moe 48 -t 6 --spec-type ngram-simple -- the originally-envisioned combo (pin attn/shared-experts/dense on NPU + stream routed experts + speculative decoding). SLOWEST decode of any NPU config tested. Confirms n-cpu-moe=0 (no speculation) remains the best decode config found: 2.30 tok/s."},
-    "qwen36_npu_mtp": {"short_n16": {"prompt_tok_s": 0.8, "generation_tok_s": 0.3}, "long_n48": {"prompt_tok_s": 1.0, "generation_tok_s": 0.3}, "note": "-dev HTP0 -lm mmap --n-cpu-moe 0 -t 6 -np 1 --spec-type draft-mtp --spec-draft-n-max 2 -rea off, Qwen3.6-35B-A3B-UD-IQ1_M. Zero crashes at either length (the n48 length reliably crashed on CPU-only). Best-known-good STABLE MTP config found so far -- see qwen36_npu_mtp_vs_nospec for the controlled speed comparison, which shows MTP is NOT a speed win here."},
-    "moe_sync_cost_ab_test": {"off_decode_tok_s": 0.268, "sync_decode_tok_s": 0.466, "note": "A/B test intended to isolate the per-layer host-sync cost (reading the router's decision back to host every layer, every token -- required for any bounded expert cache, and does NOT shrink with cache learning, unlike the data-copy-on-miss cost which does). INCONCLUSIVE: sync mode ran faster than off mode, meaning run-to-run environmental noise (~2x swings observed) swamps the effect being measured. Directionally reassuring (no evidence of catastrophic tax; all measured configs regardless of mode land in the 0.2-0.5 tok/s range) but not a precise number. Decision point not yet resolved: commit to full cache implementation anyway, invest in multi-trial measurement first, or stop here."},
-    "qwen36_moe_locality_code_prompt": {"layers_measured": 40, "calls_per_layer": 127, "decode_tokens": 96, "mean_consecutive_overlap": "2.34/8", "lru_hit_rates": {"K32": 0.483, "K64": 0.590, "K128": 0.659, "K192": 0.695}, "note": "Same window length as qwen36_moe_locality_long_window but a code-generation prompt (binary search tree + unit tests) instead of generic prose. Hit rates essentially the same, slightly lower if anything -- within normal run-to-run variation. Window length, not task domain, drove the earlier improvement. Confirms the 50-70% hit-rate range is reproducible across prompts, not a fluke."},
-    "qwen36_moe_locality_long_window": {"layers_measured": 40, "calls_per_layer": 127, "decode_tokens": 96, "mean_consecutive_overlap": "2.51/8 (~31%)", "lru_hit_rates": {"K32": 0.499, "K64": 0.630, "K192": 0.722}, "note": "Rerun at 96 decode tokens (vs 32) per user's chosen option: hit rates roughly DOUBLED at every K vs the short-window measurement. The short window understated the cache's potential -- it needs time to warm up. Revised expectation: 50-65% hit rate achievable at realistic generation lengths with K=32-64/layer, substantially better than the short-window 30-40% estimate. Window-length sensitivity is now a documented property, not an assumption."},
-    "qwen36_moe_locality": {"layers_measured": 40, "calls_per_layer": 63, "distinct_experts_per_layer": "256/256 (all touched)", "mean_consecutive_overlap": "1.66/8 (~20%)", "lru_hit_rates": {"K8": 0.154, "K32": 0.326, "K64": 0.390, "K128": 0.435, "K192": 0.464}, "note": "Real simulated LRU on actual captured per-layer selection sequences (scripts/moe-profile-probe.cpp, custom untruncated cb_eval). Routing is close to uniform-random at this short-window granularity. A realistic RAM-bounded cache (K~32-64/layer) would cut storage re-reads ~30-40%, not eliminate them. Gains plateau hard past K~64 -- even K=192 (75% of all experts) only reaches 46.4% hit rate."},
-    "qwen36_moe_profile": {"load": {"seconds": 13.6, "read_bytes_gib": 10.8, "majflt": 4783, "rss_gb": 4.08}, "prefill_32tok": {"tok_s": 4.88, "read_bytes_gib_cumulative": 18.8, "majflt_cumulative": 13543, "rss_gb": 2.1}, "decode_32tok": {"tok_s": 0.35, "read_bytes_gib_cumulative": 104.0, "majflt_cumulative": 59290, "rss_mb": 647}, "note": "scripts/moe-profile-probe.cpp, -dev HTP0 mmap, no MTP, /proc-sourced (solid, not estimated). Decode alone re-read ~85GiB from storage for 32 tokens (~8x the 10.59GiB model file) -- RSS shrank monotonically (4.08GB->2.1GB->647MB) despite reading more data each phase, showing the OS page-cache LRU evicts indiscriminately with no expert-aware locality. Motivates the bounded expert-caching design. Expert-selection trace captured (1280 ffn_moe_topk dumps) but PRELIMINARY ONLY -- debug dump truncates to 6/8 ids per call and pools all 40 layers together; not yet a rigorous per-layer locality measurement."},
-    "qwen36_npu_mtp_vs_nospec": {"no_speculation": {"prompt_tok_s": 1.2, "generation_tok_s": 0.4}, "draft_mtp": {"prompt_tok_s": 0.9, "generation_tok_s": 0.2}, "note": "Controlled same-seed (42) comparison, identical config otherwise, -n 48, same prompt. MTP is SLOWER: ~25% slower prompt eval, ~50% slower decode. At this base decode rate (well under 1 tok/s), draft/verify overhead costs more than any acceptance savings. MTP is functionally real and stable (zero crashes) but not a performance win for this model/quant/hardware combination."},
-    "npu_prefill_cpu_decode_handoff": {"status": "CORRECTED: ACHIEVABLE, via a different (custom, local, never-upstreamed) technique -- not llama.cpp's generic --prompt-cache session mechanism, which remains confirmed non-functional for recurrent memory (completion.cpp:334). The repo's existing Oct 3-5 Mistral 7B investigation proved an in-process one-way handoff (llama_perf_switch_to_cpu, reports/2026-10-03/patches/npu-prefill-cpu-decode.patch), originally gated to plain Qwen2/Qwen3 KV only. Extended it (llama_memory_recurrent::perf_migrate_cpu + llama_memory_hybrid dispatch + LLM_ARCH_QWEN3NEXT) and verified live: prefill NPU 6.80s/4.71 tok/s, handoff 1.98s (migrated both 6.00MiB KV and 75.38MiB recurrent/SSM-GDN state, zero crashes), decode CPU 18.94s/0.79 tok/s. CAVEAT: decode after handoff is much slower than native full-CPU (0.79 vs 3.30 tok/s at the same thread count) because the handoff uses canonical (non-repacked) CPU weight shadows, not the CPU_REPACK-optimized layout -- consistent with the project's own prior documented tradeoff for Mistral 7B, but apparently much more punishing for this IQ1_S quant. Net: technique works, is not a speed win here.", "driver": "scripts/hybrid-handoff-probe.cpp (local tool, not part of llama.cpp)", "patch_extension": "see .work-npu/llama.cpp git diff -- not yet saved as a standalone .patch file in reports/"},
+    "cache_throughput_screen_2026_10_10": {
+      "report": "reports/2026-10-10/cache-throughput-sweep/README.md",
+      "fastest_pass": {
+        "slots": 64,
+        "threads": 4,
+        "decode_tok_s": 0.984233
+      },
+      "ranked_configurations": [
+        {
+          "slots": 64,
+          "threads": 4,
+          "cache_mib": 2560,
+          "repetitions": 1,
+          "pooled_decode_tok_s": 0.9842326553522198,
+          "mean_prefill_s": 7.950434,
+          "mean_evaluation_s": 71.95969,
+          "mean_decode_storage_bytes": 21077004288
+        },
+        {
+          "slots": 128,
+          "threads": 6,
+          "cache_mib": 5120,
+          "repetitions": 1,
+          "pooled_decode_tok_s": 0.8351180114541075,
+          "mean_prefill_s": 19.016703,
+          "mean_evaluation_s": 94.455143,
+          "mean_decode_storage_bytes": 14539866112
+        },
+        {
+          "slots": 96,
+          "threads": 4,
+          "cache_mib": 3840,
+          "repetitions": 1,
+          "pooled_decode_tok_s": 0.7808940366580666,
+          "mean_prefill_s": 12.626199,
+          "mean_evaluation_s": 93.302958,
+          "mean_decode_storage_bytes": 16909389824
+        },
+        {
+          "slots": 96,
+          "threads": 6,
+          "cache_mib": 3840,
+          "repetitions": 1,
+          "pooled_decode_tok_s": 0.6020897042746582,
+          "mean_prefill_s": 10.63459,
+          "mean_evaluation_s": 115.270162,
+          "mean_decode_storage_bytes": 17621413888
+        },
+        {
+          "slots": 64,
+          "threads": 6,
+          "cache_mib": 2560,
+          "repetitions": 1,
+          "pooled_decode_tok_s": 0.5979346369554908,
+          "mean_prefill_s": 10.794966,
+          "mean_evaluation_s": 116.157653,
+          "mean_decode_storage_bytes": 23304712192
+        },
+        {
+          "slots": 32,
+          "threads": 6,
+          "cache_mib": 1280,
+          "repetitions": 2,
+          "pooled_decode_tok_s": 0.5259916828024357,
+          "mean_prefill_s": 6.6500745000000006,
+          "mean_evaluation_s": 126.423832,
+          "mean_decode_storage_bytes": 33366990848
+        },
+        {
+          "slots": 96,
+          "threads": 8,
+          "cache_mib": 3840,
+          "repetitions": 1,
+          "pooled_decode_tok_s": 0.4049595303693325,
+          "mean_prefill_s": 20.91983,
+          "mean_evaluation_s": 176.490931,
+          "mean_decode_storage_bytes": 17571196928
+        },
+        {
+          "slots": 64,
+          "threads": 8,
+          "cache_mib": 2560,
+          "repetitions": 1,
+          "pooled_decode_tok_s": 0.38499102350651915,
+          "mean_prefill_s": 12.025172,
+          "mean_evaluation_s": 175.665351,
+          "mean_decode_storage_bytes": 22024851456
+        }
+      ],
+      "verified_logit_vectors": 512,
+      "run": {
+        "plan": "32:6:1280,64:6:2560,96:6:3840,128:6:5120,96:4:3840,96:8:3840,64:4:2560,64:8:2560,32:6:1280",
+        "thermal_monitor_returncode": 0,
+        "command": [
+          "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/moe-cache-benchmark",
+          "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+          "64"
+        ],
+        "returncode": 0,
+        "stop_reason": null,
+        "elapsed_s": 1973.8382912779925,
+        "minimum_available_kib": 2022052,
+        "peak_rss_kib": 6348348
+      },
+      "cooldowns": [
+        {
+          "after_pass": 6,
+          "paused_s": 250.45641381002497,
+          "targets_c": {
+            "battery_c": 40.0,
+            "cpu_max_c": 55.0,
+            "htp_max_c": 50.0
+          },
+          "target_met": true,
+          "first_c": {
+            "battery_c": 42.3,
+            "cpu_max_c": 70.1,
+            "htp_max_c": 63.9
+          },
+          "last_c": {
+            "battery_c": 39.3,
+            "cpu_max_c": 51.8,
+            "htp_max_c": 49.8
+          },
+          "ended_monotonic_s": 413064.003875237,
+          "utc": "2026-10-10T22:33:24.002094+00:00"
+        },
+        {
+          "after_pass": 7,
+          "paused_s": 180.24164977500914,
+          "targets_c": {
+            "battery_c": 40.0,
+            "cpu_max_c": 55.0,
+            "htp_max_c": 50.0
+          },
+          "target_met": true,
+          "first_c": {
+            "battery_c": 40.1,
+            "cpu_max_c": 71.3,
+            "htp_max_c": 63.1
+          },
+          "last_c": {
+            "battery_c": 38.8,
+            "cpu_max_c": 50.6,
+            "htp_max_c": 49.4
+          },
+          "ended_monotonic_s": 413346.983377837,
+          "utc": "2026-10-10T22:38:06.981595+00:00"
+        },
+        {
+          "after_pass": 8,
+          "paused_s": 182.2477635240066,
+          "targets_c": {
+            "battery_c": 40.0,
+            "cpu_max_c": 55.0,
+            "htp_max_c": 50.0
+          },
+          "target_met": true,
+          "first_c": {
+            "battery_c": 41.3,
+            "cpu_max_c": 70.1,
+            "htp_max_c": 61.9
+          },
+          "last_c": {
+            "battery_c": 37.3,
+            "cpu_max_c": 53.3,
+            "htp_max_c": 49.8
+          },
+          "ended_monotonic_s": 413735.662665502,
+          "utc": "2026-10-10T22:44:35.660882+00:00"
+        }
+      ],
+      "limitations": [
+        "Single prompt/trajectory/device/session; most settings have one trial.",
+        "Recorded 3–5 minute cooling breaks begin after pass 6; inspect chronological comparisons accordingly.",
+        "Page cache, scheduling and memory pressure are not reset.",
+        "Screening rates are observations; confirm the selected setting in both orders."
+      ]
+    },
+    "thermal_admission_attempt_2026_10_10": {
+      "status": "incomplete_thermal_admission_timeout",
+      "comparative_result_available": false,
+      "completed_passes": [
+        {
+          "type": "pass",
+          "pass": 1,
+          "slots": 0,
+          "evaluated_positions": 64,
+          "decode_evaluations": 63,
+          "bit_identical_positions": 0,
+          "prefill_s": 5.894366,
+          "decode_s": 273.421917,
+          "evaluation_s": 279.316283,
+          "decode_tok_s": 0.230413,
+          "prefill_storage_bytes": 8480849920,
+          "decode_storage_bytes": 246189342720,
+          "storage_bytes": 254670192640,
+          "available_start_kib": 4885272,
+          "available_end_kib": 6076284,
+          "rss_start_kib": 1431612,
+          "rss_end_kib": 418172
+        }
+      ],
+      "validated_admissions": [
+        {
+          "target_c": {
+            "battery_c": 25.7,
+            "cpu_max_c": 36.8,
+            "htp_max_c": 34.6
+          },
+          "tolerance_c": {
+            "battery_c": 0.4,
+            "cpu_max_c": 4.0,
+            "htp_max_c": 4.0
+          },
+          "initial_ceiling_c": {
+            "battery_c": 34.0,
+            "cpu_max_c": 55.0,
+            "htp_max_c": 45.0
+          },
+          "hold_s": 30.0,
+          "window_start_monotonic_s": 399943.097101649,
+          "window_end_monotonic_s": 399973.180820387,
+          "samples": 16,
+          "window_c": {
+            "battery_c": {
+              "min": 25.7,
+              "max": 25.7
+            },
+            "cpu_max_c": {
+              "min": 35.0,
+              "max": 40.5
+            },
+            "htp_max_c": {
+              "min": 34.2,
+              "max": 35.0
+            }
+          },
+          "admitted_c": {
+            "battery_c": 25.7,
+            "cpu_max_c": 36.6,
+            "htp_max_c": 34.6
+          },
+          "pass_number": 1,
+          "slots": 0,
+          "wait_s": 242.6312714179512,
+          "utc": "2026-10-10T18:55:13.181786+00:00"
+        }
+      ],
+      "verified_logit_vectors": 0,
+      "reference_tokens_match_previous_trial": true,
+      "recorded_peak_c": {
+        "battery_c": 32.9,
+        "cpu_max_c": 76.7,
+        "htp_max_c": 70.1
+      },
+      "last_sample": {
+        "battery_c": 28.8,
+        "cpu_max_c": 40.1,
+        "htp_max_c": 37.4
+      },
+      "pass_2_wait": {
+        "sampled_s": 900.4113021040102,
+        "battery_first_c": 32.9,
+        "battery_last_c": 28.8,
+        "battery_min_c": 28.8,
+        "samples": 450
+      },
+      "run": {
+        "command": [
+          "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/moe-cache-benchmark",
+          "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+          "64"
+        ],
+        "returncode": -15,
+        "stop_reason": "pass 2 thermal admission exceeded 900 seconds",
+        "elapsed_s": 1469.6171866270015,
+        "minimum_available_kib": 4542928,
+        "peak_rss_kib": 5943296,
+        "admissions": [
+          {
+            "target_c": {
+              "battery_c": 25.7,
+              "cpu_max_c": 36.8,
+              "htp_max_c": 34.6
+            },
+            "tolerance_c": {
+              "battery_c": 0.4,
+              "cpu_max_c": 4.0,
+              "htp_max_c": 4.0
+            },
+            "initial_ceiling_c": {
+              "battery_c": 34.0,
+              "cpu_max_c": 55.0,
+              "htp_max_c": 45.0
+            },
+            "hold_s": 30.0,
+            "window_start_monotonic_s": 399943.097101649,
+            "window_end_monotonic_s": 399973.180820387,
+            "samples": 16,
+            "window_c": {
+              "battery_c": {
+                "min": 25.7,
+                "max": 25.7
+              },
+              "cpu_max_c": {
+                "min": 35.0,
+                "max": 40.5
+              },
+              "htp_max_c": {
+                "min": 34.2,
+                "max": 35.0
+              }
+            },
+            "admitted_c": {
+              "battery_c": 25.7,
+              "cpu_max_c": 36.6,
+              "htp_max_c": 34.6
+            },
+            "pass_number": 1,
+            "slots": 0,
+            "wait_s": 242.6312714179512,
+            "utc": "2026-10-10T18:55:13.181786+00:00"
+          }
+        ]
+      },
+      "limitations": [
+        "Only baseline ran; no cache comparison or new logit replay occurred.",
+        "Initial reference was not recovered within 900 seconds under observed conditions.",
+        "Ambient conditions/external cooling and within-pass heating are not controlled."
+      ],
+      "next_step": "Establish a recoverable common starting reference after thermal equilibration, then repeat in a fresh directory with fixed bands."
+    },
+    "balanced_cache_benchmark_2026_10_10": {
+      "modes": {
+        "0": {
+          "repetitions": 2,
+          "mean_evaluation_s": 288.188888,
+          "mean_prefill_s": 7.1926000000000005,
+          "mean_decode_s": 280.9962875,
+          "pooled_decode_tok_s": 0.22420225035891267,
+          "mean_storage_bytes": 235307018240,
+          "mean_decode_storage_bytes": 227276060672
+        },
+        "32": {
+          "repetitions": 2,
+          "mean_evaluation_s": 122.72777099999999,
+          "mean_prefill_s": 6.278765,
+          "mean_decode_s": 116.449006,
+          "pooled_decode_tok_s": 0.5410093410329325,
+          "mean_storage_bytes": 39305146368,
+          "mean_decode_storage_bytes": 31372015616
+        }
+      },
+      "pairs": [
+        {
+          "order": [
+            0,
+            32
+          ],
+          "evaluation_speedup": 2.0551279275544725,
+          "decode_speedup": 2.1078951332133498,
+          "storage_reduction_fraction": 0.821905109662827
+        },
+        {
+          "order": [
+            32,
+            0
+          ],
+          "evaluation_speedup": 2.6035464044366625,
+          "decode_speedup": 2.676357090950912,
+          "storage_reduction_fraction": 0.8424332340713448
+        }
+      ],
+      "evaluation_speedup": 2.3481962203974196,
+      "decode_speedup": 2.4130415290964358,
+      "storage_reduction_fraction": 0.8329622861995941,
+      "temperature_by_pass": {
+        "1": {
+          "samples": 32,
+          "battery_first_c": 35.5,
+          "battery_last_c": 37.8,
+          "battery_max_c": 37.8,
+          "cpu_max_c": 68.9,
+          "htp_max_c": 59.6
+        },
+        "2": {
+          "samples": 22,
+          "battery_first_c": 37.9,
+          "battery_last_c": 39.2,
+          "battery_max_c": 39.2,
+          "cpu_max_c": 84.9,
+          "htp_max_c": 64.6
+        },
+        "3": {
+          "samples": 25,
+          "battery_first_c": 39.0,
+          "battery_last_c": 39.5,
+          "battery_max_c": 39.5,
+          "cpu_max_c": 73.6,
+          "htp_max_c": 66.6
+        },
+        "4": {
+          "samples": 66,
+          "battery_first_c": 39.3,
+          "battery_last_c": 42.0,
+          "battery_max_c": 42.0,
+          "cpu_max_c": 72.4,
+          "htp_max_c": 65.4
+        }
+      },
+      "thermal_capture_partial_first_pass": true,
+      "limitations": [
+        "Two repetitions per mode, one prompt/trajectory/device/session.",
+        "Balanced order and equal rests; page cache and scheduling are not reset.",
+        "Temperature is observed, without matched-temperature admission.",
+        "No energy or sustained-thermal superiority claim."
+      ],
+      "run": {
+        "command": [
+          "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/moe-cache-benchmark",
+          "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+          "64"
+        ],
+        "returncode": 0,
+        "stop_reason": null,
+        "elapsed_s": 930.2223956350354,
+        "minimum_available_kib": 4239196,
+        "peak_rss_kib": 6365220
+      },
+      "battery_trace_peak_c": 42.2,
+      "report": "reports/2026-10-10/cache-balanced/README.md"
+    },
+    "bounded_expert_cache_v1_2026_10_10": {
+      "full_model_gate": {
+        "steps": 16,
+        "prompt_tokens": 9,
+        "vocab_size": 248320,
+        "bit_identical_steps": 16,
+        "maximum_logit_error": 0,
+        "baseline_s": 41.146716,
+        "cached_s": 24.002961,
+        "baseline_storage_bytes": 46027280384,
+        "cached_storage_bytes": 11316264960
+      },
+      "cache_stats": {
+        "slots": 32,
+        "allocated_bytes": 1168375808,
+        "requests": 1920,
+        "hits": 9069,
+        "misses": 6678,
+        "evictions": 2838,
+        "copied_bytes": 2032656384,
+        "oversized": 75,
+        "budget_fallback": 0,
+        "identity_fallback": 0
+      },
+      "observed_memory": {
+        "minimum_available_kib": 5023016,
+        "peak_rss_kib": 6833948
+      },
+      "performance_caveat": "Single baseline-then-cache pair; order/page warmth confounding. No reliable or sustained performance claim.",
+      "report": "reports/2026-10-10/cache/README.md"
+    },
+    "repeated_prompt_mapping_2026_10_10": {
+      "model": "Qwen3.6-35B-A3B-UD-IQ1_M",
+      "trials": 8,
+      "generation_limit": 24,
+      "training_trials": 6,
+      "heldout_trials": 2,
+      "training_union_mean": 131.2,
+      "final_union_mean": 145.625,
+      "heldout_decode_coverage": 0.9237092391304348,
+      "training_expert_bytes": 4802797568,
+      "storage_read_bytes": 668936073216,
+      "elapsed_s": 874.1835697180359,
+      "returncode": 0,
+      "report": "reports/2026-10-10/README.md"
+    },
+    "cpu_only_baseline": {
+      "prompt_tok_s": 6.69,
+      "generation_tok_s": 1.21,
+      "note": "llama-bench -dev none -p 64 -n 16 -r 1"
+    },
+    "npu_n_cpu_moe_48": {
+      "prompt_tok_s": 7.95,
+      "generation_tok_s": 1.33
+    },
+    "npu_n_cpu_moe_24": {
+      "prompt_tok_s": 7.99,
+      "generation_tok_s": 2.22
+    },
+    "npu_n_cpu_moe_0_best": {
+      "prompt_tok_s": 8.28,
+      "generation_tok_s": 2.3,
+      "speedup_vs_cpu_baseline": "1.24x prompt, 1.90x decode"
+    },
+    "ngram_simple_speculative": {
+      "prompt_tok_s": 3.5,
+      "generation_tok_s": 2.1,
+      "note": "llama-cli, -dev HTP0 -lm mmap --n-cpu-moe 0, single short prompt, not directly comparable to llama-bench numbers (different harness/overhead)"
+    },
+    "t6_full_cpu": {
+      "prompt_tok_s": 8.17,
+      "generation_tok_s": 3.3,
+      "note": "-t 6, beats both the default-thread CPU baseline AND full-NPU-at-t6 -- thread count matters a lot"
+    },
+    "t6_full_npu": {
+      "prompt_tok_s": 7.44,
+      "generation_tok_s": 1.92,
+      "note": "-t 6 -dev HTP0 -lm mmap --n-cpu-moe 0 -- REVERSES the default-thread-count conclusion; CPU wins at t6, NPU won at t8"
+    },
+    "pinned_npu_ncmoe48_plus_ngram": {
+      "prompt_tok_s": 2.8,
+      "generation_tok_s": 0.9,
+      "note": "llama-cli -dev HTP0 -lm mmap --n-cpu-moe 48 -t 6 --spec-type ngram-simple -- the originally-envisioned combo (pin attn/shared-experts/dense on NPU + stream routed experts + speculative decoding). SLOWEST decode of any NPU config tested. Confirms n-cpu-moe=0 (no speculation) remains the best decode config found: 2.30 tok/s."
+    },
+    "qwen36_npu_mtp": {
+      "short_n16": {
+        "prompt_tok_s": 0.8,
+        "generation_tok_s": 0.3
+      },
+      "long_n48": {
+        "prompt_tok_s": 1.0,
+        "generation_tok_s": 0.3
+      },
+      "note": "-dev HTP0 -lm mmap --n-cpu-moe 0 -t 6 -np 1 --spec-type draft-mtp --spec-draft-n-max 2 -rea off, Qwen3.6-35B-A3B-UD-IQ1_M. Zero crashes at either length (the n48 length reliably crashed on CPU-only). Best-known-good STABLE MTP config found so far -- see qwen36_npu_mtp_vs_nospec for the controlled speed comparison, which shows MTP is NOT a speed win here."
+    },
+    "moe_sync_cost_ab_test": {
+      "off_decode_tok_s": 0.268,
+      "sync_decode_tok_s": 0.466,
+      "note": "A/B test intended to isolate the per-layer host-sync cost (reading the router's decision back to host every layer, every token -- required for any bounded expert cache, and does NOT shrink with cache learning, unlike the data-copy-on-miss cost which does). INCONCLUSIVE: sync mode ran faster than off mode, meaning run-to-run environmental noise (~2x swings observed) swamps the effect being measured. Directionally reassuring (no evidence of catastrophic tax; all measured configs regardless of mode land in the 0.2-0.5 tok/s range) but not a precise number. Decision point not yet resolved: commit to full cache implementation anyway, invest in multi-trial measurement first, or stop here."
+    },
+    "qwen36_moe_locality_code_prompt": {
+      "layers_measured": 40,
+      "calls_per_layer": 127,
+      "decode_tokens": 96,
+      "mean_consecutive_overlap": "2.34/8",
+      "lru_hit_rates": {
+        "K32": 0.483,
+        "K64": 0.59,
+        "K128": 0.659,
+        "K192": 0.695
+      },
+      "note": "Same window length as qwen36_moe_locality_long_window but a code-generation prompt (binary search tree + unit tests) instead of generic prose. Hit rates essentially the same, slightly lower if anything -- within normal run-to-run variation. Window length, not task domain, drove the earlier improvement. Confirms the 50-70% hit-rate range is reproducible across prompts, not a fluke."
+    },
+    "qwen36_moe_locality_long_window": {
+      "layers_measured": 40,
+      "calls_per_layer": 127,
+      "decode_tokens": 96,
+      "mean_consecutive_overlap": "2.51/8 (~31%)",
+      "lru_hit_rates": {
+        "K32": 0.499,
+        "K64": 0.63,
+        "K192": 0.722
+      },
+      "note": "Rerun at 96 decode tokens (vs 32) per user's chosen option: hit rates roughly DOUBLED at every K vs the short-window measurement. The short window understated the cache's potential -- it needs time to warm up. Revised expectation: 50-65% hit rate achievable at realistic generation lengths with K=32-64/layer, substantially better than the short-window 30-40% estimate. Window-length sensitivity is now a documented property, not an assumption."
+    },
+    "qwen36_moe_locality": {
+      "layers_measured": 40,
+      "calls_per_layer": 63,
+      "distinct_experts_per_layer": "256/256 (all touched)",
+      "mean_consecutive_overlap": "1.66/8 (~20%)",
+      "lru_hit_rates": {
+        "K8": 0.154,
+        "K32": 0.326,
+        "K64": 0.39,
+        "K128": 0.435,
+        "K192": 0.464
+      },
+      "note": "Real simulated LRU on actual captured per-layer selection sequences (scripts/moe-profile-probe.cpp, custom untruncated cb_eval). Routing is close to uniform-random at this short-window granularity. A realistic RAM-bounded cache (K~32-64/layer) would cut storage re-reads ~30-40%, not eliminate them. Gains plateau hard past K~64 -- even K=192 (75% of all experts) only reaches 46.4% hit rate."
+    },
+    "qwen36_moe_profile": {
+      "load": {
+        "seconds": 13.6,
+        "read_bytes_gib": 10.8,
+        "majflt": 4783,
+        "rss_gb": 4.08
+      },
+      "prefill_32tok": {
+        "tok_s": 4.88,
+        "read_bytes_gib_cumulative": 18.8,
+        "majflt_cumulative": 13543,
+        "rss_gb": 2.1
+      },
+      "decode_32tok": {
+        "tok_s": 0.35,
+        "read_bytes_gib_cumulative": 104.0,
+        "majflt_cumulative": 59290,
+        "rss_mb": 647
+      },
+      "note": "scripts/moe-profile-probe.cpp, -dev HTP0 mmap, no MTP, /proc-sourced (solid, not estimated). Decode alone re-read ~85GiB from storage for 32 tokens (~8x the 10.59GiB model file) -- RSS shrank monotonically (4.08GB->2.1GB->647MB) despite reading more data each phase, showing the OS page-cache LRU evicts indiscriminately with no expert-aware locality. Motivates the bounded expert-caching design. Expert-selection trace captured (1280 ffn_moe_topk dumps) but PRELIMINARY ONLY -- debug dump truncates to 6/8 ids per call and pools all 40 layers together; not yet a rigorous per-layer locality measurement."
+    },
+    "qwen36_npu_mtp_vs_nospec": {
+      "no_speculation": {
+        "prompt_tok_s": 1.2,
+        "generation_tok_s": 0.4
+      },
+      "draft_mtp": {
+        "prompt_tok_s": 0.9,
+        "generation_tok_s": 0.2
+      },
+      "note": "Controlled same-seed (42) comparison, identical config otherwise, -n 48, same prompt. MTP is SLOWER: ~25% slower prompt eval, ~50% slower decode. At this base decode rate (well under 1 tok/s), draft/verify overhead costs more than any acceptance savings. MTP is functionally real and stable (zero crashes) but not a performance win for this model/quant/hardware combination."
+    },
+    "npu_prefill_cpu_decode_handoff": {
+      "status": "CORRECTED: ACHIEVABLE, via a different (custom, local, never-upstreamed) technique -- not llama.cpp's generic --prompt-cache session mechanism, which remains confirmed non-functional for recurrent memory (completion.cpp:334). The repo's existing Oct 3-5 Mistral 7B investigation proved an in-process one-way handoff (llama_perf_switch_to_cpu, reports/2026-10-03/patches/npu-prefill-cpu-decode.patch), originally gated to plain Qwen2/Qwen3 KV only. Extended it (llama_memory_recurrent::perf_migrate_cpu + llama_memory_hybrid dispatch + LLM_ARCH_QWEN3NEXT) and verified live: prefill NPU 6.80s/4.71 tok/s, handoff 1.98s (migrated both 6.00MiB KV and 75.38MiB recurrent/SSM-GDN state, zero crashes), decode CPU 18.94s/0.79 tok/s. CAVEAT: decode after handoff is much slower than native full-CPU (0.79 vs 3.30 tok/s at the same thread count) because the handoff uses canonical (non-repacked) CPU weight shadows, not the CPU_REPACK-optimized layout -- consistent with the project's own prior documented tradeoff for Mistral 7B, but apparently much more punishing for this IQ1_S quant. Net: technique works, is not a speed win here.",
+      "driver": "scripts/hybrid-handoff-probe.cpp (local tool, not part of llama.cpp)",
+      "patch_extension": "see .work-npu/llama.cpp git diff -- not yet saved as a standalone .patch file in reports/"
+    },
     "mtp_acceptance_pct": null,
     "ngram_acceptance_pct": "not captured -- llama-cli's basic output doesn't print speculative accept-rate stats; would need --log-verbosity or server endpoint to get this",
     "peak_ram_mb": 6223,
-    "_note": "all NPU numbers require -lm mmap and --n-cpu-moe as shown; -lm mmap is mandatory whenever -dev HTP0 is used on this model (see failed_attempts). A separate, non-blocking, non-deterministic exit-time crash bug exists across all binaries -- see known_issues."
+    "_note": "all NPU numbers require -lm mmap and --n-cpu-moe as shown; -lm mmap is mandatory whenever -dev HTP0 is used on this model (see failed_attempts). A separate, non-blocking, non-deterministic exit-time crash bug exists across all binaries -- see known_issues.",
+    "cache_throughput_confirmation_2026_10_10": {
+      "model": "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+      "backend": "HTP0 with CPU fallback for low-bit expert operations",
+      "load_mode": "mmap",
+      "cpu_threads": 4,
+      "cache_slots": 64,
+      "cache_budget_mib": 2560,
+      "allocated_expert_payload_bytes": 2336751616,
+      "peak_decode_tok_s": 1.333348,
+      "pooled_decode_tok_s": 1.0407929976967,
+      "decode_rates_tok_s": [
+        0.853519,
+        1.333348
+      ],
+      "forward_timing_only": true,
+      "report": "reports/2026-10-10/cache-throughput-confirmation/README.md",
+      "cooling_pause_seconds": [
+        180,
+        300
+      ]
+    }
   },
   "notes": "This track uses a separate, unpinned llama.cpp checkout (.work-qwen3/llama.cpp, not yet created) so the existing validated GPU/NPU installers and their pins (upstream.json, npu-upstream.json) are not touched. See docs/QWEN3_TRIAD_PLAN.md Decision D1. Candidate GGUF (7.85 GiB) exceeds the measured 4.2GiB available RAM as a raw file size; relies on mmap page-level loading, must be verified empirically for thrashing in Phase C before claiming it 'works'."
 }

@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-10-10T22:14:18.676943+00:00",
+  "sha256": {
+    "scripts/moe-cache-benchmark.cpp": "d3bfea84f812b2787fa58bae643a9a7f32c19ebefee462c33150b84d25f03c48",
+    "scripts/moe-slot-cache.h": "4db9196fbcf697bc83d4e471f1c7ce5a53dc4f9bba601893df65f9471816bdd2",
+    "scripts/moe-thermal-monitor.py": "279c996e499fe123f379ed1207c668744e464e8b542fe61b1ab7280c5a00281e",
+    "reports/2026-10-10/cache-throughput-sweep/run-benchmark.py": "a04a82c6598d31fb882cc8ba424fbfd114c1c73f211fc31a65ea9abb02dfba3d",
+    ".work-npu/build/bin/moe-cache-benchmark": "646f7666a93a72305549d34b35b327471efd111252e4274c508ff33aac81ace9",
+    ".work-npu/build/bin/libggml-cpu.so": "2f6f0271d56bf21bd4c98e71a9aaa95055634fb96e7a1f1431c45a72793e6751",
+    "patches/experimental-cpu-moe-cache.patch": "e8232f3a9ac41a0d5562d8ca65a8ca6bad2581b733ca568ce796c705f83d5607"
+  },
+  "notes": [
+    "Cache/backend implementation unchanged; benchmark now accepts an explicit per-pass cache/thread plan.",
+    "Fixed 30 s rests, thermal observations only; optional admission gate cleared from environment.",
+    "User requested longer cooling during pass 6; attached boundary supervisor before passes 7..9. Source/binary hashes above are the launch versions; only config field labeling changed before the follow-up."
+  ],
+  "post_launch_helpers_sha256": {
+    "scripts/moe-between-run-cooldown.py": "e345ae190bcf2c4e2a66ce38d542ce82f2f664b9d18fbcdd48f9c295a74d4b39",
+    "scripts/analyze-moe-cache-sweep.py": "16515f42a9b5490c671c4674e528cbc8e839183c914da3c9ad026298eb3d6c6b"
+  }
+}

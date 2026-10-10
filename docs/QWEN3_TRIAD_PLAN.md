@@ -914,6 +914,162 @@ This splits two costs that behave differently as the cache "learns":
 
 ---
 
+## Phase H — Repeated-prompt expert mapping (October 10, 2026)
+
+- [x] Finished the existing mapping probe and ran eight 24-token sampled
+      continuations of a fixed string-reversal prompt on Qwen3.6-35B-A3B
+      UD-IQ1_M, HTP0, forced mmap, six threads, no MTP. Exit 0, no
+      watchdog stop. Complete router counts validated across 40 layers.
+- [x] First six trials define a frozen map: 131.2 experts/layer on average.
+      The final two continuations have 92.37% decode-selection coverage
+      and introduce 577 distinct layer/expert pairs absent from training.
+      The evolving union reaches 145.625 experts/layer by trial eight;
+      convergence is not established.
+- [x] Actual GGUF byte accounting: the training map requires 4.47 GiB of
+      expert payload alone (6.34 GiB including every other tensor, with
+      unused MTP included conservatively). Minimum sampled available
+      memory was 3.61 GiB. This does not meet the conservative whole-map
+      residency gate. The experiment re-read 623.00 GiB excluding load.
+- [ ] Next implementation target: bounded 32-slot/layer cache (1.09 GiB
+      routed-weight payload), full-model fallback, synchronized refills
+      and router-ID remapping. Validate correctness before measuring a
+      speedup. No cache was implemented or benchmarked in Phase H.
+
+Full method, caveats, raw JSONL, tensor metadata, memory observations,
+analysis and reproduction: [October 10 report](../reports/2026-10-10/README.md).
+Four analyzer tests pass. Installer pins and backend code are unchanged.
+
+---
+
+## Phase I — Bounded expert cache prototype (October 10, 2026)
+
+- [x] Corrected the execution assumption: this GGUF's IQ1/IQ2 routed
+      experts use CPU fallback; Hexagon's `MUL_MAT_ID` implementation
+      rejects these types. Layer offload counts alone did not establish
+      NPU execution of expert operations. This supersedes the Phase G
+      assumption that this specific cache requires splitting the llama
+      graph builder around an NPU expert kernel.
+- [x] Implemented an opt-in canonical-weight CPU backend cache with 32
+      slots per expert-weight tensor, recency eviction, complete selected
+      set pinning, private ID remapping, synchronized execution, and
+      full-tensor fallback for oversized batches or allocation budgets.
+      Payload is bounded per CPU backend; immutable model weights remain
+      available through mmap. No expert pruning, MTP or prefetching.
+- [x] Slot-manager checks and quantized CPU graph tests passed. Q2_K,
+      IQ2_XXS, IQ1_S and IQ1_M are bit-identical at 1 and 6 threads, with
+      eviction and oversized fallback exercised and original IDs intact.
+- [x] Full-model gate passed: all 248,320 vocabulary logits match bit for
+      bit at 16 evaluated positions (prefill plus 15 decode evaluations).
+      Cache allocated 1.09 GiB and performed 2,838 evictions, exit 0.
+- [x] One preliminary baseline-then-cache pair: evaluation time
+      41.147 → 24.003 s, process storage reads 42.87 → 10.54 GiB.
+      This is order-biased and may benefit from page-cache warmth;
+      it is not a reliable or sustained speedup claim.
+- [x] Added a checksum-checked, idempotent experimental patch helper;
+      fresh apply and reverse-check passed. Installer pins/defaults
+      are unchanged; caching is disabled unless explicitly enabled.
+- [x] Longer balanced-order trials completed in Phase J. Matched starting
+      temperatures remain the next measurement before extending caching
+      policy/prefetching or reintroducing MTP.
+
+Implementation, tests, limitations and reproducible commands:
+[bounded-cache report](../reports/2026-10-10/cache/README.md).
+
+---
+
+## Phase J — Longer balanced cache trials and thermal capture (October 10, 2026)
+
+- [x] Completed four fresh contexts in baseline/cache/cache/baseline order,
+      with 30-second rests and the same 64-position token trajectory. All
+      192 replayed full-vocabulary logit vectors were bit-identical.
+- [x] Cache was faster in both orders. Mean synchronized forward evaluation
+      was 288.189 → 122.728 seconds (2.35×); pooled decode throughput was
+      0.224 → 0.541 tokens/s, and mean storage reads fell 83.30%.
+- [x] Each cached context allocated 1.09 GiB expert payload, exercised
+      22,086 evictions and 120 oversized prefill fallbacks, with no budget
+      or identity fallback. Minimum sampled available memory was 4.04 GiB.
+- [x] Corrected the temperature-access claim: `/sys/class/thermal` CPU,
+      battery and HTP sensors are readable, as is `termux-battery-status`.
+      Recorded battery peak 42.2°C, CPU sensor peak 84.9°C and HTP sensor
+      peak 66.6°C. First-pass monitoring began mid-run; its trace is partial.
+- [x] Saved raw results, thermal JSONL/CSV, provenance, analyzer and runner.
+      The runner now starts thermal monitoring at launch for future trials.
+- [ ] Repeat with matched starting temperatures. Only two trials per mode,
+      one prompt/device/session were measured; temperature and page-cache
+      drift prevent reliable energy or sustained thermal conclusions.
+
+[Balanced benchmark results and reproduction](../reports/2026-10-10/cache-balanced/README.md).
+
+---
+
+## Phase K — Starting-temperature admission (October 10, 2026)
+
+- [x] Added an opt-in benchmark handshake after fresh context setup and before
+      timed prefill. Per-pass approval files prevent a prior release being reused.
+- [x] Added two-second battery/CPU/HTP sampling and a continuous 30-second
+      admission window. The first stable window freezes the reference;
+      bands remain ±0.4°C battery and ±4°C CPU/HTP across every pass.
+      Missing readings and sampling gaps reset the hold. Admission times out
+      after 900 seconds; the complete child has a 4800-second limit.
+- [x] Three policy tests and four analyzer tests passed, including raw-window
+      validation and rejection of a changed reference or out-of-band sample.
+- [x] Gated attempt concluded: baseline admitted at battery 25.7°C,
+      CPU 36.6°C, HTP 34.6°C and completed in 279.316 seconds. Its token
+      trajectory matches Phase J; the accepted window validates against
+      raw sensor samples. Cached pass timed out after 900 seconds while
+      battery cooled to 28.8°C, above the 26.1°C upper band. No new
+      cache comparison or replayed-logit result is available.
+- [x] User redirected effort to generation speed: raise admission tolerances
+      and initial ceilings by 3°C for future gated runs (battery ±3.4°C,
+      CPU/HTP ±7°C; ceilings 37/58/48°C). No more thermal-policy testing
+      requested. Keep the stopped trial's historical criteria unchanged.
+- [x] Next throughput work: tune cache capacity and CPU thread count against
+      the current best Qwen3.6 decode result, 0.584 tok/s (0.541 pooled).
+
+[Admission policy, artifacts and reproduction](../reports/2026-10-10/cache-thermal-matched/README.md).
+
+---
+
+## Phase L — Cache capacity and CPU thread throughput screen (October 10, 2026)
+
+- [x] Extended the benchmark with an explicit per-pass slots/threads/budget
+      plan, retaining the original ABBA default when no plan is supplied.
+- [x] Completed nine 64-position contexts: 32/64/96/128 slots at six threads,
+      64/96 slots at four/eight threads, and a final 32/six control. All
+      512 replayed full-vocabulary vectors were bit-identical; cache counters
+      were deterministic by capacity and budget/identity fallbacks were zero.
+- [x] Best screened rate: **64 slots/four threads, 0.984 tok/s**. The 128/six
+      setting reached 0.835; 96/four 0.781; eight-thread settings 0.385–0.405.
+      The first/final 32/six controls were 0.519/0.534 (pooled 0.526).
+- [x] At user direction, added 180–300-second untimed cooling pauses before
+      the final three runs. All met soft goals battery ≤40°C, CPU ≤55°C,
+      HTP ≤50°C. Earlier rests were 30 seconds, so screening comparisons
+      retain this mid-run protocol change as a limitation.
+- [x] Minimum available RAM 1.93 GiB, peak process RSS 6.05 GiB; no watchdog
+      stop. No thermal-policy tests were run. Cache implementation/defaults
+      were unchanged; only benchmark settings were tuned.
+
+[Screen results, artifacts and reproduction](../reports/2026-10-10/cache-throughput-sweep/README.md).
+
+## Phase M — Repeated throughput with cooling throughout (October 10, 2026)
+
+- [x] Prepared five-context follow-up **64/4,128/4,128/6,128/4,64/4**.
+      The repeated four-thread configurations share a mean chronological
+      position and occur in both comparison orders.
+- [x] Added cooling before the first model load and between every completed
+      run: 180–300-second pauses with the same soft temperature goals.
+      Setup/cooling remain outside synchronized forward-call timing.
+- [x] Completed all five contexts and 256 bit-identical replayed vectors.
+      Fastest **64 slots/four threads: 1.333348 tok/s**; pooled repeated
+      rate **1.040793**, versus 0.886255 for 128/four. 64/four wins both
+      comparison orders; all cooling pauses reached the soft goals.
+- [x] Saved results, best settings and [continuation handoff](QWEN36_PERFORMANCE_HANDOFF.md).
+      No live benchmark remains; further tuning is future work.
+
+[Follow-up method and artifacts](../reports/2026-10-10/cache-throughput-confirmation/README.md).
+
+---
+
 ## State & recovery
 
 - `.codex_state.json` (repo root, gitignored is **not** required — it's

@@ -1,0 +1,657 @@
+{
+  "config": {
+    "type": "config",
+    "model": "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+    "prompt": "Write a Python binary search tree implementation with insert, search, delete, and unit tests. Explain the edge cases:",
+    "prompt_tokens": 23,
+    "maximum_output_tokens": 64,
+    "vocab_size": 248320,
+    "slots_order": [
+      64,
+      128,
+      128,
+      128,
+      64
+    ],
+    "plan": [
+      {
+        "slots": 64,
+        "threads": 4,
+        "cache_mib": 2560
+      },
+      {
+        "slots": 128,
+        "threads": 4,
+        "cache_mib": 5120
+      },
+      {
+        "slots": 128,
+        "threads": 6,
+        "cache_mib": 5120
+      },
+      {
+        "slots": 128,
+        "threads": 4,
+        "cache_mib": 5120
+      },
+      {
+        "slots": 64,
+        "threads": 4,
+        "cache_mib": 2560
+      }
+    ],
+    "reference_threads": 4,
+    "batch": 128,
+    "ubatch": 128,
+    "rest_s": 30,
+    "seed": 20261010,
+    "top_k": 40,
+    "temperature": 0.8,
+    "repeat_penalty": 1.1,
+    "timing": "synchronized forward calls only"
+  },
+  "reference": {
+    "type": "reference",
+    "steps": 64,
+    "eog": false,
+    "text": "\n- `delete` when node has 0 children (leaf)\n- `delete` when node has exactly 1 child\n- `deltete` when node has 2 children\n\n<think>\nHere's a thinking process:\n\n1.  **Understand User Request:**\n   - Need a Python",
+    "tokens": [
+      198,
+      12,
+      1510,
+      4394,
+      63,
+      948,
+      2357,
+      682,
+      220,
+      15,
+      2748,
+      318,
+      23397,
+      8,
+      198,
+      12,
+      1510,
+      4394,
+      63,
+      948,
+      2357,
+      682,
+      6681,
+      220,
+      16,
+      1623,
+      198,
+      12,
+      1510,
+      67,
+      3690,
+      7470,
+      63,
+      948,
+      2357,
+      682,
+      220,
+      17,
+      2748,
+      271,
+      248068,
+      198,
+      8160,
+      579,
+      264,
+      7047,
+      1817,
+      25,
+      271,
+      16,
+      13,
+      220,
+      2972,
+      15771,
+      2598,
+      2570,
+      5952,
+      64700,
+      198,
+      256,
+      471,
+      14235,
+      264,
+      12654
+    ]
+  },
+  "passes": [
+    {
+      "type": "pass",
+      "pass": 1,
+      "slots": 64,
+      "threads": 4,
+      "cache_mib": 2560,
+      "evaluated_positions": 64,
+      "decode_evaluations": 63,
+      "bit_identical_positions": 0,
+      "prefill_s": 8.503163,
+      "decode_s": 73.812064,
+      "evaluation_s": 82.315227,
+      "decode_tok_s": 0.853519,
+      "prefill_storage_bytes": 6630608896,
+      "decode_storage_bytes": 20767805440,
+      "storage_bytes": 27398414336,
+      "available_start_kib": 6462844,
+      "available_end_kib": 3469028,
+      "rss_start_kib": 4298588,
+      "rss_end_kib": 1940424,
+      "cache_stats": {
+        "slots": 64,
+        "allocated_bytes": 2336751616,
+        "requests": 7680,
+        "hits": 45384,
+        "misses": 20232,
+        "evictions": 12552,
+        "copied_bytes": 6185926656,
+        "oversized": 27,
+        "budget_fallback": 0,
+        "identity_fallback": 0,
+        "pass": 1
+      },
+      "temperature": {
+        "battery_c": {
+          "first": 38.1,
+          "last": 40.3,
+          "peak": 40.3
+        },
+        "cpu_max_c": {
+          "first": 84.1,
+          "last": 74.8,
+          "peak": 84.5
+        },
+        "htp_max_c": {
+          "first": 60.0,
+          "last": 65.8,
+          "peak": 68.5
+        }
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 2,
+      "slots": 128,
+      "threads": 4,
+      "cache_mib": 5120,
+      "evaluated_positions": 64,
+      "decode_evaluations": 63,
+      "bit_identical_positions": 64,
+      "prefill_s": 10.3407,
+      "decode_s": 82.028743,
+      "evaluation_s": 92.369443,
+      "decode_tok_s": 0.768023,
+      "prefill_storage_bytes": 6751977472,
+      "decode_storage_bytes": 14653476864,
+      "storage_bytes": 21405454336,
+      "available_start_kib": 5172096,
+      "available_end_kib": 1785060,
+      "rss_start_kib": 377488,
+      "rss_end_kib": 1225924,
+      "cache_stats": {
+        "slots": 128,
+        "allocated_bytes": 4673503232,
+        "requests": 7680,
+        "hits": 52050,
+        "misses": 15702,
+        "evictions": 1347,
+        "copied_bytes": 4790050816,
+        "oversized": 0,
+        "budget_fallback": 0,
+        "identity_fallback": 0,
+        "pass": 2
+      },
+      "temperature": {
+        "battery_c": {
+          "first": 36.7,
+          "last": 38.6,
+          "peak": 38.6
+        },
+        "cpu_max_c": {
+          "first": 94.2,
+          "last": 71.6,
+          "peak": 94.6
+        },
+        "htp_max_c": {
+          "first": 58.8,
+          "last": 64.2,
+          "peak": 65.4
+        }
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 3,
+      "slots": 128,
+      "threads": 6,
+      "cache_mib": 5120,
+      "evaluated_positions": 64,
+      "decode_evaluations": 63,
+      "bit_identical_positions": 64,
+      "prefill_s": 16.300547,
+      "decode_s": 100.407362,
+      "evaluation_s": 116.70791,
+      "decode_tok_s": 0.627444,
+      "prefill_storage_bytes": 7201812480,
+      "decode_storage_bytes": 14814085120,
+      "storage_bytes": 22015897600,
+      "available_start_kib": 5154964,
+      "available_end_kib": 1983632,
+      "rss_start_kib": 21584,
+      "rss_end_kib": 1272252,
+      "cache_stats": {
+        "slots": 128,
+        "allocated_bytes": 4673503232,
+        "requests": 7680,
+        "hits": 52050,
+        "misses": 15702,
+        "evictions": 1347,
+        "copied_bytes": 4790050816,
+        "oversized": 0,
+        "budget_fallback": 0,
+        "identity_fallback": 0,
+        "pass": 3
+      },
+      "temperature": {
+        "battery_c": {
+          "first": 36.5,
+          "last": 38.1,
+          "peak": 38.1
+        },
+        "cpu_max_c": {
+          "first": 95.4,
+          "last": 69.3,
+          "peak": 95.4
+        },
+        "htp_max_c": {
+          "first": 61.9,
+          "last": 61.1,
+          "peak": 65.4
+        }
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 4,
+      "slots": 128,
+      "threads": 4,
+      "cache_mib": 5120,
+      "evaluated_positions": 64,
+      "decode_evaluations": 63,
+      "bit_identical_positions": 64,
+      "prefill_s": 11.465021,
+      "decode_s": 60.142466,
+      "evaluation_s": 71.607487,
+      "decode_tok_s": 1.047513,
+      "prefill_storage_bytes": 7254347776,
+      "decode_storage_bytes": 14542376960,
+      "storage_bytes": 21796724736,
+      "available_start_kib": 5443760,
+      "available_end_kib": 2208256,
+      "rss_start_kib": 26568,
+      "rss_end_kib": 1705356,
+      "cache_stats": {
+        "slots": 128,
+        "allocated_bytes": 4673503232,
+        "requests": 7680,
+        "hits": 52050,
+        "misses": 15702,
+        "evictions": 1347,
+        "copied_bytes": 4790050816,
+        "oversized": 0,
+        "budget_fallback": 0,
+        "identity_fallback": 0,
+        "pass": 4
+      },
+      "temperature": {
+        "battery_c": {
+          "first": 36.6,
+          "last": 37.8,
+          "peak": 37.8
+        },
+        "cpu_max_c": {
+          "first": 66.2,
+          "last": 70.1,
+          "peak": 72.0
+        },
+        "htp_max_c": {
+          "first": 51.8,
+          "last": 61.9,
+          "peak": 70.9
+        }
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 5,
+      "slots": 64,
+      "threads": 4,
+      "cache_mib": 2560,
+      "evaluated_positions": 64,
+      "decode_evaluations": 63,
+      "bit_identical_positions": 64,
+      "prefill_s": 7.078802,
+      "decode_s": 47.249473,
+      "evaluation_s": 54.328275,
+      "decode_tok_s": 1.333348,
+      "prefill_storage_bytes": 7555698688,
+      "decode_storage_bytes": 20024066048,
+      "storage_bytes": 27579764736,
+      "available_start_kib": 5392936,
+      "available_end_kib": 4066584,
+      "rss_start_kib": 23692,
+      "rss_end_kib": 2378892,
+      "cache_stats": {
+        "slots": 64,
+        "allocated_bytes": 2336751616,
+        "requests": 7680,
+        "hits": 45384,
+        "misses": 20232,
+        "evictions": 12552,
+        "copied_bytes": 6185926656,
+        "oversized": 27,
+        "budget_fallback": 0,
+        "identity_fallback": 0,
+        "pass": 5
+      },
+      "temperature": {
+        "battery_c": {
+          "first": 37.1,
+          "last": 38.9,
+          "peak": 38.9
+        },
+        "cpu_max_c": {
+          "first": 88.4,
+          "last": 70.5,
+          "peak": 88.4
+        },
+        "htp_max_c": {
+          "first": 58.8,
+          "last": 63.5,
+          "peak": 65.4
+        }
+      }
+    }
+  ],
+  "ranked_configurations": [
+    {
+      "slots": 64,
+      "threads": 4,
+      "cache_mib": 2560,
+      "repetitions": 2,
+      "pooled_decode_tok_s": 1.0407929976967,
+      "mean_prefill_s": 7.7909825,
+      "mean_evaluation_s": 68.32175099999999,
+      "mean_decode_storage_bytes": 20395935744
+    },
+    {
+      "slots": 128,
+      "threads": 4,
+      "cache_mib": 5120,
+      "repetitions": 2,
+      "pooled_decode_tok_s": 0.8862553880371095,
+      "mean_prefill_s": 10.9028605,
+      "mean_evaluation_s": 81.988465,
+      "mean_decode_storage_bytes": 14597926912
+    },
+    {
+      "slots": 128,
+      "threads": 6,
+      "cache_mib": 5120,
+      "repetitions": 1,
+      "pooled_decode_tok_s": 0.6274440314446265,
+      "mean_prefill_s": 16.300547,
+      "mean_evaluation_s": 116.70791,
+      "mean_decode_storage_bytes": 14814085120
+    }
+  ],
+  "fastest_pass": {
+    "type": "pass",
+    "pass": 5,
+    "slots": 64,
+    "threads": 4,
+    "cache_mib": 2560,
+    "evaluated_positions": 64,
+    "decode_evaluations": 63,
+    "bit_identical_positions": 64,
+    "prefill_s": 7.078802,
+    "decode_s": 47.249473,
+    "evaluation_s": 54.328275,
+    "decode_tok_s": 1.333348,
+    "prefill_storage_bytes": 7555698688,
+    "decode_storage_bytes": 20024066048,
+    "storage_bytes": 27579764736,
+    "available_start_kib": 5392936,
+    "available_end_kib": 4066584,
+    "rss_start_kib": 23692,
+    "rss_end_kib": 2378892,
+    "cache_stats": {
+      "slots": 64,
+      "allocated_bytes": 2336751616,
+      "requests": 7680,
+      "hits": 45384,
+      "misses": 20232,
+      "evictions": 12552,
+      "copied_bytes": 6185926656,
+      "oversized": 27,
+      "budget_fallback": 0,
+      "identity_fallback": 0,
+      "pass": 5
+    },
+    "temperature": {
+      "battery_c": {
+        "first": 37.1,
+        "last": 38.9,
+        "peak": 38.9
+      },
+      "cpu_max_c": {
+        "first": 88.4,
+        "last": 70.5,
+        "peak": 88.4
+      },
+      "htp_max_c": {
+        "first": 58.8,
+        "last": 63.5,
+        "peak": 65.4
+      }
+    }
+  },
+  "cache_stats": [
+    {
+      "slots": 64,
+      "allocated_bytes": 2336751616,
+      "requests": 7680,
+      "hits": 45384,
+      "misses": 20232,
+      "evictions": 12552,
+      "copied_bytes": 6185926656,
+      "oversized": 27,
+      "budget_fallback": 0,
+      "identity_fallback": 0,
+      "pass": 1
+    },
+    {
+      "slots": 128,
+      "allocated_bytes": 4673503232,
+      "requests": 7680,
+      "hits": 52050,
+      "misses": 15702,
+      "evictions": 1347,
+      "copied_bytes": 4790050816,
+      "oversized": 0,
+      "budget_fallback": 0,
+      "identity_fallback": 0,
+      "pass": 2
+    },
+    {
+      "slots": 128,
+      "allocated_bytes": 4673503232,
+      "requests": 7680,
+      "hits": 52050,
+      "misses": 15702,
+      "evictions": 1347,
+      "copied_bytes": 4790050816,
+      "oversized": 0,
+      "budget_fallback": 0,
+      "identity_fallback": 0,
+      "pass": 3
+    },
+    {
+      "slots": 128,
+      "allocated_bytes": 4673503232,
+      "requests": 7680,
+      "hits": 52050,
+      "misses": 15702,
+      "evictions": 1347,
+      "copied_bytes": 4790050816,
+      "oversized": 0,
+      "budget_fallback": 0,
+      "identity_fallback": 0,
+      "pass": 4
+    },
+    {
+      "slots": 64,
+      "allocated_bytes": 2336751616,
+      "requests": 7680,
+      "hits": 45384,
+      "misses": 20232,
+      "evictions": 12552,
+      "copied_bytes": 6185926656,
+      "oversized": 27,
+      "budget_fallback": 0,
+      "identity_fallback": 0,
+      "pass": 5
+    }
+  ],
+  "run": {
+    "plan": "64:4:2560,128:4:5120,128:6:5120,128:4:5120,64:4:2560",
+    "cooldown_monitor_returncode": 0,
+    "thermal_monitor_returncode": 0,
+    "command": [
+      "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/moe-cache-benchmark",
+      "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+      "64"
+    ],
+    "returncode": 0,
+    "stop_reason": null,
+    "elapsed_s": 1321.8665081409854,
+    "minimum_available_kib": 1314408,
+    "peak_rss_kib": 6893884
+  },
+  "cooldowns": [
+    {
+      "after_pass": 1,
+      "paused_s": 220.30263413500506,
+      "targets_c": {
+        "battery_c": 40.0,
+        "cpu_max_c": 55.0,
+        "htp_max_c": 50.0
+      },
+      "target_met": true,
+      "first_c": {
+        "battery_c": 40.3,
+        "cpu_max_c": 74.4,
+        "htp_max_c": 65.8
+      },
+      "last_c": {
+        "battery_c": 37.0,
+        "cpu_max_c": 53.3,
+        "htp_max_c": 49.8
+      },
+      "ended_monotonic_s": 414437.541714661,
+      "utc": "2026-10-10T22:56:17.539932+00:00"
+    },
+    {
+      "after_pass": 2,
+      "paused_s": 180.25035435898462,
+      "targets_c": {
+        "battery_c": 40.0,
+        "cpu_max_c": 55.0,
+        "htp_max_c": 50.0
+      },
+      "target_met": true,
+      "first_c": {
+        "battery_c": 38.6,
+        "cpu_max_c": 70.5,
+        "htp_max_c": 63.9
+      },
+      "last_c": {
+        "battery_c": 36.7,
+        "cpu_max_c": 54.5,
+        "htp_max_c": 49.4
+      },
+      "ended_monotonic_s": 414740.783499233,
+      "utc": "2026-10-10T23:01:20.781775+00:00"
+    },
+    {
+      "after_pass": 3,
+      "paused_s": 180.23181217105594,
+      "targets_c": {
+        "battery_c": 40.0,
+        "cpu_max_c": 55.0,
+        "htp_max_c": 50.0
+      },
+      "target_met": true,
+      "first_c": {
+        "battery_c": 38.2,
+        "cpu_max_c": 66.6,
+        "htp_max_c": 60.3
+      },
+      "last_c": {
+        "battery_c": 37.0,
+        "cpu_max_c": 50.6,
+        "htp_max_c": 49.4
+      },
+      "ended_monotonic_s": 415069.181397233,
+      "utc": "2026-10-10T23:06:49.179716+00:00"
+    },
+    {
+      "after_pass": 4,
+      "paused_s": 180.24740237899823,
+      "targets_c": {
+        "battery_c": 40.0,
+        "cpu_max_c": 55.0,
+        "htp_max_c": 50.0
+      },
+      "target_met": true,
+      "first_c": {
+        "battery_c": 37.8,
+        "cpu_max_c": 70.1,
+        "htp_max_c": 62.3
+      },
+      "last_c": {
+        "battery_c": 36.0,
+        "cpu_max_c": 52.9,
+        "htp_max_c": 49.4
+      },
+      "ended_monotonic_s": 415352.369893687,
+      "utc": "2026-10-10T23:11:32.368162+00:00"
+    }
+  ],
+  "balanced_pairs": [
+    {
+      "control_pass": 1,
+      "candidate_pass": 2,
+      "decode_speedup": 0.8998317089901037,
+      "evaluation_speedup": 0.8911521421645899
+    },
+    {
+      "control_pass": 5,
+      "candidate_pass": 4,
+      "decode_speedup": 0.785625800578247,
+      "evaluation_speedup": 0.7586954559653796
+    }
+  ],
+  "limitations": [
+    "Single prompt/trajectory/device/session; most settings have one trial.",
+    "Recorded 3\u20135 minute cooling breaks begin after pass 1; inspect chronological comparisons accordingly.",
+    "Page cache, scheduling and memory pressure are not reset.",
+    "Screening rates are observations; confirm the selected setting in both orders."
+  ]
+}

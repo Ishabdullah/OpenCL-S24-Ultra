@@ -1,0 +1,12 @@
+{
+  "slots": 32,
+  "allocated_bytes": 1168375808,
+  "requests": 1920,
+  "hits": 9069,
+  "misses": 6678,
+  "evictions": 2838,
+  "copied_bytes": 2032656384,
+  "oversized": 75,
+  "budget_fallback": 0,
+  "identity_fallback": 0
+}

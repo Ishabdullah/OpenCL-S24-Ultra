@@ -1,0 +1,299 @@
+{
+  "config": {
+    "type": "config",
+    "model": "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+    "prompt": "Write a Python binary search tree implementation with insert, search, delete, and unit tests. Explain the edge cases:",
+    "prompt_tokens": 23,
+    "maximum_output_tokens": 64,
+    "vocab_size": 248320,
+    "slots_order": [
+      0,
+      32,
+      32,
+      0
+    ],
+    "threads": 6,
+    "batch": 128,
+    "ubatch": 128,
+    "rest_s": 30,
+    "seed": 20261010,
+    "top_k": 40,
+    "temperature": 0.8,
+    "repeat_penalty": 1.1,
+    "timing": "synchronized forward calls only"
+  },
+  "reference": {
+    "type": "reference",
+    "steps": 64,
+    "eog": false,
+    "text": "\n- `delete` when node has 0 children (leaf)\n- `delete` when node has exactly 1 child\n- `deltete` when node has 2 children\n\n<think>\nHere's a thinking process:\n\n1.  **Understand User Request:**\n   - Need a Python",
+    "tokens": [
+      198,
+      12,
+      1510,
+      4394,
+      63,
+      948,
+      2357,
+      682,
+      220,
+      15,
+      2748,
+      318,
+      23397,
+      8,
+      198,
+      12,
+      1510,
+      4394,
+      63,
+      948,
+      2357,
+      682,
+      6681,
+      220,
+      16,
+      1623,
+      198,
+      12,
+      1510,
+      67,
+      3690,
+      7470,
+      63,
+      948,
+      2357,
+      682,
+      220,
+      17,
+      2748,
+      271,
+      248068,
+      198,
+      8160,
+      579,
+      264,
+      7047,
+      1817,
+      25,
+      271,
+      16,
+      13,
+      220,
+      2972,
+      15771,
+      2598,
+      2570,
+      5952,
+      64700,
+      198,
+      256,
+      471,
+      14235,
+      264,
+      12654
+    ]
+  },
+  "passes": [
+    {
+      "type": "pass",
+      "pass": 1,
+      "slots": 0,
+      "evaluated_positions": 64,
+      "decode_evaluations": 63,
+      "bit_identical_positions": 0,
+      "prefill_s": 7.474754,
+      "decode_s": 227.399708,
+      "evaluation_s": 234.874463,
+      "decode_tok_s": 0.277045,
+      "prefill_storage_bytes": 8271196160,
+      "decode_storage_bytes": 208853413888,
+      "storage_bytes": 217124610048,
+      "available_start_kib": 6109272,
+      "available_end_kib": 5723488,
+      "rss_start_kib": 3776684,
+      "rss_end_kib": 466140
+    },
+    {
+      "type": "pass",
+      "pass": 2,
+      "slots": 32,
+      "evaluated_positions": 64,
+      "decode_evaluations": 63,
+      "bit_identical_positions": 64,
+      "prefill_s": 6.407037,
+      "decode_s": 107.879991,
+      "evaluation_s": 114.287028,
+      "decode_tok_s": 0.583982,
+      "prefill_storage_bytes": 8197496832,
+      "decode_storage_bytes": 30471286784,
+      "storage_bytes": 38668783616,
+      "available_start_kib": 5777736,
+      "available_end_kib": 4820640,
+      "rss_start_kib": 473776,
+      "rss_end_kib": 2196196
+    },
+    {
+      "type": "pass",
+      "pass": 3,
+      "slots": 32,
+      "evaluated_positions": 64,
+      "decode_evaluations": 63,
+      "bit_identical_positions": 64,
+      "prefill_s": 6.150493,
+      "decode_s": 125.018021,
+      "evaluation_s": 131.168514,
+      "decode_tok_s": 0.503927,
+      "prefill_storage_bytes": 7668764672,
+      "decode_storage_bytes": 32272744448,
+      "storage_bytes": 39941509120,
+      "available_start_kib": 5827420,
+      "available_end_kib": 4735988,
+      "rss_start_kib": 1163448,
+      "rss_end_kib": 1958944
+    },
+    {
+      "type": "pass",
+      "pass": 4,
+      "slots": 0,
+      "evaluated_positions": 64,
+      "decode_evaluations": 63,
+      "bit_identical_positions": 64,
+      "prefill_s": 6.910446,
+      "decode_s": 334.592867,
+      "evaluation_s": 341.503313,
+      "decode_tok_s": 0.188289,
+      "prefill_storage_bytes": 7790718976,
+      "decode_storage_bytes": 245698707456,
+      "storage_bytes": 253489426432,
+      "available_start_kib": 5654532,
+      "available_end_kib": 6048908,
+      "rss_start_kib": 1030248,
+      "rss_end_kib": 546336
+    }
+  ],
+  "modes": {
+    "0": {
+      "repetitions": 2,
+      "mean_evaluation_s": 288.188888,
+      "mean_prefill_s": 7.1926000000000005,
+      "mean_decode_s": 280.9962875,
+      "pooled_decode_tok_s": 0.22420225035891267,
+      "mean_storage_bytes": 235307018240,
+      "mean_decode_storage_bytes": 227276060672
+    },
+    "32": {
+      "repetitions": 2,
+      "mean_evaluation_s": 122.72777099999999,
+      "mean_prefill_s": 6.278765,
+      "mean_decode_s": 116.449006,
+      "pooled_decode_tok_s": 0.5410093410329325,
+      "mean_storage_bytes": 39305146368,
+      "mean_decode_storage_bytes": 31372015616
+    }
+  },
+  "pairs": [
+    {
+      "order": [
+        0,
+        32
+      ],
+      "evaluation_speedup": 2.0551279275544725,
+      "decode_speedup": 2.1078951332133498,
+      "storage_reduction_fraction": 0.821905109662827
+    },
+    {
+      "order": [
+        32,
+        0
+      ],
+      "evaluation_speedup": 2.6035464044366625,
+      "decode_speedup": 2.676357090950912,
+      "storage_reduction_fraction": 0.8424332340713448
+    }
+  ],
+  "evaluation_speedup": 2.3481962203974196,
+  "decode_speedup": 2.4130415290964358,
+  "storage_reduction_fraction": 0.8329622861995941,
+  "cache_stats": [
+    {
+      "slots": 32,
+      "allocated_bytes": 1168375808,
+      "requests": 7680,
+      "hits": 34554,
+      "misses": 25926,
+      "evictions": 22086,
+      "copied_bytes": 7929913344,
+      "oversized": 120,
+      "budget_fallback": 0,
+      "identity_fallback": 0,
+      "pass": 2
+    },
+    {
+      "slots": 32,
+      "allocated_bytes": 1168375808,
+      "requests": 7680,
+      "hits": 34554,
+      "misses": 25926,
+      "evictions": 22086,
+      "copied_bytes": 7929913344,
+      "oversized": 120,
+      "budget_fallback": 0,
+      "identity_fallback": 0,
+      "pass": 3
+    }
+  ],
+  "temperature_by_pass": {
+    "1": {
+      "samples": 32,
+      "battery_first_c": 35.5,
+      "battery_last_c": 37.8,
+      "battery_max_c": 37.8,
+      "cpu_max_c": 68.9,
+      "htp_max_c": 59.6
+    },
+    "2": {
+      "samples": 22,
+      "battery_first_c": 37.9,
+      "battery_last_c": 39.2,
+      "battery_max_c": 39.2,
+      "cpu_max_c": 84.9,
+      "htp_max_c": 64.6
+    },
+    "3": {
+      "samples": 25,
+      "battery_first_c": 39.0,
+      "battery_last_c": 39.5,
+      "battery_max_c": 39.5,
+      "cpu_max_c": 73.6,
+      "htp_max_c": 66.6
+    },
+    "4": {
+      "samples": 66,
+      "battery_first_c": 39.3,
+      "battery_last_c": 42.0,
+      "battery_max_c": 42.0,
+      "cpu_max_c": 72.4,
+      "htp_max_c": 65.4
+    }
+  },
+  "thermal_capture_partial_first_pass": true,
+  "limitations": [
+    "Two repetitions per mode, one prompt/trajectory/device/session.",
+    "Balanced order and equal rests; page cache and scheduling are not reset.",
+    "Temperature is observed, without matched-temperature admission.",
+    "No energy or sustained-thermal superiority claim."
+  ],
+  "run": {
+    "command": [
+      "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/moe-cache-benchmark",
+      "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+      "64"
+    ],
+    "returncode": 0,
+    "stop_reason": null,
+    "elapsed_s": 930.2223956350354,
+    "minimum_available_kib": 4239196,
+    "peak_rss_kib": 6365220
+  }
+}

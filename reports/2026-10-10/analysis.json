@@ -1,0 +1,104 @@
+{
+  "config": {
+    "type": "config",
+    "model": "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+    "architecture": "qwen35moe",
+    "prompt": "Write a Python function to reverse a string:",
+    "prompt_tokens": 9,
+    "gen_limit": 24,
+    "trials": 8,
+    "threads": 6,
+    "experts": 256,
+    "experts_used": 8,
+    "temperature": 0.8,
+    "top_k": 40,
+    "repeat_penalty": 1.1
+  },
+  "captured_layers": 40,
+  "unique_continuations": 8,
+  "training_trials": 6,
+  "heldout_trials": 2,
+  "curve": [
+    {
+      "trial": 1,
+      "mean_union": 110.8,
+      "new_total": 4432,
+      "min_union": 97,
+      "max_union": 151
+    },
+    {
+      "trial": 2,
+      "mean_union": 116.75,
+      "new_total": 238,
+      "min_union": 100,
+      "max_union": 165
+    },
+    {
+      "trial": 3,
+      "mean_union": 123.15,
+      "new_total": 256,
+      "min_union": 104,
+      "max_union": 178
+    },
+    {
+      "trial": 4,
+      "mean_union": 126.2,
+      "new_total": 122,
+      "min_union": 104,
+      "max_union": 184
+    },
+    {
+      "trial": 5,
+      "mean_union": 126.775,
+      "new_total": 23,
+      "min_union": 105,
+      "max_union": 184
+    },
+    {
+      "trial": 6,
+      "mean_union": 131.2,
+      "new_total": 177,
+      "min_union": 107,
+      "max_union": 191
+    },
+    {
+      "trial": 7,
+      "mean_union": 134.95,
+      "new_total": 150,
+      "min_union": 109,
+      "max_union": 200
+    },
+    {
+      "trial": 8,
+      "mean_union": 145.625,
+      "new_total": 427,
+      "min_union": 119,
+      "max_union": 215
+    }
+  ],
+  "heldout_coverage": {
+    "prefill": {
+      "hits": 5760,
+      "selections": 5760,
+      "fraction": 1.0
+    },
+    "decode": {
+      "hits": 13597,
+      "selections": 14720,
+      "fraction": 0.9237092391304348
+    }
+  },
+  "heldout_new_distinct_total": 577,
+  "weights": {
+    "full_routed_bytes": 9347006464,
+    "fixed_tensor_bytes": 2008416768,
+    "training_expert_bytes": 4802797568,
+    "final_expert_bytes": 5328715776,
+    "training_plus_fixed_bytes": 6811214336,
+    "final_plus_fixed_bytes": 7337132544,
+    "uniform_32_experts_bytes": 1168375808,
+    "uniform_64_experts_bytes": 2336751616
+  },
+  "storage_read_bytes": 668936073216,
+  "elapsed_trial_s": 856.097202
+}
