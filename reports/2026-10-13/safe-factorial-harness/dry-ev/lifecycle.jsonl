@@ -1,0 +1,2 @@
+{"event": "preflight", "utc": "x", "monotonic": 0.0, "available_kib": 6291456, "swap_kib": 0, "capacity": 60, "charging": true, "thermal": {"b": 37, "c": 50, "htp": 47}, "pins": {"mmap": "mmap", "device": "HTP0", "ngl": 99, "ctx": 256, "batch": 128, "microbatch": 128, "n_seq": 1, "flash": "off"}}
+{"event": "dry_run_complete"}

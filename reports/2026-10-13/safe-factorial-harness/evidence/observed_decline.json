@@ -1,0 +1,237 @@
+{
+ "description": "Observed retry-01 cell-0 (H4/T4/mtp off) memory-decline trace: 25 generation samples. Available plateaued ~4.46 GiB, then 4.46->1.94 GiB in 8.35s (samples 20->24), minimum 1935480 KiB (1.846 GiB) at t+44.11s. Lifecycle on disk recorded ONLY preflight/cool_complete/start -- finish/abort and summary.json were never written, i.e. the driver died mid-sampling. Used as the replay fixture for early-abort projection test.",
+ "cell": {
+  "h": 4,
+  "threads": 4,
+  "mtp": "off",
+  "tokens": 16
+ },
+ "min_available_kib": 1935480,
+ "samples": [
+  {
+   "t_offset_s": 0.0,
+   "available_kib": 4514560,
+   "thermal": {
+    "b": 37.2,
+    "c": 63.5,
+    "htp": 45.9
+   }
+  },
+  {
+   "t_offset_s": 1.685,
+   "available_kib": 4455344,
+   "thermal": {
+    "b": 37.2,
+    "c": 63.1,
+    "htp": 47.5
+   }
+  },
+  {
+   "t_offset_s": 3.363,
+   "available_kib": 4450912,
+   "thermal": {
+    "b": 37.2,
+    "c": 67.7,
+    "htp": 48.7
+   }
+  },
+  {
+   "t_offset_s": 5.041,
+   "available_kib": 4397048,
+   "thermal": {
+    "b": 37.2,
+    "c": 63.9,
+    "htp": 49.0
+   }
+  },
+  {
+   "t_offset_s": 6.714,
+   "available_kib": 4470216,
+   "thermal": {
+    "b": 37.3,
+    "c": 69.7,
+    "htp": 49.8
+   }
+  },
+  {
+   "t_offset_s": 8.385,
+   "available_kib": 4460604,
+   "thermal": {
+    "b": 37.3,
+    "c": 66.6,
+    "htp": 50.2
+   }
+  },
+  {
+   "t_offset_s": 10.117,
+   "available_kib": 4448052,
+   "thermal": {
+    "b": 37.3,
+    "c": 65.0,
+    "htp": 49.8
+   }
+  },
+  {
+   "t_offset_s": 11.859,
+   "available_kib": 4431560,
+   "thermal": {
+    "b": 37.3,
+    "c": 67.4,
+    "htp": 49.8
+   }
+  },
+  {
+   "t_offset_s": 13.602,
+   "available_kib": 4458376,
+   "thermal": {
+    "b": 37.3,
+    "c": 63.1,
+    "htp": 50.2
+   }
+  },
+  {
+   "t_offset_s": 15.324,
+   "available_kib": 4464404,
+   "thermal": {
+    "b": 37.3,
+    "c": 67.7,
+    "htp": 50.6
+   }
+  },
+  {
+   "t_offset_s": 17.064,
+   "available_kib": 4453332,
+   "thermal": {
+    "b": 37.4,
+    "c": 65.4,
+    "htp": 50.6
+   }
+  },
+  {
+   "t_offset_s": 18.837,
+   "available_kib": 4451004,
+   "thermal": {
+    "b": 37.4,
+    "c": 63.9,
+    "htp": 50.6
+   }
+  },
+  {
+   "t_offset_s": 20.702,
+   "available_kib": 4491140,
+   "thermal": {
+    "b": 37.4,
+    "c": 60.7,
+    "htp": 50.2
+   }
+  },
+  {
+   "t_offset_s": 22.559,
+   "available_kib": 4452724,
+   "thermal": {
+    "b": 37.4,
+    "c": 61.9,
+    "htp": 49.8
+   }
+  },
+  {
+   "t_offset_s": 24.421,
+   "available_kib": 4451356,
+   "thermal": {
+    "b": 37.4,
+    "c": 59.2,
+    "htp": 49.4
+   }
+  },
+  {
+   "t_offset_s": 26.262,
+   "available_kib": 4436300,
+   "thermal": {
+    "b": 37.5,
+    "c": 57.6,
+    "htp": 49.8
+   }
+  },
+  {
+   "t_offset_s": 28.11,
+   "available_kib": 4476432,
+   "thermal": {
+    "b": 37.5,
+    "c": 61.1,
+    "htp": 49.8
+   }
+  },
+  {
+   "t_offset_s": 30.018,
+   "available_kib": 4497112,
+   "thermal": {
+    "b": 37.5,
+    "c": 58.4,
+    "htp": 49.8
+   }
+  },
+  {
+   "t_offset_s": 31.939,
+   "available_kib": 4505288,
+   "thermal": {
+    "b": 37.5,
+    "c": 61.5,
+    "htp": 49.4
+   }
+  },
+  {
+   "t_offset_s": 33.856,
+   "available_kib": 4476196,
+   "thermal": {
+    "b": 37.5,
+    "c": 58.8,
+    "htp": 50.2
+   }
+  },
+  {
+   "t_offset_s": 35.759,
+   "available_kib": 4460616,
+   "thermal": {
+    "b": 37.5,
+    "c": 58.4,
+    "htp": 50.2
+   }
+  },
+  {
+   "t_offset_s": 37.577,
+   "available_kib": 3819232,
+   "thermal": {
+    "b": 37.6,
+    "c": 58.0,
+    "htp": 52.2
+   }
+  },
+  {
+   "t_offset_s": 39.369,
+   "available_kib": 3210040,
+   "thermal": {
+    "b": 37.6,
+    "c": 60.3,
+    "htp": 52.6
+   }
+  },
+  {
+   "t_offset_s": 41.62,
+   "available_kib": 2566336,
+   "thermal": {
+    "b": 37.6,
+    "c": 63.5,
+    "htp": 54.1
+   }
+  },
+  {
+   "t_offset_s": 44.113,
+   "available_kib": 1935480,
+   "thermal": {
+    "b": 37.6,
+    "c": 62.7,
+    "htp": 54.9
+   }
+  }
+ ]
+}

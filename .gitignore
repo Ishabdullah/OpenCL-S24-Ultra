@@ -7,6 +7,9 @@ __pycache__/
 *.a
 *.o
 *.log
+*.pid
+*.lock
+.pytest_cache/
 build*/
 .DS_Store
 
