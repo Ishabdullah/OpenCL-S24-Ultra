@@ -1,9 +1,10 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-19T08:50:31+00:00",
-  "current_phase": "COMPLETE",
-  "active_subtask": "Bounded expert cache documentation and correctness validation complete. 16/16 logit vectors bit-identical, handoff document published at docs/BOUNDED_EXPERT_CACHE_HANDOFF.md.",
+  "updated_at": "2026-10-19T12:45:30+00:00",
+  "current_phase": "CAPACITY_EVALUATION",
+  "active_subtask": "Controlled 64-80-96 capacity sweep complete: 80 slots/4 threads wins with 1.184 tok/s pooled decode and 61.56s mean eval; all 6 passes verified bit-identical. Next: evaluate 2/3 threads against 4 threads at 80 slots.",
   "completed_steps": [
+    "Controlled 64-80-96 capacity sweep complete: 6 passes in 64->80->96->96->80->64 order with interpass cooling, 80 slots delivers highest sustained throughput (1.184 tok/s pooled), 100% bit-identical replay verified.",
     "Bounded expert cache documentation and correctness validation complete: 16/16 logit vectors bit-identical, handoff document published at docs/BOUNDED_EXPERT_CACHE_HANDOFF.md, README updated.",
     "Phase 0: verified llama.cpp pin (e358d59178377be4c58ba567925e05faadbccb57) already supports LLM_ARCH_QWEN3NEXT with native NextN/MTP code path",
     "Phase 0: confirmed --spec-type draft-mtp and --spec-type ngram-simple are real CLI options at this pin",
@@ -726,6 +727,25 @@
       "cache_mib": 2560,
       "same_historical_token_trajectory": true,
       "report": "reports/2026-10-10/cache-64-threads-5/README.md"
+    },
+    "cache_capacity_sweep_64_80_96_2026_10_13": {
+      "model": "/data/data/com.termux/files/home/models/qwen3.6-35b-a3b-mtp/Qwen3.6-35B-A3B-UD-IQ1_M.gguf",
+      "backend": "HTP0 with CPU fallback for low-bit expert operations",
+      "load_mode": "mmap",
+      "cpu_threads": 4,
+      "order": [64, 80, 96, 96, 80, 64],
+      "budgets_mib": [2560, 3200, 3840, 3840, 3200, 2560],
+      "ranked_configurations": [
+        {"slots": 80, "threads": 4, "pooled_decode_tok_s": 1.183888, "mean_evaluation_s": 61.559468},
+        {"slots": 96, "threads": 4, "pooled_decode_tok_s": 0.963606, "mean_evaluation_s": 75.276935},
+        {"slots": 64, "threads": 4, "pooled_decode_tok_s": 0.788476, "mean_evaluation_s": 88.175058}
+      ],
+      "peak_decode_tok_s": 1.300019,
+      "best_sustained_slots": 80,
+      "best_sustained_pooled_decode_tok_s": 1.183888,
+      "bit_identical_positions": 64,
+      "cooling_events": 5,
+      "report": "reports/2026-10-13/cache-64-80-96-four-retry-02/README.md"
     }
   },
   "notes": "This track uses a separate, unpinned llama.cpp checkout (.work-qwen3/llama.cpp, not yet created) so the existing validated GPU/NPU installers and their pins (upstream.json, npu-upstream.json) are not touched. See docs/QWEN3_TRIAD_PLAN.md Decision D1. Candidate GGUF (7.85 GiB) exceeds the measured 4.2GiB available RAM as a raw file size; relies on mmap page-level loading, must be verified empirically for thrashing in Phase C before claiming it 'works'."

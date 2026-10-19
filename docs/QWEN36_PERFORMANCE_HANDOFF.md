@@ -173,11 +173,21 @@ pooled 0.702435; all 64 replayed vectors were exact. Four threads remain the
 preferred measured setting. See the [five-thread report](../reports/2026-10-10/cache-64-threads-5/README.md)
 for raw measurements and historical-comparison limits.
 
+## Subsequent 64 vs 80 vs 96 capacity sweep (October 13, 2026)
+
+A controlled balanced 6-pass sweep in order **64 → 80 → 96 → 96 → 80 → 64** was executed with four CPU threads and verified inter-pass thermal cooldowns:
+- **80 slots / 3200 MiB**: Achieved the highest sustained pooled decode rate of **1.184 tok/s** (mean evaluation 61.56 s), beating 64 slots by 1.50× in pooled throughput.
+- **96 slots / 3840 MiB**: Pooled **0.964 tok/s** (with a single peak pass of 1.300 tok/s; mean evaluation 75.28 s).
+- **64 slots / 2560 MiB**: Pooled **0.788 tok/s** (mean evaluation 88.18 s).
+- All 64 positions bit-matched identically across all 6 passes; memory headroom remained safe (minimum MemAvailable 1.86 GiB; zero budget or identity fallbacks).
+
+80 slots / 3200 MiB at 4 threads now stands as the highest sustained measured configuration. See the [64-80-96 capacity sweep report](../reports/2026-10-13/cache-64-80-96-four-retry-02/README.md).
+
 ## Next work
 
-1. Start from the 64-slot/four-thread setting and keep the cooling routine.
-   Screen intermediate 80/96-slot capacities at four threads, then two/three
-   threads. Confirm promising changes in both orders with repeated controls.
+1. Start from the 80-slot/four-thread setting and keep the cooling routine.
+   Screen two/three threads against four threads. Confirm promising changes
+   in both orders with repeated controls.
 2. Save each experiment in a new report directory with its exact plan,
    source/binary hashes, raw timings, memory and cooling records. Maintain
    full-logit comparisons and full-model fallback behavior.
