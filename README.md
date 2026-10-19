@@ -159,6 +159,92 @@ cached inference: the battery did not return to its initial 25.3–26.1°C
 band within 15 minutes. It supplies **no new comparative result**.
 [Admission implementation and incomplete trace](reports/2026-10-10/cache-thermal-matched/README.md).
 
+## Bounded CPU Expert Cache checkpoint: October 15, 2026
+
+A **32-slot bounded expert cache** for MoE `MUL_MAT_ID` operations now passes a full-model correctness gate and shows measurable evaluation-time and I/O reduction on Qwen3.6-35B-A3B UD-IQ1_M. The cache is **opt-in, experimental, and not part of either installer**.
+
+### Mechanism
+
+- Up to **32 slots per canonical expert weight tensor** (gate/up/down separate), **1,280 MiB total byte budget** per CPU backend
+- Recency eviction, whole-request pinning, private ID remapping, full-model fallback on oversize/budget/identity mismatch
+- Operates in CPU backend's `graph_compute` path — **this model's IQ1_S/IQ2 routed experts fall back to CPU** regardless of NPU layer offload (Hexagon backend rejects IQ1/IQ2 for `MUL_MAT_ID`)
+- Original model tensors, router IDs, and routing probabilities preserved
+
+### Correctness evidence
+
+- Slot-manager unit tests: pinning, eviction, duplicate IDs, oversized batches, byte-budget fallback, invalid IDs, tensor identity changes
+- Quantized graph tests: Q2_K, IQ2_XXS, IQ1_S, IQ1_M at 1 and 6 threads — all bit-identical to cache-disabled, including after eviction and fallback
+- **Full-model gate**: 16 positions (9 prefill + 15 decode), then 64 positions in balanced ABBA order (4 passes, 192 comparisons) — **all 248,320 vocabulary logits bit-identical at every position**
+
+### Performance observations (one prompt, one device, one session — **not a universal claim**)
+
+| Measurement | Cache disabled | 32 slots |
+|---|---:|---:|
+| Evaluation time (prefill + decode) | 288.2 s | 122.7 s |
+| Decode throughput (pooled) | 0.224 tok/s | 0.541 tok/s |
+| Storage reads per pass (mean) | 219.15 GiB | 36.61 GiB |
+
+- **2.35× evaluation speedup**, **2.41× decode throughput**, **83.3% storage read reduction**
+- Faster in both baseline-first and cache-first orders (ABBA balanced)
+- Both cached passes allocated exactly 1,168,375,808 bytes (1.09 GiB), 7,680 requests, 57.13% decode hit fraction, zero budget/identity fallbacks
+
+### Thermal observations (sampled, not admission-controlled)
+
+| Pass | Battery first→last °C | Highest CPU °C | Highest HTP °C |
+|---:|---:|---:|---:|
+| Baseline 1* | 35.5 → 37.8 | 68.9 | 59.6 |
+| Cache 2 | 37.9 → 39.2 | 84.9 | 64.6 |
+| Cache 3 | 39.0 → 39.5 | 73.6 | 66.6 |
+| Baseline 4 | 39.3 → 42.0 | 72.4 | 65.4 |
+
+*Pass 1 temperature coverage begins mid-pass. Peak battery 42.2°C, peak CPU 84.9°C. No sustained-thermal or energy advantage established.
+
+### Reproduction
+
+```sh
+# Apply patch (experimental, not in installers)
+git -C .work-npu/llama.cpp apply "$PWD/patches/experimental-cpu-moe-cache.patch"
+cmake --build .work-npu/build --target ggml-cpu -j 2
+
+# Correctness gate (16 positions, bit-exact)
+clang++ -std=c++17 -O2 -Wall -Wextra scripts/moe-cache-validate.cpp \
+  -I.work-npu/llama.cpp/include -I.work-npu/llama.cpp/ggml/include \
+  -L.work-npu/build/bin -Wl,-rpath,"$PWD/.work-npu/build/bin" \
+  -lllama -lggml -lggml-base -o .work-npu/build/bin/moe-cache-validate
+python reports/2026-10-10/cache/run-validation.py
+
+# Balanced benchmark (64 positions, 4-pass ABBA)
+clang++ -std=c++17 -O2 -Wall -Wextra scripts/moe-cache-benchmark.cpp \
+  -I.work-npu/llama.cpp/include -I.work-npu/llama.cpp/ggml/include \
+  -L.work-npu/build/bin -Wl,-rpath,"$PWD/.work-npu/build/bin" \
+  -lllama -lggml -lggml-base -o .work-npu/build/bin/moe-cache-benchmark
+python reports/2026-10-10/cache-balanced/run-benchmark.py
+python scripts/analyze-moe-cache-benchmark.py reports/2026-10-10/cache-balanced
+python tests/test_moe_cache_benchmark_analysis.py
+
+# Ad-hoc inference with cache enabled
+GGML_CPU_MOE_CACHE_SLOTS=32 GGML_CPU_MOE_CACHE_MIB=1280 \
+  scripts/run-npu.sh /path/to/model.gguf -lm mmap -t 6 -n 32
+```
+
+### Limitations
+
+- Opt-in only (`GGML_CPU_MOE_CACHE_SLOTS`, `GGML_CPU_MOE_CACHE_MIB`); installer defaults unchanged
+- CPU fallback for this model's IQ1/IQ2 experts — cache does not accelerate NPU-executed experts
+- No prefetching, learned grading, persistence, or MTP integration
+- Prefill falls back entirely (all 120 prefill expert ops exceeded slot count)
+- Uses canonical (non-repacked) CPU weight shadows — same tradeoff as NPU→CPU handoff
+- Single-model validation (Qwen3.6-35B-A3B UD-IQ1_M only)
+- Not thermally controlled; observed benefit is session-specific
+
+### Next work
+
+- **NPU-side bounded expert cache** — Phase F profiling showed ~85 GiB re-read for 32 decode tokens (~8× model size); Hexagon backend has `set_tensor`/`get_tensor` and tensor rebinding is proven (hybrid handoff patch)
+- **Per-layer cache sizing from real locality** — Phase F tighter probe: all 256 experts touched within 63 calls/layer, mean consecutive overlap 1.66/8 (~20%); simulated LRU: 8 slots=15.4%, 32 slots=32.6%, 64 slots=39.0%, 128 slots=43.5%
+- **Learned grading, adaptive prefetching, repeated-context memory, MTP integration** — deferred per Phase F ordering
+
+Full handoff document: [docs/BOUNDED_EXPERT_CACHE_HANDOFF.md](docs/BOUNDED_EXPERT_CACHE_HANDOFF.md)
+
 ## NPU installation: fresh Termux to model generation
 
 For the separate CPU + Hexagon v75 NPU build, use:

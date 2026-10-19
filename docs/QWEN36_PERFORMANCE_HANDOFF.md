@@ -165,6 +165,14 @@ Older known issues remain in `.codex_state.json`: CPU-only MTP thread races
 and intermittent shared-binary exit-time Scudo aborts. They were deliberately
 left outside this throughput work; none stopped this completed follow-up.
 
+## Subsequent five-thread check
+
+At user request, the same 64-slot/2560 MiB configuration was run twice with
+five threads and cooling throughout. Rates were 0.751081 and 0.659707 tok/s,
+pooled 0.702435; all 64 replayed vectors were exact. Four threads remain the
+preferred measured setting. See the [five-thread report](../reports/2026-10-10/cache-64-threads-5/README.md)
+for raw measurements and historical-comparison limits.
+
 ## Next work
 
 1. Start from the 64-slot/four-thread setting and keep the cooling routine.

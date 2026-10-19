@@ -1,0 +1,3 @@
+pass,slots,threads,cache_mib,prefill_s,decode_s,decode_tok_s,bit_identical_positions
+1,64,5,2560,14.080218,83.87911,0.751081,0
+2,64,5,2560,10.957473,95.496917,0.659707,64

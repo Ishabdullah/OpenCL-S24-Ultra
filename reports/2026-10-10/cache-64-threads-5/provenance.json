@@ -1,0 +1,18 @@
+{
+  "recorded_at": "2026-10-10T23:22:25.356883+00:00",
+  "plan": "64:5:2560,64:5:2560",
+  "sha256": {
+    "scripts/moe-cache-benchmark.cpp": "24fc48e8adacc82cf9de65825c4c4e19b01d0069bf7b62d2e7ff9841abbf8693",
+    "scripts/moe-slot-cache.h": "4db9196fbcf697bc83d4e471f1c7ce5a53dc4f9bba601893df65f9471816bdd2",
+    "scripts/moe-between-run-cooldown.py": "e345ae190bcf2c4e2a66ce38d542ce82f2f664b9d18fbcdd48f9c295a74d4b39",
+    "scripts/moe-thermal-monitor.py": "279c996e499fe123f379ed1207c668744e464e8b542fe61b1ab7280c5a00281e",
+    "scripts/analyze-moe-cache-sweep.py": "16515f42a9b5490c671c4674e528cbc8e839183c914da3c9ad026298eb3d6c6b",
+    "reports/2026-10-10/cache-64-threads-5/run-benchmark.py": "767f519d7992f5e1ad984d32ad3b04765be48dfedf173c344d921138db591aaa",
+    ".work-npu/build/bin/moe-cache-benchmark": "1d507f38241db253a42191935a81d91070edc63cc915edc988f20bc660f4fd55",
+    ".work-npu/build/bin/libggml-cpu.so": "2f6f0271d56bf21bd4c98e71a9aaa95055634fb96e7a1f1431c45a72793e6751"
+  },
+  "notes": [
+    "Same benchmark/model/prompt/cache/budget/runtime as fastest run; only CPU thread count changed from four to five.",
+    "Two five-thread repetitions with initial and between-run cooling; original four-thread record is historical, not a concurrent matched control."
+  ]
+}

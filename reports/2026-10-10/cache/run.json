@@ -6,7 +6,7 @@
   ],
   "returncode": 0,
   "stop_reason": null,
-  "elapsed_s": 81.19899028196232,
-  "minimum_available_kib": 5023016,
-  "peak_rss_kib": 6833948
+  "elapsed_s": 184.71848800301086,
+  "minimum_available_kib": 3081948,
+  "peak_rss_kib": 5667088
 }

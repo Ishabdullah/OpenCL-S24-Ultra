@@ -1,9 +1,10 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-10T23:18:51.818902+00:00",
-  "current_phase": "DOCUMENTATION",
-  "active_subtask": "Phase M complete; handoff ready at docs/QWEN36_PERFORMANCE_HANDOFF.md. Qwen3.6 fastest 1.333348 tok/s, repeated pooled 1.040793, 64 slots/four threads/2560 MiB, HTP0 forced mmap. All 256 replayed vectors exact. Cooling before launch and between every pass, all jobs finished. Next tuning: intermediate capacities and fewer threads with cooling throughout; no thermal-policy testing requested.",
+  "updated_at": "2026-10-19T08:50:31+00:00",
+  "current_phase": "COMPLETE",
+  "active_subtask": "Bounded expert cache documentation and correctness validation complete. 16/16 logit vectors bit-identical, handoff document published at docs/BOUNDED_EXPERT_CACHE_HANDOFF.md.",
   "completed_steps": [
+    "Bounded expert cache documentation and correctness validation complete: 16/16 logit vectors bit-identical, handoff document published at docs/BOUNDED_EXPERT_CACHE_HANDOFF.md, README updated.",
     "Phase 0: verified llama.cpp pin (e358d59178377be4c58ba567925e05faadbccb57) already supports LLM_ARCH_QWEN3NEXT with native NextN/MTP code path",
     "Phase 0: confirmed --spec-type draft-mtp and --spec-type ngram-simple are real CLI options at this pin",
     "Phase 0: confirmed --n-cpu-moe / --cpu-moe exist for MoE expert CPU offload (APLS pillar)",
@@ -44,7 +45,8 @@
     "Phase J: completed ABBA 64-position cache benchmark, 192 bit-exact replayed logit vectors, faster in both orders and 83.30% mean storage-read reduction. Confirmed readable thermal sensors; saved partial-first-pass temperature trace and explicit unmatched-temperature limitations. See reports/2026-10-10/cache-balanced/README.md.",
     "Phase K: added thermal admission handshake with immutable reference, continuous holds, missing-sensor/gap resets and bounded timeout. Three policy and four analyzer tests passed. Live first admission validated; cached pass never started because battery could not recover the initial band within 900 s. Saved incomplete outcome without speedup claim.",
     "Phase L: completed nine-context cache/thread throughput screen. Best 64 slots/four threads 0.984233 tok/s, 128/six 0.835118; controls pooled 0.525992. All 512 replayed vectors exact, deterministic cache counters, budget/identity fallbacks zero, available RAM >=1.93 GiB. User-requested longer cooling before final three runs recorded.",
-    "Phase M: five cooled contexts completed; 256 exact replayed vectors; 64/four peak 1.333348 and pooled 1.040793 tok/s, beating 128/four in both orders. Saved best-settings.json and continuation handoff."
+    "Phase M: five cooled contexts completed; 256 exact replayed vectors; 64/four peak 1.333348 and pooled 1.040793 tok/s, beating 128/four in both orders. Saved best-settings.json and continuation handoff.",
+    "Requested five-thread variation completed with cooling before/between two contexts: pooled 0.702435 tok/s, 64 exact replayed vectors; four-thread record retained."
   ],
   "known_issues": [
     {
@@ -712,6 +714,18 @@
         180,
         300
       ]
+    },
+    "cache_64_threads_5_2026_10_10": {
+      "decode_rates_tok_s": [
+        0.751081,
+        0.659707
+      ],
+      "pooled_decode_tok_s": 0.7024350026439152,
+      "slots": 64,
+      "threads": 5,
+      "cache_mib": 2560,
+      "same_historical_token_trajectory": true,
+      "report": "reports/2026-10-10/cache-64-threads-5/README.md"
     }
   },
   "notes": "This track uses a separate, unpinned llama.cpp checkout (.work-qwen3/llama.cpp, not yet created) so the existing validated GPU/NPU installers and their pins (upstream.json, npu-upstream.json) are not touched. See docs/QWEN3_TRIAD_PLAN.md Decision D1. Candidate GGUF (7.85 GiB) exceeds the measured 4.2GiB available RAM as a raw file size; relies on mmap page-level loading, must be verified empirically for thrashing in Phase C before claiming it 'works'."
