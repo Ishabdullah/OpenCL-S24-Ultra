@@ -1,0 +1,26 @@
+[
+  {
+    "h": 4,
+    "threads": 4,
+    "mtp": "off",
+    "tokens": 16
+  },
+  {
+    "h": 4,
+    "threads": 4,
+    "mtp": "on",
+    "tokens": 16
+  },
+  {
+    "h": 1,
+    "threads": 6,
+    "mtp": "off",
+    "tokens": 16
+  },
+  {
+    "h": 1,
+    "threads": 6,
+    "mtp": "on",
+    "tokens": 16
+  }
+]

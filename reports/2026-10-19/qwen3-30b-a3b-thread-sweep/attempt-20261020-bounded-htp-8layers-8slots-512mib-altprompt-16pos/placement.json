@@ -1,0 +1,14 @@
+{
+  "requested": {
+    "cpu": 25,
+    "gpu": 16,
+    "npu": 8,
+    "output": null
+  },
+  "actual": {
+    "GPUOpenCL": 16,
+    "HTP0": 8,
+    "CPU": 25
+  },
+  "verified": true
+}

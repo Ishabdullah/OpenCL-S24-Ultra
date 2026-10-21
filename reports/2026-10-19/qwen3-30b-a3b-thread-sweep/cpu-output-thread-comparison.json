@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-20",
+  "experiment": "CPU thread count with CPU output layer",
+  "model": "Qwen3-30B-A3B-Q4_K_M.gguf",
+  "backend": "GPUOpenCL+HTP0",
+  "placement": {
+    "cpu": 17,
+    "gpu": 16,
+    "htp": 16,
+    "output_layer": "cpu"
+  },
+  "fixed_settings": {
+    "prompt_tokens": 30,
+    "evaluated_positions": 32,
+    "htp_bounded_layers": 16,
+    "htp_cache_slots": 8,
+    "htp_cache_budget_mib": 512,
+    "thermal_policy": "cooldown-only",
+    "replay": "two passes per thread count; exact replay required"
+  },
+  "baseline_1_thread": {
+    "source": "output-layer-speed-comparison.json",
+    "median_first_pass_decode_tok_s": 0.399315,
+    "replicates": [
+      0.41484,
+      0.383789
+    ]
+  },
+  "thread_results": {
+    "2": {
+      "first_pass_decode_tok_s": 0.315636,
+      "replay_decode_tok_s": 0.260733,
+      "median_two_pass_decode_tok_s": 0.288185,
+      "replay_verified": true,
+      "layer_assignment_verified": true,
+      "minimum_available_kib": 6055132,
+      "peak_rss_kib": 3213888,
+      "peak_vm_swap_kib": 175624,
+      "stop_reason": null
+    },
+    "3": {
+      "first_pass_decode_tok_s": 0.259155,
+      "replay_decode_tok_s": 0.19207,
+      "median_two_pass_decode_tok_s": 0.225612,
+      "replay_verified": true,
+      "layer_assignment_verified": true,
+      "minimum_available_kib": 6139472,
+      "peak_rss_kib": 3247428,
+      "peak_vm_swap_kib": 223232,
+      "stop_reason": null
+    },
+    "4": {
+      "first_pass_decode_tok_s": 0.21189,
+      "replay_decode_tok_s": 0.218619,
+      "median_two_pass_decode_tok_s": 0.215255,
+      "replay_verified": true,
+      "layer_assignment_verified": true,
+      "minimum_available_kib": 6386176,
+      "peak_rss_kib": 2871512,
+      "peak_vm_swap_kib": 308344,
+      "stop_reason": null
+    },
+    "5": {
+      "first_pass_decode_tok_s": 0.225802,
+      "replay_decode_tok_s": 0.217749,
+      "median_two_pass_decode_tok_s": 0.221776,
+      "replay_verified": true,
+      "layer_assignment_verified": true,
+      "minimum_available_kib": 6349804,
+      "peak_rss_kib": 2944680,
+      "peak_vm_swap_kib": 352460,
+      "stop_reason": null
+    }
+  },
+  "ranking_basis": "first-pass decode speed; each setting has a two-pass exact replay",
+  "ranking_first_pass_threads": [
+    {
+      "rank": 1,
+      "threads": 2,
+      "decode_tok_s": 0.315636,
+      "vs_1_thread_percent": -20.96
+    },
+    {
+      "rank": 2,
+      "threads": 3,
+      "decode_tok_s": 0.259155,
+      "vs_1_thread_percent": -35.1
+    },
+    {
+      "rank": 3,
+      "threads": 5,
+      "decode_tok_s": 0.225802,
+      "vs_1_thread_percent": -43.45
+    },
+    {
+      "rank": 4,
+      "threads": 4,
+      "decode_tok_s": 0.21189,
+      "vs_1_thread_percent": -46.94
+    }
+  ],
+  "fastest_tested_multi_thread_count": 2,
+  "best_overall_including_baseline": 1
+}

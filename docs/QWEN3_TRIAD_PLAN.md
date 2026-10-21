@@ -406,12 +406,17 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       | CPU-only baseline (`--device none`) | 6.69 | 1.21 |
       | NPU, `--n-cpu-moe 48` (all MoE on CPU) | 7.95 | 1.33 |
       | NPU, `--n-cpu-moe 24` | 7.99 | 2.22 |
-      | **NPU, `--n-cpu-moe 0`** (all MoE through Hexagon too) | **8.28** | **2.30** |
+      | **HTP0 configured, `--n-cpu-moe 0`** (expert backend placement requested) | **8.28** | **2.30** |
 
-      Best: `--n-cpu-moe 0` — **1.24x prompt, 1.90x decode** speedup over
-      CPU-only. Notably, routing *all* MoE experts through Hexagon's
-      `MUL_MAT_ID` did not hit a VTCM budget wall, correcting the Phase A
-      worry that VTCM would gate how much routing could stay on-NPU.
+      Best measured CLI setting: `--n-cpu-moe 0` — **1.24x prompt, 1.90x
+      decode** versus CPU-only in this run. **Correction (October 19): this
+      does not prove IQ1_S routed experts executed on HTP.** The pinned HTP
+      `MUL_MAT_ID` support gate rejects IQ1_S/IQ1_M/IQ2 expert tensors, so
+      those operations fall back to CPU even when `--n-cpu-moe 0` requests
+      HTP placement. Treat these as HTP-configured whole-model benchmark
+      results, not an all-experts-on-HTP result. VTCM feasibility for a
+      model with HTP-supported routed expert tensors remains unmeasured; see
+      the [October 19 HTP expert-op validation](../reports/2026-10-19/htp-expert-ops/README.md).
 - [x] **`ngram-simple` speculative decoding — confirmed functional.**
       `llama-completion`/`llama-bench` don't expose `--spec-type` (gated to
       `LLAMA_EXAMPLE_CLI`/`SERVER`/`SPECULATIVE`, not `COMPLETION`); built
@@ -461,13 +466,13 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       would actually test the remaining headroom, not attempted here.
 - [x] **Thread-count comparison at `-t 6`, matching the project's established
       "six CPU threads" benchmark convention** (see README's October 5
-      checkpoint). Full CPU vs. full NPU vs. an attempted NPU-prefill/
+      checkpoint). Full CPU vs. HTP0-configured inference vs. an attempted NPU-prefill/
       CPU-decode split:
 
       | Config (`-t 6`, `-p 64 -n 16 -r 1 -b 128 -ub 128 -fa off`) | Prefill tok/s | Decode tok/s |
       |---|---:|---:|
       | Full CPU (`-dev none`) | 8.17 | 3.30 |
-      | Full NPU (`-dev HTP0 -lm mmap --n-cpu-moe 0`) | 7.44 | 1.92 |
+      | HTP0 configured (`-dev HTP0 -lm mmap --n-cpu-moe 0`; IQ1 experts fall back to CPU) | 7.44 | 1.92 |
 
       **This reverses the earlier sweep's conclusion.** At the default
       thread count (8), NPU beat CPU (8.28/2.30 vs 6.69/1.21). At `-t 6`,
@@ -556,7 +561,7 @@ as the APLS tuning knob to sweep alongside `--n-cpu-moe`.
       | Config | Prefill tok/s | Decode tok/s |
       |---|---:|---:|
       | Full CPU | 8.17 | **3.30** |
-      | Full NPU | **7.44** | 1.92 |
+      | HTP0 configured (IQ1 experts fall back to CPU) | **7.44** | 1.92 |
       | NPU-prefill → handoff → CPU-decode | 4.71 | 0.79 |
 
 - [x] **The originally-envisioned full combo, tested as literally described
@@ -708,9 +713,9 @@ anything, per the explicit ordering: profile → bounded expert caching
 and speed, not an approximation.
 
 - [x] **Built [`scripts/moe-profile-probe.cpp`](../scripts/moe-profile-probe.cpp)**
-      (local tool, not part of llama.cpp). Loads the model on NPU
-      (`-dev HTP0`, `mmap`, all experts through NPU — our best-known
-      config, no MTP by design here), wires `common_debug_cb_user_data`
+      (local tool, not part of llama.cpp). Loads with HTP0 selected
+      (`-dev HTP0`, `mmap`; IQ1_S expert matmuls fall back to CPU, no MTP
+      by design here), wires `common_debug_cb_user_data`
       (an existing, ready-made llama.cpp debug hook already exported from
       `libllama-common.so` — no new patch needed for this part) filtered
       to `"ffn_moe_topk"` (the tensor holding the router's actual selected

@@ -1,0 +1,162 @@
+{
+  "date": "2026-10-20",
+  "experiment": "triad output-layer speed comparison",
+  "model": "Qwen3-30B-A3B-Q4_K_M.gguf",
+  "backend": "GPUOpenCL+HTP0",
+  "fixed_layer_counts": {
+    "cpu": 16,
+    "gpu": 16,
+    "htp": 16
+  },
+  "output_layer_variants": {
+    "cpu": {
+      "cpu": 17,
+      "gpu": 16,
+      "htp": 16
+    },
+    "gpu": {
+      "cpu": 16,
+      "gpu": 17,
+      "htp": 16
+    },
+    "npu": {
+      "cpu": 16,
+      "gpu": 16,
+      "htp": 17
+    }
+  },
+  "workload": {
+    "prompt_tokens": 30,
+    "evaluated_positions": 32,
+    "cpu_threads": 1,
+    "htp_cache_slots": 8,
+    "htp_cache_budget_mib": 512,
+    "cooldown_seconds_min": 180,
+    "thermal_policy": "cooldown-only",
+    "schedule": [
+      "cpu-r1",
+      "gpu-r1",
+      "npu-r1",
+      "npu-r2",
+      "gpu-r2",
+      "cpu-r2"
+    ]
+  },
+  "replicates": {
+    "cpu": {
+      "runs": [
+        {
+          "id": "cpu-r1",
+          "first_pass_decode_tok_s": 0.41484,
+          "replay_decode_tok_s": 0.388037,
+          "replay_verified": true,
+          "layer_assignment_verified": true,
+          "minimum_available_kib": 5726296,
+          "peak_rss_kib": 3848384,
+          "peak_vm_swap_kib": 80184,
+          "stop_reason": null
+        },
+        {
+          "id": "cpu-r2",
+          "first_pass_decode_tok_s": 0.383789,
+          "replay_decode_tok_s": 0.395466,
+          "replay_verified": true,
+          "layer_assignment_verified": true,
+          "minimum_available_kib": 6372020,
+          "peak_rss_kib": 3966136,
+          "peak_vm_swap_kib": 80288,
+          "stop_reason": null
+        }
+      ],
+      "median_first_pass_decode_tok_s": 0.399315,
+      "first_pass_range_tok_s": [
+        0.383789,
+        0.41484
+      ]
+    },
+    "gpu": {
+      "runs": [
+        {
+          "id": "gpu-r1",
+          "first_pass_decode_tok_s": 0.377275,
+          "replay_decode_tok_s": 0.365939,
+          "replay_verified": true,
+          "layer_assignment_verified": true,
+          "minimum_available_kib": 6162004,
+          "peak_rss_kib": 4000032,
+          "peak_vm_swap_kib": 80256,
+          "stop_reason": null
+        },
+        {
+          "id": "gpu-r2",
+          "first_pass_decode_tok_s": 0.383447,
+          "replay_decode_tok_s": 0.371367,
+          "replay_verified": true,
+          "layer_assignment_verified": true,
+          "minimum_available_kib": 6057212,
+          "peak_rss_kib": 3859864,
+          "peak_vm_swap_kib": 80320,
+          "stop_reason": null
+        }
+      ],
+      "median_first_pass_decode_tok_s": 0.380361,
+      "first_pass_range_tok_s": [
+        0.377275,
+        0.383447
+      ]
+    },
+    "npu": {
+      "runs": [
+        {
+          "id": "npu-r1",
+          "first_pass_decode_tok_s": 0.394941,
+          "replay_decode_tok_s": 0.38543,
+          "replay_verified": true,
+          "layer_assignment_verified": true,
+          "minimum_available_kib": 6055464,
+          "peak_rss_kib": 3495944,
+          "peak_vm_swap_kib": 144020,
+          "stop_reason": null
+        },
+        {
+          "id": "npu-r2",
+          "first_pass_decode_tok_s": 0.380875,
+          "replay_decode_tok_s": 0.381075,
+          "replay_verified": true,
+          "layer_assignment_verified": true,
+          "minimum_available_kib": 6099452,
+          "peak_rss_kib": 3532176,
+          "peak_vm_swap_kib": 80068,
+          "stop_reason": null
+        }
+      ],
+      "median_first_pass_decode_tok_s": 0.387908,
+      "first_pass_range_tok_s": [
+        0.380875,
+        0.394941
+      ]
+    }
+  },
+  "ranking_basis": "median first-pass decode_tok_s across two runs per variant",
+  "ranking": [
+    {
+      "rank": 1,
+      "variant": "cpu",
+      "median_first_pass_decode_tok_s": 0.399315,
+      "vs_fastest_percent": 0.0
+    },
+    {
+      "rank": 2,
+      "variant": "npu",
+      "median_first_pass_decode_tok_s": 0.387908,
+      "vs_fastest_percent": -2.86
+    },
+    {
+      "rank": 3,
+      "variant": "gpu",
+      "median_first_pass_decode_tok_s": 0.380361,
+      "vs_fastest_percent": -4.75
+    }
+  ],
+  "provisional_fastest": "cpu"
+}

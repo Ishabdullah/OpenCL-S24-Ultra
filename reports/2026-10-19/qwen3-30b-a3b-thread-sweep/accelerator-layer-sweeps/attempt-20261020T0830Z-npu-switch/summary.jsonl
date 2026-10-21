@@ -1,0 +1,4 @@
+{"backend": "npu", "n_gpu_layers": 1, "pooled_tok_s": 0.5506161311915614, "pass1_tok_s": 0.721229, "pass2_tok_s": 0.445281, "replay_verified": true, "minimum_available_kib": 4420024, "peak_rss_kib": 4609328, "peak_vm_swap_kib": 2189056}
+{"backend": "npu", "n_gpu_layers": 2, "pooled_tok_s": 0.4740262529011592, "pass1_tok_s": 0.45489, "pass2_tok_s": 0.494843, "replay_verified": true, "minimum_available_kib": 4078404, "peak_rss_kib": 4550944, "peak_vm_swap_kib": 2128268}
+{"backend": "npu", "n_gpu_layers": 3, "pooled_tok_s": 0.36894502187893174, "pass1_tok_s": 0.276338, "pass2_tok_s": 0.554907, "replay_verified": true, "minimum_available_kib": 3458256, "peak_rss_kib": 4385072, "peak_vm_swap_kib": 2342056}
+{"backend": "npu", "n_gpu_layers": 4, "pooled_tok_s": 0.27287790629296294, "pass1_tok_s": 0.325168, "pass2_tok_s": 0.235075, "replay_verified": true, "minimum_available_kib": 3448444, "peak_rss_kib": 4207928, "peak_vm_swap_kib": 2460604}

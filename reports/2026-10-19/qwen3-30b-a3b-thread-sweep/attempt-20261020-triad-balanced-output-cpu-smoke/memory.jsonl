@@ -1,0 +1,5 @@
+{"utc": "2026-10-20T12:21:24.930945+00:00", "monotonic_s": 1051546.014482246, "available_kib": 6552248, "rss_kib": 1328, "vm_swap_kib": 0, "pss_kib": 392, "swap_kib": 0}
+{"utc": "2026-10-20T12:21:26.415719+00:00", "monotonic_s": 1051547.499271047, "available_kib": 6460996, "rss_kib": 71296, "vm_swap_kib": 0, "pss_kib": 66428, "swap_kib": 0}
+{"utc": "2026-10-20T12:21:27.422650+00:00", "monotonic_s": 1051548.506205943, "available_kib": 5391588, "rss_kib": 73016, "vm_swap_kib": 0, "pss_kib": 67900, "swap_kib": 0}
+{"utc": "2026-10-20T12:21:28.428542+00:00", "monotonic_s": 1051549.512085057, "available_kib": 4508496, "rss_kib": 73008, "vm_swap_kib": 0, "pss_kib": 68144, "swap_kib": 0}
+{"utc": "2026-10-20T12:21:29.435216+00:00", "monotonic_s": 1051550.518762244, "available_kib": 3270232, "rss_kib": 71988, "vm_swap_kib": 0, "pss_kib": 67215, "swap_kib": 0}

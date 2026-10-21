@@ -1,0 +1,17 @@
+{"utc": "2026-10-20T02:12:28.185877+00:00", "monotonic_s": 1015009.375405767, "available_kib": 6581564, "rss_kib": 1352, "vm_swap_kib": 0, "pss_kib": 399, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:29.626159+00:00", "monotonic_s": 1015010.815686235, "available_kib": 5547920, "rss_kib": 60136, "vm_swap_kib": 0, "pss_kib": 56581, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:30.633087+00:00", "monotonic_s": 1015011.822621964, "available_kib": 5242736, "rss_kib": 101296, "vm_swap_kib": 0, "pss_kib": 99895, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:31.641614+00:00", "monotonic_s": 1015012.831163786, "available_kib": 5279908, "rss_kib": 177008, "vm_swap_kib": 0, "pss_kib": 174522, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:32.657148+00:00", "monotonic_s": 1015013.846680661, "available_kib": 5287604, "rss_kib": 252784, "vm_swap_kib": 0, "pss_kib": 250396, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:33.674128+00:00", "monotonic_s": 1015014.863655348, "available_kib": 5344316, "rss_kib": 346224, "vm_swap_kib": 0, "pss_kib": 345855, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:34.692380+00:00", "monotonic_s": 1015015.881910504, "available_kib": 5347244, "rss_kib": 477716, "vm_swap_kib": 0, "pss_kib": 475241, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:35.719904+00:00", "monotonic_s": 1015016.909442326, "available_kib": 5348112, "rss_kib": 555540, "vm_swap_kib": 0, "pss_kib": 555465, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:36.758489+00:00", "monotonic_s": 1015017.948047274, "available_kib": 5351520, "rss_kib": 708692, "vm_swap_kib": 0, "pss_kib": 710337, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:37.809495+00:00", "monotonic_s": 1015018.999026076, "available_kib": 5352124, "rss_kib": 857456, "vm_swap_kib": 0, "pss_kib": 858245, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:38.870161+00:00", "monotonic_s": 1015020.059695971, "available_kib": 5351260, "rss_kib": 939504, "vm_swap_kib": 0, "pss_kib": 939525, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:39.929561+00:00", "monotonic_s": 1015021.119088471, "available_kib": 5351200, "rss_kib": 1079972, "vm_swap_kib": 0, "pss_kib": 1082788, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:40.991721+00:00", "monotonic_s": 1015022.181255762, "available_kib": 5348788, "rss_kib": 1243860, "vm_swap_kib": 0, "pss_kib": 1243572, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:42.065654+00:00", "monotonic_s": 1015023.255182845, "available_kib": 5347300, "rss_kib": 1325812, "vm_swap_kib": 0, "pss_kib": 1325396, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:43.147473+00:00", "monotonic_s": 1015024.337001073, "available_kib": 5347020, "rss_kib": 1453896, "vm_swap_kib": 0, "pss_kib": 1460616, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:44.231543+00:00", "monotonic_s": 1015025.421105552, "available_kib": 4398036, "rss_kib": 1145796, "vm_swap_kib": 0, "pss_kib": 1162503, "swap_kib": 0}
+{"utc": "2026-10-20T02:12:45.288457+00:00", "monotonic_s": 1015026.477984041, "available_kib": 3650096, "rss_kib": 2292172, "vm_swap_kib": 0, "pss_kib": 2300686, "swap_kib": 4}

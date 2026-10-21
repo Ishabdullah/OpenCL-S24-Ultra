@@ -1,0 +1,12 @@
+{
+  "note": "post-build exact source and executable hashes for the experimental run",
+  "sha256": {
+    "patches/experimental-htp-bounded-expert-cache.patch": "1c1bffda796219a466a51c4f649273437e5563ea8ac8248c19a693bae51be088",
+    ".work-unified-source/ggml/src/ggml-backend.cpp": "52e848e72db49c6d4413459b3a3f3774d88527712bc247485fbfe97149409b51",
+    ".work-unified-source/ggml/src/ggml-hexagon/ggml-hexagon.cpp": "b346b69d926bef1236d95e3f4f4d466097ec20583c813859350574e7c69abcaf",
+    ".work-unified-source/src/llama-model-loader.cpp": "a4ca363ca2102658a9c220b3661f3e41d25182cb52478046996e78e707c3d49b",
+    "reports/2026-10-19/qwen3-30b-a3b-thread-sweep/run-benchmark.cpp": "6aec5cf6c8eaa175d39d1cd5bb2d440d4893b832dc94e567d00876792e5d0aae",
+    "reports/2026-10-19/qwen3-30b-a3b-thread-sweep/run-benchmark.py": "93de9006db7052069965b2b732cb14e088f32fe8b8879cf3ea10d4d59c28525e",
+    ".work-unified-build/bin/qwen3-30b-a3b-matrix": "cfa2b89be9a59aa15097c8fd18bda8d51330b1b89ae93712efd39822820e9b64"
+  }
+}

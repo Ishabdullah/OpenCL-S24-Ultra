@@ -1,0 +1,18 @@
+{
+  "file": "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+  "bytes": 5489528832,
+  "gguf_version": 3,
+  "tensor_count": 579,
+  "architecture": "qwen3moe",
+  "file_type": 15,
+  "expert_count": 128,
+  "expert_used_count": 8,
+  "expert_tensor_count": 144,
+  "expert_tensor_types": {
+    "Q4_K": 120,
+    "Q6_K": 24
+  },
+  "unsupported_expert_types": [],
+  "unsupported_examples": [],
+  "htp_expert_type_gate": "pass"
+}

@@ -1,0 +1,18 @@
+{
+  "utc": "2026-10-20T01:30:17.783111+00:00",
+  "plan": "80:1:3200,80:1:3200",
+  "model": "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+  "model_bytes": 18556685824,
+  "sha256": {
+    "reports/2026-10-19/qwen3-30b-a3b-thread-sweep/run-benchmark.cpp": "eed6ce64a78ad6794681841d5fa46900f6b11061f16d2ed2f5a124b116a5a89d",
+    "reports/2026-10-19/qwen3-30b-a3b-thread-sweep/run-benchmark.py": "2cbf4e5b5016ab44830170316e8b88d95e1a81ce9e38aa903c0c34351e747443",
+    "reports/2026-10-19/qwen3-30b-a3b-thread-sweep/cooldown.py": "aa6f858273fc3a76dcb1a4edecc1723895fc00a988733dcb6a53325784fcf53a",
+    "scripts/moe-slot-cache.h": "4db9196fbcf697bc83d4e471f1c7ce5a53dc4f9bba601893df65f9471816bdd2",
+    "scripts/moe-thermal-monitor.py": "279c996e499fe123f379ed1207c668744e464e8b542fe61b1ab7280c5a00281e",
+    "patches/experimental-cpu-moe-cache.patch": "e8232f3a9ac41a0d5562d8ca65a8ca6bad2581b733ca568ce796c705f83d5607",
+    ".work-npu/build/bin/qwen3-30b-a3b-thread-sweep": "0084b4dc105c833bd8076edfcc74b48e6b3d20838db36261a74fe2890ea4412e",
+    ".work-npu/build/bin/libggml-cpu.so": "2f6f0271d56bf21bd4c98e71a9aaa95055634fb96e7a1f1431c45a72793e6751",
+    ".work-npu/build/bin/libggml-hexagon.so": "53002524c886fa44378331f40735055c3e4f36acc9078a65d2593a9d406a4522",
+    ".work-npu/build/ggml/src/ggml-hexagon/libggml-htp-v75.so": "76397df3c982c39ab7d0919d58139b00b4bd03f3c39e3a56857b091519b337eb"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/qwen3-30b-a3b-thread-sweep",
+    "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+    "64"
+  ],
+  "plan": "80:4:3200,80:3:3200,80:2:3200,80:2:3200,80:3:3200,80:4:3200",
+  "returncode": -15,
+  "thermal_returncode": 0,
+  "cooldown_returncode": 1,
+  "stop_limits": {
+    "cpu_max_c": 60,
+    "battery_c": 42,
+    "htp_max_c": 55
+  },
+  "stop_reason": "cooldown monitor exited early or evidence incomplete",
+  "minimum_available_kib": 5475656,
+  "peak_rss_kib": 1204,
+  "passes": 0,
+  "cooling_events": 0,
+  "replay_verified": false
+}

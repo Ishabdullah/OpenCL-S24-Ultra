@@ -1,0 +1,1 @@
+{"stage": "cooling", "after_pass": 5, "started_monotonic_s": 1036627.268567781, "minimum_s": 180, "maximum_s": 300, "targets_c": {"battery_c": 40.0, "cpu_max_c": 55.0, "htp_max_c": 50.0}, "utc": "2026-10-20T08:12:46.083721+00:00"}

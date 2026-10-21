@@ -1,0 +1,1 @@
+{"backend":"gpu+npu","slots":64,"tokens":16,"ngl":6,"wake_lock":true}

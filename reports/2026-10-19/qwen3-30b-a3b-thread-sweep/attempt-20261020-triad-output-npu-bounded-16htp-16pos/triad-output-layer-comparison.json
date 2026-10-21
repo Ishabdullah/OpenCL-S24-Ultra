@@ -1,0 +1,190 @@
+{
+  "model": "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+  "prompt": "Write a short checklist for diagnosing why an Android inference process slows down after several minutes, separating memory pressure, thermal throttling, and backend scheduling.",
+  "prompt_tokens": 30,
+  "evaluated_positions": 16,
+  "seed": 20261010,
+  "htp_expert_blocks": [
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+  ],
+  "output_layer_comparisons": {
+    "cpu_vs_gpu": {
+      "all_logit_hashes_match": true,
+      "token_ids_match": true,
+      "matching_positions": 16
+    },
+    "cpu_vs_npu": {
+      "all_logit_hashes_match": false,
+      "token_ids_match": false,
+      "matching_positions": 0
+    },
+    "gpu_vs_npu": {
+      "all_logit_hashes_match": false,
+      "token_ids_match": false,
+      "matching_positions": 0
+    }
+  },
+  "runs": {
+    "cpu": {
+      "placement": {
+        "cpu": 17,
+        "gpu": 16,
+        "htp": 16
+      },
+      "tokens": [
+        94969,
+        1447,
+        12,
+        508,
+        2279,
+        4248,
+        421,
+        279,
+        906,
+        374,
+        1667,
+        26541,
+        13940,
+        476,
+        22670,
+        2337
+      ],
+      "hashes": [
+        "6dbe8618b8308960",
+        "dcb8f96190bf2fc7",
+        "173d88912c27e3b5",
+        "2567c697de7a09d5",
+        "2d4eba472f61ff67",
+        "20a9a8134f7a65be",
+        "ab3e2bf9c29ce3e6",
+        "450f46738ce6ad39",
+        "0547bcd9286940e2",
+        "8ce28b29ac9d3501",
+        "06bdb019d7f73932",
+        "44dd227c89974a59",
+        "6513a94804e51d28",
+        "e958c627d4af2a2c",
+        "ccc95168ad1efaf8",
+        "3c5b2d33297b47b0"
+      ],
+      "decode_tok_s": 0.44766,
+      "minimum_memavailable_kib": 6721592,
+      "peak_rss_kib": 4070184,
+      "replay_verified": true,
+      "generated_text": " Checklist:\n\n- [ ] Check if the app is using excessive CPU or GPU during"
+    },
+    "gpu": {
+      "placement": {
+        "cpu": 16,
+        "gpu": 17,
+        "htp": 16
+      },
+      "tokens": [
+        94969,
+        1447,
+        12,
+        508,
+        2279,
+        4248,
+        421,
+        279,
+        906,
+        374,
+        1667,
+        26541,
+        13940,
+        476,
+        22670,
+        2337
+      ],
+      "hashes": [
+        "6dbe8618b8308960",
+        "dcb8f96190bf2fc7",
+        "173d88912c27e3b5",
+        "2567c697de7a09d5",
+        "2d4eba472f61ff67",
+        "20a9a8134f7a65be",
+        "ab3e2bf9c29ce3e6",
+        "450f46738ce6ad39",
+        "0547bcd9286940e2",
+        "8ce28b29ac9d3501",
+        "06bdb019d7f73932",
+        "44dd227c89974a59",
+        "6513a94804e51d28",
+        "e958c627d4af2a2c",
+        "ccc95168ad1efaf8",
+        "3c5b2d33297b47b0"
+      ],
+      "decode_tok_s": 0.482229,
+      "minimum_memavailable_kib": 6380980,
+      "peak_rss_kib": 4115952,
+      "replay_verified": true,
+      "generated_text": " Checklist:\n\n- [ ] Check if the app is using excessive CPU or GPU during"
+    },
+    "npu": {
+      "placement": {
+        "cpu": 16,
+        "gpu": 16,
+        "htp": 17
+      },
+      "tokens": [
+        94969,
+        1447,
+        12,
+        508,
+        2279,
+        4248,
+        421,
+        279,
+        3671,
+        594,
+        2500,
+        22038,
+        374,
+        43549,
+        916,
+        882
+      ],
+      "hashes": [
+        "25a2baa7d0d96ee7",
+        "fa604cf71645a3e6",
+        "cbfdba7f02adcfb5",
+        "bc225d009936f8e1",
+        "7a6d29c03288a097",
+        "1912eefae14c6bb5",
+        "d96b2f88cbf35a6d",
+        "3262fe9f72ed68c3",
+        "a72d2e6a4e335720",
+        "4ff5a60b4af340af",
+        "c1e574d511c7a112",
+        "af78371add0aac7f",
+        "589feaf5e67377b8",
+        "51a23fcdff436f84",
+        "1c4dda8a01f5fd9e",
+        "464acf17eeedcbfd"
+      ],
+      "decode_tok_s": 0.449742,
+      "minimum_memavailable_kib": 6281720,
+      "peak_rss_kib": 3693896,
+      "replay_verified": true,
+      "generated_text": " Checklist:\n\n- [ ] Check if the device's available RAM is decreasing over time"
+    }
+  },
+  "speed_note": "Decode rates are observational; the output-layer runs were sequential and filesystem/thermal/cache state may differ.",
+  "verification_note": "Each placement passed exact within-run two-pass replay and layer-assignment verification."
+}

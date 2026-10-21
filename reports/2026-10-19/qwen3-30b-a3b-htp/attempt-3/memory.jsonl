@@ -1,0 +1,5 @@
+{"utc": "2026-10-19T16:26:17.111364+00:00", "monotonic_s": 994046.15324418, "mem_available_kib": 6628240, "rss_kib": 8, "vm_swap_kib": 0, "pss_kib": 121}
+{"utc": "2026-10-19T16:26:18.596525+00:00", "monotonic_s": 994047.634664492, "mem_available_kib": 6526500, "rss_kib": 63404, "vm_swap_kib": 0, "pss_kib": 57543}
+{"utc": "2026-10-19T16:26:19.701830+00:00", "monotonic_s": 994048.641471054, "mem_available_kib": 6529504, "rss_kib": 4088396, "vm_swap_kib": 0, "pss_kib": 4110561}
+{"utc": "2026-10-19T16:26:20.806662+00:00", "monotonic_s": 994049.745540898, "mem_available_kib": 6555824, "rss_kib": 4123372, "vm_swap_kib": 0, "pss_kib": 4143862}
+{"utc": "2026-10-19T16:26:21.926256+00:00", "monotonic_s": 994050.850341783, "mem_available_kib": 6713964, "rss_kib": 4413664, "vm_swap_kib": 0, "pss_kib": 4459754}

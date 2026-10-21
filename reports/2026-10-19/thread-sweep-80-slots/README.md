@@ -39,3 +39,18 @@ Post-run analysis:
 ```sh
 python scripts/analyze-moe-cache-sweep.py reports/2026-10-19/thread-sweep-80-slots
 ```
+
+## Result
+
+The six-pass run completed with return code 0, five of five cooldowns met
+their battery/CPU/HTP targets, and all 320 replayed positions matched the
+reference. Pooled decode rates were 0.739762 tok/s at 4 threads, 0.720888
+tok/s at 3 threads, and 0.673327 tok/s at 2 threads. Four threads narrowly
+led the pooled comparison; three threads produced the fastest individual
+pass (0.921541 tok/s). The two trials per setting varied substantially, so
+the 4-thread selection is provisional and the absolute rates should not be
+compared as stable across sessions.
+
+The runner sampled a minimum 2,117,044 KiB MemAvailable and peak process RSS
+of 5,671,436 KiB. Full per-pass memory, thermal, cooldown and provenance
+records are retained alongside `analysis.json` and `run.json`.

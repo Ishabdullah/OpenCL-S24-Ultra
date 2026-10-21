@@ -1,0 +1,308 @@
+{
+  "config": {
+    "type": "config",
+    "model": "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+    "prompt": "Hi",
+    "prompt_tokens": 1,
+    "maximum_output_tokens": 2,
+    "vocab_size": 151936,
+    "slots_order": [
+      64,
+      64
+    ],
+    "plan": [
+      {
+        "slots": 64,
+        "threads": 1,
+        "cache_mib": 2560
+      },
+      {
+        "slots": 64,
+        "threads": 1,
+        "cache_mib": 2560
+      }
+    ],
+    "reference_threads": 1,
+    "batch": 1,
+    "ubatch": 1,
+    "context_min": 256,
+    "device": "GPUOpenCL,HTP0",
+    "n_gpu_layers": 6,
+    "mmap_prefetch": false,
+    "weight_repack": false,
+    "load_affinity_limited": true,
+    "nice": 10,
+    "rest_s": 30,
+    "seed": 20261010,
+    "top_k": 40,
+    "temperature": 0.8,
+    "repeat_penalty": 1.1,
+    "timing": "synchronized forward calls only"
+  },
+  "reference": {
+    "type": "reference",
+    "steps": 2,
+    "eog": false,
+    "text": " in my",
+    "tokens": [
+      304,
+      847
+    ]
+  },
+  "passes": [
+    {
+      "type": "pass",
+      "pass": 1,
+      "slots": 64,
+      "threads": 1,
+      "cache_mib": 2560,
+      "evaluated_positions": 2,
+      "decode_evaluations": 1,
+      "bit_identical_positions": 0,
+      "prefill_s": 18.707178,
+      "decode_s": 10.28608,
+      "evaluation_s": 28.993259,
+      "decode_tok_s": 0.097219,
+      "prefill_storage_bytes": 5009281024,
+      "decode_storage_bytes": 3772305408,
+      "storage_bytes": 8781586432,
+      "available_start_kib": 3798296,
+      "available_end_kib": 4998488,
+      "rss_start_kib": 158896,
+      "rss_end_kib": 2104744,
+      "cache_stats": {
+        "slots": 64,
+        "allocated_bytes": 2642411520,
+        "requests": 270,
+        "hits": 19,
+        "misses": 669,
+        "evictions": 0,
+        "copied_bytes": 642170880,
+        "oversized": 0,
+        "budget_fallback": 184,
+        "identity_fallback": 0,
+        "pass": 1
+      },
+      "temperature": {
+        "battery_c": {
+          "first": 38.0,
+          "last": 38.3,
+          "peak": 38.3
+        },
+        "cpu_max_c": {
+          "first": 58.8,
+          "last": 60.7,
+          "peak": 61.1
+        },
+        "htp_max_c": {
+          "first": 54.1,
+          "last": 56.1,
+          "peak": 56.1
+        }
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 2,
+      "slots": 64,
+      "threads": 1,
+      "cache_mib": 2560,
+      "evaluated_positions": 2,
+      "decode_evaluations": 1,
+      "bit_identical_positions": 2,
+      "prefill_s": 4.867242,
+      "decode_s": 2.864197,
+      "evaluation_s": 7.731438,
+      "decode_tok_s": 0.349138,
+      "prefill_storage_bytes": 3770933248,
+      "decode_storage_bytes": 2953912320,
+      "storage_bytes": 6724845568,
+      "available_start_kib": 4943304,
+      "available_end_kib": 5102244,
+      "rss_start_kib": 1170144,
+      "rss_end_kib": 3010548,
+      "cache_stats": {
+        "slots": 64,
+        "allocated_bytes": 2642411520,
+        "requests": 270,
+        "hits": 19,
+        "misses": 669,
+        "evictions": 0,
+        "copied_bytes": 642170880,
+        "oversized": 0,
+        "budget_fallback": 184,
+        "identity_fallback": 0,
+        "pass": 2
+      },
+      "temperature": {
+        "battery_c": {
+          "first": 37.6,
+          "last": 37.6,
+          "peak": 37.6
+        },
+        "cpu_max_c": {
+          "first": 67.4,
+          "last": 67.4,
+          "peak": 67.4
+        },
+        "htp_max_c": {
+          "first": 51.0,
+          "last": 51.0,
+          "peak": 51.0
+        }
+      }
+    }
+  ],
+  "ranked_configurations": [
+    {
+      "slots": 64,
+      "threads": 1,
+      "cache_mib": 2560,
+      "repetitions": 2,
+      "pooled_decode_tok_s": 0.1520880510729926,
+      "mean_prefill_s": 11.78721,
+      "mean_evaluation_s": 18.3623485,
+      "mean_decode_storage_bytes": 3363108864
+    }
+  ],
+  "fastest_pass": {
+    "type": "pass",
+    "pass": 2,
+    "slots": 64,
+    "threads": 1,
+    "cache_mib": 2560,
+    "evaluated_positions": 2,
+    "decode_evaluations": 1,
+    "bit_identical_positions": 2,
+    "prefill_s": 4.867242,
+    "decode_s": 2.864197,
+    "evaluation_s": 7.731438,
+    "decode_tok_s": 0.349138,
+    "prefill_storage_bytes": 3770933248,
+    "decode_storage_bytes": 2953912320,
+    "storage_bytes": 6724845568,
+    "available_start_kib": 4943304,
+    "available_end_kib": 5102244,
+    "rss_start_kib": 1170144,
+    "rss_end_kib": 3010548,
+    "cache_stats": {
+      "slots": 64,
+      "allocated_bytes": 2642411520,
+      "requests": 270,
+      "hits": 19,
+      "misses": 669,
+      "evictions": 0,
+      "copied_bytes": 642170880,
+      "oversized": 0,
+      "budget_fallback": 184,
+      "identity_fallback": 0,
+      "pass": 2
+    },
+    "temperature": {
+      "battery_c": {
+        "first": 37.6,
+        "last": 37.6,
+        "peak": 37.6
+      },
+      "cpu_max_c": {
+        "first": 67.4,
+        "last": 67.4,
+        "peak": 67.4
+      },
+      "htp_max_c": {
+        "first": 51.0,
+        "last": 51.0,
+        "peak": 51.0
+      }
+    }
+  },
+  "cache_stats": [
+    {
+      "slots": 64,
+      "allocated_bytes": 2642411520,
+      "requests": 270,
+      "hits": 19,
+      "misses": 669,
+      "evictions": 0,
+      "copied_bytes": 642170880,
+      "oversized": 0,
+      "budget_fallback": 184,
+      "identity_fallback": 0,
+      "pass": 1
+    },
+    {
+      "slots": 64,
+      "allocated_bytes": 2642411520,
+      "requests": 270,
+      "hits": 19,
+      "misses": 669,
+      "evictions": 0,
+      "copied_bytes": 642170880,
+      "oversized": 0,
+      "budget_fallback": 184,
+      "identity_fallback": 0,
+      "pass": 2
+    }
+  ],
+  "run": {
+    "command": [
+      "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-unified-build/bin/qwen3-30b-a3b-matrix",
+      "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+      "2"
+    ],
+    "plan": "64:1:2560,64:1:2560",
+    "returncode": 0,
+    "n_gpu_layers": 6,
+    "backend": "gpu+npu",
+    "device": "GPUOpenCL,HTP0",
+    "thermal_policy": "cooldown-only",
+    "pilot": true,
+    "pilot_threads": 1,
+    "thermal_returncode": 0,
+    "cooldown_returncode": 0,
+    "stop_limits": {
+      "cpu_max_c": null,
+      "battery_c": null,
+      "htp_max_c": null
+    },
+    "cpu_stop_consecutive_samples": 2,
+    "stop_reason": null,
+    "minimum_available_kib": 2796508,
+    "peak_rss_kib": 3943264,
+    "peak_vm_swap_kib": 2609276,
+    "passes": 2,
+    "cooling_events": 1,
+    "replay_verified": true
+  },
+  "cooldowns": [
+    {
+      "after_pass": 1,
+      "paused_s": 180.30816034809686,
+      "targets_c": {
+        "battery_c": 40.0,
+        "cpu_max_c": 55.0,
+        "htp_max_c": 50.0
+      },
+      "target_met": true,
+      "first_c": {
+        "battery_c": 38.3,
+        "cpu_max_c": 60.7,
+        "htp_max_c": 56.8
+      },
+      "last_c": {
+        "battery_c": 37.7,
+        "cpu_max_c": 46.3,
+        "htp_max_c": 46.3
+      },
+      "ended_monotonic_s": 1026791.103517679,
+      "utc": "2026-10-20T05:28:49.914018+00:00"
+    }
+  ],
+  "balanced_pairs": [],
+  "limitations": [
+    "Single prompt/trajectory/device/session; most settings have one trial.",
+    "Recorded 3\u20135 minute cooling breaks begin after pass 1; inspect chronological comparisons accordingly.",
+    "Page cache, scheduling and memory pressure are not reset.",
+    "Screening rates are observations; confirm the selected setting in both orders."
+  ]
+}

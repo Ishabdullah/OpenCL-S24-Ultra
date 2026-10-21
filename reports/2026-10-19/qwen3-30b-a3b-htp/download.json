@@ -1,0 +1,9 @@
+{
+  "source": "https://huggingface.co/Qwen/Qwen3-30B-A3B-GGUF/resolve/main/Qwen3-30B-A3B-Q4_K_M.gguf",
+  "completed_utc": "2026-10-19T16:09:00+00:00",
+  "file": "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+  "bytes": 18556685824,
+  "sha256": "0d003f6662faee786ed5da3e31b29c978de5ae5d275c8794c606a7f3c01aa8f5",
+  "hash_method": "sha256sum (streaming)",
+  "gguf_header_gate": "pass"
+}

@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/qwen3-30b-a3b-thread-sweep-ngl6",
+    "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+    "2"
+  ],
+  "plan": "80:1:3200,80:1:3200",
+  "returncode": -15,
+  "n_gpu_layers": 6,
+  "pilot": true,
+  "pilot_threads": 1,
+  "thermal_returncode": 0,
+  "cooldown_returncode": 0,
+  "stop_limits": {
+    "cpu_max_c": 70,
+    "battery_c": 42,
+    "htp_max_c": 60
+  },
+  "cpu_stop_consecutive_samples": 2,
+  "stop_reason": "MemAvailable below 2 GiB",
+  "minimum_available_kib": 1886980,
+  "peak_rss_kib": 3998904,
+  "peak_vm_swap_kib": 3073892,
+  "passes": 1,
+  "cooling_events": 1,
+  "replay_verified": false
+}

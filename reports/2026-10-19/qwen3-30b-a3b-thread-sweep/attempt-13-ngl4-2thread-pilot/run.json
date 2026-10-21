@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/qwen3-30b-a3b-thread-sweep",
+    "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+    "2"
+  ],
+  "plan": "80:2:3200,80:2:3200",
+  "returncode": -15,
+  "n_gpu_layers": 4,
+  "pilot": true,
+  "pilot_threads": 2,
+  "thermal_returncode": 0,
+  "cooldown_returncode": 0,
+  "stop_limits": {
+    "cpu_max_c": 70,
+    "battery_c": 42,
+    "htp_max_c": 60
+  },
+  "cpu_stop_consecutive_samples": 2,
+  "stop_reason": "thermal hard stop: {'battery_c': 34.5, 'cpu_max_c': 78.3, 'htp_max_c': 47.5, 'sensors_c': {'cpuss-0': 60.0, 'cpu-2-2-1': 59.2, 'cpu-1-0-0': 63.1, 'cpu-1-0-1': 66.6, 'cpu-1-1-0': 56.8, 'cpu-1-1-1': 58.4, 'cpu-1-2-0': 70.1, 'cpu-1-2-1': 78.3, 'cpu-1-2-2': 68.9, 'cpu-0-0-0': 53.3, 'cpuss-1': 58.4, 'cpu-0-1-0': 55.7, 'nsphvx-0': 47.5, 'nsphvx-1': 47.1, 'nsphmx-0': 44.4, 'nsphmx-1': 43.2, 'nsphmx-2': 42.8, 'nsphmx-3': 42.8, 'cpuss-2': 56.8, 'cpuss-3': 56.8, 'cpu-2-0-0': 60.3, 'battery': 34.5, 'cpu-2-0-1': 60.0, 'cpu-2-1-0': 63.9, 'cpu-2-1-1': 67.0, 'cpu-2-2-0': 57.6}}",
+  "minimum_available_kib": 3939548,
+  "peak_rss_kib": 2131908,
+  "peak_vm_swap_kib": 0,
+  "passes": 0,
+  "cooling_events": 0,
+  "replay_verified": false
+}

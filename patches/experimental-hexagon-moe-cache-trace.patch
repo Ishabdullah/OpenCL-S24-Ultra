@@ -1,0 +1,212 @@
+diff --git a/ggml/src/ggml-hexagon/ggml-hexagon.cpp b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
+index ad0905f..c6d7ffb 100644
+--- a/ggml/src/ggml-hexagon/ggml-hexagon.cpp
++++ b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
+@@ -53,6 +53,7 @@
+ #include "ggml-quants.h"
+ #include "htp-opnode.h"
+ #include "htp-ops.h"
++#include "htp/moe-expert-cache-trace.h"
+ #include "htp/matmul-ops.h"
+ #include "htp/binary-ops.h"
+ #include "htp/flash-attn-ops.h"
+@@ -502,6 +503,8 @@ struct ggml_hexagon_session {
+     uint64_t                cached_uid = 0;
+     std::vector<htp_opnode> cached_nodes;
+ 
++    htp_moe_expert_cache_trace moe_cache_trace;
++
+     mutable std::unordered_set<const ggml_tensor *> needs_repack;
+ 
+     ggml_hexagon_mdev_group                mdev;
+@@ -6804,6 +6807,8 @@ static bool is_mergeable_mul_mat_id_pair(const ggml_tensor * n1, const ggml_tens
+ static ggml_status ggml_backend_hexagon_graph_compute(ggml_backend_t backend, ggml_cgraph * graph) {
+     auto sess = static_cast<ggml_hexagon_session *>(backend->context);
+ 
++    sess->moe_cache_trace.configure_from_env();
++
+     if (sess->last_error > HTP_STATUS_OK) {
+         return GGML_STATUS_FAILED;
+     }
+@@ -6919,6 +6924,24 @@ static ggml_status ggml_backend_hexagon_graph_compute(ggml_backend_t backend, gg
+ 
+     // Queue and execute
+     for (const auto & node : *nodes_ptr) {
++        if (sess->moe_cache_trace.enabled() && node.opcode == HTP_OP_MUL_MAT_ID) {
++            const ggml_tensor * weights = node.node->src[0];
++            const ggml_tensor * ids_tensor = node.node->src[2];
++            if (ids_tensor && ids_tensor->type == GGML_TYPE_I32 && ggml_is_contiguous(ids_tensor)) {
++                const int64_t n_ids = ggml_nelements(ids_tensor);
++                if (n_ids > 0) {
++                    std::vector<int32_t> ids((size_t) n_ids);
++                    sess->flush_sync();
++                    ggml_backend_tensor_get(ids_tensor, ids.data(), 0, ids.size() * sizeof(int32_t));
++                    sess->moe_cache_trace.observe(
++                        weights, (uint32_t) weights->ne[2], ids.data(), ids.size(), weights->name);
++                } else {
++                    sess->moe_cache_trace.observe(weights, (uint32_t) weights->ne[2], nullptr, 0, weights->name);
++                }
++            } else {
++                sess->moe_cache_trace.observe(weights, (uint32_t) weights->ne[2], nullptr, 0, weights->name);
++            }
++        }
+         sess->enqueue_op(node);
+     }
+ 
+diff --git a/ggml/src/ggml-hexagon/htp/moe-expert-cache-trace.h b/ggml/src/ggml-hexagon/htp/moe-expert-cache-trace.h
+new file mode 100644
+--- /dev/null
++++ b/ggml/src/ggml-hexagon/htp/moe-expert-cache-trace.h
+@@ -0,0 +1,152 @@
++#ifndef HTP_MOE_EXPERT_CACHE_TRACE_H
++#define HTP_MOE_EXPERT_CACHE_TRACE_H
++
++// Opt-in, routing-only LRU model for supported Hexagon MUL_MAT_ID ops.
++// This deliberately tracks metadata only: it does not copy or rebind weights.
++
++#include <cstdint>
++#include <algorithm>
++#include <cstddef>
++#include <cstdio>
++#include <cstdlib>
++#include <list>
++#include <string>
++#include <unordered_set>
++#include <unordered_map>
++#include <vector>
++
++class htp_moe_expert_cache_trace {
++public:
++    void configure_from_env() {
++        if (configured_) return;
++        configured_ = true;
++
++        const char * value = std::getenv("GGML_HEXAGON_MOE_CACHE_TRACE_SLOTS");
++        if (!value || !*value) return;
++
++        char * end = nullptr;
++        const unsigned long parsed = std::strtoul(value, &end, 10);
++        if (end == value || *end != '\0' || parsed == 0 || parsed > 256) {
++            std::fprintf(stderr,
++                "HEX_MOE_CACHE_TRACE disabled: slots must be an integer from 1 to 256\n");
++            return;
++        }
++
++        slots_ = static_cast<size_t>(parsed);
++    }
++
++    bool enabled() const { return slots_ != 0; }
++
++    void observe(const void * layer_key, uint32_t expert_count, const int32_t * ids,
++                 size_t n_ids, const char * layer_name) {
++        if (!enabled()) return;
++
++        ++batches_;
++        if (!layer_key || !ids || expert_count == 0) {
++            ++invalid_batches_;
++            return;
++        }
++
++        std::vector<int32_t> selected;
++        std::unordered_set<int32_t> selected_set;
++        selected.reserve(n_ids);
++        selected_set.reserve(n_ids);
++        for (size_t i = 0; i < n_ids; ++i) {
++            if (ids[i] < 0 || static_cast<uint32_t>(ids[i]) >= expert_count) {
++                ++invalid_batches_;
++                return;
++            }
++            if (selected_set.insert(ids[i]).second) {
++                selected.push_back(ids[i]);
++            }
++        }
++
++        if (selected.size() > slots_) {
++            ++fallback_batches_;
++            return;
++        }
++
++        auto & layer = layers_[layer_key];
++        if (layer.name.empty() && layer_name) layer.name = layer_name;
++        layer.requests += selected.size();
++        requests_ += selected.size();
++
++        for (int32_t expert : selected) {
++            auto found = layer.resident.find(expert);
++            if (found != layer.resident.end()) {
++                ++layer.hits;
++                ++hits_;
++                layer.lru.splice(layer.lru.end(), layer.lru, found->second);
++                continue;
++            }
++
++            ++layer.misses;
++            ++misses_;
++            if (layer.resident.size() == slots_) {
++                auto victim = std::find_if(layer.lru.begin(), layer.lru.end(),
++                    [&selected_set](int32_t candidate) {
++                        return selected_set.find(candidate) == selected_set.end();
++                    });
++                if (victim == layer.lru.end()) {
++                    // The complete selected set is pinned for this operation.
++                    ++invalid_batches_;
++                    return;
++                }
++                const int32_t evicted = *victim;
++                layer.lru.erase(victim);
++                layer.resident.erase(evicted);
++                ++layer.evictions;
++                ++evictions_;
++            }
++            layer.lru.push_back(expert);
++            layer.resident.emplace(expert, --layer.lru.end());
++        }
++    }
++
++    ~htp_moe_expert_cache_trace() {
++        if (!enabled() || batches_ == 0) return;
++        const double hit_rate = requests_ ? 100.0 * static_cast<double>(hits_) / requests_ : 0.0;
++        std::fprintf(stderr,
++            "HEX_MOE_CACHE_TRACE slots=%zu layers=%zu batches=%llu requests=%llu hits=%llu misses=%llu evictions=%llu fallback_batches=%llu invalid_batches=%llu hit_rate_pct=%.3f weights_cached=0\n",
++            slots_, layers_.size(), static_cast<unsigned long long>(batches_),
++            static_cast<unsigned long long>(requests_), static_cast<unsigned long long>(hits_),
++            static_cast<unsigned long long>(misses_), static_cast<unsigned long long>(evictions_),
++            static_cast<unsigned long long>(fallback_batches_),
++            static_cast<unsigned long long>(invalid_batches_), hit_rate);
++        for (const auto & entry : layers_) {
++            const layer_state & layer = entry.second;
++            const double layer_hit_rate = layer.requests
++                ? 100.0 * static_cast<double>(layer.hits) / layer.requests : 0.0;
++            std::fprintf(stderr,
++                "HEX_MOE_CACHE_LAYER name=%s requests=%llu hits=%llu misses=%llu evictions=%llu hit_rate_pct=%.3f\n",
++                layer.name.c_str(), static_cast<unsigned long long>(layer.requests),
++                static_cast<unsigned long long>(layer.hits),
++                static_cast<unsigned long long>(layer.misses),
++                static_cast<unsigned long long>(layer.evictions), layer_hit_rate);
++        }
++    }
++
++private:
++    struct layer_state {
++        std::string name;
++        std::list<int32_t> lru;
++        std::unordered_map<int32_t, std::list<int32_t>::iterator> resident;
++        uint64_t requests = 0;
++        uint64_t hits = 0;
++        uint64_t misses = 0;
++        uint64_t evictions = 0;
++    };
++
++    bool configured_ = false;
++    size_t slots_ = 0;
++    uint64_t batches_ = 0;
++    uint64_t requests_ = 0;
++    uint64_t hits_ = 0;
++    uint64_t misses_ = 0;
++    uint64_t evictions_ = 0;
++    uint64_t fallback_batches_ = 0;
++    uint64_t invalid_batches_ = 0;
++    std::unordered_map<const void *, layer_state> layers_;
++};
++
++#endif // HTP_MOE_EXPERT_CACHE_TRACE_H

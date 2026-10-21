@@ -1,0 +1,12 @@
+{
+  "status": "incomplete_external_interruption",
+  "stage": "first pass, step 1 of 16",
+  "pass_result_written": false,
+  "replay_verified": false,
+  "runner_and_child_present_on_recovery": false,
+  "likely_context": "Termux/session was interrupted while switching screens; exact termination cause is unknown",
+  "minimum_memavailable_kib": 3469444,
+  "peak_cpu_c": 84.1,
+  "peak_htp_c": 59.6,
+  "note": "No runner thermal stop was configured. Preserve this partial telemetry as diagnostic evidence; do not count it as a speed result."
+}

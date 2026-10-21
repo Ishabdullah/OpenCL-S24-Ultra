@@ -1,0 +1,119 @@
+{
+  "started_utc": "2026-10-19T15:16:45.518626+00:00",
+  "device": "Snapdragon 8 Gen 3 / HTP0 v75",
+  "preflight": {
+    "battery_percent": null,
+    "thermal_c": {
+      "cpuss-1": 39.7,
+      "cpu-1-2-0": 42.4,
+      "cpu-1-1-1": 37.0,
+      "cpu-2-2-0": 40.9,
+      "battery": 33.4,
+      "cpu-1-0-1": 38.1,
+      "cpu-2-1-0": 40.9,
+      "cpu-0-1-0": 41.6,
+      "cpu-2-2-1": 42.4,
+      "cpu-2-0-0": 40.1,
+      "cpu-0-0-0": 41.3,
+      "cpuss-2": 40.5,
+      "cpu-1-2-1": 43.2,
+      "cpuss-0": 40.1,
+      "cpu-1-1-0": 37.4,
+      "cpu-2-1-1": 46.7,
+      "cpu-1-0-0": 37.7,
+      "cpu-2-0-1": 42.8,
+      "cpuss-3": 38.1,
+      "cpu-1-2-2": 39.7
+    },
+    "mem_available_kib": 6013492
+  },
+  "source_sha256": {
+    "reports/2026-10-19/htp-expert-ops/run-htp-expert-ops.py": "7cd9fe536530055aa15fc31e3d65a6b5297e22f435a0e4dc90a8d128e1e1ee23",
+    ".work-npu/llama.cpp/ggml/src/ggml-hexagon/ggml-hexagon.cpp": "de2938ff229a92eed78c3b7c59a04347650a062797a768aabeebc44ba76953d2",
+    ".work-npu/llama.cpp/ggml/src/ggml-hexagon/htp/moe-expert-cache-trace.h": "8dd5596c3bb8df9e0f42c1c2637ce33c7fd2c66d57f90259a4506619c37ea4ac",
+    ".work-npu/build/bin/test-backend-ops": "bd5987d326013bb8f08d3aeca5501c330844b9e983a683113167cfd3dc00d40f"
+  },
+  "checks": [
+    {
+      "name": "support",
+      "argv": [
+        "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/test-backend-ops",
+        "support",
+        "-b",
+        "HTP0",
+        "-o",
+        "MUL_MAT_ID",
+        "-p",
+        "type_a=(q4_0|q4_1|q8_0|iq4_nl|mxfp4|q4_K|q5_K|q6_K).*n_mats=4,n_used=2.*m=64,n=16"
+      ],
+      "returncode": 0,
+      "elapsed_s": 1.509,
+      "peak_rss_kib": 20692,
+      "minimum_available_kib": 5948272,
+      "log": "support.log"
+    },
+    {
+      "name": "correctness",
+      "argv": [
+        "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/test-backend-ops",
+        "test",
+        "-b",
+        "HTP0",
+        "-o",
+        "MUL_MAT_ID",
+        "-p",
+        "type_a=(q4_0|q4_1|q8_0|iq4_nl|mxfp4|q4_K|q5_K|q6_K).*n_mats=4,n_used=2.*m=64,n=16"
+      ],
+      "returncode": 0,
+      "elapsed_s": 1.513,
+      "peak_rss_kib": 22784,
+      "minimum_available_kib": 5931452,
+      "log": "correctness.log"
+    },
+    {
+      "name": "iq_rejection",
+      "argv": [
+        "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/test-backend-ops",
+        "support",
+        "-b",
+        "HTP0",
+        "-o",
+        "MUL_MAT_ID",
+        "-p",
+        "type_a=(iq1_s|iq1_m|iq2_xxs|iq2_xs|iq2_s).*n_mats=4,n_used=2.*m=64,n=16,k=768"
+      ],
+      "returncode": 0,
+      "elapsed_s": 1.259,
+      "peak_rss_kib": 20460,
+      "minimum_available_kib": 5935044,
+      "log": "iq_rejection.log"
+    }
+  ],
+  "status": "passed",
+  "finished_utc": "2026-10-19T15:16:49.811015+00:00",
+  "postflight": {
+    "mem_available_kib": 6050584,
+    "thermal_c": {
+      "cpuss-1": 44.4,
+      "cpu-1-2-0": 46.7,
+      "cpu-1-1-1": 43.2,
+      "cpu-2-2-0": 43.2,
+      "battery": 33.4,
+      "cpu-1-0-1": 43.6,
+      "cpu-2-1-0": 43.6,
+      "cpu-0-1-0": 44.8,
+      "cpu-2-2-1": 45.1,
+      "cpu-2-0-0": 44.0,
+      "cpu-0-0-0": 44.4,
+      "cpuss-2": 43.6,
+      "cpu-1-2-1": 46.3,
+      "cpuss-0": 44.8,
+      "cpu-1-1-0": 42.8,
+      "cpu-2-1-1": 45.1,
+      "cpu-1-0-0": 43.2,
+      "cpu-2-0-1": 44.8,
+      "cpuss-3": 43.2,
+      "cpu-1-2-2": 45.5
+    }
+  }
+}

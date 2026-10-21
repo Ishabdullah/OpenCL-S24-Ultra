@@ -1,0 +1,23 @@
+{
+  "method": "post-run parse of backend debug records; original smoke.json preserved",
+  "routed_htp_op_families": {
+    "gate": true,
+    "up": true,
+    "down": true
+  },
+  "routed_htp_ops": [
+    {
+      "tensor": "blk.47.ffn_gate_exps.weight x ffn_norm-47 (reshaped) x ffn_moe_topk-47 -> ffn_moe_gate-47",
+      "line": "0.14.779.134 D ggml-hex: HTP0 execute-op MUL_MAT_ID|blk.47.ffn_gate_exps.weight x ffn_norm-47 (reshaped) x ffn_moe_topk-47 -> ffn_moe_gate-47|2048:768:128:1 x 2048:1 x 8:1 -> 768:8|q4_K x f32 x i32 -> f32|144:1152:884736:113246208 x 4:8192 x 4:512 -> 4:3072|HTP0 x HTP0 x HTP0 -> HTP0|hvx-tiled vtcm 2703360|flags 0x0"
+    },
+    {
+      "tensor": "blk.47.ffn_up_exps.weight x ffn_norm-47 (reshaped) x ffn_moe_topk-47 -> ffn_moe_up-47",
+      "line": "0.14.780.638 D ggml-hex: HTP0 execute-op MUL_MAT_ID|blk.47.ffn_up_exps.weight x ffn_norm-47 (reshaped) x ffn_moe_topk-47 -> ffn_moe_up-47|2048:768:128:1 x 2048:1 x 8:1 -> 768:8|q4_K x f32 x i32 -> f32|144:1152:884736:113246208 x 4:8192 x 4:512 -> 4:3072|HTP0 x HTP0 x HTP0 -> HTP0|hvx-tiled vtcm 2703360|flags 0x0"
+    },
+    {
+      "tensor": "blk.47.ffn_down_exps.weight x ffn_moe_swiglu-47 x ffn_moe_topk-47 -> ffn_moe_down-47",
+      "line": "0.14.782.637 D ggml-hex: HTP0 execute-op MUL_MAT_ID|blk.47.ffn_down_exps.weight x ffn_moe_swiglu-47 x ffn_moe_topk-47 -> ffn_moe_down-47|768:2048:128:1 x 768:8 x 8:1 -> 2048:8|q6_K x f32 x i32 -> f32|210:630:1290240:165150720 x 4:3072 x 4:512 -> 4:8192|HTP0 x HTP0 x HTP0 -> HTP0|hvx-tiled vtcm 393216|flags 0x0"
+    }
+  ],
+  "all_three_families_observed": true
+}

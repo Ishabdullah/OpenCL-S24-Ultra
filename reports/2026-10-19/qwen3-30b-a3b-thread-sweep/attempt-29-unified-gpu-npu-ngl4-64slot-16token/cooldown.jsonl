@@ -1,0 +1,1 @@
+{"after_pass": 1, "paused_s": 180.29797024396248, "targets_c": {"battery_c": 40.0, "cpu_max_c": 55.0, "htp_max_c": 50.0}, "target_met": true, "first_c": {"battery_c": 30.5, "cpu_max_c": 56.8, "htp_max_c": 48.7}, "last_c": {"battery_c": 31.3, "cpu_max_c": 42.8, "htp_max_c": 42.0}, "ended_monotonic_s": 1033490.39654106, "utc": "2026-10-20T07:20:29.207047+00:00"}

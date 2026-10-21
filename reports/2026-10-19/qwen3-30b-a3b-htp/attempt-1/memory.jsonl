@@ -1,0 +1,3 @@
+{"utc": "2026-10-19T16:18:34.672929+00:00", "monotonic_s": 993583.714532586, "mem_available_kib": 6459128, "rss_kib": 752, "vm_swap_kib": 0, "pss_kib": 218}
+{"utc": "2026-10-19T16:18:36.166378+00:00", "monotonic_s": 993585.179537273, "mem_available_kib": 6434972, "rss_kib": 1574184, "vm_swap_kib": 0, "pss_kib": 1577798}
+{"utc": "2026-10-19T16:18:37.262555+00:00", "monotonic_s": 993586.209869981, "mem_available_kib": 6986864, "rss_kib": 3368248, "vm_swap_kib": 0, "pss_kib": 3510277}

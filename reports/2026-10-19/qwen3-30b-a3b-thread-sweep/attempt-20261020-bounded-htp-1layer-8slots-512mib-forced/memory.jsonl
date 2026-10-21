@@ -1,0 +1,4 @@
+{"utc": "2026-10-20T13:17:57.095627+00:00", "monotonic_s": 1054938.179167775, "available_kib": 6735472, "rss_kib": 1376, "vm_swap_kib": 0, "pss_kib": 222, "swap_kib": 0}
+{"utc": "2026-10-20T13:17:58.589628+00:00", "monotonic_s": 1054939.67319043, "available_kib": 6597748, "rss_kib": 69496, "vm_swap_kib": 0, "pss_kib": 63910, "swap_kib": 0}
+{"utc": "2026-10-20T13:17:59.600846+00:00", "monotonic_s": 1054940.684405638, "available_kib": 6409748, "rss_kib": 279168, "vm_swap_kib": 0, "pss_kib": 276709, "swap_kib": 0}
+{"utc": "2026-10-20T13:18:00.620725+00:00", "monotonic_s": 1054941.704284857, "available_kib": 6138008, "rss_kib": null, "vm_swap_kib": null, "pss_kib": null, "swap_kib": null}

@@ -1,0 +1,12 @@
+{"utc": "2026-10-20T01:29:20.776589+00:00", "monotonic_s": 1012421.966121025, "available_kib": 6491316, "rss_kib": 1372, "vm_swap_kib": 0, "pss_kib": 482, "swap_kib": 0}
+{"utc": "2026-10-20T01:29:22.312770+00:00", "monotonic_s": 1012423.502308368, "available_kib": 5671088, "rss_kib": 69764, "vm_swap_kib": 0, "pss_kib": 66908, "swap_kib": 0}
+{"utc": "2026-10-20T01:29:23.320079+00:00", "monotonic_s": 1012424.50961269, "available_kib": 5669604, "rss_kib": 156356, "vm_swap_kib": 0, "pss_kib": 154044, "swap_kib": 0}
+{"utc": "2026-10-20T01:29:24.331435+00:00", "monotonic_s": 1012425.520965815, "available_kib": 5664356, "rss_kib": 245060, "vm_swap_kib": 0, "pss_kib": 242620, "swap_kib": 0}
+{"utc": "2026-10-20T01:29:25.346571+00:00", "monotonic_s": 1012426.536099564, "available_kib": 5663600, "rss_kib": 378116, "vm_swap_kib": 0, "pss_kib": 379420, "swap_kib": 0}
+{"utc": "2026-10-20T01:29:26.374040+00:00", "monotonic_s": 1012427.563572429, "available_kib": 5664356, "rss_kib": 500612, "vm_swap_kib": 0, "pss_kib": 498588, "swap_kib": 0}
+{"utc": "2026-10-20T01:29:27.400786+00:00", "monotonic_s": 1012428.590323053, "available_kib": 5663600, "rss_kib": 587204, "vm_swap_kib": 0, "pss_kib": 586140, "swap_kib": 0}
+{"utc": "2026-10-20T01:29:28.438559+00:00", "monotonic_s": 1012429.628088261, "available_kib": 5424152, "rss_kib": 415840, "vm_swap_kib": 0, "pss_kib": 413972, "swap_kib": 0}
+{"utc": "2026-10-20T01:29:29.455301+00:00", "monotonic_s": 1012430.644828052, "available_kib": 4956036, "rss_kib": 1301876, "vm_swap_kib": 0, "pss_kib": 1300356, "swap_kib": 0}
+{"utc": "2026-10-20T01:29:30.502398+00:00", "monotonic_s": 1012431.691932323, "available_kib": 4665024, "rss_kib": 1845192, "vm_swap_kib": 0, "pss_kib": 1843361, "swap_kib": 0}
+{"utc": "2026-10-20T01:29:31.564594+00:00", "monotonic_s": 1012432.754120656, "available_kib": 4961796, "rss_kib": 2260308, "vm_swap_kib": 0, "pss_kib": 2257468, "swap_kib": 0}
+{"utc": "2026-10-20T01:29:32.650664+00:00", "monotonic_s": 1012433.84019102, "available_kib": 4640048, "rss_kib": 2760692, "vm_swap_kib": 0, "pss_kib": 2771841, "swap_kib": 0}

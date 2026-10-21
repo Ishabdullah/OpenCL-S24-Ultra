@@ -1,0 +1,45 @@
+{
+  "command": [
+    "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-unified-build/bin/qwen3-30b-a3b-matrix",
+    "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+    "16"
+  ],
+  "plan": "64:2:2560,64:2:2560",
+  "returncode": -15,
+  "n_gpu_layers": 3,
+  "backend": "gpu+npu",
+  "device": "GPUOpenCL,HTP0",
+  "accelerator_layer_split": {
+    "gpu": 1,
+    "npu": 2
+  },
+  "model_layer_split": {
+    "cpu": 46,
+    "gpu": 1,
+    "npu": 2
+  },
+  "layer_profile": false,
+  "thermal_policy": "cooldown-only",
+  "pilot": true,
+  "pilot_threads": 2,
+  "thread_sweep": false,
+  "thermal_returncode": 0,
+  "cooldown_returncode": 0,
+  "stop_reason": "user-requested stop during pass 1; last progress log was step 8/16 and no complete speed pass was recorded",
+  "minimum_available_kib": 4145504,
+  "peak_rss_kib": 4151008,
+  "peak_vm_swap_kib": 2658256,
+  "passes": 0,
+  "cooling_events": 0,
+  "replay_verified": false,
+  "partial_progress": {
+    "last_logged_step": "1/2 pass, step 8/16",
+    "speed_result": null,
+    "replay_verified": false
+  },
+  "peak_thermal_c": {
+    "cpu_max_c": 95.0,
+    "htp_max_c": 68.5,
+    "battery_c": 37.8
+  }
+}

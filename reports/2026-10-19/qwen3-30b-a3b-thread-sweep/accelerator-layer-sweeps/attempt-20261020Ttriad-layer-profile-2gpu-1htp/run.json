@@ -1,0 +1,43 @@
+{
+  "command": [
+    "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-unified-build/bin/qwen3-30b-a3b-matrix",
+    "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+    "8"
+  ],
+  "plan": "64:1:2560,64:1:2560",
+  "returncode": 0,
+  "n_gpu_layers": 3,
+  "backend": "gpu+npu",
+  "device": "GPUOpenCL,HTP0",
+  "accelerator_layer_split": {
+    "gpu": 2,
+    "npu": 1
+  },
+  "model_layer_split": {
+    "cpu": 46,
+    "gpu": 2,
+    "npu": 1
+  },
+  "layer_profile": true,
+  "thermal_policy": "cooldown-only",
+  "pilot": true,
+  "pilot_threads": 1,
+  "thread_sweep": false,
+  "thermal_returncode": 0,
+  "cooldown_returncode": 0,
+  "stop_reason": "incomplete per-layer timing evidence",
+  "minimum_available_kib": 4729952,
+  "peak_rss_kib": 4734552,
+  "peak_vm_swap_kib": 2251892,
+  "passes": 2,
+  "cooling_events": 1,
+  "replay_verified": true,
+  "layer_assignment_counts": {
+    "GPUOpenCL": 2,
+    "HTP0": 1,
+    "CPU": 46
+  },
+  "layer_assignment_verified": true,
+  "layer_profile_verified": false,
+  "layer_profile_error": "missing decode timing or placement for layer 48"
+}

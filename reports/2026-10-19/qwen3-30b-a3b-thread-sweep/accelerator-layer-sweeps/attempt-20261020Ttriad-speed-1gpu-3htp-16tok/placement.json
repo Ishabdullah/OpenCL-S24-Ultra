@@ -1,0 +1,13 @@
+{
+  "requested": {
+    "gpu": 1,
+    "npu": 3,
+    "cpu": "remaining model layers"
+  },
+  "actual": {
+    "GPUOpenCL": 1,
+    "HTP0": 3,
+    "CPU": 45
+  },
+  "verified": true
+}

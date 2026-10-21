@@ -1,0 +1,262 @@
+{
+  "per_layer": {
+    "0": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 79241484.5
+    },
+    "1": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 66369323.5
+    },
+    "2": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 54556979.0
+    },
+    "3": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 50630000.0
+    },
+    "4": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 50802239.5
+    },
+    "5": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 48417604.0
+    },
+    "6": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 35955781.5
+    },
+    "7": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 37187109.0
+    },
+    "8": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 35578802.5
+    },
+    "9": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 30605416.5
+    },
+    "10": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 28640260.5
+    },
+    "11": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 44333672.0
+    },
+    "12": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 34734010.5
+    },
+    "13": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 38282317.5
+    },
+    "14": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 32810130.0
+    },
+    "15": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 29634583.5
+    },
+    "16": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 39191718.5
+    },
+    "17": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 36753776.0
+    },
+    "18": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 33812031.5
+    },
+    "19": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 39684687.0
+    },
+    "20": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 28232683.0
+    },
+    "21": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 35613255.0
+    },
+    "22": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 33845912.0
+    },
+    "23": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 38684427.0
+    },
+    "24": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 30479271.0
+    },
+    "25": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 43488177.5
+    },
+    "26": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 38798957.5
+    },
+    "27": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 29918854.0
+    },
+    "28": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 37553854.0
+    },
+    "29": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 31100703.0
+    },
+    "30": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 36511484.5
+    },
+    "31": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 27586823.0
+    },
+    "32": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 32367343.5
+    },
+    "33": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 27415025.5
+    },
+    "34": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 38956276.0
+    },
+    "35": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 50655937.5
+    },
+    "36": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 30622994.5
+    },
+    "37": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 51530963.5
+    },
+    "38": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 40047500.5
+    },
+    "39": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 22801666.5
+    },
+    "40": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 38731015.5
+    },
+    "41": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 52808906.5
+    },
+    "42": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 47371432.5
+    },
+    "43": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 37482760.5
+    },
+    "44": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 39925833.0
+    },
+    "45": {
+      "device": "CPU",
+      "samples": 14,
+      "median_ns": 1524505.0
+    },
+    "46": {
+      "device": "GPUOpenCL",
+      "samples": 14,
+      "median_ns": 834062.5
+    },
+    "47": {
+      "device": "GPUOpenCL",
+      "samples": 14,
+      "median_ns": 867526.5
+    },
+    "48": {
+      "device": "HTP0",
+      "samples": 14,
+      "median_ns": 6131667.0
+    }
+  },
+  "complete": true,
+  "missing_layers": [],
+  "device_median_sum_ns": {
+    "CPU": 1771278489.0,
+    "GPUOpenCL": 1701589.0,
+    "HTP0": 6131667.0
+  },
+  "device_fraction": {
+    "CPU": 0.9955970972469748,
+    "GPUOpenCL": 0.0009564261518604049,
+    "HTP0": 0.003446476601164813
+  },
+  "timing_note": "diagnostic layer boundaries synchronize backend execution; do not use these rates as normal decode throughput"
+}

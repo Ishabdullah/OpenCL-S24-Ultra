@@ -1,0 +1,49 @@
+{
+  "command": [
+    "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-unified-build/bin/qwen3-30b-a3b-matrix",
+    "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+    "16"
+  ],
+  "plan": "8:1:320,8:1:320",
+  "returncode": 1,
+  "n_gpu_layers": 49,
+  "backend": "gpu+npu",
+  "device": "GPUOpenCL,HTP0",
+  "accelerator_layer_split": null,
+  "model_layer_split": {
+    "cpu": 32,
+    "gpu": 16,
+    "npu": 1
+  },
+  "layer_profile": false,
+  "output_layer": null,
+  "bounded_htp_layers": null,
+  "htp_cache_slots": 8,
+  "htp_cache_budget_mib": 512,
+  "thermal_policy": "cooldown-only",
+  "pilot": false,
+  "pilot_threads": 1,
+  "thread_sweep": false,
+  "thermal_returncode": 0,
+  "cooldown_returncode": 0,
+  "stop_reason": null,
+  "minimum_available_kib": 6912552,
+  "peak_rss_kib": 563748,
+  "peak_vm_swap_kib": 0,
+  "passes": 0,
+  "cooling_events": 0,
+  "replay_verified": false,
+  "htp_resident_evidence": {
+    "weights": [
+      "blk.32.ffn_down_exps.weight",
+      "blk.32.ffn_gate_exps.weight",
+      "blk.32.ffn_up_exps.weight"
+    ],
+    "weight_bytes": 391643136,
+    "operations": 0,
+    "operation_tensors": [],
+    "operation_buffers": []
+  },
+  "htp_resident_verified": false,
+  "htp_resident_verification_basis": "loader HTP allocations + HTP-buffer operation logs + successful replay"
+}

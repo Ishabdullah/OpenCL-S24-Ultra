@@ -1,0 +1,14 @@
+{
+  "elapsed_s": 180.34657878498547,
+  "target_met": true,
+  "first_c": {
+    "battery_c": 37.7,
+    "cpu_max_c": 50.2,
+    "htp_max_c": 46.3
+  },
+  "last_c": {
+    "battery_c": 36.1,
+    "cpu_max_c": 40.9,
+    "htp_max_c": 40.5
+  }
+}

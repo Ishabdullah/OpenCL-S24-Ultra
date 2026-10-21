@@ -1,0 +1,181 @@
+{
+  "started_utc": "2026-10-19T19:04:53.068394+00:00",
+  "model": "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+  "model_bytes": 18556685824,
+  "inventory": {
+    "file": "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+    "bytes": 18556685824,
+    "gguf_version": 3,
+    "tensor_count": 579,
+    "architecture": "qwen3moe",
+    "file_type": 15,
+    "expert_count": 128,
+    "expert_used_count": 8,
+    "expert_tensor_count": 144,
+    "expert_tensor_types": {
+      "Q4_K": 120,
+      "Q6_K": 24
+    },
+    "unsupported_expert_types": [],
+    "unsupported_examples": [],
+    "htp_expert_type_gate": "pass"
+  },
+  "command": [
+    "taskset",
+    "-c",
+    "0,1",
+    "nice",
+    "-n",
+    "10",
+    "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-npu/build/bin/compare-cpu-htp-logits",
+    "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+    "4"
+  ],
+  "trace_slots": 64,
+  "htp_verbose": false,
+  "cpu_admission_c": 48,
+  "interpass_cooldown_s": 180,
+  "cpu_affinity": "0,1",
+  "nice": 10,
+  "preflight": {
+    "mem_available_kib": 7069808,
+    "battery": {
+      "present": true,
+      "technology": "Li-ion",
+      "health": "GOOD",
+      "plugged": "PLUGGED_AC",
+      "status": "NOT_CHARGING",
+      "temperature": 29.6,
+      "voltage": 4265,
+      "current": 10000,
+      "current_average": -2,
+      "percentage": 95,
+      "level": 95,
+      "scale": 100,
+      "charge_counter": 4661650,
+      "cycle": 0
+    },
+    "thermal": {
+      "battery_c": 29.3,
+      "cpu_max_c": 45.1,
+      "htp_max_c": 35.8,
+      "sensors_c": {
+        "cpuss-0": 40.1,
+        "cpu-2-2-1": 45.1,
+        "cpu-1-0-0": 38.1,
+        "cpu-1-0-1": 39.3,
+        "cpu-1-1-0": 37.0,
+        "cpu-1-1-1": 37.0,
+        "cpu-1-2-0": 41.3,
+        "cpu-1-2-1": 40.9,
+        "cpu-1-2-2": 40.5,
+        "cpu-0-0-0": 38.9,
+        "cpuss-1": 38.9,
+        "cpu-0-1-0": 41.3,
+        "nsphvx-0": 35.8,
+        "nsphvx-1": 35.4,
+        "nsphmx-0": 34.6,
+        "nsphmx-1": 34.2,
+        "nsphmx-2": 34.2,
+        "nsphmx-3": 34.2,
+        "cpuss-2": 38.5,
+        "cpuss-3": 38.1,
+        "cpu-2-0-0": 38.9,
+        "battery": 29.3,
+        "cpu-2-0-1": 38.5,
+        "cpu-2-1-0": 38.9,
+        "cpu-2-1-1": 39.7,
+        "cpu-2-2-0": 42.4
+      }
+    }
+  },
+  "source_sha256": {
+    ".work-npu/build/bin/llama-completion": "069f49f41d2b3f92ceb251c2299438f594c8c441f9f4dac68480856cd13d2e43",
+    "reports/2026-10-19/qwen3-30b-a3b-htp/inspect-expert-tensors.py": "3224e0da45184d2936fdde01ad27cd97a33575b1e27ee2d3f8a0c35d6b2f5fc5",
+    "reports/2026-10-19/qwen3-30b-a3b-htp/expert-inventory.json": "f9396f1f888715ea2d8ded11058476b55f95a836baf421c8f1c9fc6079320f8e",
+    "reports/2026-10-19/qwen3-30b-a3b-htp/compare-cpu-htp-logits.cpp": "34d05143114260380606711d8a0fbdf82fb8a45a21ed038a082959824f4a414a",
+    ".work-npu/llama.cpp/src/llama-model.cpp": "adf2e73e1742ee84d0a5ed952ac05efc222ce202bffe83af8e02a0ba6bd46179",
+    ".work-npu/llama.cpp/ggml/src/ggml-hexagon/ggml-hexagon.cpp": "de2938ff229a92eed78c3b7c59a04347650a062797a768aabeebc44ba76953d2",
+    ".work-npu/llama.cpp/ggml/src/ggml-hexagon/htp/moe-expert-cache-trace.h": "8dd5596c3bb8df9e0f42c1c2637ce33c7fd2c66d57f90259a4506619c37ea4ac",
+    ".work-npu/build/bin/compare-cpu-htp-logits": "e1505c0be4a7bd4f7fcdaf932b41590ad913eab0135a19df619771282dd5d68a",
+    ".work-npu/build/bin/libggml-hexagon.so": "53002524c886fa44378331f40735055c3e4f36acc9078a65d2593a9d406a4522",
+    ".work-npu/build/ggml/src/ggml-hexagon/libggml-htp-v75.so": "76397df3c982c39ab7d0919d58139b00b4bd03f3c39e3a56857b091519b337eb"
+  },
+  "finished_utc": "2026-10-19T19:08:46.143152+00:00",
+  "returncode": 0,
+  "stop_reason": null,
+  "minimum_available_kib": 6681896,
+  "peak_rss_kib": 3320264,
+  "peak_vm_swap_kib": 46584,
+  "final_battery": {
+    "present": true,
+    "technology": "Li-ion",
+    "health": "GOOD",
+    "plugged": "PLUGGED_AC",
+    "status": "NOT_CHARGING",
+    "temperature": 29.6,
+    "voltage": 4265,
+    "current": 2000,
+    "current_average": 4,
+    "percentage": 95,
+    "level": 95,
+    "scale": 100,
+    "charge_counter": 4661650,
+    "cycle": 0
+  },
+  "trace_record": null,
+  "routed_htp_ops": [],
+  "routed_htp_op_families": {
+    "gate": false,
+    "up": false,
+    "down": false
+  },
+  "comparison": {
+    "steps": 4,
+    "prompt_tokens": 1,
+    "vocab_vectors": 4,
+    "exact_vectors": 0,
+    "top1_agreements": 4,
+    "logit_rmse": 0.111347473,
+    "max_abs_error": 0.702766642,
+    "max_relative_error": 4838.1608,
+    "mean_kl": 0.00174022644,
+    "all_finite": true
+  },
+  "comparison_steps": [
+    {
+      "step": 1,
+      "steps": 4,
+      "top1_agree": true,
+      "kl": 0.000572093906,
+      "rmse": 0.0342704312,
+      "max_abs": 0.167332888
+    },
+    {
+      "step": 2,
+      "steps": 4,
+      "top1_agree": true,
+      "kl": 0.00175550303,
+      "rmse": 0.132567943,
+      "max_abs": 0.588651419
+    },
+    {
+      "step": 3,
+      "steps": 4,
+      "top1_agree": true,
+      "kl": 0.00242003789,
+      "rmse": 0.102954362,
+      "max_abs": 0.557310581
+    },
+    {
+      "step": 4,
+      "steps": 4,
+      "top1_agree": true,
+      "kl": 0.00221327093,
+      "rmse": 0.142283929,
+      "max_abs": 0.702766642
+    }
+  ],
+  "thermal_sample_count": 216,
+  "status": "failed"
+}

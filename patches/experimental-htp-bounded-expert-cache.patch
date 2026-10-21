@@ -1,0 +1,616 @@
+diff --git a/ggml/src/ggml-backend.cpp b/ggml/src/ggml-backend.cpp
+index 273dc92..3b96e3c 100644
+--- a/ggml/src/ggml-backend.cpp
++++ b/ggml/src/ggml-backend.cpp
+@@ -1055,6 +1055,42 @@ static bool ggml_backend_sched_buffer_supported(ggml_backend_sched_t sched, stru
+     return buft != NULL && ggml_backend_supports_buft(sched->backends[backend_id], buft);
+ }
+ 
++static bool ggml_backend_sched_is_htp_moe_cache_candidate(const ggml_tensor * node) {
++    const char * enabled = getenv("GGML_HEXAGON_MOE_EXPERT_CACHE_SLOTS");
++    const char * resident = getenv("GGML_HEXAGON_MOE_EXPERT_RESIDENT_LAYER_COUNT");
++    const bool is_cache = enabled && *enabled;
++    const char * first_env = getenv(is_cache ? "GGML_HEXAGON_MOE_EXPERT_CACHE_LAYER_FIRST" :
++                                               "GGML_HEXAGON_MOE_EXPERT_RESIDENT_LAYER_FIRST");
++    const char * count_env = is_cache ? getenv("GGML_HEXAGON_MOE_EXPERT_CACHE_LAYER_COUNT") : resident;
++    if ((!is_cache && (!resident || !*resident)) || !node || node->op != GGML_OP_MUL_MAT_ID ||
++        !node->src[0] || (is_cache && !node->src[0]->data) ||
++        (node->src[0]->type != GGML_TYPE_Q4_K && node->src[0]->type != GGML_TYPE_Q6_K) ||
++        strstr(node->src[0]->name, "_exps.weight") == nullptr || !first_env || !count_env) {
++        return false;
++    }
++    const char * block = strstr(node->src[0]->name, "blk.");
++    if (!block) return false;
++    char * end = nullptr;
++    const long layer = strtol(block + 4, &end, 10);
++    if (end == block + 4 || *end != '.') return false;
++    char * first_end = nullptr;
++    char * count_end = nullptr;
++    const long first = strtol(first_env, &first_end, 10);
++    const long count = strtol(count_env, &count_end, 10);
++    if (first_end == first_env || *first_end || count_end == count_env || *count_end || count <= 0) return false;
++    if (layer < first || layer >= first + count) return false;
++    return true; // The opt-in model-loader override pins these tensors to CPU/mmap.
++}
++
++static bool ggml_backend_sched_is_htp_moe_stream_source(
++        const ggml_tensor * node, int src_index, const ggml_tensor * src, ggml_backend_t target) {
++    if (!ggml_backend_sched_is_htp_moe_cache_candidate(node) || src_index != 0 || src != node->src[0]) {
++        return false;
++    }
++    ggml_backend_dev_t target_dev = ggml_backend_get_device(target);
++    return target_dev && strstr(ggml_backend_dev_name(target_dev), "HTP") != nullptr;
++}
++
+ static void ggml_backend_sched_set_if_supported(ggml_backend_sched_t sched, struct ggml_tensor * node, int cur_backend_id, int * node_backend_id) {
+     if (ggml_backend_supports_op(sched->backends[cur_backend_id], node)) {
+         *node_backend_id = cur_backend_id;
+@@ -1100,6 +1136,22 @@ void ggml_backend_sched_split_graph(ggml_backend_sched_t sched, struct ggml_cgra
+         // do not overwrite user assignments
+         if (*node_backend_id == -1) {
+             *node_backend_id = ggml_backend_sched_backend_id_from_cur(sched, node);
++        }
++        // CPU mmap placement is intentional for streamed cache weights; the
++        // resident control preallocates selected weights directly on HTP.
++        if (ggml_backend_sched_is_htp_moe_cache_candidate(node)) {
++                for (int b = 0; b < sched->n_backends; ++b) {
++                    ggml_backend_dev_t dev = ggml_backend_get_device(sched->backends[b]);
++                    if (dev && strstr(ggml_backend_dev_name(dev), "HTP") != nullptr &&
++                        ggml_backend_supports_op(sched->backends[b], node)) {
++                        *node_backend_id = b;
++                        SET_CAUSE(node, "2.htp-moe-cache-or-resident");
++                        GGML_LOG_INFO("sched: selected HTP MoE op %s routed to %s\n",
++                                node->src[0]->name, ggml_backend_name(sched->backends[b]));
++                        break;
++                    }
++                }
++            }
+ 
+ #if 0
+             // src
+@@ -1118,7 +1170,6 @@ void ggml_backend_sched_split_graph(ggml_backend_sched_t sched, struct ggml_cgra
+                 }
+             }
+ #endif
+-        }
+     }
+ 
+     // pass 2: expand current backend assignments
+@@ -1373,6 +1424,13 @@ void ggml_backend_sched_split_graph(ggml_backend_sched_t sched, struct ggml_cgra
+                 GGML_ASSERT(src_backend_id != -1); // all inputs should be assigned by now
+ 
+                 if (src_backend_id != cur_backend_id && !ggml_backend_sched_buffer_supported(sched, src, cur_backend_id)) {
++                    // The opt-in HTP MoE cache reads the mmap-backed source tensor
++                    // directly and stages only selected experts. Never allocate or
++                    // populate a full accelerator copy for this one input.
++                    if (ggml_backend_sched_is_htp_moe_stream_source(
++                            node, j, src, sched->backends[cur_backend_id])) {
++                        continue;
++                    }
+                     // create a copy of the input in the split's backend
+                     if (tensor_id_copy(src_id, cur_backend_id, 0) == NULL) {
+                         ggml_backend_t backend = sched->backends[cur_backend_id];
+diff --git a/ggml/src/ggml-cpu/moe-slot-cache.h b/ggml/src/ggml-cpu/moe-slot-cache.h
+new file mode 100644
+index 0000000..d3dccdc
+--- /dev/null
++++ b/ggml/src/ggml-cpu/moe-slot-cache.h
+@@ -0,0 +1,110 @@
++// Experimental canonical-weight cache for CPU MUL_MAT_ID. No model pruning.
++#pragma once
++#include <algorithm>
++#include <cstdint>
++#include <cstring>
++#include <limits>
++#include <map>
++#include <memory>
++#include <stdexcept>
++#include <vector>
++
++namespace moe_cache {
++struct stats {
++    size_t requests = 0, hits = 0, misses = 0, evictions = 0;
++    size_t copied_bytes = 0, allocated_bytes = 0;
++    size_t oversized = 0, budget_fallback = 0, identity_fallback = 0;
++};
++struct entry {
++    const void * source;
++    size_t expert_bytes;
++    int experts, slots;
++    std::vector<uint8_t> bytes;
++    std::vector<int> owner, location;
++    std::vector<uint64_t> age;
++    std::vector<int> changed_slots;
++    uint64_t clock = 0;
++    bool stores_weights;
++    entry(const void * data, size_t size, int count, int capacity, bool keep_weight_bytes) :
++        source(data), expert_bytes(size), experts(count), slots(capacity),
++        owner(capacity, -1), location(count, -1), age(capacity, 0), stores_weights(keep_weight_bytes) {
++        if (stores_weights) bytes.resize(size * capacity);
++    }
++};
++class cache {
++    int capacity;
++    size_t limit;
++    bool stores_weights;
++    std::map<const void *, std::unique_ptr<entry>> tensors;
++public:
++    stats counters;
++    cache(int slots, size_t byte_limit, bool keep_weight_bytes = true) :
++        capacity(slots), limit(byte_limit), stores_weights(keep_weight_bytes) {}
++    int slots() const { return capacity; }
++    // source and key are immutable for this backend/context lifetime.
++    // On success all selected experts are pinned until this synchronous op ends.
++    entry * prepare(const void * key, const void * source, size_t expert_bytes,
++                    int experts, const int32_t * ids, size_t count,
++                    std::vector<int32_t> & remapped) {
++        ++counters.requests;
++        if (!source || !expert_bytes || experts <= 0 || count == 0) return nullptr;
++        std::vector<uint8_t> needed(experts, 0);
++        size_t unique = 0;
++        for (size_t i = 0; i < count; ++i) {
++            if (ids[i] < 0 || ids[i] >= experts) return nullptr;
++            if (!needed[ids[i]]) { needed[ids[i]] = 1; ++unique; }
++        }
++        const int slots = std::min(capacity, experts);
++        if (unique > size_t(slots)) { ++counters.oversized; return nullptr; }
++        auto found = tensors.find(key);
++        if (found == tensors.end()) {
++            if (expert_bytes > std::numeric_limits<size_t>::max() / size_t(slots) ||
++                expert_bytes * slots > limit - counters.allocated_bytes) {
++                ++counters.budget_fallback; return nullptr;
++            }
++            std::unique_ptr<entry> value(new entry(source, expert_bytes, experts, slots, stores_weights));
++            found = tensors.emplace(key, std::move(value)).first;
++            counters.allocated_bytes += expert_bytes * slots;
++        }
++        auto & value = *found->second;
++        value.changed_slots.clear();
++        if (value.source != source || value.expert_bytes != expert_bytes || value.experts != experts) {
++            ++counters.identity_fallback; return nullptr;
++        }
++        // Choose victims only from experts NOT used by this operation. A hit
++        // appearing later in the ID list cannot be evicted by an earlier miss.
++        for (int expert = 0; expert < experts; ++expert) {
++            if (!needed[expert]) continue;
++            int slot = value.location[expert];
++            if (slot >= 0) { ++counters.hits; }
++            else {
++                ++counters.misses;
++                slot = -1;
++                for (int candidate = 0; candidate < slots; ++candidate) {
++                    int old = value.owner[candidate];
++                    if (old < 0) { slot = candidate; break; }
++                    if (!needed[old] && (slot < 0 || value.age[candidate] < value.age[slot])) slot = candidate;
++                }
++                if (slot < 0) throw std::logic_error("no unpinned slot");
++                if (value.stores_weights) {
++                    std::memcpy(value.bytes.data() + slot * expert_bytes,
++                                static_cast<const uint8_t *>(source) + expert * expert_bytes, expert_bytes);
++                    counters.copied_bytes += expert_bytes;
++                }
++                int old = value.owner[slot];
++                if (old >= 0) { value.location[old] = -1; ++counters.evictions; }
++                value.owner[slot] = expert; value.location[expert] = slot;
++                value.changed_slots.push_back(slot);
++            }
++            value.age[slot] = ++value.clock;
++        }
++        // Touch in request order so eviction is recency-based across calls.
++        remapped.resize(count);
++        for (size_t i = 0; i < count; ++i) {
++            remapped[i] = value.location[ids[i]];
++            value.age[remapped[i]] = ++value.clock;
++        }
++        return &value;
++    }
++};
++} // namespace moe_cache
+diff --git a/ggml/src/ggml-hexagon/ggml-hexagon.cpp b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
+index ad0905f..ac46682 100644
+--- a/ggml/src/ggml-hexagon/ggml-hexagon.cpp
++++ b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
+@@ -47,12 +47,15 @@
+ 
+ #define GGML_COMMON_IMPL_CPP
+ #include "ggml-backend-impl.h"
++#include "ggml-alloc.h"
+ #include "ggml-common.h"
+ #include "ggml-hexagon.h"
+ #include "ggml-impl.h"
+ #include "ggml-quants.h"
+ #include "htp-opnode.h"
+ #include "htp-ops.h"
++#include "htp/moe-expert-cache-trace.h"
++#include "../ggml-cpu/moe-slot-cache.h"
+ #include "htp/matmul-ops.h"
+ #include "htp/binary-ops.h"
+ #include "htp/flash-attn-ops.h"
+@@ -467,6 +470,35 @@ struct ggml_hexagon_event {
+     uint32_t               seq          = 0;
+ };
+ 
++struct ggml_hexagon_moe_weight_cache_entry {
++    ggml_context * weight_ctx = nullptr;
++    ggml_backend_buffer_t weight_buffer = nullptr;
++    ggml_tensor * compact_weights = nullptr;
++    ggml_context * ids_ctx = nullptr;
++    ggml_backend_buffer_t ids_buffer = nullptr;
++    ggml_tensor * compact_ids = nullptr;
++    size_t expert_bytes = 0;
++    size_t repacked_expert_bytes = 0;
++    size_t device_bytes = 0;
++
++    ~ggml_hexagon_moe_weight_cache_entry() {
++        if (ids_buffer) ggml_backend_buffer_free(ids_buffer);
++        if (ids_ctx) ggml_free(ids_ctx);
++        if (weight_buffer) ggml_backend_buffer_free(weight_buffer);
++        if (weight_ctx) ggml_free(weight_ctx);
++    }
++};
++
++struct ggml_hexagon_moe_weight_cache {
++    bool configured = false;
++    size_t slots = 0;
++    size_t device_limit = 0;
++    size_t device_allocated = 0;
++    size_t staged_bytes = 0;
++    std::unique_ptr<moe_cache::cache> host_cache;
++    std::unordered_map<const ggml_tensor *, std::unique_ptr<ggml_hexagon_moe_weight_cache_entry>> tensors;
++};
++
+ struct ggml_hexagon_session {
+     std::string      name;
+     remote_handle64  handle;
+@@ -502,6 +534,9 @@ struct ggml_hexagon_session {
+     uint64_t                cached_uid = 0;
+     std::vector<htp_opnode> cached_nodes;
+ 
++    htp_moe_expert_cache_trace moe_cache_trace;
++    ggml_hexagon_moe_weight_cache moe_weight_cache;
++
+     mutable std::unordered_set<const ggml_tensor *> needs_repack;
+ 
+     ggml_hexagon_mdev_group                mdev;
+@@ -1990,6 +2025,150 @@ static void repack_tensor_tiled(ggml_tensor * tensor, const void * data, size_t
+     }
+ }
+ 
++static bool ggml_hexagon_moe_cache_configure(ggml_hexagon_session * sess) {
++    auto & cache = sess->moe_weight_cache;
++    if (cache.configured) return cache.host_cache != nullptr;
++    cache.configured = true;
++    const char * slots_env = getenv("GGML_HEXAGON_MOE_EXPERT_CACHE_SLOTS");
++    if (!slots_env || !*slots_env) return false;
++    char * end = nullptr;
++    unsigned long slots = strtoul(slots_env, &end, 10);
++    if (end == slots_env || *end || slots == 0 || slots > 128) {
++        GGML_LOG_ERROR("ggml-hex: HTP expert cache slots must be in 1..128\n");
++        return false;
++    }
++    const char * mib_env = getenv("GGML_HEXAGON_MOE_EXPERT_CACHE_MAX_MIB");
++    unsigned long mib = mib_env && *mib_env ? strtoul(mib_env, &end, 10) : 512;
++    if ((mib_env && (end == mib_env || *end)) || mib == 0 || mib > 4096) {
++        GGML_LOG_ERROR("ggml-hex: HTP expert cache budget must be in 1..4096 MiB\n");
++        return false;
++    }
++    cache.slots = slots;
++    cache.device_limit = (size_t) mib * 1024 * 1024;
++    // The LRU object tracks slot ownership only. Expert bytes are copied
++    // directly from mmap to HTP below, avoiding a duplicate host cache.
++    cache.host_cache = std::make_unique<moe_cache::cache>(cache.slots, cache.device_limit, false);
++    GGML_LOG_INFO("ggml-hex: bounded routed-expert cache enabled slots=%zu device_budget_mib=%lu\n",
++                  cache.slots, mib);
++    return true;
++}
++
++static ggml_hexagon_moe_weight_cache_entry * ggml_hexagon_moe_cache_get_tensor(
++        ggml_hexagon_session * sess, const ggml_tensor * source, const ggml_tensor * ids) {
++    auto & state = sess->moe_weight_cache;
++    auto found = state.tensors.find(source);
++    if (found != state.tensors.end()) {
++        auto * entry = found->second.get();
++        if (entry->compact_ids && ggml_are_same_shape(entry->compact_ids, ids)) return entry;
++        if (entry->ids_buffer) ggml_backend_buffer_free(entry->ids_buffer);
++        if (entry->ids_ctx) ggml_free(entry->ids_ctx);
++        entry->ids_buffer = nullptr;
++        entry->ids_ctx = nullptr;
++        entry->compact_ids = nullptr;
++    }
++    ggml_hexagon_moe_weight_cache_entry * entry;
++    if (found == state.tensors.end()) {
++        if (!ggml_is_contiguous(source) || source->ne[2] <= 0 || source->ne[3] != 1 ||
++            source->nb[2] == 0 || source->nb[2] * (size_t) state.slots > SIZE_MAX) {
++            GGML_LOG_ERROR("ggml-hex: invalid source layout for HTP expert cache tensor %s\n", source->name);
++            return nullptr;
++        }
++        std::unique_ptr<ggml_hexagon_moe_weight_cache_entry> created(new ggml_hexagon_moe_weight_cache_entry());
++        created->expert_bytes = source->nb[2];
++        ggml_init_params params = { 4 * ggml_tensor_overhead() + 4096, nullptr, true };
++        created->weight_ctx = ggml_init(params);
++        if (!created->weight_ctx) return nullptr;
++        created->compact_weights = ggml_new_tensor_3d(created->weight_ctx, source->type,
++                source->ne[0], source->ne[1], state.slots);
++        if (!created->compact_weights) return nullptr;
++        ggml_format_name(created->compact_weights, "htp-cache-%s", source->name);
++        const size_t alloc_size = ggml_backend_alloc_ctx_tensors_from_buft_size(
++                created->weight_ctx, &sess->dev_ctx->buffer_type);
++        if (alloc_size == 0 || alloc_size > state.device_limit - state.device_allocated) {
++            GGML_LOG_ERROR("ggml-hex: HTP expert cache budget refused %s (%zu bytes; %zu/%zu used)\n",
++                    source->name, alloc_size, state.device_allocated, state.device_limit);
++            return nullptr;
++        }
++        created->weight_buffer = ggml_backend_alloc_ctx_tensors_from_buft(
++                created->weight_ctx, &sess->dev_ctx->buffer_type);
++        if (!created->weight_buffer) return nullptr;
++        ggml_backend_buffer_set_usage(created->weight_buffer, GGML_BACKEND_BUFFER_USAGE_WEIGHTS);
++        auto * extra = (ggml_hexagon_tensor_extra *) created->compact_weights->extra;
++        extra->flags |= GGML_HEXAGON_TENSOR_REPACK | GGML_HEXAGON_TENSOR_WEIGHT;
++        created->device_bytes = alloc_size;
++        created->repacked_expert_bytes = alloc_size / state.slots;
++        state.device_allocated += alloc_size;
++        auto inserted = state.tensors.emplace(source, std::move(created));
++        found = inserted.first;
++        GGML_LOG_INFO("ggml-hex: HTP expert cache allocated %s %zu slots, %zu bytes\n",
++                source->name, state.slots, alloc_size);
++    }
++    entry = found->second.get();
++    ggml_init_params id_params = { 2 * ggml_tensor_overhead() + 2048, nullptr, true };
++    entry->ids_ctx = ggml_init(id_params);
++    if (!entry->ids_ctx) return nullptr;
++    entry->compact_ids = ggml_dup_tensor(entry->ids_ctx, ids);
++    if (!entry->compact_ids) return nullptr;
++    ggml_format_name(entry->compact_ids, "htp-cache-ids-%s", source->name);
++    entry->ids_buffer = ggml_backend_alloc_ctx_tensors_from_buft(entry->ids_ctx, &sess->dev_ctx->buffer_type);
++    if (!entry->ids_buffer) return nullptr;
++    ggml_backend_buffer_set_usage(entry->ids_buffer, GGML_BACKEND_BUFFER_USAGE_COMPUTE);
++    return entry;
++}
++
++static bool ggml_hexagon_moe_cache_stage(ggml_hexagon_session * sess, ggml_tensor * node,
++                                         ggml_tensor & staged_node, htp_opnode & staged,
++                                         std::vector<int32_t> & remapped) {
++    if (!ggml_hexagon_moe_cache_configure(sess)) return false;
++    ggml_tensor * weights = node->src[0];
++    ggml_tensor * ids_tensor = node->src[2];
++    if (!weights || !ids_tensor || ids_tensor->type != GGML_TYPE_I32 ||
++        !ggml_is_contiguous(ids_tensor) || weights->ne[2] <= 0 || weights->ne[3] != 1) {
++        GGML_LOG_ERROR("ggml-hex: unsupported HTP expert-cache input for %s\n", node->name);
++        return false;
++    }
++    sess->flush_sync();
++    const size_t n_ids = ggml_nelements(ids_tensor);
++    std::vector<int32_t> ids(n_ids);
++    ggml_backend_tensor_get(ids_tensor, ids.data(), 0, n_ids * sizeof(int32_t));
++    auto * cached = sess->moe_weight_cache.host_cache->prepare(weights, weights->data,
++            weights->nb[2], (int) weights->ne[2], ids.data(), ids.size(), remapped);
++    if (!cached) {
++        GGML_LOG_ERROR("ggml-hex: HTP expert cache cannot fit selected routes for %s\n", weights->name);
++        return false;
++    }
++    auto * buffer = ggml_hexagon_moe_cache_get_tensor(sess, weights, ids_tensor);
++    if (!buffer) return false;
++
++    const size_t staged_bytes_before = sess->moe_weight_cache.staged_bytes;
++    std::vector<uint8_t> expert(buffer->expert_bytes);
++    for (int slot : cached->changed_slots) {
++        const int expert_id = cached->owner[slot];
++        ggml_backend_tensor_get(weights, expert.data(), (size_t) expert_id * buffer->expert_bytes,
++                                buffer->expert_bytes);
++        sess->moe_weight_cache.staged_bytes += buffer->expert_bytes;
++        ggml_tensor view = *buffer->compact_weights;
++        view.ne[2] = 1;
++        view.ne[3] = 1;
++        view.data = (uint8_t *) buffer->compact_weights->data + (size_t) slot * buffer->repacked_expert_bytes;
++        view.extra = buffer->compact_weights->extra;
++        repack_tensor_tiled(&view, expert.data(), expert.size());
++    }
++    ggml_backend_tensor_set(buffer->compact_ids, remapped.data(), 0, remapped.size() * sizeof(int32_t));
++    GGML_LOG_INFO("ggml-hex: bounded HTP cache staged tensor=%s routed_ids=%zu loaded_slots=%zu bytes=%zu\n",
++            weights->name, ids.size(), cached->changed_slots.size(),
++            sess->moe_weight_cache.staged_bytes - staged_bytes_before);
++
++    staged_node = *node;
++    staged_node.src[0] = buffer->compact_weights;
++    staged_node.src[2] = buffer->compact_ids;
++    staged.init(&staged_node);
++    staged.opcode = HTP_OP_MUL_MAT_ID;
++    ggml_hexagon_precompute_matmul_params(sess, staged_node.src[0], staged_node.src[1],
++            &staged_node, (struct htp_mm_kernel_params *) staged.kernel_params);
++    return true;
++}
++
+ static void ggml_backend_hexagon_buffer_set_tensor(ggml_backend_buffer_t buffer,
+                                                    ggml_tensor *         tensor,
+                                                    const void *          data,
+@@ -4287,6 +4466,17 @@ void ggml_hexagon_session::allocate(const ggml_hexagon_device_config & config) n
+ void ggml_hexagon_session::release() noexcept(true) {
+     GGML_LOG_INFO("ggml-hex: releasing session: %s\n", this->name.c_str());
+ 
++    if (!moe_weight_cache.tensors.empty()) {
++        if (this->valid_queue) flush_sync();
++        const auto & stats = moe_weight_cache.host_cache->counters;
++        GGML_LOG_INFO("ggml-hex: bounded routed-expert cache summary tensors=%zu device_bytes=%zu requests=%zu hits=%zu misses=%zu evictions=%zu staged_host_bytes=%zu\n",
++                moe_weight_cache.tensors.size(), moe_weight_cache.device_allocated,
++                stats.requests, stats.hits, stats.misses, stats.evictions, moe_weight_cache.staged_bytes);
++        moe_weight_cache.tensors.clear();
++        moe_weight_cache.host_cache.reset();
++        moe_weight_cache.device_allocated = 0;
++    }
++
+     this->mdev.sessions.clear();
+ 
+     int err;
+@@ -6804,6 +6994,8 @@ static bool is_mergeable_mul_mat_id_pair(const ggml_tensor * n1, const ggml_tens
+ static ggml_status ggml_backend_hexagon_graph_compute(ggml_backend_t backend, ggml_cgraph * graph) {
+     auto sess = static_cast<ggml_hexagon_session *>(backend->context);
+ 
++    sess->moe_cache_trace.configure_from_env();
++
+     if (sess->last_error > HTP_STATUS_OK) {
+         return GGML_STATUS_FAILED;
+     }
+@@ -6919,6 +7111,58 @@ static ggml_status ggml_backend_hexagon_graph_compute(ggml_backend_t backend, gg
+ 
+     // Queue and execute
+     for (const auto & node : *nodes_ptr) {
++        const char * htp_cache_env = getenv("GGML_HEXAGON_MOE_EXPERT_CACHE_SLOTS");
++        if (htp_cache_env && *htp_cache_env && node.node && node.node->op == GGML_OP_MUL_MAT_ID &&
++            node.node->src[0] && strstr(node.node->src[0]->name, "blk.32.ffn_") &&
++            strstr(node.node->src[0]->name, "_exps.weight")) {
++            GGML_LOG_INFO("ggml-hex: bounded HTP graph node opcode=%u weight=%s type=%s\n",
++                    (unsigned) node.opcode, node.node->src[0]->name,
++                    ggml_type_name(node.node->src[0]->type));
++        }
++        if (sess->moe_cache_trace.enabled() && node.opcode == HTP_OP_MUL_MAT_ID) {
++            const ggml_tensor * weights = node.node->src[0];
++            const ggml_tensor * ids_tensor = node.node->src[2];
++            if (ids_tensor && ids_tensor->type == GGML_TYPE_I32 && ggml_is_contiguous(ids_tensor)) {
++                const int64_t n_ids = ggml_nelements(ids_tensor);
++                if (n_ids > 0) {
++                    std::vector<int32_t> ids((size_t) n_ids);
++                    sess->flush_sync();
++                    ggml_backend_tensor_get(ids_tensor, ids.data(), 0, ids.size() * sizeof(int32_t));
++                    sess->moe_cache_trace.observe(
++                        weights, (uint32_t) weights->ne[2], ids.data(), ids.size(), weights->name);
++                } else {
++                    sess->moe_cache_trace.observe(weights, (uint32_t) weights->ne[2], nullptr, 0, weights->name);
++                }
++            } else {
++                sess->moe_cache_trace.observe(weights, (uint32_t) weights->ne[2], nullptr, 0, weights->name);
++            }
++        }
++        if (htp_cache_env && *htp_cache_env && node.opcode == HTP_OP_MUL_MAT_ID &&
++            node.node->src[0] &&
++            (node.node->src[0]->type == GGML_TYPE_Q4_K || node.node->src[0]->type == GGML_TYPE_Q6_K) &&
++            node.node->src[0]->data && strstr(node.node->src[0]->name, "_exps.weight")) {
++            ggml_tensor staged_node = {};
++            htp_opnode staged;
++            std::vector<int32_t> remapped;
++            if (!ggml_hexagon_moe_cache_stage(sess, node.node, staged_node, staged, remapped)) {
++                return GGML_STATUS_ALLOC_FAILED;
++            }
++            // The active route set and compact weight slots stay pinned until
++            // this synchronous operation completes; only then may LRU evict.
++            sess->flush_sync();
++            sess->enqueue_op(staged);
++            sess->flush_sync();
++            continue;
++        }
++        const char * htp_resident_env = getenv("GGML_HEXAGON_MOE_EXPERT_RESIDENT_LAYER_COUNT");
++        if (htp_resident_env && *htp_resident_env && node.opcode == HTP_OP_MUL_MAT_ID &&
++            node.node->src[0] && strstr(node.node->src[0]->name, "_exps.weight") &&
++            node.node->src[0]->buffer) {
++            GGML_LOG_INFO("ggml-hex: resident HTP MoE op tensor=%s buffer=%s bytes=%zu\n",
++                    node.node->src[0]->name,
++                    ggml_backend_buft_name(ggml_backend_buffer_get_type(node.node->src[0]->buffer)),
++                    ggml_nbytes(node.node->src[0]));
++        }
+         sess->enqueue_op(node);
+     }
+ 
+@@ -7848,6 +8092,14 @@ static bool ggml_backend_hexagon_device_supports_op(ggml_backend_dev_t dev, cons
+     }
+ 
+     ggml_hexagon_dump_op_supp(sess->name, op, supp);
++    const char * cache_enabled = getenv("GGML_HEXAGON_MOE_EXPERT_CACHE_SLOTS");
++    if (cache_enabled && *cache_enabled && op->op == GGML_OP_MUL_MAT_ID && op->src[0] &&
++        strstr(op->src[0]->name, "blk.32.ffn_") && strstr(op->src[0]->name, "_exps.weight")) {
++        GGML_LOG_INFO("ggml-hex: bounded HTP support probe op=%s weight=%s type=%s shape=%lldx%lldx%lld supported=%d\n",
++                ggml_op_name(op->op), op->src[0]->name, ggml_type_name(op->src[0]->type),
++                (long long) op->src[0]->ne[0], (long long) op->src[0]->ne[1],
++                (long long) op->src[0]->ne[2], supp ? 1 : 0);
++    }
+     return supp;
+ }
+ 
+diff --git a/src/llama-model-loader.cpp b/src/llama-model-loader.cpp
+index 6cc0b20..878abf4 100644
+--- a/src/llama-model-loader.cpp
++++ b/src/llama-model-loader.cpp
+@@ -10,6 +10,7 @@
+ #include <array>
+ #include <cinttypes>
+ #include <cstdint>
++#include <cstdlib>
+ #include <cstring>
+ #include <future>
+ #include <regex>
+@@ -1266,6 +1267,65 @@ struct ggml_tensor * llama_model_loader::create_tensor(
+             }
+         }
+ 
++        // In bounded HTP MoE mode, keep routed expert matrices CPU/mmap-backed.
++        // The Hexagon backend stages only selected experts after route IDs exist;
++        // allowing the scheduler to copy this full tensor would defeat the cache.
++        const char * htp_moe_cache_slots = getenv("GGML_HEXAGON_MOE_EXPERT_CACHE_SLOTS");
++        const char * htp_moe_resident = getenv("GGML_HEXAGON_MOE_EXPERT_RESIDENT_LAYER_COUNT");
++        const std::string bounded_moe_tensor_name = tn.str();
++        if (htp_moe_cache_slots && *htp_moe_cache_slots && op == GGML_OP_MUL_MAT_ID &&
++            (t_meta->type == GGML_TYPE_Q4_K || t_meta->type == GGML_TYPE_Q6_K) &&
++            bounded_moe_tensor_name.find("_exps.weight") != std::string::npos &&
++            !buft_list->empty() && buft_list->front().first &&
++            strstr(ggml_backend_dev_name(buft_list->front().first), "HTP") != nullptr) {
++            auto * cpu_dev = ggml_backend_dev_by_type(GGML_BACKEND_DEVICE_TYPE_CPU);
++            if (!cpu_dev) throw std::runtime_error("no CPU backend found for bounded HTP MoE weights");
++            buft = ggml_backend_dev_buffer_type(cpu_dev);
++            LLAMA_LOG_INFO("bounded HTP expert cache: keeping %s CPU/mmap-backed\n", tn.str().c_str());
++        }
++
++        // Resident control: place only the explicitly selected routed expert
++        // weights in HTP memory. Reject a tensor range that exceeds the
++        // caller-provided cap before allocating the large device buffer.
++        if (htp_moe_resident && *htp_moe_resident && !htp_moe_cache_slots &&
++            op == GGML_OP_MUL_MAT_ID &&
++            (t_meta->type == GGML_TYPE_Q4_K || t_meta->type == GGML_TYPE_Q6_K) &&
++            bounded_moe_tensor_name.find("_exps.weight") != std::string::npos) {
++            const char * first_env = getenv("GGML_HEXAGON_MOE_EXPERT_RESIDENT_LAYER_FIRST");
++            const char * count_env = htp_moe_resident;
++            const char * cap_env = getenv("GGML_HEXAGON_MOE_EXPERT_RESIDENT_MAX_MIB");
++            const size_t block_pos = bounded_moe_tensor_name.find("blk.");
++            char * end = nullptr;
++            const long layer = block_pos == std::string::npos ? -1 :
++                strtol(bounded_moe_tensor_name.c_str() + block_pos + 4, &end, 10);
++            char * first_end = nullptr;
++            char * count_end = nullptr;
++            char * cap_end = nullptr;
++            const long first = first_env ? strtol(first_env, &first_end, 10) : -1;
++            const long count = strtol(count_env, &count_end, 10);
++            const unsigned long cap_mib = cap_env ? strtoul(cap_env, &cap_end, 10) : 0;
++            if (layer >= first && end && *end == '.' && first_end && !*first_end &&
++                count_end && !*count_end && cap_env && cap_end && !*cap_end && cap_mib > 0 &&
++                layer < first + count) {
++                static size_t resident_bytes = 0;
++                const size_t cap_bytes = (size_t) cap_mib * MiB;
++                if (ggml_nbytes(t_meta) > cap_bytes - std::min(resident_bytes, cap_bytes)) {
++                    throw std::runtime_error(format("resident HTP expert weights exceed %lu MiB cap at %s",
++                                                    cap_mib, tn.str().c_str()));
++                }
++                resident_bytes += ggml_nbytes(t_meta);
++                auto htp = std::find_if(buft_list->begin(), buft_list->end(), [](const auto & item) {
++                    return item.first && strstr(ggml_backend_dev_name(item.first), "HTP") != nullptr;
++                });
++                if (htp == buft_list->end()) {
++                    throw std::runtime_error("resident HTP control requested but no HTP buffer is available");
++                }
++                buft = htp->second;
++                LLAMA_LOG_INFO("resident HTP expert weight %s bytes=%zu cumulative=%zu cap_mib=%lu\n",
++                               tn.str().c_str(), ggml_nbytes(t_meta), resident_bytes, cap_mib);
++            }
++        }
++
+         // avoid using a host buffer when using mmap
+         auto * buft_dev = ggml_backend_buft_get_device(buft);
+         if (use_mmap && buft_dev && buft == ggml_backend_dev_host_buffer_type(buft_dev)) {
+@@ -1774,8 +1834,10 @@ bool llama_model_loader::load_all_data(
+ 
+     // check if this is the last call and do final cleanup
+     if (size_done >= size_data) {
++        // Retained original GGUF mappings are opt-in, only for this experiment.
++        const char * hybrid_keep = getenv("GGML_PERF_HYBRID_KEEP_MMAP");
+         // unmap offloaded tensors and metadata
+-        if (use_mmap) {
++        if (use_mmap && !(hybrid_keep && strcmp(hybrid_keep, "1") == 0)) {
+             for (uint32_t idx = 0; idx < mappings.size(); idx++) {
+                 const auto & mmap_used = mmaps_used.at(idx);
+                 auto & mapping = mappings.at(idx);

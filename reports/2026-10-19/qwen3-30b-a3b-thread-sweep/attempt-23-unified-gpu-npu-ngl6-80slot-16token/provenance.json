@@ -1,0 +1,24 @@
+{
+  "utc": "2026-10-20T06:14:01.308619+00:00",
+  "plan": "80:1:3200,80:1:3200",
+  "n_gpu_layers": 6,
+  "backend": "gpu+npu",
+  "device": "GPUOpenCL,HTP0",
+  "thermal_policy": "cooldown-only",
+  "pilot": true,
+  "pilot_threads": 1,
+  "model": "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+  "model_bytes": 18556685824,
+  "sha256": {
+    "reports/2026-10-19/qwen3-30b-a3b-thread-sweep/run-benchmark.cpp": "e9cef806c167e7574b99c6a8852317a8f8c8230470c79012c12f03add6ee2422",
+    "reports/2026-10-19/qwen3-30b-a3b-thread-sweep/run-benchmark.py": "820f6c5ea0468ac7bddc0aece30bdfb5713e03596d9df0d70f7f9075549b4180",
+    "reports/2026-10-19/qwen3-30b-a3b-thread-sweep/cooldown.py": "aa6f858273fc3a76dcb1a4edecc1723895fc00a988733dcb6a53325784fcf53a",
+    "scripts/moe-slot-cache.h": "4db9196fbcf697bc83d4e471f1c7ce5a53dc4f9bba601893df65f9471816bdd2",
+    "scripts/moe-thermal-monitor.py": "279c996e499fe123f379ed1207c668744e464e8b542fe61b1ab7280c5a00281e",
+    "patches/experimental-cpu-moe-cache.patch": "e8232f3a9ac41a0d5562d8ca65a8ca6bad2581b733ca568ce796c705f83d5607",
+    "patches/experimental-hexagon-moe-cache-trace.patch": "c50c23c2e2ac89c5f4625e128804f8b89dd80c524ac7cab81428b36a5e430b43",
+    "patches/llama.cpp-qualcomm-sphal.patch": "dc21507d755969fbfad95b6493a78ffdb30892a52a5d26cb1f10dc2a7af4a483",
+    ".work-unified-build/CMakeCache.txt": "2ca12dc2bc706673b0579e7409d9c2c95f6a13d3fbab09194b9e7f77db7d437a",
+    ".work-unified-build/bin/qwen3-30b-a3b-matrix": "e5dcf92d7ac41411599d99d129245f8e2b71ce27ac15807db7a299c42ea6322d"
+  }
+}

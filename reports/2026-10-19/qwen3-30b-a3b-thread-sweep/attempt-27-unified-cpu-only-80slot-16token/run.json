@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/data/data/com.termux/files/home/OpenCL-S24-Ultra/.work-unified-build/bin/qwen3-30b-a3b-matrix",
+    "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+    "16"
+  ],
+  "plan": "80:1:3200,80:1:3200",
+  "returncode": 0,
+  "n_gpu_layers": 0,
+  "backend": "cpu",
+  "device": "CPU",
+  "thermal_policy": "cooldown-only",
+  "pilot": true,
+  "pilot_threads": 1,
+  "thermal_returncode": 0,
+  "cooldown_returncode": 0,
+  "stop_reason": null,
+  "minimum_available_kib": 4529224,
+  "peak_rss_kib": 5232576,
+  "peak_vm_swap_kib": 2780740,
+  "passes": 2,
+  "cooling_events": 1,
+  "replay_verified": true
+}

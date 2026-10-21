@@ -1,4 +1,6 @@
 .work/
+.work-gpu-exp*/
+.work-unified-*/
 __pycache__/
 *.pyc
 *.gguf

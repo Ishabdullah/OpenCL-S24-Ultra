@@ -1,0 +1,13 @@
+{"utc": "2026-10-20T01:33:18.123204+00:00", "monotonic_s": 1012659.312757392, "available_kib": 6589572, "rss_kib": 1368, "vm_swap_kib": 0, "pss_kib": 189, "swap_kib": 0}
+{"utc": "2026-10-20T01:33:19.581814+00:00", "monotonic_s": 1012660.771361558, "available_kib": 5775760, "rss_kib": 66848, "vm_swap_kib": 0, "pss_kib": 63964, "swap_kib": 0}
+{"utc": "2026-10-20T01:33:20.588626+00:00", "monotonic_s": 1012661.778174839, "available_kib": 5775120, "rss_kib": 146720, "vm_swap_kib": 0, "pss_kib": 144476, "swap_kib": 0}
+{"utc": "2026-10-20T01:33:21.603743+00:00", "monotonic_s": 1012662.793282912, "available_kib": 5772928, "rss_kib": 226656, "vm_swap_kib": 0, "pss_kib": 225468, "swap_kib": 0}
+{"utc": "2026-10-20T01:33:22.619428+00:00", "monotonic_s": 1012663.808969422, "available_kib": 5772008, "rss_kib": 308704, "vm_swap_kib": 0, "pss_kib": 308120, "swap_kib": 0}
+{"utc": "2026-10-20T01:33:23.638983+00:00", "monotonic_s": 1012664.828515567, "available_kib": 5770244, "rss_kib": 460564, "vm_swap_kib": 0, "pss_kib": 459824, "swap_kib": 0}
+{"utc": "2026-10-20T01:33:24.668739+00:00", "monotonic_s": 1012665.858271661, "available_kib": 5785944, "rss_kib": 549268, "vm_swap_kib": 0, "pss_kib": 548496, "swap_kib": 0}
+{"utc": "2026-10-20T01:33:25.698124+00:00", "monotonic_s": 1012666.887654629, "available_kib": 5744072, "rss_kib": 80864, "vm_swap_kib": 0, "pss_kib": 77224, "swap_kib": 0}
+{"utc": "2026-10-20T01:33:26.704491+00:00", "monotonic_s": 1012667.894013639, "available_kib": 5181500, "rss_kib": 1149948, "vm_swap_kib": 0, "pss_kib": 1148381, "swap_kib": 0}
+{"utc": "2026-10-20T01:33:27.745768+00:00", "monotonic_s": 1012668.935294576, "available_kib": 4605288, "rss_kib": 2233020, "vm_swap_kib": 0, "pss_kib": 2229499, "swap_kib": 0}
+{"utc": "2026-10-20T01:33:28.816543+00:00", "monotonic_s": 1012670.006069628, "available_kib": 4035212, "rss_kib": 3038248, "vm_swap_kib": 0, "pss_kib": 3041471, "swap_kib": 0}
+{"utc": "2026-10-20T01:33:29.887431+00:00", "monotonic_s": 1012671.0769577, "available_kib": 3562724, "rss_kib": 3689776, "vm_swap_kib": 119256, "pss_kib": 3605558, "swap_kib": 262528}
+{"utc": "2026-10-20T01:33:30.992950+00:00", "monotonic_s": 1012672.182474887, "available_kib": 4125988, "rss_kib": 3477968, "vm_swap_kib": 572068, "pss_kib": 3483631, "swap_kib": 572052}

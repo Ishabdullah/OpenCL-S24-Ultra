@@ -1,0 +1,7 @@
+{
+  "status": "stopped_by_memory_guard_before_decode",
+  "stop_reason": "MemAvailable below 3.5 GiB",
+  "minimum_observed_kib": 3270232,
+  "model_load_progress": "reached late tensor-mapping phase; no config/pass record; replay not run",
+  "termux_remained_responsive": true
+}

@@ -22,18 +22,24 @@ struct entry {
     std::vector<uint8_t> bytes;
     std::vector<int> owner, location;
     std::vector<uint64_t> age;
+    std::vector<int> changed_slots;
     uint64_t clock = 0;
-    entry(const void * data, size_t size, int count, int capacity) :
+    bool stores_weights;
+    entry(const void * data, size_t size, int count, int capacity, bool keep_weight_bytes) :
         source(data), expert_bytes(size), experts(count), slots(capacity),
-        bytes(size * capacity), owner(capacity, -1), location(count, -1), age(capacity, 0) {}
+        owner(capacity, -1), location(count, -1), age(capacity, 0), stores_weights(keep_weight_bytes) {
+        if (stores_weights) bytes.resize(size * capacity);
+    }
 };
 class cache {
     int capacity;
     size_t limit;
+    bool stores_weights;
     std::map<const void *, std::unique_ptr<entry>> tensors;
 public:
     stats counters;
-    cache(int slots, size_t byte_limit) : capacity(slots), limit(byte_limit) {}
+    cache(int slots, size_t byte_limit, bool keep_weight_bytes = true) :
+        capacity(slots), limit(byte_limit), stores_weights(keep_weight_bytes) {}
     int slots() const { return capacity; }
     // source and key are immutable for this backend/context lifetime.
     // On success all selected experts are pinned until this synchronous op ends.
@@ -56,11 +62,12 @@ public:
                 expert_bytes * slots > limit - counters.allocated_bytes) {
                 ++counters.budget_fallback; return nullptr;
             }
-            std::unique_ptr<entry> value(new entry(source, expert_bytes, experts, slots));
+            std::unique_ptr<entry> value(new entry(source, expert_bytes, experts, slots, stores_weights));
             found = tensors.emplace(key, std::move(value)).first;
             counters.allocated_bytes += expert_bytes * slots;
         }
         auto & value = *found->second;
+        value.changed_slots.clear();
         if (value.source != source || value.expert_bytes != expert_bytes || value.experts != experts) {
             ++counters.identity_fallback; return nullptr;
         }
@@ -79,12 +86,15 @@ public:
                     if (!needed[old] && (slot < 0 || value.age[candidate] < value.age[slot])) slot = candidate;
                 }
                 if (slot < 0) throw std::logic_error("no unpinned slot");
-                std::memcpy(value.bytes.data() + slot * expert_bytes,
-                            static_cast<const uint8_t *>(source) + expert * expert_bytes, expert_bytes);
+                if (value.stores_weights) {
+                    std::memcpy(value.bytes.data() + slot * expert_bytes,
+                                static_cast<const uint8_t *>(source) + expert * expert_bytes, expert_bytes);
+                    counters.copied_bytes += expert_bytes;
+                }
                 int old = value.owner[slot];
                 if (old >= 0) { value.location[old] = -1; ++counters.evictions; }
                 value.owner[slot] = expert; value.location[expert] = slot;
-                counters.copied_bytes += expert_bytes;
+                value.changed_slots.push_back(slot);
             }
             value.age[slot] = ++value.clock;
         }

@@ -1,0 +1,17 @@
+{
+  "observed_utc": "2026-10-19T16:12:07Z",
+  "event": "Termux session became unavailable during metadata recording after model download",
+  "llama_model_process_started": false,
+  "model_file_bytes": 18556685824,
+  "model_file_sha256": "0d003f6662faee786ed5da3e31b29c978de5ae5d275c8794c606a7f3c01aa8f5",
+  "expert_inventory_gate": "pass",
+  "suspected_cause": "Python Path.read_bytes() attempted to allocate the entire 18.56 GB model while redundantly computing SHA-256; command produced no JSON artifact and returned without output. This likely exceeded the Termux app memory limit.",
+  "recovery_observation": {
+    "model_file_present": true,
+    "llama_child_process_present": false,
+    "memavailable_kib": 5576400,
+    "battery_percent": 73,
+    "charging": false
+  },
+  "response": "Hash already collected with streaming sha256sum; future hash operations must stream fixed-size blocks. Model loading is still untested. Retry runner now admits only with >=5 GiB MemAvailable, charging, cool CPU/HTP/battery, explicit -lm mmap, one HTP layer, context 64, and one output token; it aborts below 2 GiB MemAvailable."
+}

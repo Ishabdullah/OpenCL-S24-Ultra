@@ -1,0 +1,10 @@
+{"utc": "2026-10-20T01:23:04.534685+00:00", "monotonic_s": 1012045.724225387, "available_kib": 5704984, "rss_kib": 1204, "vm_swap_kib": 0, "pss_kib": 375, "swap_kib": 0}
+{"utc": "2026-10-20T01:23:05.973078+00:00", "monotonic_s": 1012047.162627782, "available_kib": 4876964, "rss_kib": 69948, "vm_swap_kib": 0, "pss_kib": 68324, "swap_kib": 0}
+{"utc": "2026-10-20T01:23:06.984420+00:00", "monotonic_s": 1012048.173966219, "available_kib": 4870168, "rss_kib": 158652, "vm_swap_kib": 0, "pss_kib": 156836, "swap_kib": 0}
+{"utc": "2026-10-20T01:23:07.996837+00:00", "monotonic_s": 1012049.186374604, "available_kib": 4869004, "rss_kib": 247356, "vm_swap_kib": 0, "pss_kib": 245476, "swap_kib": 0}
+{"utc": "2026-10-20T01:23:09.014235+00:00", "monotonic_s": 1012050.20376601, "available_kib": 4870400, "rss_kib": 386748, "vm_swap_kib": 0, "pss_kib": 387108, "swap_kib": 0}
+{"utc": "2026-10-20T01:23:10.043304+00:00", "monotonic_s": 1012051.232847624, "available_kib": 4866152, "rss_kib": 505020, "vm_swap_kib": 0, "pss_kib": 503332, "swap_kib": 0}
+{"utc": "2026-10-20T01:23:11.072742+00:00", "monotonic_s": 1012052.262279603, "available_kib": 4864388, "rss_kib": 595836, "vm_swap_kib": 0, "pss_kib": 599748, "swap_kib": 0}
+{"utc": "2026-10-20T01:23:12.120393+00:00", "monotonic_s": 1012053.309917519, "available_kib": 4591988, "rss_kib": 474792, "vm_swap_kib": 0, "pss_kib": 471684, "swap_kib": 0}
+{"utc": "2026-10-20T01:23:13.140830+00:00", "monotonic_s": 1012054.330355227, "available_kib": 4607484, "rss_kib": 968584, "vm_swap_kib": 0, "pss_kib": 970659, "swap_kib": 0}
+{"utc": "2026-10-20T01:23:14.178695+00:00", "monotonic_s": 1012055.368220956, "available_kib": 4945600, "rss_kib": 1399160, "vm_swap_kib": 0, "pss_kib": 1409713, "swap_kib": 0}

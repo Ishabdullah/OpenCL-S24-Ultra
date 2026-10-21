@@ -1,4 +1,4 @@
-# Qwen3.6 performance handoff — October 10, 2026
+# Qwen3.6 performance handoff — October 19, 2026
 
 Current best observed Qwen3.6 decode is **1.333348 tokens/sec**, with
 **64 expert-cache slots, four CPU threads and a 2560 MiB cache budget**.
@@ -183,19 +183,66 @@ A controlled balanced 6-pass sweep in order **64 → 80 → 96 → 96 → 80 →
 
 80 slots / 3200 MiB at 4 threads now stands as the highest sustained measured configuration. See the [64-80-96 capacity sweep report](../reports/2026-10-13/cache-64-80-96-four-retry-02/README.md).
 
+## October 19 thread-count sweep at 80 slots
+
+A six-pass **4 → 3 → 2 → 2 → 3 → 4** thread sweep held capacity at
+80 slots / 3200 MiB. All 320 replayed logit positions matched bit for bit,
+all five cooldowns met the configured battery/CPU/HTP targets, and the
+runner plus both monitors exited successfully. The analyzer pooled the two
+repetitions for each setting as follows:
+
+| Threads | Pass rates, tok/s | Pooled tok/s |
+|---:|---|---:|
+| 4 | 0.631930, 0.891967 | **0.739762** |
+| 3 | 0.921541, 0.591991 | 0.720888 |
+| 2 | 0.707720, 0.642123 | 0.673327 |
+
+Four threads narrowly leads three threads by about 2.6% pooled; three threads
+had the fastest single pass. Treat **80 slots / four threads as the provisional
+default**, with three threads a close alternative. The spread between paired
+passes is substantial, and this run's rates are well below the October 13
+capacity-sweep result at the same nominal setting. The result selects a
+thread count for follow-up; it does not establish a stable cross-session rate
+or explain the variation. See the [thread-sweep report](../reports/2026-10-19/thread-sweep-80-slots/README.md)
+and its [analysis](../reports/2026-10-19/thread-sweep-80-slots/analysis.json).
+
+## Hexagon expert-cache prototype status
+
+An opt-in **routing-only LRU trace** now lives in the pinned checkout at
+`.work-npu/llama.cpp/ggml/src/ggml-hexagon/htp/moe-expert-cache-trace.h` and
+is hooked into Hexagon graph execution. Set
+`GGML_HEXAGON_MOE_CACHE_TRACE_SLOTS=64` to enable it for supported
+`MUL_MAT_ID` operations. It reads routed IDs at each operation boundary and
+reports per-layer LRU hit/miss/eviction estimates at session teardown. That
+readback synchronizes the HTP queue, so tracing is for locality measurement,
+not throughput runs.
+
+The reviewable overlay is [experimental-hexagon-moe-cache-trace.patch](../patches/experimental-hexagon-moe-cache-trace.patch); apply it from the repository root with `git -C .work-npu/llama.cpp apply "$PWD/patches/experimental-hexagon-moe-cache-trace.patch"` after recreating the pinned checkout. The current overlay has not been built or run on a compatible HTP model.
+
+This first prototype tracks metadata only: **it does not allocate NPU weight
+slots, move expert weights, remap router IDs or reduce storage reads**. The
+Qwen3.6 IQ1/IQ2 routed experts still execute on CPU, so this model will not
+exercise the Hexagon hook. Use a model/quantization with HTP-supported
+`MUL_MAT_ID` weights to collect a trace. A real NPU cache still needs an
+isolated bounded weight slab, safe per-expert copies, ID remapping, capacity
+fallback and bit-exact full-logit validation before any speed claim.
+
 ## Next work
 
-1. Start from the 80-slot/four-thread setting and keep the cooling routine.
-   Screen two/three threads against four threads. Confirm promising changes
-   in both orders with repeated controls.
-2. Save each experiment in a new report directory with its exact plan,
-   source/binary hashes, raw timings, memory and cooling records. Maintain
-   full-logit comparisons and full-model fallback behavior.
-3. Capture per-pass PSS/VmSwap if diagnosing why larger caches read less yet
-   generate slower. Avoid inferring residency from allocated payload alone.
-4. Broaden prompts/output lengths only after confirming a setting. Preserve
-   model quality and document sampling-inclusive CLI rates separately from
-   synchronized forward rates.
+1. Collect routing-only Hexagon cache traces on a model whose routed expert
+   `MUL_MAT_ID` operation is supported by HTP. Keep trace runs separate from
+   throughput comparisons because each per-layer ID readback synchronizes
+   the queue.
+2. Use those traces to size the first real NPU weight slab and estimate
+   metadata overhead. Implement weight copies and router-ID remapping only
+   after confirming the packed expert layout and asynchronous buffer lifetime.
+3. Gate any weight-cache implementation on bit-identical full-logit replay,
+   explicit fallback when the selected set exceeds capacity, and bounded
+   allocation. Benchmark only after that correctness gate passes.
+4. Keep 80 slots / four threads as the provisional CPU-cache comparison
+   setting, while retaining three threads as a close control. Record exact
+   plans, hashes, memory, thermal data and synchronized-forward rates in a
+   new report directory.
 
 The next agent should inspect git status and the saved state before editing.
 The current implementation is opt-in; changing installer defaults or

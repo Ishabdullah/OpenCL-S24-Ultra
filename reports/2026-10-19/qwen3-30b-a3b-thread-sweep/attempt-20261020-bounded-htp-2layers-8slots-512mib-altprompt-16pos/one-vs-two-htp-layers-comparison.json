@@ -1,0 +1,118 @@
+{
+  "model": "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+  "prompt": "Write a short checklist for diagnosing why an Android inference process slows down after several minutes, separating memory pressure, thermal throttling, and backend scheduling.",
+  "prompt_tokens": 30,
+  "maximum_output_tokens": 16,
+  "seed": 20261010,
+  "one_layer_htp": {
+    "htp": 1,
+    "block_first": 32,
+    "generated_tokens": [
+      94969,
+      1447,
+      12,
+      508,
+      2279,
+      4248,
+      1849,
+      4938,
+      10431,
+      320,
+      68,
+      1302,
+      2572,
+      4566,
+      1565,
+      3481
+    ],
+    "logit_hashes": [
+      "b28531d3a43ea515",
+      "f277656f5197bf31",
+      "f16c2b5f4b409b6b",
+      "3995d8484e32580b",
+      "5a7b426b32d5ba3d",
+      "42475e8bd2a317d3",
+      "f38a47ca95f1f4e5",
+      "4521d5b360f9a214",
+      "108760125bd0d269",
+      "591fe27dc74a742d",
+      "6f478c05672c41a9",
+      "7b446f07272f79ed",
+      "946d1c40a5e8ce4e",
+      "9319315bb7c05a8f",
+      "4f375d9b6005e587",
+      "769d51a3fec1af1c"
+    ],
+    "decode_tok_s": 0.534219,
+    "replay_verified": true
+  },
+  "two_layer_htp": {
+    "htp": 2,
+    "blocks": [
+      32,
+      33
+    ],
+    "generated_tokens": [
+      4710,
+      12,
+      4248,
+      421,
+      279,
+      1614,
+      374,
+      6661,
+      1119,
+      4938,
+      12440,
+      624,
+      12,
+      29279,
+      1052,
+      525
+    ],
+    "logit_hashes": [
+      "8c4c1164f4cf19ce",
+      "782e10d6514663f1",
+      "4ac66dfb227e82c1",
+      "f9bfd22446a06bf7",
+      "746c150c20e03cf5",
+      "d4607ce973aeca61",
+      "7adaf9c8c65af226",
+      "3fc11a34f427cbca",
+      "a0d192985298a0bb",
+      "d0dd2fa8bf0070c7",
+      "d78f727fd170cd6e",
+      "1de7ee23be5ec159",
+      "60dbc330a7d262b2",
+      "83f28f2dfe2f73cc",
+      "670fdd540c465c14",
+      "d9d2f0d5dae4f2fb"
+    ],
+    "decode_tok_s": 0.433258,
+    "replay_verified": true
+  },
+  "generated_tokens_match": false,
+  "logit_hashes_match_positions": 0,
+  "first_logit_hash_divergence_position": 0,
+  "interpretation": "Moving block 33 from CPU to HTP changed the first-position logits and generated sequence; the two-layer configuration is internally replay-stable. Decode rates are not a controlled cross-configuration comparison.",
+  "one_layer_placement": {
+    "cpu": 32,
+    "gpu": 16,
+    "htp": 1,
+    "htp_block": 32,
+    "output_layer": "CPU"
+  },
+  "two_layer_placement": {
+    "cpu": 31,
+    "gpu": 16,
+    "htp": 2,
+    "htp_blocks": [
+      32,
+      33
+    ],
+    "output_layer": "CPU"
+  },
+  "two_layer_min_memavailable_kib": 6691756,
+  "two_layer_peak_rss_kib": 4804568,
+  "two_layer_peak_swap_kib": 74164
+}

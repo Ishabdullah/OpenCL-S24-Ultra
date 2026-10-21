@@ -1,0 +1,227 @@
+diff --git a/src/llama-model.cpp b/src/llama-model.cpp
+index 4045098..591e855 100644
+--- a/src/llama-model.cpp
++++ b/src/llama-model.cpp
+@@ -1207,6 +1207,10 @@ struct llama_model::impl {
+     // contexts where the model tensors metadata is stored as well as the corresponding buffers:
+     std::vector<std::pair<ggml_context_ptr, std::vector<ggml_backend_buffer_ptr>>> ctxs_bufs;
+ 
++    ggml_context_ptr perf_shadow_ctx;
++    std::vector<ggml_backend_buffer_ptr> perf_shadow_buffers;
++    std::vector<std::pair<ggml_tensor *, ggml_tensor *>> perf_shadow_pairs;
++    bool perf_shadow_mapped = false;
+     buft_list_t cpu_buft_list;
+     std::map<ggml_backend_dev_t, buft_list_t> gpu_buft_list;
+ 
+@@ -1600,6 +1604,47 @@ bool llama_model_base::load_tensors(llama_model_loader & ml) {
+         return {dev, &pimpl->gpu_buft_list.at(dev)};
+     };
+ 
++    // Optional experimental placement map used by the bounded Qwen triad
++    // benchmark. The map has one backend name per repeating layer plus the
++    // output layer. Normal llama.cpp placement is unchanged when unset.
++    std::vector<llama_model::impl::layer_dev> explicit_layer_map;
++    if (const char * map_setting = std::getenv("MOE_BENCH_LAYER_MAP")) {
++        std::string map(map_setting);
++        size_t start = 0;
++        while (start <= map.size()) {
++            const size_t end = map.find(',', start);
++            const std::string name = map.substr(start, end == std::string::npos ? end : end - start);
++            if (name.empty()) {
++                throw std::runtime_error("MOE_BENCH_LAYER_MAP contains an empty backend name");
++            }
++            ggml_backend_dev_t dev = nullptr;
++            buft_list_t * buft_list = nullptr;
++            if (name == "CPU") {
++                dev = cpu_dev;
++                buft_list = &pimpl->cpu_buft_list;
++            } else {
++                for (const auto & candidate : devices) {
++                    if (name == ggml_backend_dev_name(candidate.dev)) {
++                        dev = candidate.dev;
++                        buft_list = &pimpl->gpu_buft_list.at(dev);
++                        break;
++                    }
++                }
++            }
++            if (!dev || !buft_list) {
++                throw std::runtime_error("MOE_BENCH_LAYER_MAP names an unavailable backend: " + name);
++            }
++            explicit_layer_map.push_back({dev, buft_list});
++            if (end == std::string::npos) break;
++            start = end + 1;
++        }
++        if (explicit_layer_map.size() != static_cast<size_t>(n_layer_all + 1)) {
++            throw std::runtime_error("MOE_BENCH_LAYER_MAP must contain one backend for each model layer and output layer");
++        }
++        LLAMA_LOG_INFO("%s: using explicit experimental map for %zu layers plus output\n",
++                       __func__, static_cast<size_t>(n_layer_all));
++    }
++
+     // assign the input layer
+     // there is very little benefit to offloading the input layer, so always keep it on the CPU
+     pimpl->dev_input = { cpu_dev, &pimpl->cpu_buft_list };
+@@ -1607,11 +1652,19 @@ bool llama_model_base::load_tensors(llama_model_loader & ml) {
+     // assign the repeating layers to the devices according to the splits
+     pimpl->dev_layer.resize(n_layer_all);
+     for (int il = 0; il < n_layer_all; ++il) {
+-        pimpl->dev_layer[il] = get_layer_buft_list(il);
++        pimpl->dev_layer[il] = explicit_layer_map.empty() ? get_layer_buft_list(il) : explicit_layer_map[il];
++        if (!explicit_layer_map.empty()) {
++            LLAMA_LOG_INFO("%s: layer %3d assigned to device %s, is_swa = %d\n",
++                           __func__, il, ggml_backend_dev_name(pimpl->dev_layer[il].dev), hparams.is_swa(il));
++        }
+     }
+ 
+     // assign the output layer
+-    pimpl->dev_output = get_layer_buft_list(n_layer_all);
++    pimpl->dev_output = explicit_layer_map.empty() ? get_layer_buft_list(n_layer_all) : explicit_layer_map[n_layer_all];
++    if (!explicit_layer_map.empty()) {
++        LLAMA_LOG_INFO("%s: layer %3d assigned to device %s, is_swa = 0 (output)\n",
++                       __func__, n_layer_all, ggml_backend_dev_name(pimpl->dev_output.dev));
++    }
+ 
+     const auto TENSOR_NOT_REQUIRED = llama_model_loader::TENSOR_NOT_REQUIRED;
+ 
+@@ -1809,7 +1862,12 @@ bool llama_model_base::load_tensors(llama_model_loader & ml) {
+     // per-tensor activation precision policy
+     prec_policy.load(ml, *this);
+ 
+-    ml.init_mappings(true, use_mlock ? &pimpl->mlock_mmaps : nullptr);
++    const char * mmap_prefetch_env = getenv("LLAMA_MMAP_PREFETCH");
++    const bool mmap_prefetch = !(mmap_prefetch_env && strcmp(mmap_prefetch_env, "0") == 0);
++    LLAMA_LOG_INFO("%s: mmap prefetch %s (LLAMA_MMAP_PREFETCH=%s)\n",
++            __func__, mmap_prefetch ? "enabled" : "disabled",
++            mmap_prefetch_env ? mmap_prefetch_env : "default");
++    ml.init_mappings(mmap_prefetch, use_mlock ? &pimpl->mlock_mmaps : nullptr);
+     pimpl->mappings.reserve(ml.mappings.size());
+ 
+     // create the backend buffers
+@@ -1951,6 +2009,10 @@ bool llama_model_base::load_tensors(llama_model_loader & ml) {
+         }
+     }
+ 
++    const char * hybrid_keep = getenv("GGML_PERF_HYBRID_KEEP_MMAP");
++    if (hybrid_keep && strcmp(hybrid_keep, "1") == 0) {
++        perf_prepare_cpu_shadows(ml);
++    }
+     if (use_mmap_buffer) {
+         for (auto & mapping : ml.mappings) {
+             pimpl->mappings.emplace_back(std::move(mapping));
+@@ -1960,6 +2022,116 @@ bool llama_model_base::load_tensors(llama_model_loader & ml) {
+     return true;
+ }
+ 
++static bool perf_buffer_is_gpu(ggml_backend_buffer_t buffer) {
++    auto * dev = ggml_backend_buft_get_device(ggml_backend_buffer_get_type(buffer));
++    return dev && ggml_backend_dev_type(dev) == GGML_BACKEND_DEVICE_TYPE_GPU;
++}
++
++void llama_model::perf_prepare_cpu_shadows(llama_model_loader & ml) {
++    if (!ml.use_mmap || ml.mappings.empty()) {
++        throw std::runtime_error("hybrid mapped shadows require explicit MMAP loading");
++    }
++    size_t count = 0;
++    for (const auto & item : pimpl->ctxs_bufs) {
++        for (auto * t = ggml_get_first_tensor(item.first.get()); t; t = ggml_get_next_tensor(item.first.get(), t)) {
++            if (t->buffer && perf_buffer_is_gpu(t->buffer) && !t->view_src) count++;
++        }
++    }
++    ggml_init_params ip { count * ggml_tensor_overhead() + 4096, nullptr, true };
++    pimpl->perf_shadow_ctx.reset(ggml_init(ip));
++    if (!pimpl->perf_shadow_ctx) throw std::runtime_error("hybrid CPU shadow metadata allocation failed");
++    for (const auto & mapping : ml.mappings) {
++        ggml_backend_buffer_ptr buf(ggml_backend_cpu_buffer_from_ptr(mapping->addr(), mapping->size()));
++        ggml_backend_buffer_set_usage(buf.get(), GGML_BACKEND_BUFFER_USAGE_WEIGHTS);
++        pimpl->perf_shadow_buffers.emplace_back(std::move(buf));
++    }
++    uint64_t bytes = 0;
++    for (const auto & item : pimpl->ctxs_bufs) {
++        for (auto * t = ggml_get_first_tensor(item.first.get()); t; t = ggml_get_next_tensor(item.first.get(), t)) {
++            if (!t->buffer || !perf_buffer_is_gpu(t->buffer) || t->view_src) continue;
++            const auto & w = ml.require_weight(t->name);
++            if (t->type != w.tensor->type || memcmp(t->ne, w.tensor->ne, sizeof(t->ne)) ||
++                    memcmp(t->nb, w.tensor->nb, sizeof(t->nb))) throw std::runtime_error("hybrid shadow GGUF layout mismatch");
++            auto * shadow = ggml_dup_tensor(pimpl->perf_shadow_ctx.get(), t);
++            ggml_set_name(shadow, t->name);
++            void * addr = (char *) ml.mappings.at(w.idx)->addr() + w.offs;
++            if (ggml_backend_tensor_alloc(pimpl->perf_shadow_buffers.at(w.idx).get(), shadow, addr) != GGML_STATUS_SUCCESS) {
++                throw std::runtime_error("hybrid CPU mapped tensor initialization failed");
++            }
++            pimpl->perf_shadow_pairs.emplace_back(t, shadow);
++            bytes += ggml_nbytes(t);
++        }
++    }
++    pimpl->perf_shadow_mapped = true;
++    LLAMA_LOG_INFO("HYBRID: retained CPU mapped shadows: %zu tensors, %.2f MiB logical weights (distinct from GPU storage)\n",
++            count, bytes / 1048576.0);
++}
++
++void llama_model::perf_switch_weights_cpu(bool drop_gpu, llama_perf_handoff_stats & stats) {
++    if (!pimpl->perf_shadow_mapped) {
++        std::vector<ggml_tensor *> targets;
++        size_t bytes = 0;
++        for (const auto & item : pimpl->ctxs_bufs) {
++            for (auto * t = ggml_get_first_tensor(item.first.get()); t; t = ggml_get_next_tensor(item.first.get(), t)) {
++                if (t->buffer && perf_buffer_is_gpu(t->buffer) && !t->view_src) {
++                    targets.push_back(t); bytes += ggml_nbytes(t);
++                }
++            }
++        }
++        if (targets.empty()) return;
++        // Refuse unsafe eager weight duplication. A guard is not an OOM result.
++        FILE * mem = fopen("/proc/meminfo", "r");
++        size_t available = 0; char line[256];
++        if (mem) { while (fgets(line, sizeof(line), mem)) { if (sscanf(line, "MemAvailable: %zu kB", &available) == 1) break; } fclose(mem); }
++        if (!available || bytes + 512ULL*1024*1024 > available*1024ULL) {
++            throw std::runtime_error("hybrid weight-readback admission guard: insufficient MemAvailable; use retained mmap shadows");
++        }
++        ggml_init_params ip { targets.size() * ggml_tensor_overhead() + 4096, nullptr, true };
++        pimpl->perf_shadow_ctx.reset(ggml_init(ip));
++        if (!pimpl->perf_shadow_ctx) throw std::runtime_error("hybrid CPU shadow metadata allocation failed");
++        for (auto * t : targets) {
++            auto * shadow = ggml_dup_tensor(pimpl->perf_shadow_ctx.get(), t);
++            ggml_set_name(shadow, t->name);
++            pimpl->perf_shadow_pairs.emplace_back(t, shadow);
++        }
++        ggml_backend_buffer_ptr host(ggml_backend_alloc_ctx_tensors_from_buft(pimpl->perf_shadow_ctx.get(), ggml_backend_cpu_buffer_type()));
++        if (!host) throw std::runtime_error("hybrid CPU weight allocation failed");
++        ggml_backend_buffer_set_usage(host.get(), GGML_BACKEND_BUFFER_USAGE_WEIGHTS);
++        pimpl->perf_shadow_buffers.emplace_back(std::move(host));
++        for (const auto & pair : pimpl->perf_shadow_pairs) {
++            ggml_backend_tensor_copy(pair.first, pair.second);
++            stats.weight_copy_bytes += ggml_nbytes(pair.first);
++        }
++    }
++    for (const auto & pair : pimpl->perf_shadow_pairs) {
++        stats.cpu_shadow_weight_bytes += ggml_nbytes(pair.first);
++        pair.first->buffer = pair.second->buffer;
++        pair.first->data = pair.second->data;
++        pair.first->extra = pair.second->extra;
++    }
++    // Preserve view identities while rebasing them to the CPU representation.
++    for (const auto & item : pimpl->ctxs_bufs) {
++        for (auto * t = ggml_get_first_tensor(item.first.get()); t; t = ggml_get_next_tensor(item.first.get(), t)) {
++            if (t->view_src && ggml_backend_buffer_is_host(t->view_src->buffer)) {
++                t->buffer = t->view_src->buffer; t->extra = nullptr;
++                t->data = (char *) t->view_src->data + t->view_offs;
++            }
++        }
++    }
++    if (drop_gpu) {
++        for (auto & item : pimpl->ctxs_bufs) {
++            auto & buffers = item.second;
++            buffers.erase(std::remove_if(buffers.begin(), buffers.end(), [&](const ggml_backend_buffer_ptr & buf) {
++                if (!perf_buffer_is_gpu(buf.get())) return false;
++                stats.gpu_weight_bytes_released += ggml_backend_buffer_get_size(buf.get());
++                return true;
++            }), buffers.end());
++        }
++    }
++    LLAMA_LOG_INFO("HYBRID: CPU weight references installed; readback %.2f MiB, shadow weights %.2f MiB, GPU weights released %.2f MiB\n",
++            stats.weight_copy_bytes/1048576.0, stats.cpu_shadow_weight_bytes/1048576.0, stats.gpu_weight_bytes_released/1048576.0);
++}
++
+ ggml_tensor * llama_model_base::create_tensor(llama_model_loader & ml, const LLM_TN_IMPL & tn, const std::initializer_list<int64_t> & ne, int flags) {
+     const buft_list_t * buft_list_layer = tn.bid == -1 ? nullptr : pimpl->dev_layer.at(tn.bid).buft_list;
+     return ml.create_tensor(

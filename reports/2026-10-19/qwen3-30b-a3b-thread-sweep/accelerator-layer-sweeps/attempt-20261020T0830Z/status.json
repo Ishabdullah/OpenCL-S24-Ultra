@@ -1,0 +1,120 @@
+{
+  "state": "stopped_by_user",
+  "completed": [
+    {
+      "backend": "gpu",
+      "n_gpu_layers": "1",
+      "pooled_tok_s": "0.5554184700487257",
+      "pass1_tok_s": "0.61365",
+      "pass2_tok_s": "0.507281",
+      "replay_verified": "True",
+      "minimum_available_kib": "4434284",
+      "peak_rss_kib": "5119968",
+      "peak_vm_swap_kib": "2140540"
+    },
+    {
+      "backend": "gpu",
+      "n_gpu_layers": "2",
+      "pooled_tok_s": "0.6407613954074495",
+      "pass1_tok_s": "0.559567",
+      "pass2_tok_s": "0.749518",
+      "replay_verified": "True",
+      "minimum_available_kib": "4892408",
+      "peak_rss_kib": "5038684",
+      "peak_vm_swap_kib": "1999784"
+    },
+    {
+      "backend": "gpu",
+      "n_gpu_layers": "3",
+      "pooled_tok_s": "0.5347096808046996",
+      "pass1_tok_s": "0.737896",
+      "pass2_tok_s": "0.419262",
+      "replay_verified": "True",
+      "minimum_available_kib": "4992920",
+      "peak_rss_kib": "5280088",
+      "peak_vm_swap_kib": "2168348"
+    },
+    {
+      "backend": "gpu",
+      "n_gpu_layers": "4",
+      "pooled_tok_s": "0.4772416805321283",
+      "pass1_tok_s": "0.522779",
+      "pass2_tok_s": "0.439002",
+      "replay_verified": "True",
+      "minimum_available_kib": "4727428",
+      "peak_rss_kib": "5046248",
+      "peak_vm_swap_kib": "2170656"
+    },
+    {
+      "backend": "gpu",
+      "n_gpu_layers": "5",
+      "pooled_tok_s": "0.5320476225185964",
+      "pass1_tok_s": "0.453377",
+      "pass2_tok_s": "0.643753",
+      "replay_verified": "True",
+      "minimum_available_kib": "4821592",
+      "peak_rss_kib": "5004056",
+      "peak_vm_swap_kib": "2010600"
+    },
+    {
+      "backend": "gpu",
+      "n_gpu_layers": "6",
+      "pooled_tok_s": "0.46788527490490156",
+      "pass1_tok_s": "0.499728",
+      "pass2_tok_s": "0.439857",
+      "replay_verified": "True",
+      "minimum_available_kib": "4750572",
+      "peak_rss_kib": "5068972",
+      "peak_vm_swap_kib": "2186560"
+    },
+    {
+      "backend": "gpu",
+      "n_gpu_layers": "7",
+      "pooled_tok_s": "0.5222560094780414",
+      "pass1_tok_s": "0.679245",
+      "pass2_tok_s": "0.424211",
+      "replay_verified": "True",
+      "minimum_available_kib": "4769532",
+      "peak_rss_kib": "5005192",
+      "peak_vm_swap_kib": "2297580"
+    },
+    {
+      "backend": "gpu",
+      "n_gpu_layers": "8",
+      "pooled_tok_s": "0.4727392023726718",
+      "pass1_tok_s": "0.382463",
+      "pass2_tok_s": "0.618801",
+      "replay_verified": "True",
+      "minimum_available_kib": "4644352",
+      "peak_rss_kib": "5068660",
+      "peak_vm_swap_kib": "2252540"
+    },
+    {
+      "backend": "gpu",
+      "n_gpu_layers": "9",
+      "pooled_tok_s": "0.4450776745848705",
+      "pass1_tok_s": "0.337168",
+      "pass2_tok_s": "0.654571",
+      "replay_verified": "True",
+      "minimum_available_kib": "4622876",
+      "peak_rss_kib": "5037648",
+      "peak_vm_swap_kib": "2130880"
+    },
+    {
+      "backend": "gpu",
+      "n_gpu_layers": 9,
+      "pooled_tok_s": 0.4450776745848705,
+      "pass1_tok_s": 0.337168,
+      "pass2_tok_s": 0.654571,
+      "replay_verified": true,
+      "minimum_available_kib": 4622876,
+      "peak_rss_kib": 5037648,
+      "peak_vm_swap_kib": 2130880
+    }
+  ],
+  "current_backend": "gpu",
+  "last_layer": 9,
+  "utc": "2026-10-20T09:38:51.693420+00:00",
+  "stop_backend": "gpu",
+  "stop_after_layer": 9
+}

@@ -1,0 +1,1 @@
+{"backend":"cpu","slots":64,"tokens":16,"threads":[1,2,3,4,5,6,7,8],"wake_lock":true}

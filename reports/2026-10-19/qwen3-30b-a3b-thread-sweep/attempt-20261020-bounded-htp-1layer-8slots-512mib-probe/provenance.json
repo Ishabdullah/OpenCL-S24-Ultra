@@ -1,0 +1,39 @@
+{
+  "utc": "2026-10-20T13:02:01.449649+00:00",
+  "plan": "8:1:320,8:1:320",
+  "n_gpu_layers": 49,
+  "backend": "gpu+npu",
+  "device": "GPUOpenCL,HTP0",
+  "accelerator_layer_split": null,
+  "model_layer_split": {
+    "cpu": 32,
+    "gpu": 16,
+    "npu": 1
+  },
+  "layer_profile": false,
+  "output_layer": null,
+  "bounded_htp_layers": 1,
+  "htp_cache_slots": 8,
+  "htp_cache_budget_mib": 512,
+  "thermal_policy": "cooldown-only",
+  "pilot": false,
+  "pilot_threads": 1,
+  "thread_sweep": false,
+  "model": "/data/data/com.termux/files/home/models/Qwen3-30B-A3B-Q4_K_M.gguf",
+  "model_bytes": 18556685824,
+  "sha256": {
+    "reports/2026-10-19/qwen3-30b-a3b-thread-sweep/run-benchmark.cpp": "43e0cebd4b876bfde77a6270a35ddee8d70a050abfa5dd60fc7ef0dafe25b090",
+    "reports/2026-10-19/qwen3-30b-a3b-thread-sweep/run-benchmark.py": "796ab093a0ec3ef986e48d3505c2bbc4f66600612cde3823075a6e394aa0fd80",
+    "reports/2026-10-19/qwen3-30b-a3b-thread-sweep/cooldown.py": "aa6f858273fc3a76dcb1a4edecc1723895fc00a988733dcb6a53325784fcf53a",
+    "scripts/moe-slot-cache.h": "48584cba39391223c81a404c31f3357ee9799a048b1ffa8a783578edfb73c9c8",
+    "scripts/moe-thermal-monitor.py": "279c996e499fe123f379ed1207c668744e464e8b542fe61b1ab7280c5a00281e",
+    "patches/experimental-cpu-moe-cache.patch": "e8232f3a9ac41a0d5562d8ca65a8ca6bad2581b733ca568ce796c705f83d5607",
+    "patches/experimental-hexagon-moe-cache-trace.patch": "c50c23c2e2ac89c5f4625e128804f8b89dd80c524ac7cab81428b36a5e430b43",
+    "patches/experimental-explicit-layer-map.patch": "3f6d693cb314a206becca6fe97404f070e2e8f11ff0ee56c42eb46c411978379",
+    "patches/experimental-htp-bounded-expert-cache.patch": "63f01e9de04b6438bcabf224a362c7c5f4873d33027cc7fa5b6da3b5ec396d35",
+    "patches/llama.cpp-qualcomm-sphal.patch": "dc21507d755969fbfad95b6493a78ffdb30892a52a5d26cb1f10dc2a7af4a483",
+    ".work-unified-build/CMakeCache.txt": "2ca12dc2bc706673b0579e7409d9c2c95f6a13d3fbab09194b9e7f77db7d437a",
+    ".work-unified-source/src/llama-model.cpp": "3340da889e087f8d245abc610bd7d0fd3cd0fc1019cad85623bc12d587936111",
+    ".work-unified-build/bin/qwen3-30b-a3b-matrix": "0445c8b72849152fea8a07699b645e253608d9e90bfd29b104f2105d91bdf475"
+  }
+}

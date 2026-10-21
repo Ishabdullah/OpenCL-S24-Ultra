@@ -1,0 +1,80 @@
+[
+  {
+    "slots": 80,
+    "allocated_bytes": 2920939520,
+    "requests": 7680,
+    "hits": 48594,
+    "misses": 18279,
+    "evictions": 8679,
+    "copied_bytes": 5574410240,
+    "oversized": 9,
+    "budget_fallback": 0,
+    "identity_fallback": 0,
+    "pass": 1
+  },
+  {
+    "slots": 80,
+    "allocated_bytes": 2920939520,
+    "requests": 7680,
+    "hits": 48594,
+    "misses": 18279,
+    "evictions": 8679,
+    "copied_bytes": 5574410240,
+    "oversized": 9,
+    "budget_fallback": 0,
+    "identity_fallback": 0,
+    "pass": 2
+  },
+  {
+    "slots": 80,
+    "allocated_bytes": 2920939520,
+    "requests": 7680,
+    "hits": 48594,
+    "misses": 18279,
+    "evictions": 8679,
+    "copied_bytes": 5574410240,
+    "oversized": 9,
+    "budget_fallback": 0,
+    "identity_fallback": 0,
+    "pass": 3
+  },
+  {
+    "slots": 80,
+    "allocated_bytes": 2920939520,
+    "requests": 7680,
+    "hits": 48594,
+    "misses": 18279,
+    "evictions": 8679,
+    "copied_bytes": 5574410240,
+    "oversized": 9,
+    "budget_fallback": 0,
+    "identity_fallback": 0,
+    "pass": 4
+  },
+  {
+    "slots": 80,
+    "allocated_bytes": 2920939520,
+    "requests": 7680,
+    "hits": 48594,
+    "misses": 18279,
+    "evictions": 8679,
+    "copied_bytes": 5574410240,
+    "oversized": 9,
+    "budget_fallback": 0,
+    "identity_fallback": 0,
+    "pass": 5
+  },
+  {
+    "slots": 80,
+    "allocated_bytes": 2920939520,
+    "requests": 7680,
+    "hits": 48594,
+    "misses": 18279,
+    "evictions": 8679,
+    "copied_bytes": 5574410240,
+    "oversized": 9,
+    "budget_fallback": 0,
+    "identity_fallback": 0,
+    "pass": 6
+  }
+]

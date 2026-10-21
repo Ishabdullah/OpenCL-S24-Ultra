@@ -1,0 +1,59 @@
+{
+  "utc": "2026-10-20T11:51:38.255025+00:00",
+  "waited_s": 0.8,
+  "battery": {
+    "present": true,
+    "technology": "Li-ion",
+    "health": "GOOD",
+    "plugged": "PLUGGED_AC",
+    "status": "NOT_CHARGING",
+    "temperature": 36.8,
+    "voltage": 4212,
+    "current": -2000,
+    "current_average": -28,
+    "percentage": 95,
+    "level": 95,
+    "scale": 100,
+    "charge_counter": 4666557,
+    "cycle": 0
+  },
+  "memavailable_kib": 7515556,
+  "thermal": {
+    "battery_c": 37.0,
+    "cpu_max_c": 56.8,
+    "htp_max_c": 50.2,
+    "sensors_c": {
+      "cpuss-0": 53.7,
+      "cpu-2-2-1": 53.3,
+      "cpu-1-0-0": 52.9,
+      "cpu-1-0-1": 54.5,
+      "cpu-1-1-0": 51.8,
+      "cpu-1-1-1": 51.8,
+      "cpu-1-2-0": 56.1,
+      "cpu-1-2-1": 56.8,
+      "cpu-1-2-2": 55.3,
+      "cpu-0-0-0": 53.7,
+      "cpuss-1": 53.3,
+      "cpu-0-1-0": 53.7,
+      "nsphvx-0": 50.2,
+      "nsphvx-1": 49.4,
+      "nsphmx-0": 48.7,
+      "nsphmx-1": 48.7,
+      "nsphmx-2": 48.3,
+      "nsphmx-3": 47.9,
+      "cpuss-2": 52.6,
+      "cpuss-3": 52.6,
+      "cpu-2-0-0": 53.3,
+      "battery": 37.0,
+      "cpu-2-0-1": 52.6,
+      "cpu-2-1-0": 55.3,
+      "cpu-2-1-1": 56.1,
+      "cpu-2-2-0": 51.8
+    }
+  },
+  "gates": {
+    "plugged_ac": true,
+    "battery_at_least_40_pct": true,
+    "memavailable_at_least_5_gib": true
+  }
+}
